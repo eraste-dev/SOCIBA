@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "Ncmaz"
+			"path": "client_nextjs"
 		},
 		{
-			"path": "sociba-server"
+			"path": "server"
 		}
 	],
 	"settings": {}

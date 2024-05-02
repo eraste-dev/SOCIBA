@@ -10,127 +10,125 @@ import Card10 from "components/Card10/Card10";
 import Card11 from "components/Card11/Card11";
 import Card10V2 from "components/Card10/Card10V2";
 import ncNanoId from "utils/ncNanoId";
+import { useAppDispatch, useAppSelector } from "app/hooks";
+import { PropertyAction } from "app/properties/propertiy";
+import { useSelector } from "react-redux";
+import { fetchFeatureProperties } from "app/axios/api.action";
+import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 
 export interface SectionSliderPostsProps {
-  className?: string;
-  heading: string;
-  subHeading?: string;
-  posts: PostDataType[];
-  postCardName?: "card4" | "card7" | "card9" | "card10" | "card10V2" | "card11";
-  sliderStype?: "style1" | "style2";
-  perView?: 2 | 3 | 4;
-  uniqueSliderClass: string;
+	className?: string;
+	heading: string;
+	subHeading?: string;
+	posts: PostDataType[];
+	postCardName?: "card4" | "card7" | "card9" | "card10" | "card10V2" | "card11";
+	sliderStype?: "style1" | "style2";
+	perView?: 2 | 3 | 4;
+	uniqueSliderClass: string;
 }
 
-const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
-  heading,
-  subHeading,
-  className = "",
-  posts,
-  postCardName = "card4",
-  sliderStype = "style1",
-  perView = 4,
-  uniqueSliderClass,
-}) => {
-  const UNIQUE_CLASS = "SectionSliderPosts_" + ncNanoId(uniqueSliderClass);
+const SectionSliderPosts: FC<SectionSliderPostsProps> = ({ heading, subHeading, className = "", posts, postCardName = "card4", sliderStype = "style1", perView = 4, uniqueSliderClass }) => {
+	const UNIQUE_CLASS = "SectionSliderPosts_" + ncNanoId(uniqueSliderClass);
 
-  const MY_GLIDE = new Glide(`.${UNIQUE_CLASS}`, {
-    // @ts-ignore
-    direction:
-      document.querySelector("html")?.getAttribute("dir") === "rtl"
-        ? "rtl"
-        : "ltr",
-    perView: perView,
-    gap: 32,
-    bound: true,
-    breakpoints: {
-      1280: {
-        perView: perView - 1,
-      },
-      1023: {
-        perView: perView - 2 || 1.2,
-        gap: 20,
-      },
-      767: {
-        perView: perView - 2 || 1.2,
-        gap: 20,
-      },
-      639: {
-        perView: 1.2,
-        gap: 20,
-      },
-    },
-  });
+	const dispatch = useAppDispatch();
+	const data = useAppSelector(PropertyAction.data);
+	const loading = useSelector(PropertyAction.loading);
+	// const error = useSelector(PropertyAction.error);
+	// const success = useSelector(PropertyAction.success);
 
-  useEffect(() => {
-    if (!MY_GLIDE) return;
-    MY_GLIDE.mount();
-  }, [MY_GLIDE]);
+	useEffect(() => {
+		if (data && !data.features && !loading) {
+			dispatch(fetchFeatureProperties({ top: true, limit: 8 }));
+		}
+	}, [dispatch, fetchFeatureProperties, data, loading]);
 
-  const getPostComponent = () => {
-    switch (postCardName) {
-      case "card4":
-        return Card4;
-      case "card7":
-        return Card7;
-      case "card9":
-        return Card9;
-      case "card10":
-        return Card10;
-      case "card10V2":
-        return Card10V2;
-      case "card11":
-        return Card11;
+	const MY_GLIDE = new Glide(`.${UNIQUE_CLASS}`, {
+		// @ts-ignore
+		direction: document.querySelector("html")?.getAttribute("dir") === "rtl" ? "rtl" : "ltr",
+		perView: perView,
+		gap: 32,
+		bound: true,
+		breakpoints: {
+			1280: {
+				perView: perView - 1,
+			},
+			1023: {
+				perView: perView - 2 || 1.2,
+				gap: 20,
+			},
+			767: {
+				perView: perView - 2 || 1.2,
+				gap: 20,
+			},
+			639: {
+				perView: 1.2,
+				gap: 20,
+			},
+		},
+	});
 
-      default:
-        return Card4;
-    }
-  };
+	useEffect(() => {
+		if (!MY_GLIDE) return;
+		MY_GLIDE.mount();
+	}, [MY_GLIDE]);
 
-  const renderHeading = () => {
-    if (sliderStype === "style1") {
-      return (
-        <Heading desc={subHeading} hasNextPrev>
-          {heading}
-        </Heading>
-      );
-    } else {
-      return (
-        <Heading desc={subHeading} isCenter>
-          {heading}
-        </Heading>
-      );
-    }
-  };
+	const getPostComponent = () => {
+		switch (postCardName) {
+			// case "card4":
+			// 	return Card4;
+			// case "card7":
+			// 	return Card7;
+			// case "card9":
+			// 	return Card9;
+			// case "card10":
+			// 	return Card10;
+			// case "card10V2":
+			// 	return Card10V2;
+			// case "card11":
+			// 	return Card11;
 
-  const CardName = getPostComponent();
-  return (
-    <div className={`nc-SectionSliderPosts ${className}`}>
-      <div className={`${UNIQUE_CLASS}`}>
-        {renderHeading()}
-        <div className="glide__track" data-glide-el="track">
-          <ul className="glide__slides">
-            {posts.map((item, index) => (
-              <li
-                key={index}
-                className={`glide__slide h-auto  ${
-                  sliderStype === "style2" ? "pb-12 xl:pb-16" : ""
-                }`}
-              >
-                <CardName post={item} />
-              </li>
-            ))}
-          </ul>
-        </div>
-        {sliderStype === "style2" && (
-          <NextPrev
-            btnClassName="w-12 h-12"
-            containerClassName="justify-center"
-          />
-        )}
-      </div>
-    </div>
-  );
+			default:
+				// return Card4;
+				return Card11;
+		}
+	};
+
+	const renderHeading = () => {
+		if (sliderStype === "style1") {
+			return (
+				<Heading desc={subHeading} hasNextPrev>
+					{heading}
+				</Heading>
+			);
+		} else {
+			return (
+				<Heading desc={subHeading} isCenter>
+					{heading}
+				</Heading>
+			);
+		}
+	};
+
+	const CardName = getPostComponent();
+	return (
+		<div className={`nc-SectionSliderPosts ${className}`}>
+			<div className={`${UNIQUE_CLASS}`}>
+				{renderHeading()}
+				<div className="glide__track" data-glide-el="track">
+					<ul className="glide__slides">
+						{data &&
+							data?.features &&
+							data?.features.map((item, index) => (
+								<li key={index} className={`glide__slide h-auto  ${sliderStype === "style2" ? "pb-12 xl:pb-16" : ""}`}>
+									<CardName post={item} />
+								</li>
+							))}
+					</ul>
+				</div>
+				{sliderStype === "style2" && <NextPrev btnClassName="w-12 h-12" containerClassName="justify-center" />}
+			</div>
+		</div>
+	);
 };
 
 export default SectionSliderPosts;

@@ -7,6 +7,8 @@ import Navigation from "components/Navigation/Navigation";
 import DarkModeContainer from "containers/DarkModeContainer/DarkModeContainer";
 import { NAVIGATION_SHORT_DEMO } from "data/navigation";
 import React, { FC } from "react";
+import { t } from "utils/translation/fr";
+import { __ } from "utils/translation/translation";
 
 export interface MainNav2Props {}
 
@@ -19,7 +21,7 @@ const MainNav2: FC<MainNav2Props> = () => {
 
 					<div className="hidden sm:block flex-grow max-w-xs">
 						<form action="" method="POST" className="relative">
-							<Input type="search" placeholder="Search items" className="pr-10 w-full" sizeClass="h-[42px] pl-4 py-3" />
+							<Input type="search" placeholder="Chercher sur SOCIBA" className="pr-10 w-full" sizeClass="h-[42px] pl-4 py-3" />
 							<span className="absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500">
 								<svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<path
@@ -39,6 +41,8 @@ const MainNav2: FC<MainNav2Props> = () => {
 
 				<div className="flex-shrink-0 flex items-center justify-end text-neutral-700 dark:text-neutral-100 space-x-1">
 					<div className="hidden items-center xl:flex space-x-2">
+						<Navigation navigations={NAVIGATION_SHORT_DEMO} />
+
 						<div className="hidden sm:block h-10 border-l border-neutral-300 dark:border-neutral-6000"></div>
 						<DarkModeContainer />
 
@@ -47,24 +51,26 @@ const MainNav2: FC<MainNav2Props> = () => {
 						</ButtonSecondary>
 
 						<ButtonPrimary href={"/signup"} sizeClass="px-4 py-2 sm:px-5">
-							Create account
+							{__(t.rs_publish)}
 						</ButtonPrimary>
 					</div>
 
 					<div className="flex items-center space-x-1.5 xl:hidden">
 						<ButtonPrimary href={"/signup"} sizeClass="px-4 py-2 sm:px-5">
-							Create account
+							{__(t.rs_publish)}
 						</ButtonPrimary>
 						<MenuBar />
 					</div>
 				</div>
 			</div>
 
-			<div className="container pb-2 relative flex justify-between items-center ">
-				<div className="hidden sm:flex flex-shrink-0 items-center space-x-1.5">
-					<Navigation navigations={NAVIGATION_SHORT_DEMO} />
+			{false && (
+				<div className="container pb-2 relative flex justify-between items-center ">
+					<div className="hidden sm:flex flex-shrink-0 items-center space-x-1.5">
+						<Navigation navigations={NAVIGATION_SHORT_DEMO} />
+					</div>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 };

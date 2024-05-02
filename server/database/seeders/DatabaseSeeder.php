@@ -21,7 +21,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            SliderSeeder::class
+            SliderSeeder::class,
+
+            PropertyCategorySeeder::class,
+            PropertySeeder::class,
+            PropertyImagesSeeder::class,
         ]);
     }
 }

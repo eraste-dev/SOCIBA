@@ -58,15 +58,15 @@ const Home: React.FC = () => {
 			<div className="container relative">
 				{/* === SECTION HERO === */}
 				{/* className="pt-10 pb-16 md:py-16 lg:py-28" */}
-				<SectionHeroSlider images={[rightImg, rightImgTwo]} className="pb-16 " />
+				<SectionHeroSlider className="pb-16 " />
 
-				<SectionGridCategoryBox headingCenter={false} categoryCardType="card2" className="pb-16 lg:pb-28" categories={DEMO_CATEGORIES.filter((_, i) => i < 10)} />
+				<SectionGridCategoryBox headingCenter={false} categoryCardType="card2" className="pb-8 lg:pb-10" />
 
 				{/* === SECTION 8 === */}
-				<SectionSliderPosts className="py-16 lg:py-28" postCardName="card10" heading="Sea travel enthusiast" subHeading="Over 218 articles about sea travel" posts={POSTS.filter((_, i) => i < 8)} uniqueSliderClass="PageHomeDemo3" />
+				<SectionSliderPosts className="py-16 lg:py-28" postCardName="card11" heading="Top annonce" subHeading="" posts={POSTS.filter((_, i) => i < 8)} uniqueSliderClass="PageHomeDemo3" />
 
 				{/* === SECTION 1 === */}
-				<SectionAds className="py-16 lg:py-28" />
+				{/* <SectionAds className="py-16 lg:py-28" /> */}
 
 				{/* === SECTION 8 === */}
 				<SectionLatestPosts
@@ -74,8 +74,8 @@ const Home: React.FC = () => {
 					widgetPosts={DEMO_POSTS.filter((_, i) => i > 2 && i < 7)}
 					categories={DEMO_CATEGORIES.filter((_, i) => i > 2 && i < 8)}
 					tags={DEMO_CATEGORIES}
-					postCardName="card7"
-					gridClass="sm:grid-cols-2"
+					postCardName="card11"
+					gridClass="sm:grid-cols-2 lg:grid-cols-3"
 					className="pb-16 lg:pb-28"
 				/>
 			</div>
