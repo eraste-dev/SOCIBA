@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import PostCardSaveAction from "components/PostCardSaveAction/PostCardSaveAction";
 import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
-import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
+import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
 import PostCardLikeAndComment from "components/PostCardLikeAndComment/PostCardLikeAndComment";
 import PostCardMeta from "components/PostCardMeta/PostCardMeta";
 import PostFeaturedMedia from "components/PostFeaturedMedia/PostFeaturedMedia";
@@ -10,6 +10,7 @@ import { IProperty } from "app/properties/propertiy";
 import PostPropertyCardMetaV2 from "components/PostPropertyCardMeta/PostCardMetaV2";
 import { _f } from "utils/money-format";
 import Heading from "components/Heading/Heading";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 export interface Card11Props {
 	className?: string;
@@ -37,7 +38,9 @@ const Card11: FC<Card11Props> = ({ className = "h-full", post, hiddenAuthor = fa
 				</div>
 			</div>
 			<Link to={href} className="absolute inset-0"></Link>
-			<span className="absolute top-3 inset-x-3 z-10">{/* <CategoryBadgeList categories={categories} /> */}</span>
+			<span className="absolute top-3 inset-x-3 z-10">
+				<CategoryPropertyBadgeList category={category} />
+			</span>
 
 			<div className="p-4 flex flex-col flex-grow space-y-3">
 				{/* <Heading>{_f(price)}</Heading> */}
@@ -51,8 +54,8 @@ const Card11: FC<Card11Props> = ({ className = "h-full", post, hiddenAuthor = fa
 					{/* <PostCardLikeAndComment className="relative" postData={post} /> */}
 					{/* <PostCardSaveAction className="relative" postData={post} /> */}
 				</div>
-				<span className="text-xs text-neutral-500">
-					{/* icon location */}
+				<span className="text-xs text-neutral-500 flex justify-items-center ">
+					<FaMapMarkerAlt className="mr-1" />
 					{state}, {city}, {country}
 				</span>
 				<span className="text-xs text-neutral-500">{updated_at}</span>

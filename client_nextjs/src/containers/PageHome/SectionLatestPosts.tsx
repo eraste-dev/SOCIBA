@@ -21,6 +21,7 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { IProperty, PropertyAction } from "app/properties/propertiy";
 import { useSelector } from "react-redux";
 import { fetchAllProperties, fetchFeatureProperties } from "app/axios/api.action";
+import WidgetSort from "components/Widgets/WidgetSort/WidgetSort";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -67,7 +68,7 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 	}, [dispatch, fetchAllProperties, data, loading]);
 
 	const renderCard = (post: IProperty) => {
-    return <Card11 key={post.id} post={post} />;
+		return <Card11 key={post.id} post={post} />;
 
 		// switch (postCardName) {
 		// 	case "card3":
@@ -92,13 +93,13 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 	return (
 		<div className={`nc-SectionLatestPosts relative ${className}`}>
 			<div className="flex flex-col lg:flex-row">
-				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-2/5 lg:pl-10 xl:pl-0 xl:w-1/4 ">
-					<WidgetTags tags={tags} />
+				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
+					<WidgetSort />
 					<WidgetCategories categories={categories} />
 					<WidgetAuthors authors={authors} />
 					<WidgetPosts posts={widgetPosts} />
 				</div>
-				<div className="w-full lg:w-3/5 xl:w-3/4 xl:pl-14">
+				<div className="w-full lg:w-3/4 xl:w-5/6 xl:pl-14 lg:pl-7">
 					<Heading>{heading}</Heading>
 					<div className={`grid gap-6 md:gap-8 ${gridClass}`}>{data && data?.all && data?.all.map((post) => renderCard(post))}</div>
 					<div className="flex flex-col mt-12 md:mt-20 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-center sm:items-center">

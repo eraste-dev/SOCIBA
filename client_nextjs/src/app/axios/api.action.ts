@@ -5,6 +5,7 @@ import { serverEndpoints } from "./api.route";
 import { axiosRequest } from "./api";
 import { fetchCategoriesFailure, fetchCategoriesStart, fetchCategoriesSuccess } from "app/properties/propertiy-category";
 import {
+	IPropertyFilter,
 	fetchAllPropertiesFailure,
 	fetchAllPropertiesStart,
 	fetchAllPropertiesSuccess,
@@ -14,6 +15,8 @@ import {
 	fetchSinglePropertiesFailure,
 	fetchSinglePropertiesStart,
 	fetchSinglePropertiesSuccess,
+	setFiltersSuccess,
+	resetFiltersSuccess,
 } from "app/properties/propertiy";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
 
@@ -71,4 +74,12 @@ export const fetchSingleProperties = (query: IGetSearchPropertiesParams) => asyn
 	} catch (error: any) {
 		dispatch(fetchSinglePropertiesFailure(error.message));
 	}
+};
+
+export const setFilters = (filters: IPropertyFilter) => async (dispatch: AppDispatch) => {
+	dispatch(setFiltersSuccess(filters));
+};
+
+export const resetFilters = () => async (dispatch: AppDispatch) => {
+	dispatch(resetFiltersSuccess());
 };

@@ -43,18 +43,38 @@ export interface IProperty {
 	author: IUser;
 }
 
+export interface IPropertyFilter {
+	price_range?: { min: number; max: number };
+	sort?: "price_asc" | "price_desc" | "price_desc" | "rating_desc" | "rating_asc" | "featured" | "trending" | "latest";
+	posted_by?: number[] | "admin";
+	city?: string;
+	categories?: string[];
+	date?: "all" | "week" | "month" | "year";
+}
+
 export interface IStorePropertyData {
 	all?: IProperty[] | undefined;
 	features?: IProperty[] | undefined;
 	similars?: IProperty[] | undefined;
 	single?: IProperty | undefined;
+	filters?: IPropertyFilter;
 }
+
+export const defaultFilters: IPropertyFilter = {
+	price_range: { min: 0, max: 1000000 },
+	sort: "price_desc",
+	city: "",
+	categories: [],
+	date: "all",
+	posted_by: [],
+};
 
 const INITIAL_STORE_PROPERTY_DATA: IStorePropertyData = {
 	all: undefined,
 	features: undefined,
 	similars: undefined,
 	single: undefined,
+	filters: defaultFilters,
 };
 
 const initialState: IStoreDataState<IStorePropertyData | undefined> = {
@@ -122,6 +142,14 @@ export const PropertiesSlice = createSlice({
 			state.loading = false;
 			state.error = action.payload;
 		},
+
+		// FIlTERS
+		setFiltersSuccess: (state, action: PayloadAction<IPropertyFilter>) => {
+			state.data = { ...state.data, filters: { ...state.data?.filters, ...action.payload } };
+		},
+		resetFiltersSuccess: (state) => {
+			state.data = { ...state.data, filters: defaultFilters };
+		},
 	},
 });
 
@@ -135,6 +163,8 @@ export const {
 	fetchFeaturePropertiesStart,
 	fetchFeaturePropertiesSuccess,
 	fetchFeaturePropertiesFailure,
+	setFiltersSuccess,
+	resetFiltersSuccess,
 } = PropertiesSlice.actions;
 
 export const PropertyAction: IStoreAction<IStorePropertyData> = {
