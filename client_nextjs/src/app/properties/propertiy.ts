@@ -48,7 +48,7 @@ export interface IPropertyFilter {
 	sort?: "price_asc" | "price_desc" | "price_desc" | "rating_desc" | "rating_asc" | "featured" | "trending" | "latest";
 	posted_by?: number[] | "admin";
 	city?: string;
-	categories?: string[];
+	categories?: number[];
 	date?: "all" | "week" | "month" | "year";
 }
 

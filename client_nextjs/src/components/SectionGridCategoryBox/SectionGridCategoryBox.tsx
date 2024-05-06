@@ -1,11 +1,11 @@
 import { fetchCategories } from "app/axios/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { CategoryAction } from "app/properties/propertiy-category";
-import CardCategory1 from "components/CardCategory1/CardCategory1";
-import CardCategory2 from "components/CardCategory2/CardCategory2";
-import CardCategory3 from "components/CardCategory3/CardCategory3";
-import CardCategory4 from "components/CardCategory4/CardCategory4";
-import CardCategory5 from "components/CardCategory5/CardCategory5";
+import CardCategory1 from "components/Card/CardCategory1/CardCategory1";
+import CardCategory2 from "components/Card/CardCategory2/CardCategory2";
+import CardCategory3 from "components/Card/CardCategory3/CardCategory3";
+import CardCategory4 from "components/Card/CardCategory4/CardCategory4";
+import CardCategory5 from "components/Card/CardCategory5/CardCategory5";
 import Heading from "components/Heading/Heading";
 import { DEMO_CATEGORIES } from "data/taxonomies";
 import { TaxonomyType } from "data/types";
@@ -21,7 +21,12 @@ export interface SectionGridCategoryBoxProps {
 
 const DATA = DEMO_CATEGORIES.filter((_, i) => i < 10);
 
-const SectionGridCategoryBox: React.FC<SectionGridCategoryBoxProps> = ({ categories = DATA, categoryCardType = "card2", headingCenter = true, className = "" }) => {
+const SectionGridCategoryBox: React.FC<SectionGridCategoryBoxProps> = ({
+	categories = DATA,
+	categoryCardType = "card2",
+	headingCenter = true,
+	className = "",
+}) => {
 	const dispatch = useAppDispatch();
 	const data = useAppSelector(CategoryAction.data);
 	const loading = useSelector(CategoryAction.loading);
@@ -63,7 +68,7 @@ const SectionGridCategoryBox: React.FC<SectionGridCategoryBoxProps> = ({ categor
 				{" "}
 			</Heading>
 			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6 md:gap-8">
-				{data && data.map((item, i) => <CardComponentName index={i < 3 ? `#${i + 1}` : undefined} key={item.id} category={item} />)}
+				{data && data.slice(0, 8).map((item, i) => <CardComponentName index={i < 3 ? `#${i + 1}` : undefined} key={item.id} category={item} />)}
 			</div>
 		</div>
 	);

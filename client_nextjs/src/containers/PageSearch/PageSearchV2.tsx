@@ -16,10 +16,10 @@ import { DEMO_CATEGORIES } from "data/taxonomies";
 import BackgroundSection from "components/BackgroundSection/BackgroundSection";
 import SectionSliderNewAuthors from "components/SectionSliderNewAthors/SectionSliderNewAuthors";
 import { DEMO_AUTHORS } from "data/authors";
-import Card11 from "components/Card11/Card11";
-import CardCategory2 from "components/CardCategory2/CardCategory2";
+import Card11 from "components/Card/Card11/Card11";
+import CardCategory2 from "components/Card/CardCategory2/CardCategory2";
 import Tag from "components/Tag/Tag";
-import CardAuthorBox2 from "components/CardAuthorBox2/CardAuthorBox2";
+import CardAuthorBox2 from "components/Card/CardAuthorBox2/CardAuthorBox2";
 
 export interface PageSearchV2Props {
   className?: string;

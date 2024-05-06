@@ -2,11 +2,11 @@ import React, { FC, useEffect } from "react";
 import Heading from "components/Heading/Heading";
 import Glide from "@glidejs/glide";
 import { PostDataType, TaxonomyType } from "data/types";
-import CardCategory3 from "components/CardCategory3/CardCategory3";
-import CardCategory4 from "components/CardCategory4/CardCategory4";
-import CardCategory1 from "components/CardCategory1/CardCategory1";
-import CardCategory2 from "components/CardCategory2/CardCategory2";
-import CardCategory5 from "components/CardCategory5/CardCategory5";
+import CardCategory3 from "components/Card/CardCategory3/CardCategory3";
+import CardCategory4 from "components/Card/CardCategory4/CardCategory4";
+import CardCategory1 from "components/Card/CardCategory1/CardCategory1";
+import CardCategory2 from "components/Card/CardCategory2/CardCategory2";
+import CardCategory5 from "components/Card/CardCategory5/CardCategory5";
 import ncNanoId from "utils/ncNanoId";
 
 export interface SectionSliderNewCategoriesProps {

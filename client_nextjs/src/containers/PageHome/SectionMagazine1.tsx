@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
-import Card2 from "components/Card2/Card2";
+import Card2 from "components/Card/Card2/Card2";
 import { PostDataType } from "data/types";
-import Card6 from "components/Card6/Card6";
+import Card6 from "components/Card/Card6/Card6";
 import HeaderFilter from "./HeaderFilter";
 
 export interface SectionMagazine1Props {

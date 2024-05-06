@@ -14,7 +14,7 @@ class PropertyResource extends JsonResource
         // $created_by = User::findOrFail($this->created_by);
         return [
             'id'             => $this->id,
-            'href'           => "/property/{$this->id}",
+            'href'           => "/annonce/{$this->slug}",
             'category'       => $this->category(),
             'title'          => $this->title,
             'description'    => $this->description,

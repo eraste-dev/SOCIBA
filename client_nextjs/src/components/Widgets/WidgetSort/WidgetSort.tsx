@@ -1,13 +1,12 @@
 import React, { FC } from "react";
-import Tag from "components/Tag/Tag";
 import WidgetHeading1 from "components/WidgetHeading1/WidgetHeading1";
-import { TaxonomyType } from "data/types";
 import ProductSortOption from "./ProductSortOption";
-import { FaArrowAltCircleUp, FaArrowDown, FaArrowUp, FaUserAlt, FaUserAltSlash } from "react-icons/fa";
+import { FaArrowDown, FaArrowUp, FaUserAlt, FaUserAltSlash } from "react-icons/fa";
 import { sortIconSize } from "./WidgetSort.type";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { PropertyAction } from "app/properties/propertiy";
 import { setFilters } from "app/axios/api.action";
+import { route } from "routers/route";
 
 export interface WidgetSortProps {
 	className?: string;
@@ -37,7 +36,7 @@ const WidgetSort: FC<WidgetSortProps> = ({ className = "bg-neutral-100 dark:bg-n
 
 	return (
 		<div className={`nc-WidgetSort rounded-3xl overflow-hidden ${className}`} data-nc-id="WidgetSort">
-			<WidgetHeading1 title="Trier" viewAll={{ label: "View all", href: "/#" }} />
+			<WidgetHeading1 title="Trier" viewAll={{ label: "View all", href: route("annonces") }} />
 			<div className="flex flex-wrap p-4 xl:p-5">
 				{/* Option de tri par prix */}
 				<ProductSortOption

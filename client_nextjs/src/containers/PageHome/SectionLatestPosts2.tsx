@@ -1,11 +1,11 @@
 import React, { FC } from "react";
-import Card3 from "components/Card3/Card3";
+import Card3 from "components/Card/Card3/Card3";
 import Heading from "components/Heading/Heading";
 import WidgetTags from "components/WidgetTags/WidgetTags";
 import { DEMO_POSTS } from "data/posts";
 import { DEMO_CATEGORIES, DEMO_TAGS } from "data/taxonomies";
 import { PostAuthorType, PostDataType, TaxonomyType } from "data/types";
-import WidgetCategories from "components/WidgetCategories/WidgetCategories";
+import WidgetCategories from "components/Widgets/WidgetCategories/WidgetCategories";
 import { DEMO_AUTHORS } from "data/authors";
 import WidgetAuthors from "components/WidgetAuthors/WidgetAuthors";
 import WidgetPosts from "components/WidgetPosts/WidgetPosts";

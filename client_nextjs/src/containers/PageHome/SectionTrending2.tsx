@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import Card1 from "components/Card1/Card1";
+import Card1 from "components/Card/Card1/Card1";
 import Heading from "components/Heading/Heading";
 import { DEMO_POSTS } from "data/posts";
 import { PostDataType } from "data/types";

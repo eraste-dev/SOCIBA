@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePropertyCategoryRequest;
-use App\Http\Requests\UpdatePropertyCategoryRequest;
-use App\Http\Resources\PropertyCategoryResource;
 use App\Models\PropertyCategory;
 use App\Services\ResponseService;
 use Illuminate\Http\Request;

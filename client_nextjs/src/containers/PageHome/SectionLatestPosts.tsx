@@ -1,27 +1,28 @@
 import React, { FC, useEffect } from "react";
-import Card3 from "components/Card3/Card3";
+import Card3 from "components/Card/Card3/Card3";
 import Heading from "components/Heading/Heading";
 import WidgetTags from "components/WidgetTags/WidgetTags";
 import { DEMO_POSTS } from "data/posts";
 import { DEMO_CATEGORIES, DEMO_TAGS } from "data/taxonomies";
 import { PostAuthorType, PostDataType, TaxonomyType } from "data/types";
-import WidgetCategories from "components/WidgetCategories/WidgetCategories";
+import WidgetCategories from "components/Widgets/WidgetCategories/WidgetCategories";
 import { DEMO_AUTHORS } from "data/authors";
 import WidgetAuthors from "components/WidgetAuthors/WidgetAuthors";
 import WidgetPosts from "components/WidgetPosts/WidgetPosts";
 import Pagination from "components/Pagination/Pagination";
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import Card4 from "components/Card4/Card4";
-import Card7 from "components/Card7/Card7";
-import Card9 from "components/Card9/Card9";
+import Card4 from "components/Card/Card4/Card4";
+import Card7 from "components/Card/Card7/Card7";
+import Card9 from "components/Card/Card9/Card9";
 import Card10 from "components/Card10/Card10";
-import Card11 from "components/Card11/Card11";
-import Card14 from "components/Card14/Card14";
+import Card11 from "components/Card/Card11/Card11";
+import Card14 from "components/Card/Card14/Card14";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { IProperty, PropertyAction } from "app/properties/propertiy";
 import { useSelector } from "react-redux";
 import { fetchAllProperties, fetchFeatureProperties } from "app/axios/api.action";
 import WidgetSort from "components/Widgets/WidgetSort/WidgetSort";
+import WidgePrice from "components/Widgets/WidgePrice/WidgePrice";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -95,9 +96,8 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 			<div className="flex flex-col lg:flex-row">
 				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
 					<WidgetSort />
-					<WidgetCategories categories={categories} />
-					<WidgetAuthors authors={authors} />
-					<WidgetPosts posts={widgetPosts} />
+					<WidgetCategories />
+					<WidgePrice />
 				</div>
 				<div className="w-full lg:w-3/4 xl:w-5/6 xl:pl-14 lg:pl-7">
 					<Heading>{heading}</Heading>

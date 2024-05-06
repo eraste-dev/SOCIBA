@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import WidgetAuthors from "components/WidgetAuthors/WidgetAuthors";
-import WidgetCategories from "components/WidgetCategories/WidgetCategories";
+import WidgetCategories from "components/Widgets/WidgetCategories/WidgetCategories";
 import WidgetPosts from "components/WidgetPosts/WidgetPosts";
 import WidgetTags from "components/WidgetTags/WidgetTags";
 import { DEMO_AUTHORS } from "data/authors";

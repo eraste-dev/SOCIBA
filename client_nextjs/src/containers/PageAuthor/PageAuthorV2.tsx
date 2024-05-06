@@ -12,7 +12,7 @@ import ArchiveFilterListBox from "components/ArchiveFilterListBox/ArchiveFilterL
 import HeadBackgroundCommon from "components/HeadBackgroundCommon/HeadBackgroundCommon";
 import { Helmet } from "react-helmet";
 import SectionSubscribe2 from "components/SectionSubscribe2/SectionSubscribe2";
-import Card11 from "components/Card11/Card11";
+import Card11 from "components/Card/Card11/Card11";
 import BackgroundSection from "components/BackgroundSection/BackgroundSection";
 import SectionGridCategoryBox from "components/SectionGridCategoryBox/SectionGridCategoryBox";
 import { DEMO_CATEGORIES } from "data/taxonomies";

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Property>
@@ -27,6 +28,8 @@ class PropertyFactory extends Factory
         return [
             'category_id' => $this->faker->numberBetween(1, 5),
             'title' => $this->faker->sentence,
+            'title' => ($this->faker->sentence),
+            'slug' => Str::slug($this->faker->sentence),
             'description' => $this->faker->paragraph,
             'address' => $this->faker->address,
             'client_address' => $this->faker->address,

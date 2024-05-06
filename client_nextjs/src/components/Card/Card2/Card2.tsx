@@ -5,7 +5,7 @@ import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
 import SocialsShare from "components/SocialsShare/SocialsShare";
 import PostCardLikeAndComment from "components/PostCardLikeAndComment/PostCardLikeAndComment";
-import CardAuthor2 from "components/CardAuthor2/CardAuthor2";
+import CardAuthor2 from "components/Card/CardAuthor2/CardAuthor2";
 import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
 import PostTypeFeaturedIcon from "components/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
 

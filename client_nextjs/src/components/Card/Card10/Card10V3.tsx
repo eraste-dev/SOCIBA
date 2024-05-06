@@ -5,7 +5,7 @@ import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
 import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
 import PostFeaturedMedia from "components/PostFeaturedMedia/PostFeaturedMedia";
-import CardAuthor2 from "components/CardAuthor2/CardAuthor2";
+import CardAuthor2 from "components/Card/CardAuthor2/CardAuthor2";
 
 export interface Card10V3Props {
   className?: string;

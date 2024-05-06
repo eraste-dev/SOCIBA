@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('property_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->string('slug');
+            $table->string('icon')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

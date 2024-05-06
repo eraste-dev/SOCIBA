@@ -6,7 +6,7 @@ import PostCardLikeAndComment from "components/PostCardLikeAndComment/PostCardLi
 import { PostDataType } from "data/types";
 import React, { FC, Fragment } from "react";
 import { Link } from "react-router-dom";
-import CardAuthor2 from "components/CardAuthor2/CardAuthor2";
+import CardAuthor2 from "components/Card/CardAuthor2/CardAuthor2";
 import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
 
 export interface CardLarge1Props {

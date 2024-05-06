@@ -40,6 +40,7 @@ import isSafariBrowser from "utils/isSafariBrowser";
 import PageHomeDemo7 from "containers/PageHome/PageHomeDemo7";
 import PageSingleTemp4Sidebar from "containers/PageSingle/PageSingleTemp4Sidebar";
 import Home from "containers/PageHome/Home";
+import Properties from "components/Products/Properties";
 
 export const pages: Page[] = [
 	{ path: "/", exact: true, component: PageHome },
@@ -113,7 +114,8 @@ export const pages: Page[] = [
 
 	// SOCIBA pages
 	{ path: "/sociba", component: Home },
-	//
+	{ path: "/annonces", component: Properties },
+	{ path: "/annonce/:slug", component: PageSingleGallery },
 ];
 
 const Routes = () => {

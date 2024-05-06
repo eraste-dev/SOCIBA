@@ -1,20 +1,14 @@
-import React, { FC, useEffect } from "react";
+import { FC, useEffect } from "react";
 import Heading from "components/Heading/Heading";
-import Card4 from "components/Card4/Card4";
-import Card7 from "components/Card7/Card7";
 import Glide from "@glidejs/glide";
 import { PostDataType } from "data/types";
-import Card9 from "components/Card9/Card9";
 import NextPrev from "components/NextPrev/NextPrev";
-import Card10 from "components/Card10/Card10";
-import Card11 from "components/Card11/Card11";
-import Card10V2 from "components/Card10/Card10V2";
+import Card11 from "components/Card/Card11/Card11";
 import ncNanoId from "utils/ncNanoId";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { PropertyAction } from "app/properties/propertiy";
 import { useSelector } from "react-redux";
 import { fetchFeatureProperties } from "app/axios/api.action";
-import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 
 export interface SectionSliderPostsProps {
 	className?: string;

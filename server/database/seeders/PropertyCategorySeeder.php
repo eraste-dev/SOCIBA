@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\PropertyCategory;
+use Database\Factories\PropertyCategoryFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -33,7 +34,24 @@ class PropertyCategorySeeder extends Seeder
                 'icon' => 'fa fa-envelope',
                 'description' => ''
             ],
-            // Ajoutez d'autres catégories principales si nécessaire
+            [
+                'name' => 'Service',
+                'slug' => 'Service',
+                'icon' => 'fa fa-envelope',
+                'description' => ''
+            ],
+            [
+                'name' => 'Terrain',
+                'slug' => 'Terrain',
+                'icon' => 'fa fa-envelope',
+                'description' => ''
+            ],
+            [
+                'name' => 'Résidence',
+                'slug' => 'Résidence',
+                'icon' => 'fa fa-envelope',
+                'description' => ''
+            ],
         ];
 
         // Insérer les catégories principales
@@ -65,5 +83,7 @@ class PropertyCategorySeeder extends Seeder
                 }
             }
         }
+
+        PropertyCategoryFactory::new()->count(150)->create();
     }
 }

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import { PostDataType } from "data/types";
-import CardAuthor2 from "components/CardAuthor2/CardAuthor2";
+import CardAuthor2 from "components/Card/CardAuthor2/CardAuthor2";
 import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
 
 export interface Card5Props {

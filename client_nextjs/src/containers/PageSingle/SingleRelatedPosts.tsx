@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import Heading from "components/Heading/Heading";
 import { PostDataType } from "data/types";
-import Card11 from "components/Card11/Card11";
-import Card9 from "components/Card9/Card9";
+import Card11 from "components/Card/Card11/Card11";
+import Card9 from "components/Card/Card9/Card9";
 import { DEMO_POSTS } from "data/posts";
 
 export interface SingleRelatedPostsProps {

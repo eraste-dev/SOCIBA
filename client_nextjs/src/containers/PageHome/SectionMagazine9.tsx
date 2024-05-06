@@ -1,5 +1,5 @@
-import Card15Podcast from "components/Card15Podcast/Card15Podcast";
-import Card9 from "components/Card9/Card9";
+import Card15Podcast from "components/Card/Card15Podcast/Card15Podcast";
+import Card9 from "components/Card/Card9/Card9";
 import Heading from "components/Heading/Heading";
 import { DEMO_POSTS_AUDIO } from "data/posts";
 import { PostDataType } from "data/types";

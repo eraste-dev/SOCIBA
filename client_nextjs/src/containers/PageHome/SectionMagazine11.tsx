@@ -1,5 +1,5 @@
 import Badge from "components/Badge/Badge";
-import Card18 from "components/Card18/Card18";
+import Card18 from "components/Card/Card18/Card18";
 import Heading from "components/Heading/Heading";
 import { DEMO_POSTS_NEWS } from "data/posts";
 import { DEMO_CATEGORIES } from "data/taxonomies";
