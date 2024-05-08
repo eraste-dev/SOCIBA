@@ -48,7 +48,11 @@ const Pagination: FC<PaginationProps> = ({ className = "" }) => {
 		);
 	};
 
-	return <nav className={`nc-Pagination inline-flex space-x-1 text-base font-medium ${className}`}>{DEMO_PAGINATION.map(renderItem)}</nav>;
+	return (
+		<div className="nc-Pagination flex space-x-1">
+			<nav className={`nc-Pagination inline-flex space-x-1 text-base font-medium ${className}`}>{DEMO_PAGINATION.map(renderItem)}</nav>
+		</div>
+	);
 };
 
 export default Pagination;

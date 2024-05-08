@@ -5,6 +5,12 @@ export interface CustomLink {
   targetBlank?: boolean;
 }
 
+export interface IPaginationLink {
+  label: string;
+  href: string;
+  targetBlank?: boolean;
+}
+
 //  ##########  PostDataType ######## //
 export interface TaxonomyType {
   id: string | number;

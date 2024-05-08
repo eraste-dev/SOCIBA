@@ -11,10 +11,11 @@ import { PostDataType } from "data/types";
 import PostCardLikeAction, {
   PostCardLikeActionProps,
 } from "components/PostCardLikeAction/PostCardLikeAction";
+import { IProperty } from "app/properties/propertiy";
 
 export interface PostCardLikeContainerProps
   extends Omit<PostCardLikeActionProps, "isLiked" | "likeCount"> {
-  like: PostDataType["like"];
+  like: IProperty["isLiked"];
 }
 
 const PostCardLikeContainer: FC<PostCardLikeContainerProps> = ({
@@ -31,7 +32,7 @@ const PostCardLikeContainer: FC<PostCardLikeContainerProps> = ({
     if (recentLikeds.includes(postId)) {
       return true;
     }
-    if (like.isLiked && !recentRemoveds.includes(postId)) {
+    if (like && !recentRemoveds.includes(postId)) {
       return true;
     }
     return false;
@@ -39,13 +40,14 @@ const PostCardLikeContainer: FC<PostCardLikeContainerProps> = ({
 
   const getLikeCount = (): number => {
     // Recent Liked
-    if (recentLikeds.includes(postId)) {
-      return like.count + 1;
-    }
-    if (like.isLiked && recentRemoveds.includes(postId)) {
-      return like.count - 1;
-    }
-    return like.count;
+    // if (recentLikeds.includes(postId)) {
+    //   return like.count + 1;
+    // }
+    // if (like.isLiked && recentRemoveds.includes(postId)) {
+    //   return like.count - 1;
+    // }
+    // return like.count;
+    return 55;
   };
 
   const handleClickLike = () => {

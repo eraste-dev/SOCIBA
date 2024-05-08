@@ -1,16 +1,13 @@
-import React, { FC, useState } from "react";
-import PostCardSaveAction from "components/PostCardSaveAction/PostCardSaveAction";
-import { PostDataType } from "data/types";
-import { Link } from "react-router-dom";
+import { FC, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
-import PostCardLikeAndComment from "components/PostCardLikeAndComment/PostCardLikeAndComment";
-import PostCardMeta from "components/PostCardMeta/PostCardMeta";
 import PostFeaturedMedia from "components/PostFeaturedMedia/PostFeaturedMedia";
 import { IProperty } from "app/properties/propertiy";
 import PostPropertyCardMetaV2 from "components/PostPropertyCardMeta/PostCardMetaV2";
 import { _f } from "utils/money-format";
-import Heading from "components/Heading/Heading";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { setSingleProperties } from "app/axios/api.action";
+import { useAppDispatch } from "app/hooks";
 
 export interface Card11Props {
 	className?: string;
@@ -21,8 +18,14 @@ export interface Card11Props {
 
 const Card11: FC<Card11Props> = ({ className = "h-full", post, hiddenAuthor = false, ratio = "aspect-w-4 aspect-h-3" }) => {
 	const { title, href, price, category, updated_at, state, city, country } = post;
-
 	const [isHover, setIsHover] = useState(false);
+	const dispatch = useAppDispatch();
+	const history = useHistory();
+
+	const handleSingleClick = () => {
+		dispatch(setSingleProperties(post));
+		history.push(post.href);
+	};
 
 	return (
 		<div
@@ -37,7 +40,8 @@ const Card11: FC<Card11Props> = ({ className = "h-full", post, hiddenAuthor = fa
 					<PostFeaturedMedia post={post} isHover={isHover} />
 				</div>
 			</div>
-			<Link to={href} className="absolute inset-0"></Link>
+			{/* to={href} */}
+			<Link onClick={handleSingleClick} to={href} className="absolute inset-0"></Link>
 			<span className="absolute top-3 inset-x-3 z-10">
 				<CategoryPropertyBadgeList category={category} />
 			</span>
@@ -46,7 +50,8 @@ const Card11: FC<Card11Props> = ({ className = "h-full", post, hiddenAuthor = fa
 				{/* <Heading>{_f(price)}</Heading> */}
 				<h1 className="nc-card-title block text-xl font-bold text-neutral-900 dark:text-neutral-100 text-primary-900 ">{_f(price)}</h1>
 				<h2 className="nc-card-title block text-base font-semibold text-neutral-900 dark:text-neutral-100 ">
-					<Link to={href} className="line-clamp-2" title={title}>
+					{/* to={href} title={title} */}
+					<Link onClick={handleSingleClick} to={href} title={title} className="line-clamp-2">
 						{title}
 					</Link>
 				</h2>

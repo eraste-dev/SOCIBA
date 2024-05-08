@@ -5,53 +5,51 @@ import { SinglePageType } from "./PageSingleTemp3Sidebar";
 import PostMeta2 from "components/PostMeta2/PostMeta2";
 import SingleMetaAction2 from "./SingleMetaAction2";
 import { Helmet } from "react-helmet";
+import { IProperty } from "app/properties/propertiy";
+import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
 
 export interface SingleHeaderProps {
-  pageData: SinglePageType;
-  hiddenDesc?: boolean;
-  metaActionStyle?: "style1" | "style2";
-  titleMainClass?: string;
-  className?: string;
+	pageData?: IProperty;
+	hiddenDesc?: boolean;
+	metaActionStyle?: "style1" | "style2";
+	titleMainClass?: string;
+	className?: string;
 }
 
-const SingleHeader: FC<SingleHeaderProps> = ({
-  pageData,
-  titleMainClass,
-  hiddenDesc = false,
-  className = "",
-  metaActionStyle = "style1",
-}) => {
-  const { categories, desc, title } = pageData;
+const SingleHeader: FC<SingleHeaderProps> = ({ pageData, titleMainClass, hiddenDesc = false, className = "", metaActionStyle = "style1" }) => {
+	const { category, description, title } = pageData as any;
 
-  return (
-    <>
-      <Helmet>
-        <title>Single || Blog Magazine React Template</title>
-      </Helmet>
-      <div className={`nc-SingleHeader ${className}`}>
-        <div className="space-y-5">
-          <CategoryBadgeList itemClass="!px-3" categories={categories} />
-          <SingleTitle mainClass={titleMainClass} title={title} />
-          {!!desc && !hiddenDesc && (
-            <span className="block text-base text-neutral-500 md:text-lg dark:text-neutral-400 pb-1">
-              {desc}
-            </span>
-          )}
-          <div className="w-full border-b border-neutral-100 dark:border-neutral-800"></div>
-          <div className="flex flex-col sm:flex-row justify-between sm:items-end space-y-5 sm:space-y-0 sm:space-x-5">
-            <PostMeta2
-              size="large"
-              className="leading-none flex-shrink-0"
-              meta={pageData}
-              hiddenCategories
-              avatarRounded="rounded-full shadow-inner"
-            />
-            <SingleMetaAction2 meta={pageData} />
-          </div>
-        </div>
-      </div>
-    </>
-  );
+	return (
+		<>
+			<Helmet>
+				<title>Single</title>
+			</Helmet>
+			<div className={`nc-SingleHeader ${className}`}>
+				<div className="space-y-5">
+					{category && <CategoryPropertyBadgeList category={category} />}
+
+					{pageData && (
+						<div className="flex flex-col sm:flex-row justify-between sm:items-end space-y-5 sm:space-y-0 sm:space-x-5">
+							<PostMeta2
+								size="large"
+								className="leading-none flex-shrink-0"
+								meta={pageData}
+								hiddenCategories
+								avatarRounded="rounded-full shadow-inner"
+							/>
+							<SingleMetaAction2 meta={pageData} />
+						</div>
+					)}
+
+					<div className="w-full border-b border-neutral-100 dark:border-neutral-800"></div>
+					<SingleTitle mainClass={titleMainClass} title={title} />
+					{!!description && !hiddenDesc && (
+						<span className="block text-base text-neutral-500 md:text-lg dark:text-neutral-400 pb-1">{description}</span>
+					)}
+				</div>
+			</div>
+		</>
+	);
 };
 
 export default SingleHeader;

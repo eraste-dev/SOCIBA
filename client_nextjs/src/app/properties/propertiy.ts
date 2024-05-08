@@ -41,6 +41,9 @@ export interface IProperty {
 	created_at: Date;
 	updated_at: Date;
 	author: IUser;
+	isLiked: boolean;
+	like: number;
+	commentCount: number;
 }
 
 export interface IPropertyFilter {
@@ -93,7 +96,7 @@ export const PropertiesSlice = createSlice({
 		fetchAllPropertiesStart: (state) => {
 			state.loading = true;
 			state.error = null;
-			state.data = { ...state.data, all: [] };
+			state.data = { ...state.data, all: [], single: undefined };
 			state.success = false;
 			state.message = "";
 		},
@@ -143,12 +146,48 @@ export const PropertiesSlice = createSlice({
 			state.error = action.payload;
 		},
 
+		// SET SINGLE
+		setSinglePropertiesStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.data = { ...state.data, single: undefined };
+			state.success = false;
+			state.message = "";
+		},
+		setSinglePropertiesSuccess: (state, action: PayloadAction<IProperty>) => {
+			state.loading = false;
+			state.error = null;
+			state.data = { ...state.data, single: action.payload };
+		},
+		setSinglePropertiesFailure: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
+
 		// FIlTERS
 		setFiltersSuccess: (state, action: PayloadAction<IPropertyFilter>) => {
 			state.data = { ...state.data, filters: { ...state.data?.filters, ...action.payload } };
 		},
 		resetFiltersSuccess: (state) => {
 			state.data = { ...state.data, filters: defaultFilters };
+		},
+
+		// SIMILAR
+		fetchSimilars: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.data = { ...state.data, similars: [] };
+			state.success = false;
+			state.message = "";
+		},
+		fetchSimilarsSuccess: (state, action: PayloadAction<IProperty[]>) => {
+			state.loading = false;
+			state.error = null;
+			state.data = { ...state.data, similars: action.payload };
+		},
+		fetchSimilarsFailure: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = action.payload;
 		},
 	},
 });
@@ -160,9 +199,15 @@ export const {
 	fetchSinglePropertiesStart,
 	fetchSinglePropertiesSuccess,
 	fetchSinglePropertiesFailure,
+	setSinglePropertiesStart,
+	setSinglePropertiesSuccess,
+	setSinglePropertiesFailure,
 	fetchFeaturePropertiesStart,
 	fetchFeaturePropertiesSuccess,
 	fetchFeaturePropertiesFailure,
+	fetchSimilars,
+	fetchSimilarsSuccess,
+	fetchSimilarsFailure,
 	setFiltersSuccess,
 	resetFiltersSuccess,
 } = PropertiesSlice.actions;

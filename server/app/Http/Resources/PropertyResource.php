@@ -41,6 +41,9 @@ class PropertyResource extends JsonResource
             'created_at'     => Carbon::parse($this->created_at)->format('d/m/Y H:i'),
             'updated_by'     => $this->updated_by,
             'updated_at'     => Carbon::parse($this->updated_at)->format('d/m/Y H:i'),
+            "like"           => 5, //$this->commentCount()
+            "commentCount"   => 15, // $this->commentCount()
+            "isLiked"        => false,
             'author'         => [
                 'name' =>  'Laurent Dupont',
                 'href' => "/user",

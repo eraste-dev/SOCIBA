@@ -28,7 +28,6 @@ import PageAuthorV2 from "containers/PageAuthor/PageAuthorV2";
 import PageHomeDemo4 from "containers/PageHome/PageHomeDemo4";
 import PageSearchV2 from "containers/PageSearch/PageSearchV2";
 import MediaRunningContainer from "containers/MediaRunningContainer/MediaRunningContainer";
-import PageSingleGallery from "containers/PageSingleGallery/PageSingleGallery";
 import PageSingleAudio from "containers/PageSingleAudio/PageSingleAudio";
 import PageSingleVideo from "containers/PageSingleVideo/PageSingleVideo";
 import PageArchiveVideo from "containers/PageArchive/PageArchiveVideo";
@@ -40,11 +39,12 @@ import isSafariBrowser from "utils/isSafariBrowser";
 import PageHomeDemo7 from "containers/PageHome/PageHomeDemo7";
 import PageSingleTemp4Sidebar from "containers/PageSingle/PageSingleTemp4Sidebar";
 import Home from "containers/PageHome/Home";
-import Properties from "components/Products/Properties";
+import Single from "containers/Product/Single/Single";
+import ListProduct from "containers/Product/List";
 
 export const pages: Page[] = [
-	{ path: "/", exact: true, component: PageHome },
-	{ path: "/#", exact: true, component: PageHome },
+	{ path: "/", exact: true, component: Home },
+	{ path: "/#", exact: true, component: Home },
 	//
 	{ path: "/home-header-style2", exact: true, component: PageHome },
 	{ path: "/home-header-style2-logedin", exact: true, component: PageHome },
@@ -83,7 +83,7 @@ export const pages: Page[] = [
 	},
 	{
 		path: "/single-gallery/:slug",
-		component: PageSingleGallery,
+		component: Single,
 	},
 	{
 		path: "/single-audio/:slug",
@@ -114,8 +114,8 @@ export const pages: Page[] = [
 
 	// SOCIBA pages
 	{ path: "/sociba", component: Home },
-	{ path: "/annonces", component: Properties },
-	{ path: "/annonce/:slug", component: PageSingleGallery },
+	{ path: "/annonces", component: ListProduct },
+	{ path: "/annonce/:slug", component: Single },
 ];
 
 const Routes = () => {

@@ -1,26 +1,16 @@
-import React, { FC, useEffect } from "react";
-import Card3 from "components/Card/Card3/Card3";
+import { FC, useEffect } from "react";
 import Heading from "components/Heading/Heading";
-import WidgetTags from "components/WidgetTags/WidgetTags";
 import { DEMO_POSTS } from "data/posts";
 import { DEMO_CATEGORIES, DEMO_TAGS } from "data/taxonomies";
 import { PostAuthorType, PostDataType, TaxonomyType } from "data/types";
 import WidgetCategories from "components/Widgets/WidgetCategories/WidgetCategories";
 import { DEMO_AUTHORS } from "data/authors";
-import WidgetAuthors from "components/WidgetAuthors/WidgetAuthors";
-import WidgetPosts from "components/WidgetPosts/WidgetPosts";
 import Pagination from "components/Pagination/Pagination";
-import ButtonPrimary from "components/Button/ButtonPrimary";
-import Card4 from "components/Card/Card4/Card4";
-import Card7 from "components/Card/Card7/Card7";
-import Card9 from "components/Card/Card9/Card9";
-import Card10 from "components/Card10/Card10";
 import Card11 from "components/Card/Card11/Card11";
-import Card14 from "components/Card/Card14/Card14";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { IProperty, PropertyAction } from "app/properties/propertiy";
 import { useSelector } from "react-redux";
-import { fetchAllProperties, fetchFeatureProperties } from "app/axios/api.action";
+import { fetchAllProperties } from "app/axios/api.action";
 import WidgetSort from "components/Widgets/WidgetSort/WidgetSort";
 import WidgePrice from "components/Widgets/WidgePrice/WidgePrice";
 

@@ -4,13 +4,14 @@ export interface IGetQueryParams {
 
 export interface IGetSearchPropertiesParams {
 	id?: number;
+	slug?: string;
 	category?: number;
 	categories?: number[];
 	top?: boolean;
 	orderBy?: "desc" | "asc";
 	offset?: number;
 	range?: { min: number; max: number };
-	limit: number;
+	limit?: number;
 }
 
 export class QueryBuilder {

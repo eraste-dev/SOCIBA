@@ -18,6 +18,7 @@ class PropertyController extends Controller
     {
         $payload = [
             'id'         => $request->id ?? null,
+            'slug'       => $request->slug ?? null,
             'category'   => $request->category ?? null,
             'categories' => $request->categories ?? null,
             'top_seed'   => $request->top ?? false,

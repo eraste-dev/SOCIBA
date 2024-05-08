@@ -8,6 +8,7 @@ import { useAppDispatch } from "app/hooks";
 import { changeCurrentPage } from "app/pages/pages";
 import { Sidebar } from "./Sidebar";
 import SingleHeader from "./SingleHeader";
+import { IProperty } from "app/properties/propertiy";
 
 export interface PageSingleTemp3SidebarProps {
   className?: string;
@@ -17,6 +18,7 @@ export interface SinglePageType extends PostDataType {
   tags: TaxonomyType[];
   content: string | ReactNode;
   comments: CommentType[];
+  post?: IProperty
 }
 
 const PageSingleTemp3Sidebar: FC<PageSingleTemp3SidebarProps> = ({

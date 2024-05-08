@@ -17,6 +17,10 @@ import {
 	fetchSinglePropertiesSuccess,
 	setFiltersSuccess,
 	resetFiltersSuccess,
+	IProperty,
+	setSinglePropertiesStart,
+	setSinglePropertiesSuccess,
+	setSinglePropertiesFailure,
 } from "app/properties/propertiy";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
 
@@ -73,6 +77,16 @@ export const fetchSingleProperties = (query: IGetSearchPropertiesParams) => asyn
 		dispatch(fetchSinglePropertiesSuccess(response.data));
 	} catch (error: any) {
 		dispatch(fetchSinglePropertiesFailure(error.message));
+	}
+};
+
+export const setSingleProperties = (product: IProperty) => async (dispatch: AppDispatch) => {
+	dispatch(setSinglePropertiesStart());
+
+	try {
+		dispatch(setSinglePropertiesSuccess(product));
+	} catch (error: any) {
+		dispatch(setSinglePropertiesFailure("Impossible de définir les propriétés"));
 	}
 };
 

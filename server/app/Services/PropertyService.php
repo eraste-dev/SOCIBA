@@ -21,6 +21,14 @@ class PropertyService
         // Filtre par ID si spécifié
         if ($payload['id']) {
             $query->where('id', $payload['id']);
+            $single = $query->firstOrFail();
+            return new PropertyResource($single);
+        }
+
+        if ($payload['slug']) {
+            $query->where('slug', $payload['slug']);
+            $single = $query->firstOrFail();
+            return new PropertyResource($single);
         }
 
         // Filtre par catégorie si spécifiée

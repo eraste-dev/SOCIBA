@@ -8,7 +8,7 @@ import SectionLatestPosts from "containers/PageHome/SectionLatestPosts";
 // DEMO DATA
 const POSTS = DEMO_POSTS;
 
-const Properties: React.FC = () => {
+const ListProduct: React.FC = () => {
 	useEffect(() => {
 		const $body = document.querySelector("body");
 		if ($body) {
@@ -47,4 +47,4 @@ const Properties: React.FC = () => {
 	);
 };
 
-export default Properties;
+export default ListProduct;
