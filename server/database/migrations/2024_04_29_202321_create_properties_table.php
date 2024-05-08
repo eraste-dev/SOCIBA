@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('slug')->nullable(); // ->unique()
             $table->longText('description')->nullable();
+            $table->longText('content')->nullable();
             $table->string('address')->nullable();
+            $table->string('location')->nullable();
             $table->string('client_address')->nullable();
             $table->string('property_type')->nullable();
             $table->string('price')->nullable();

@@ -7,6 +7,7 @@ import SingleMetaAction2 from "./SingleMetaAction2";
 import { Helmet } from "react-helmet";
 import { IProperty } from "app/properties/propertiy";
 import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 export interface SingleHeaderProps {
 	pageData?: IProperty;
@@ -17,7 +18,7 @@ export interface SingleHeaderProps {
 }
 
 const SingleHeader: FC<SingleHeaderProps> = ({ pageData, titleMainClass, hiddenDesc = false, className = "", metaActionStyle = "style1" }) => {
-	const { category, description, title } = pageData as any;
+	const { category, description, title, location } = pageData as any;
 
 	return (
 		<>
@@ -43,6 +44,12 @@ const SingleHeader: FC<SingleHeaderProps> = ({ pageData, titleMainClass, hiddenD
 
 					<div className="w-full border-b border-neutral-100 dark:border-neutral-800"></div>
 					<SingleTitle mainClass={titleMainClass} title={title} />
+
+					<div className="flex items-center space-x-3">
+						<FaMapMarkerAlt />
+						<h6 className="text-base text-neutral-500 md:text-lg dark:text-neutral-400">{location}</h6>
+					</div>
+
 					{!!description && !hiddenDesc && (
 						<span className="block text-base text-neutral-500 md:text-lg dark:text-neutral-400 pb-1">{description}</span>
 					)}

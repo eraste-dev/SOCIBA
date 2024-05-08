@@ -7,6 +7,7 @@ import mediaRunningReducer from "./mediaRunning/mediaRunning";
 import sliderReducer from "./sliders/sliders";
 import propertyCategoryReducer from "./properties/propertiy-category";
 import propertyReducer from "./properties/propertiy";
+import authReducer from "./auth/auth";
 
 const rootReducers = {
 	bookmark: bookmarkReducer,
@@ -19,6 +20,7 @@ const rootReducers = {
 	sliders: sliderReducer,
 	propertyCategories: propertyCategoryReducer,
 	properties: propertyReducer,
+	auth: authReducer,
 };
 
 export default rootReducers;

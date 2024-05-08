@@ -15,6 +15,7 @@ class Property extends Model
         'title',
         'slug',
         'description',
+        'content',
         'address',
         'client_address',
         'price',

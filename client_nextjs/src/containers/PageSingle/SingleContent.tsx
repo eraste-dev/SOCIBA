@@ -40,8 +40,7 @@ const SingleContent: FC<SingleContentProps> = ({ data }) => {
 			{/* ENTRY CONTENT */}
 			<div id="single-entry-content" className="prose prose-sm !max-w-screen-md sm:prose lg:prose-lg mx-auto dark:prose-invert">
 				{/* THIS IS THE DEMP CONTENT */}
-				{/* IF YOUR DATA IS JSON, YOU CAN USE render with html-react-parser (https://www.npmjs.com/package/html-react-parser) */}
-				<SingleContentDemo />
+				<SingleContentDemo content={data.content} />
 			</div>
 
 			{/* TAGS */}

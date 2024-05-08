@@ -17,6 +17,7 @@ export interface IProperty {
 	category: IPropertyCategory;
 	title: string;
 	description: string;
+	content: string;
 	address: string;
 	client_address: string;
 	price: number;

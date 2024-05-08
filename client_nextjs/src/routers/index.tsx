@@ -102,7 +102,6 @@ export const pages: Page[] = [
 	{ path: "/login", component: PageLogin },
 	{ path: "/signup", component: PageSignUp },
 	{ path: "/forgot-pass", component: PageForgotPass },
-	{ path: "/dashboard", component: PageDashboard },
 	{ path: "/subscription", component: PageSubcription },
 	//
 	{ path: "/home-demo-2", component: PageHomeDemo2 },
@@ -112,10 +111,13 @@ export const pages: Page[] = [
 	{ path: "/home-demo-6", component: PageHomeDemo6 },
 	{ path: "/home-demo-7", component: PageHomeDemo7 },
 
-	// SOCIBA pages
+	// PUBLIC PAGES
 	{ path: "/sociba", component: Home },
 	{ path: "/annonces", component: ListProduct },
 	{ path: "/annonce/:slug", component: Single },
+
+	// ADMIN OR USERS PAGES
+	{ path: "/dashboard", component: PageDashboard },
 ];
 
 const Routes = () => {

@@ -25,13 +25,24 @@ class PropertyFactory extends Factory
                 'DELETED'   => 'DELETED',
             ]);
         }
+
+        $content = "";
+        $paragraphs = $this->faker->paragraphs(rand(2, 6));
+        $title = $this->faker->realText(50);
+        $content = "<h1>{$title}</h1>";
+        foreach ($paragraphs as $para) {
+            $content .= "<p>{$para}</p>";
+        }
+
         return [
             'category_id' => $this->faker->numberBetween(1, 5),
             'title' => $this->faker->sentence,
             'title' => ($this->faker->sentence),
             'slug' => Str::slug($this->faker->sentence),
             'description' => $this->faker->paragraph,
+            'content' => $content,
             'address' => $this->faker->address,
+            'location' => $this->faker->city,
             'client_address' => $this->faker->address,
             'property_type' => $this->faker->randomElement(['Appartement', 'Maison', 'Villa']),
             'price' => $this->faker->numberBetween(500000, 90000000),

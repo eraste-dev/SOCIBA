@@ -23,6 +23,7 @@ import {
 	setSinglePropertiesFailure,
 } from "app/properties/propertiy";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
+import { loginFailure, loginStart, loginSuccess } from "app/auth/auth";
 
 export const fetchSliders = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchSlidersStart());
@@ -35,7 +36,7 @@ export const fetchSliders = () => async (dispatch: AppDispatch) => {
 	}
 };
 
-// PROPERTIES
+// PROPERTIES ----------------------------------
 export const fetchCategories = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchCategoriesStart());
 
@@ -97,3 +98,19 @@ export const setFilters = (filters: IPropertyFilter) => async (dispatch: AppDisp
 export const resetFilters = () => async (dispatch: AppDispatch) => {
 	dispatch(resetFiltersSuccess());
 };
+// ----------------------------------------
+
+// AUTH -----------------------------------
+export const login =
+	({ email, password }: { email: string; password: string }) =>
+	async (dispatch: AppDispatch) => {
+		dispatch(loginStart());
+
+		try {
+			const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.auth.login }, false);
+			dispatch(loginSuccess(response.data));
+		} catch (error: any) {
+			dispatch(loginFailure(error.message));
+		}
+	};
+// ----------------------------------------
