@@ -10,9 +10,10 @@ import { Helmet } from "react-helmet";
 import Button from "components/Button/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "app/axios/api.action";
-import { UserAction } from "app/auth/auth";
+import { initAuth, login } from "app/axios/api.action";
+import { AuthAction } from "app/auth/auth";
 import { Console } from "console";
+import { Loading } from "components/Loading/Loading";
 
 export interface PageLoginProps {
 	className?: string;
@@ -45,8 +46,10 @@ type Inputs = {
 
 const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 	const dispatch = useDispatch();
-	const query = useSelector(UserAction.data);
-	const [loading, setLoading] = useState(false);
+	const query = useSelector(AuthAction.data);
+	const error = useSelector(AuthAction.error);
+	const loading = useSelector(AuthAction.loading);
+	const [initialize, setInitialize] = useState(false);
 	const {
 		register,
 		handleSubmit,
@@ -55,19 +58,18 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 	} = useForm<Inputs>();
 
 	const onSubmit: SubmitHandler<Inputs> = (data) => {
-		setLoading(true);
 		console.log(data);
-		if (data && data.email && data.password) {
+		if (data && data.email && data.password && !loading) {
 			dispatch(login(data));
 		}
 	};
 
 	useEffect(() => {
-		if (query && query.token && query.user) {
-			console.log(query, "check query in login");
-			setLoading(false);
+		if (!initialize) {
+			setInitialize(true);
+			dispatch(initAuth());
 		}
-	}, [query]);
+	}, [initialize, dispatch, initAuth]);
 
 	return (
 		<div className={`nc-PageLogin ${className}`} data-nc-id="PageLogin">
@@ -101,7 +103,6 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 							</div>
 						</>
 					)}
-
 					{/* FORM */}
 					<form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit(onSubmit)}>
 						<label className="block">
@@ -125,20 +126,17 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 							<Input type="password" className="mt-1" {...register("password", { required: true })} />
 						</label>
 
-						{!loading ? (
-							<ButtonPrimary type="submit">Se connecter</ButtonPrimary>
-						) : (
-							<ButtonPrimary type="submit" disabled>
-								Chargement...
-							</ButtonPrimary>
-						)}
+						{!loading ? <ButtonPrimary type="submit">Se connecter</ButtonPrimary> : <Loading />}
 					</form>
 
-					{/* ==== */}
-					<span className="block text-center text-neutral-700 dark:text-neutral-300">
-						Nouveau compte? {` `}
-						<NcLink to="/signup">Creer un compte</NcLink>
-					</span>
+					<div>{error && !loading && <p className="text-red-500 text-center">{error}</p>}</div>
+
+					<div>
+						<span className="block text-center text-neutral-700 dark:text-neutral-300">
+							Nouveau compte? {` `}
+							<NcLink to="/signup">Creer un compte</NcLink>
+						</span>
+					</div>
 				</div>
 			</LayoutPage>
 		</div>

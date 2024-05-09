@@ -17,9 +17,9 @@ export interface IUser {
 
 export interface IAuth {
 	token?: string;
-	expires?: number;
+	expire?: number;
 	user?: IUser;
-	registration?: IUser;
+	registrationSuccess?: boolean;
 	forgetPassword?: {
 		success?: boolean;
 		message?: string;
@@ -42,10 +42,17 @@ const initialState: IStoreDataState<IAuth | undefined> = {
 	error: null,
 };
 
-export const UserSlice = createSlice({
+export const AuthSlice = createSlice({
 	name: "auth",
 	initialState,
 	reducers: {
+		initAuthentication: (state) => {
+			state.data = undefined;
+			state.success = false;
+			state.message = "";
+			state.loading = false;
+			state.error = null;
+		},
 		loginStart: (state) => {
 			state.loading = true;
 			state.error = null;
@@ -72,18 +79,20 @@ export const UserSlice = createSlice({
 		registerStart: (state) => {
 			state.loading = true;
 			state.error = null;
+			state.errors = null;
 			state.data = undefined;
 			state.success = false;
 			state.message = "";
 		},
-		registerSuccess: (state, action: PayloadAction<IUser>) => {
+		registerSuccess: (state, action: PayloadAction<{ user: IUser; token: string; exprire: number }>) => {
 			state.loading = false;
 			state.error = null;
-			state.data = { ...state.data, registration: action.payload };
+			state.data = { ...state.data, registrationSuccess: true, token: action.payload.token, expire: action.payload.exprire, user: action.payload.user };
 		},
-		registerFailure: (state, action: PayloadAction<string>) => {
+		registerFailure: (state, action: PayloadAction<{ error: string; errors: any }>) => {
 			state.loading = false;
-			state.error = action.payload;
+			state.error = action.payload.error;
+			state.errors = action.payload.errors;
 		},
 
 		// FORGOT
@@ -142,6 +151,7 @@ export const UserSlice = createSlice({
 });
 
 export const {
+	initAuthentication,
 	loginStart,
 	loginSuccess,
 	loginFailure,
@@ -158,14 +168,15 @@ export const {
 	updateUserStart,
 	updateUserSuccess,
 	updateUserFailure,
-} = UserSlice.actions;
+} = AuthSlice.actions;
 
-export const UserAction: IStoreAction<IAuth> = {
+export const AuthAction: IStoreAction<IAuth> = {
 	data: (state: RootState) => state.auth.data,
 	loading: (state: RootState) => state.auth.loading,
 	error: (state: RootState) => state.auth.error,
+	errors: (state: RootState) => state.auth.errors && state.auth.errors,
 	message: (state: RootState) => state.auth.message,
 	success: (state: RootState) => state.auth.success,
 };
 
-export default UserSlice.reducer;
+export default AuthSlice.reducer;

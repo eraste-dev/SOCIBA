@@ -1,6 +1,6 @@
 import { fetchSlidersFailure, fetchSlidersStart, fetchSlidersSuccess } from "app/sliders/sliders";
 import { AppDispatch } from "app/store";
-import { IServerResponse } from "./api.type";
+import { IServerResponse, RegisterRequest } from "./api.type";
 import { serverEndpoints } from "./api.route";
 import { axiosRequest } from "./api";
 import { fetchCategoriesFailure, fetchCategoriesStart, fetchCategoriesSuccess } from "app/properties/propertiy-category";
@@ -23,7 +23,7 @@ import {
 	setSinglePropertiesFailure,
 } from "app/properties/propertiy";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
-import { loginFailure, loginStart, loginSuccess } from "app/auth/auth";
+import { initAuthentication, loginFailure, loginStart, loginSuccess, registerFailure, registerStart, registerSuccess } from "app/auth/auth";
 
 export const fetchSliders = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchSlidersStart());
@@ -113,4 +113,28 @@ export const login =
 			dispatch(loginFailure(error.message));
 		}
 	};
+
+export const registerUser = (params: RegisterRequest) => async (dispatch: AppDispatch) => {
+	dispatch(registerStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.auth.register, params }, false);
+		dispatch(registerSuccess(response.data));
+	} catch (error: any) {
+		dispatch(registerFailure({ error: error.message, errors: error.errors }));
+	}
+};
+
+export const initAuth = () => async (dispatch: AppDispatch) => {
+	dispatch(initAuthentication());
+};
 // ----------------------------------------
+
+export const getErrors = (errorArray: any, key: string) => {
+	if (typeof errorArray === "object") {
+		const errors = Object.values(errorArray).filter((error: any) => error[key]);
+		return errors;
+	}
+
+	return undefined;
+};
