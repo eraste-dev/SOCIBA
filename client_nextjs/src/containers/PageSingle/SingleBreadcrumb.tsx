@@ -12,7 +12,7 @@ const SingleBreadcrumb: FC<SingleBreadcrumbProps> = ({ meta }) => {
 	const { category } = meta;
 
 	return (
-		<div className="nc-SingleBreadcrumb">
+		<div className="nc-SingleBreadcrumb container">
 			<nav className="bg-gray-200- p-4 rounded-md">
 				<ol className="list-none flex">
 					<li className="text-primary-500 mr-2">

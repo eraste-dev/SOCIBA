@@ -1,4 +1,4 @@
-import LayoutPage from "components/LayoutPage/LayoutPage";
+import LayoutPage from "components/LayoutPage/UserLayout";
 import { CheckIcon } from "@heroicons/react/solid";
 import React, { FC } from "react";
 import ButtonPrimary from "components/Button/ButtonPrimary";

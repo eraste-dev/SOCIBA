@@ -44,7 +44,7 @@ class PropertyFactory extends Factory
             'address' => $this->faker->address,
             'location' => $this->faker->city,
             'client_address' => $this->faker->address,
-            'property_type' => $this->faker->randomElement(['Appartement', 'Maison', 'Villa']),
+            // 'property_type' => $this->faker->randomElement(['Appartement', 'Maison', 'Villa']),
             'price' => $this->faker->numberBetween(500000, 90000000),
             'post_type' => $this->faker->randomElement(POST_TYPE),
             'country' => $this->faker->country,

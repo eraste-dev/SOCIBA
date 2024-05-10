@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import LayoutPage from "components/LayoutPage/LayoutPage";
+import LayoutPage from "components/LayoutPage/UserLayout";
 import Input from "components/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import NcLink from "components/NcLink/NcLink";

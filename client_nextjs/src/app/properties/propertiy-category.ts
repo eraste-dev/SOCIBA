@@ -1,11 +1,6 @@
 import { IStoreAction, IStoreDataState } from "../axios/api.type";
-import { serverEndpoints } from "../axios/api.route";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { axiosRequest } from "app/axios/api";
-import { IServerResponse } from "app/axios/api.type";
-import { AppDispatch, RootState } from "app/store";
-import axios from "axios";
-import { Debug } from "utils/debug.utils";
+import { RootState } from "app/store";
 import { TwMainColor } from "data/types";
 
 export interface IPropertyCategory {
@@ -17,8 +12,15 @@ export interface IPropertyCategory {
 	thumbnail: string | null;
 	parent_id: number | null;
 	count: number;
-	children: IPropertyCategory[];
 	color?: TwMainColor | string;
+	children: IPropertyCategory[];
+}
+
+export interface IStoreDataCategorie {
+	parent?: IPropertyCategory[];
+	all?: IPropertyCategory[];
+	children?: IPropertyCategory[];
+	selected?: IPropertyCategory;
 }
 
 const initialState: IStoreDataState<IPropertyCategory[] | undefined> = {
@@ -55,11 +57,12 @@ export const CategorySlice = createSlice({
 export const { fetchCategoriesStart, fetchCategoriesSuccess, fetchCategoriesFailure } = CategorySlice.actions;
 
 export const CategoryAction: IStoreAction<IPropertyCategory[]> = {
-	data: (state: RootState) => state.propertyCategories.data,
-	loading: (state: RootState) => state.propertyCategories.loading,
-	error: (state: RootState) => state.propertyCategories.error,
-	message: (state: RootState) => state.propertyCategories.message,
-	success: (state: RootState) => state.propertyCategories.success,
+	data: (state: RootState) => state.categories.data,
+	loading: (state: RootState) => state.categories.loading,
+	error: (state: RootState) => state.categories.error,
+	errors: (state: RootState) => state.categories.errors,
+	message: (state: RootState) => state.categories.message,
+	success: (state: RootState) => state.categories.success,
 };
 
 export default CategorySlice.reducer;

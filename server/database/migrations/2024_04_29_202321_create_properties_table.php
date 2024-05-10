@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('location')->nullable();
             $table->string('client_address')->nullable();
-            $table->string('property_type')->nullable();
+            // $table->string('property_type')->nullable();
             $table->string('price')->nullable();
             $table->string('post_type')->nullable()->comment('ADMIN :admin CUSTOMER:customer');
             $table->string('city')->default('Kutch')->nullable();

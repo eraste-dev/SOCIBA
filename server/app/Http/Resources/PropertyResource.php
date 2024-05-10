@@ -30,7 +30,7 @@ class PropertyResource extends JsonResource
             'latitude'       => $this->latitude,
             'longitude'      => $this->longitude,
             'location'       => $this->location,
-            'property_type'  => $this->property_type,
+            // 'property_type'  => $this->property_type,
             'details'        => $this->details,
             'whatsapp_link'  => $this->whatsapp_link,
             'facebook_link'  => $this->facebook_link,

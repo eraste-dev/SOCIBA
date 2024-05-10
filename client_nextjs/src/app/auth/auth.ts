@@ -10,6 +10,7 @@ import { Debug } from "utils/debug.utils";
 export interface IUser {
 	id: number;
 	name: string;
+	last_name: string;
 	email: string;
 	href: string;
 	avatar: string;

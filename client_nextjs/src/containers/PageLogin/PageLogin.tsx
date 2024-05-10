@@ -1,18 +1,13 @@
-import LayoutPage from "components/LayoutPage/LayoutPage";
-import React, { FC, useEffect, useState } from "react";
-import facebookSvg from "images/Facebook.svg";
-import twitterSvg from "images/Twitter.svg";
-import googleSvg from "images/Google.svg";
+import LayoutPage from "components/LayoutPage/UserLayout";
+import { FC, useEffect, useState } from "react";
 import Input from "components/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import NcLink from "components/NcLink/NcLink";
 import { Helmet } from "react-helmet";
-import Button from "components/Button/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { initAuth, login } from "app/axios/api.action";
 import { AuthAction } from "app/auth/auth";
-import { Console } from "console";
 import { Loading } from "components/Loading/Loading";
 
 export interface PageLoginProps {
@@ -46,7 +41,7 @@ type Inputs = {
 
 const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 	const dispatch = useDispatch();
-	const query = useSelector(AuthAction.data);
+	const user = useSelector(AuthAction.data)?.user;
 	const error = useSelector(AuthAction.error);
 	const loading = useSelector(AuthAction.loading);
 	const [initialize, setInitialize] = useState(false);
@@ -65,11 +60,11 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 	};
 
 	useEffect(() => {
-		if (!initialize) {
+		if (!initialize && !user) {
 			setInitialize(true);
 			dispatch(initAuth());
 		}
-	}, [initialize, dispatch, initAuth]);
+	}, [initialize, dispatch, initAuth, user]);
 
 	return (
 		<div className={`nc-PageLogin ${className}`} data-nc-id="PageLogin">

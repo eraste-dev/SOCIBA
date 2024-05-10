@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import LayoutPage from "components/LayoutPage/LayoutPage";
+import LayoutPage from "components/LayoutPage/UserLayout";
 import facebookSvg from "images/Facebook.svg";
 import twitterSvg from "images/Twitter.svg";
 import googleSvg from "images/Google.svg";
@@ -27,6 +27,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 	const [CGI, setCGI] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const [initialize, setInitialize] = useState(false);
+	const user = useSelector(AuthAction.data)?.user;
 	const error = useSelector(AuthAction.error);
 	const succuss = useSelector(AuthAction.data)?.registrationSuccess;
 	const errorArray = useSelector(AuthAction.errors);
@@ -49,11 +50,11 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 	};
 
 	useEffect(() => {
-		if (!initialize) {
+		if (!initialize && !user) {
 			setInitialize(true);
 			dispatch(initAuth());
 		}
-	}, [initialize, dispatch, initAuth]);
+	}, [initialize, dispatch, initAuth, user]);
 
 	if (succuss) {
 		return <SignUpSuccess />;

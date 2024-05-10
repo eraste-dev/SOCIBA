@@ -18,7 +18,7 @@ const rootReducers = {
 	mediaRunning: mediaRunningReducer,
 	// ADDONS
 	sliders: sliderReducer,
-	propertyCategories: propertyCategoryReducer,
+	categories: propertyCategoryReducer,
 	properties: propertyReducer,
 	auth: authReducer,
 };

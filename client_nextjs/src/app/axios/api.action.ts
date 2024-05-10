@@ -101,18 +101,27 @@ export const resetFilters = () => async (dispatch: AppDispatch) => {
 // ----------------------------------------
 
 // AUTH -----------------------------------
-export const login =
-	({ email, password }: { email: string; password: string }) =>
-	async (dispatch: AppDispatch) => {
-		dispatch(loginStart());
+export const login = (params: { email: string; password: string }) => async (dispatch: AppDispatch) => {
+	dispatch(loginStart());
 
-		try {
-			const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.auth.login }, false);
-			dispatch(loginSuccess(response.data));
-		} catch (error: any) {
-			dispatch(loginFailure(error.message));
-		}
-	};
+	try {
+		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.auth.login(params) }, false);
+		dispatch(loginSuccess(response.data));
+	} catch (error: any) {
+		dispatch(loginFailure(error.message));
+	}
+};
+
+export const logout = (token: string) => async (dispatch: AppDispatch) => {
+	dispatch(loginStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.auth.logout(token) }, false);
+		dispatch(loginSuccess(response.data));
+	} catch (error: any) {
+		dispatch(loginFailure(error.message));
+	}
+};
 
 export const registerUser = (params: RegisterRequest) => async (dispatch: AppDispatch) => {
 	dispatch(registerStart());

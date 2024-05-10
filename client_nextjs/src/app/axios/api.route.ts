@@ -23,9 +23,9 @@ export interface IServerEndpoint {
 			search: (query: IGetSearchPropertiesParams) => IAxiosRequestConfig;
 		};
 		auth: {
-			login: IAxiosRequestConfig;
+			login: (data: { email: string; password: string }) => IAxiosRequestConfig;
 			register: IAxiosRequestConfig;
-			logout: IAxiosRequestConfig;
+			logout: (data: string) => IAxiosRequestConfig;
 			forgetPassword: IAxiosRequestConfig;
 			resetPassword: IAxiosRequestConfig;
 			refreshToken: IAxiosRequestConfig;
@@ -50,9 +50,9 @@ export const serverEndpoints: IServerEndpoint = {
 			search: (query: IGetSearchPropertiesParams) => ({ method: "GET", url: `${v100}/properties${QueryBuilder.searchProperties(query)}` }),
 		},
 		auth: {
-			login: { method: "POST", url: `${v100}/auth/login` },
+			login: (data: { email: string; password: string }) => ({ method: "POST", url: `${v100}/auth/login`, data }),
 			register: { method: "POST", url: `${v100}/auth/register` },
-			logout: { method: "POST", url: `${v100}/auth/logout` },
+			logout: (token: string) => ({ method: "POST", url: `${v100}/auth/logout`, data: token }),
 			forgetPassword: { method: "POST", url: `${v100}/auth/forget-password` },
 			resetPassword: { method: "POST", url: `${v100}/auth/reset-password` },
 			refreshToken: { method: "POST", url: `${v100}/auth/refresh-token` },

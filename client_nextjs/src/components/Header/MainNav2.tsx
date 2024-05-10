@@ -1,3 +1,4 @@
+import { AuthAction } from "app/auth/auth";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import ButtonSecondary from "components/Button/ButtonSecondary";
 import Input from "components/Input/Input";
@@ -7,12 +8,20 @@ import Navigation from "components/Navigation/Navigation";
 import DarkModeContainer from "containers/DarkModeContainer/DarkModeContainer";
 import { NAVIGATION_SHORT_DEMO } from "data/navigation";
 import React, { FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { t } from "utils/translation/fr";
 import { __ } from "utils/translation/translation";
+import NotifyDropdown from "./NotifyDropdown";
+import AvatarDropdown from "./AvatarDropdown";
+import { route } from "routers/route";
 
 export interface MainNav2Props {}
 
 const MainNav2: FC<MainNav2Props> = () => {
+	const dispatch = useDispatch();
+	const user = useSelector(AuthAction.data)?.user;
+	// const user = useSelector(AuthAction.data)?.token;
+
 	return (
 		<div className={`nc-MainNav nc-MainNav2 relative z-10 ${"notOnTop backdrop-filter "}`}>
 			<div className="container pt-5 pb-2 relative flex justify-between items-center space-x-4 xl:space-x-8">
@@ -46,19 +55,35 @@ const MainNav2: FC<MainNav2Props> = () => {
 						<div className="hidden sm:block h-10 border-l border-neutral-300 dark:border-neutral-6000"></div>
 						<DarkModeContainer />
 
-						<ButtonSecondary href={"/login"} sizeClass="px-4 py-2 sm:px-5">
-							Log in
-						</ButtonSecondary>
+						{user && (
+							<>
+								<ButtonPrimary href={route("add_post")} sizeClass="px-4 py-2 sm:px-5">
+									{__(t.rs_publish)}
+								</ButtonPrimary>
+								<NotifyDropdown />
+								<AvatarDropdown />
+							</>
+						)}
 
-						<ButtonPrimary href={"/signup"} sizeClass="px-4 py-2 sm:px-5">
-							{__(t.rs_publish)}
-						</ButtonPrimary>
+						{!user && (
+							<>
+								<ButtonSecondary href={"/login"} sizeClass="px-4 py-2 sm:px-5">
+									Se connecter
+								</ButtonSecondary>
+
+								<ButtonPrimary href={"/signup"} sizeClass="px-4 py-2 sm:px-5">
+									Créer un compte
+								</ButtonPrimary>
+							</>
+						)}
 					</div>
 
 					<div className="flex items-center space-x-1.5 xl:hidden">
-						<ButtonPrimary href={"/signup"} sizeClass="px-4 py-2 sm:px-5">
-							{__(t.rs_publish)}
-						</ButtonPrimary>
+						{user && (
+							<ButtonPrimary href={"/signup"} sizeClass="px-4 py-2 sm:px-5">
+								{__(t.rs_publish)}
+							</ButtonPrimary>
+						)}
 						<MenuBar />
 					</div>
 				</div>

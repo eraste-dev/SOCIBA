@@ -22,7 +22,7 @@ class PropertyCategoryFactory extends Factory
             'slug'        => Str::slug($this->faker->slug),
             'description' => $this->faker->sentence,
             'icon'        => $this->faker->imageUrl(),
-            'parent_id'   => $this->faker->boolean(50) ? $this->faker->numberBetween(1, 5) : null,
+            'parent_id'   =>  $this->faker->numberBetween(1, 5),
         ];
     }
 }

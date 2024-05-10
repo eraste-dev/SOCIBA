@@ -72,7 +72,6 @@ class PropertyCategorySeeder extends Seeder
                         'name' => 'Maison de ville',
                         'slug' => 'maison-de-ville',
                     ],
-                    // Ajoutez d'autres sous-catégories si nécessaire
                 ];
 
                 foreach ($subCategories as $subCategoryData) {
@@ -84,6 +83,6 @@ class PropertyCategorySeeder extends Seeder
             }
         }
 
-        PropertyCategoryFactory::new()->count(150)->create();
+        // PropertyCategoryFactory::new()->count(150)->create();
     }
 }

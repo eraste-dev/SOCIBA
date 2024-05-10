@@ -27,7 +27,7 @@ class Property extends Model
         'latitude',
         'longitude',
         'location',
-        'property_type',
+        // 'property_type',
         'details',
         'whatsapp_link',
         'facebook_link',
