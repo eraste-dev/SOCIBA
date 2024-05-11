@@ -20,6 +20,7 @@ class Property extends Model
         'address',
         'client_address',
         'price',
+        'deposit_price',
         'state', // communes
         'country',
         'city',
@@ -38,14 +39,45 @@ class Property extends Model
         'updated_by',
     ];
 
+    /**
+     * Retrieves the category associated with this object.
+     *
+     * @return PropertyCategory The category associated with this object.
+     */
     public function category()
     {
         return PropertyCategory::find($this->category_id);
         // return $this->belongsTo(PropertyCategory::class, 'category_id');
     }
 
+    /**
+     * Retrieves the images associated with this property.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany The images associated with this property.
+     */
+    public function images()
+    {
+        return $this->hasMany(PropertyImages::class, 'property_id');
+    }
+
+    /**
+     * Retrieves the images associated with this property.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection The images associated with this property.
+     */
     public function get_images()
     {
         return PropertyImages::where('property_id', $this->id)->get();
+    }
+
+    /**
+     * Save multiple images associated with the property.
+     *
+     * @param array $images An array of image data to be saved.
+     * @return void
+     */
+    public function saveImages($images)
+    {
+        $this->images()->createMany($images);
     }
 }

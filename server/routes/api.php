@@ -24,6 +24,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::resource('categories', PropertyCategoryController::class);
     Route::group(['prefix' => 'properties'], function () {
         Route::get('/', [PropertyController::class, 'get']);
+        Route::post('/', [PropertyController::class, 'store']);
     });
     // Route::resource('property-images', PropertyImagesController::class);
 
