@@ -1,5 +1,5 @@
 import { IPropertyCategory } from "app/properties/propertiy-category";
-import { IStoreAction, IStoreDataState } from "../axios/api.type";
+import { IStoreAction, IStoreDataState, ProductRequest } from "../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 import { IUser } from "app/auth/auth";
@@ -165,6 +165,26 @@ export const PropertiesSlice = createSlice({
 			state.error = action.payload;
 		},
 
+		// POST
+		postProductStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.data = undefined;
+			state.success = false;
+			state.message = "";
+		},
+		postProductSuccess: (state, action: PayloadAction<ProductRequest>) => {
+			state.loading = false;
+			state.error = null;
+			state.data = undefined;
+			state.success = true;
+			state.message = "";
+		},
+		postProductFailure: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
+
 		// FIlTERS
 		setFiltersSuccess: (state, action: PayloadAction<IPropertyFilter>) => {
 			state.data = { ...state.data, filters: { ...state.data?.filters, ...action.payload } };
@@ -211,12 +231,16 @@ export const {
 	fetchSimilarsFailure,
 	setFiltersSuccess,
 	resetFiltersSuccess,
+	postProductStart,
+	postProductSuccess,
+	postProductFailure,
 } = PropertiesSlice.actions;
 
 export const PropertyAction: IStoreAction<IStorePropertyData> = {
 	data: (state: RootState) => state.properties.data,
 	loading: (state: RootState) => state.properties.loading,
 	error: (state: RootState) => state.properties.error,
+	errors: (state: RootState) => state.properties.errors,
 	message: (state: RootState) => state.properties.message,
 	success: (state: RootState) => state.properties.success,
 };

@@ -1,6 +1,6 @@
 import { fetchSlidersFailure, fetchSlidersStart, fetchSlidersSuccess } from "app/sliders/sliders";
 import { AppDispatch } from "app/store";
-import { IServerResponse, RegisterRequest } from "./api.type";
+import { IServerResponse, ProductRequest, RegisterRequest } from "./api.type";
 import { serverEndpoints } from "./api.route";
 import { axiosRequest } from "./api";
 import { fetchCategoriesFailure, fetchCategoriesStart, fetchCategoriesSuccess } from "app/properties/propertiy-category";
@@ -21,6 +21,9 @@ import {
 	setSinglePropertiesStart,
 	setSinglePropertiesSuccess,
 	setSinglePropertiesFailure,
+	postProductStart,
+	postProductSuccess,
+	postProductFailure,
 } from "app/properties/propertiy";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import { initAuthentication, loginFailure, loginStart, loginSuccess, registerFailure, registerStart, registerSuccess } from "app/auth/auth";
@@ -98,6 +101,18 @@ export const setFilters = (filters: IPropertyFilter) => async (dispatch: AppDisp
 export const resetFilters = () => async (dispatch: AppDispatch) => {
 	dispatch(resetFiltersSuccess());
 };
+
+export const postProduct = (payload: ProductRequest) => async (dispatch: AppDispatch) => {
+	dispatch(postProductStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.post(payload) }, false);
+		dispatch(postProductSuccess(response.data));
+	} catch (error: any) {
+		dispatch(postProductFailure(error.message));
+	}
+};
+
 // ----------------------------------------
 
 // AUTH -----------------------------------

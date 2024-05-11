@@ -40,3 +40,16 @@ export interface RegisterRequest {
 	phone: string;
 	phone_whatsapp?: string;
 }
+
+export interface ProductRequest {
+	title: string;
+	category_id: number;
+	excerpt: string;
+	content: string;
+	property_type: string;
+	city: string;
+	state: string;
+	price: number;
+	deposit_price: number;
+	images: FileList | null;
+}

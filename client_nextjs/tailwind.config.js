@@ -1,4 +1,5 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
+const withMT = require("@material-tailwind/react/utils/withMT");
 
 // Custom color with css variable color in __theme_color.scss
 function customColors(cssVar) {
@@ -13,7 +14,7 @@ function customColors(cssVar) {
   };
 }
 
-module.exports = {
+module.exports = withMT({
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./index.html"],
   darkMode: "class", // or 'media' or 'class',
   theme: {
@@ -83,4 +84,4 @@ module.exports = {
     require("@tailwindcss/line-clamp"),
     require("@tailwindcss/aspect-ratio"),
   ],
-};
+});

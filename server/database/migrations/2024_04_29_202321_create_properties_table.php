@@ -16,13 +16,15 @@ return new class extends Migration
             $table->string('category_id')->nullable();
             $table->string('title')->nullable();
             $table->string('slug')->nullable(); // ->unique()
-            $table->longText('description')->nullable();
+            // $table->longText('description')->nullable();
+            $table->longText('excerpt')->nullable();
             $table->longText('content')->nullable();
             $table->string('address')->nullable();
             $table->string('location')->nullable();
             $table->string('client_address')->nullable();
-            // $table->string('property_type')->nullable();
+            $table->string('property_type')->nullable();
             $table->string('price')->nullable();
+            $table->string('deposit_price')->nullable();
             $table->string('post_type')->nullable()->comment('ADMIN :admin CUSTOMER:customer');
             $table->string('city')->default('Kutch')->nullable();
             $table->string('country')->nullable();

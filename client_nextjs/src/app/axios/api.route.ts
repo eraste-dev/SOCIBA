@@ -1,4 +1,5 @@
 import { IGetQueryParams, IGetSearchPropertiesParams, QueryBuilder } from "utils/query-builder.utils";
+import { ProductRequest } from "./api.type";
 
 export const apiBase: string = "http://localhost:8000";
 
@@ -21,6 +22,7 @@ export interface IServerEndpoint {
 		properties: {
 			categories: IAxiosRequestConfig;
 			search: (query: IGetSearchPropertiesParams) => IAxiosRequestConfig;
+			post: (product: ProductRequest) => IAxiosRequestConfig;
 		};
 		auth: {
 			login: (data: { email: string; password: string }) => IAxiosRequestConfig;
@@ -48,6 +50,7 @@ export const serverEndpoints: IServerEndpoint = {
 		properties: {
 			categories: { method: "GET", url: `${v100}/categories` },
 			search: (query: IGetSearchPropertiesParams) => ({ method: "GET", url: `${v100}/properties${QueryBuilder.searchProperties(query)}` }),
+			post: (product: ProductRequest) => ({ method: "POST", url: `${v100}/properties`, data: product }),
 		},
 		auth: {
 			login: (data: { email: string; password: string }) => ({ method: "POST", url: `${v100}/auth/login`, data }),

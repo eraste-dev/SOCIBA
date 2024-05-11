@@ -16,13 +16,18 @@ const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
 	const dispatch = useDispatch();
 	const user = useSelector(AuthAction.data)?.user;
 
+	if (!user) {
+		return <></>;
+	}
+
 	return (
 		<div className={`nc-PageDashboard ${className}`} data-nc-id="PageDashboard">
 			<Helmet>
 				<title>Compte</title>
 			</Helmet>
-			<UserLayout subHeading="" headingEmoji="⚙" heading="Dash board">
-        {/* */}
+			{/* subHeading="" headingEmoji="⚙" */}
+			<UserLayout subHeading={user.email} headingEmoji="⚙" heading={`${user?.name} ${user.last_name}` }>
+				{/* */}
 				<div className="pb-5 bg-white">
 					<ul className="flex text-base space-y-1 text-neutral-6000 dark:text-neutral-400">
 						{USER_SUB_PAGES.map(({ sPath, pageName, emoij }, index) => {
