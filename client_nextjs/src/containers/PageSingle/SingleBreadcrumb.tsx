@@ -1,4 +1,4 @@
-import { IProperty } from "app/properties/propertiy";
+import { IProperty } from "app/reducer/products/propertiy";
 import React, { FC } from "react";
 import { FaAngleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";

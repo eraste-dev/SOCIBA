@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
 import PostFeaturedMedia from "components/PostFeaturedMedia/PostFeaturedMedia";
-import { IProperty } from "app/properties/propertiy";
+import { IProperty } from "app/reducer/products/propertiy";
 import PostPropertyCardMetaV2 from "components/PostPropertyCardMeta/PostCardMetaV2";
 import { _f } from "utils/money-format";
 import { FaMapMarkerAlt } from "react-icons/fa";

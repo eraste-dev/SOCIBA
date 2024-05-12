@@ -1,6 +1,6 @@
 import { fetchCategories } from "app/axios/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { CategoryAction } from "app/properties/propertiy-category";
+import { CategoryAction } from "app/reducer/products/propertiy-category";
 import CardCategory1 from "components/Card/CardCategory1/CardCategory1";
 import CardCategory2 from "components/Card/CardCategory2/CardCategory2";
 import CardCategory3 from "components/Card/CardCategory3/CardCategory3";

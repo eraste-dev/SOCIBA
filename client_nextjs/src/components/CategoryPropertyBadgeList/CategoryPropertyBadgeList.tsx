@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Badge from "components/Badge/Badge";
-import { IPropertyCategory } from "app/properties/propertiy-category";
+import { IPropertyCategory } from "app/reducer/products/propertiy-category";
 
 export interface CategoryPropertyBadgeListProps {
 	className?: string;

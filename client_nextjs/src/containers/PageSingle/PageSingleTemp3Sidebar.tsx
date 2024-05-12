@@ -8,7 +8,7 @@ import { useAppDispatch } from "app/hooks";
 import { changeCurrentPage } from "app/pages/pages";
 import { Sidebar } from "./Sidebar";
 import SingleHeader from "./SingleHeader";
-import { IProperty } from "app/properties/propertiy";
+import { IProperty } from "app/reducer/products/propertiy";
 
 export interface PageSingleTemp3SidebarProps {
   className?: string;

@@ -6,7 +6,7 @@ import SingleCommentForm from "./SingleCommentForm";
 import SingleCommentLists from "./SingleCommentLists";
 import SingleContentDemo from "./SingleContentDemo";
 import { useLocation } from "react-router";
-import { IProperty } from "app/properties/propertiy";
+import { IProperty } from "app/reducer/products/propertiy";
 import { CommentType } from "components/CommentCard/CommentCard";
 
 export interface SingleContentProps {

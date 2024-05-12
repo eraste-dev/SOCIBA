@@ -5,9 +5,10 @@ import darkmodeReducer from "./darkmode/darkmode";
 import pagesReducer from "./pages/pages";
 import mediaRunningReducer from "./mediaRunning/mediaRunning";
 import sliderReducer from "./sliders/sliders";
-import propertyCategoryReducer from "./properties/propertiy-category";
-import propertyReducer from "./properties/propertiy";
+import categoryReducer from "./reducer/products/propertiy-category";
+import productReducer from "./reducer/products/propertiy";
 import authReducer from "./auth/auth";
+import locationReducer from "./reducer/locations/locations";
 
 const rootReducers = {
 	bookmark: bookmarkReducer,
@@ -18,9 +19,10 @@ const rootReducers = {
 	mediaRunning: mediaRunningReducer,
 	// ADDONS
 	sliders: sliderReducer,
-	categories: propertyCategoryReducer,
-	properties: propertyReducer,
+	categories: categoryReducer,
+	products: productReducer,
 	auth: authReducer,
+	locations: locationReducer,
 };
 
 export default rootReducers;

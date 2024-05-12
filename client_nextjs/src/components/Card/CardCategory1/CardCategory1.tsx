@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import NcImage from "components/NcImage/NcImage";
 import { TaxonomyType } from "data/types";
 import { NavLink } from "react-router-dom";
-import { IPropertyCategory } from "app/properties/propertiy-category";
+import { IPropertyCategory } from "app/reducer/products/propertiy-category";
 
 export interface CardCategory1Props {
 	className?: string;

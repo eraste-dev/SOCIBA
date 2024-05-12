@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import Avatar from "components/Avatar/Avatar";
 import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
-import { IProperty } from "app/properties/propertiy";
+import { IProperty } from "app/reducer/products/propertiy";
 
 export interface PostPropertyCardMetaV2Props {
 	className?: string;

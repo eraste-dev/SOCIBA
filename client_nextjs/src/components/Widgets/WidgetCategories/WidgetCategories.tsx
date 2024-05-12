@@ -1,7 +1,7 @@
 import { fetchCategories, setFilters } from "app/axios/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { PropertyAction } from "app/properties/propertiy";
-import propertiyCategory, { CategoryAction } from "app/properties/propertiy-category";
+import { PropertyAction } from "app/reducer/products/propertiy";
+import propertiyCategory, { CategoryAction } from "app/reducer/products/propertiy-category";
 import CardCategory1 from "components/Card/CardCategory1/CardCategory1";
 import WidgetHeading1 from "components/WidgetHeading1/WidgetHeading1";
 import { TaxonomyType } from "data/types";

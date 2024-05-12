@@ -12,7 +12,7 @@ import Card14 from "components/Card/Card14/Card14";
 import Card15Podcast from "components/Card/Card15Podcast/Card15Podcast";
 import Card10 from "components/Card/Card10/Card10";
 import Card10V2 from "components/Card/Card10/Card10V2";
-import { IProperty } from "app/properties/propertiy";
+import { IProperty } from "app/reducer/products/propertiy";
 
 // OTHER DEMO WILL PASS PROPS
 const postsDemo: PostDataType[] = DEMO_POSTS.filter((_, i) => i > 7 && i < 17);

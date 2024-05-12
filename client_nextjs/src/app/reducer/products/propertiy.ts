@@ -1,5 +1,5 @@
-import { IPropertyCategory } from "app/properties/propertiy-category";
-import { IStoreAction, IStoreDataState, ProductRequest } from "../axios/api.type";
+import { IPropertyCategory } from "app/reducer/products/propertiy-category";
+import { IStoreAction, IStoreDataState, ProductRequest } from "../../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 import { IUser } from "app/auth/auth";
@@ -11,6 +11,8 @@ export interface IPropertyImage {
 	created_at: Date;
 }
 
+export interface Ilocation {}
+
 export interface IProperty {
 	id: number;
 	href: string;
@@ -21,14 +23,13 @@ export interface IProperty {
 	address: string;
 	client_address: string;
 	price: number;
-	state: string;
-	country: string;
+	location_description: string;
+	location: Ilocation;
 	city: string;
 	status: string;
 	total_click: number;
 	latitude: number;
 	longitude: number;
-	location: string | null;
 	property_type: string;
 	details: string | null;
 	whatsapp_link: null;
@@ -56,12 +57,18 @@ export interface IPropertyFilter {
 	date?: "all" | "week" | "month" | "year";
 }
 
+export interface IPropertyType {
+	id: string;
+	name: string;
+}
+
 export interface IStorePropertyData {
 	all?: IProperty[] | undefined;
 	features?: IProperty[] | undefined;
 	similars?: IProperty[] | undefined;
 	single?: IProperty | undefined;
 	filters?: IPropertyFilter;
+	types?: IPropertyType[];
 }
 
 export const defaultFilters: IPropertyFilter = {
@@ -210,6 +217,26 @@ export const PropertiesSlice = createSlice({
 			state.loading = false;
 			state.error = action.payload;
 		},
+
+		// TYPE
+		postTypeStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.data = undefined;
+			state.success = false;
+			state.message = "";
+		},
+		postTypeSuccess: (state, action: PayloadAction<{ types: IPropertyType[] }>) => {
+			state.loading = false;
+			state.error = null;
+			state.data = { ...state.data, types: action.payload };
+			state.success = true;
+			state.message = "";
+		},
+		postTypeFailure: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
 	},
 });
 
@@ -237,12 +264,12 @@ export const {
 } = PropertiesSlice.actions;
 
 export const PropertyAction: IStoreAction<IStorePropertyData> = {
-	data: (state: RootState) => state.properties.data,
-	loading: (state: RootState) => state.properties.loading,
-	error: (state: RootState) => state.properties.error,
-	errors: (state: RootState) => state.properties.errors,
-	message: (state: RootState) => state.properties.message,
-	success: (state: RootState) => state.properties.success,
+	data: (state: RootState) => state.products.data,
+	loading: (state: RootState) => state.products.loading,
+	error: (state: RootState) => state.products.error,
+	errors: (state: RootState) => state.products.errors,
+	message: (state: RootState) => state.products.message,
+	success: (state: RootState) => state.products.success,
 };
 
 export default PropertiesSlice.reducer;

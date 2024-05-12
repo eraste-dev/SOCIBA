@@ -6,8 +6,8 @@ import Textarea from "components/Textarea/Textarea";
 import Label from "components/Label/Label";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { AuthAction } from "app/auth/auth";
-import { CategoryAction, IPropertyCategory } from "app/properties/propertiy-category";
+import { AuthAction, IUser } from "app/auth/auth";
+import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 import SelectProductCategories from "components/Products/add/SelectProductCategories";
 import { useAppSelector } from "app/hooks";
 import { fetchCategories, postProduct } from "app/axios/api.action";
@@ -15,17 +15,27 @@ import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
 import { getCities } from "data/cities";
 import { ProductRequest } from "app/axios/api.type";
+import { LocationAction } from "app/reducer/locations/locations";
+import { fetchLocation } from "app/axios/actions/api.others.action";
 
 const DashboardSubmitPost = () => {
-	const dispatch = useDispatch();
-	const user = useSelector(AuthAction.data)?.user;
-
 	const CURRENCY: string = "FCFA";
+
+	const dispatch = useDispatch();
+
+	const user: IUser | undefined = useSelector(AuthAction.data)?.user;
+
 	const categories = useSelector(CategoryAction.data);
 	const categoriesLoading = useAppSelector(CategoryAction.loading);
+
+	const locations = useSelector(LocationAction.data);
+	const locationLoading = useAppSelector(CategoryAction.loading);
+
 	// const [initialize, setInitialize] = useState(false);
 	const [categoryParent, setCategoryParent] = useState(null as IPropertyCategory | null);
 	const [categorySelected, setCategorySelected] = useState(null as IPropertyCategory | null);
+	const [previewUrls, setPreviewUrls]: any = useState([]);
+
 	const {
 		register,
 		handleSubmit,
@@ -34,7 +44,6 @@ const DashboardSubmitPost = () => {
 		reset,
 		setValue,
 	} = useForm<ProductRequest>();
-	const [previewUrls, setPreviewUrls]: any = useState([]);
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files;
@@ -66,6 +75,12 @@ const DashboardSubmitPost = () => {
 			dispatch(fetchCategories());
 		}
 	}, [dispatch, fetchCategories, categories, categoriesLoading]);
+
+	useEffect(() => {
+		if (!locations && !locationLoading) {
+			dispatch(fetchLocation());
+		}
+	}, [dispatch, fetchLocation, locations, locationLoading]);
 
 	return (
 		<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6">
@@ -137,16 +152,17 @@ const DashboardSubmitPost = () => {
 					<div className="grid grid-cols-2 gap-6">
 						<div>
 							<Label>
-								Ville <span className="text-red-500">*</span>
+								Commune <span className="text-red-500">*</span>
 							</Label>
 
 							<div className="block md:col-span-2 p-2">
-								<Select name="city" required onChange={(event) => setValue("city", event.target.value)}>
-									{getCities().map((city) => (
-										<option key={city.id} value={city.id}>
-											{city.name}
-										</option>
-									))}
+								<Select name="city" required onChange={(event) => setValue("location_id", event.target.value)}>
+									{locations &&
+										locations.map((location) => (
+											<option key={location.id} value={location.id}>
+												{location.name}
+											</option>
+										))}
 								</Select>
 							</div>
 						</div>
@@ -154,9 +170,9 @@ const DashboardSubmitPost = () => {
 						<div>
 							<label className="block md:col-span-2">
 								<Label>
-									Commune/Quartier <span className="text-red-500">*</span>
+									Quartier <span className="text-red-500">*</span>
 								</Label>
-								<Input type="text" className="mt-1" {...register("state", { required: true })} />
+								<Input type="text" className="mt-1" {...register("location_description", { required: true })} />
 							</label>
 						</div>
 					</div>

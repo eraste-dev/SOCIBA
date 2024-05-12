@@ -4,7 +4,7 @@ import ProductSortOption from "./ProductSortOption";
 import { FaArrowDown, FaArrowUp, FaUserAlt, FaUserAltSlash } from "react-icons/fa";
 import { sortIconSize } from "./WidgetSort.type";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { PropertyAction } from "app/properties/propertiy";
+import { PropertyAction } from "app/reducer/products/propertiy";
 import { setFilters } from "app/axios/api.action";
 import { route } from "routers/route";
 

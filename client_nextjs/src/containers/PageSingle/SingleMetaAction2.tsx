@@ -5,7 +5,7 @@ import { SOCIALS_DATA } from "components/SocialsShare/SocialsShare";
 import BookmarkContainer from "containers/BookmarkContainer/BookmarkContainer";
 import { PostDataType } from "data/types";
 import NcDropDown from "components/NcDropDown/NcDropDown";
-import { IProperty } from "app/properties/propertiy";
+import { IProperty } from "app/reducer/products/propertiy";
 
 export interface SingleMetaAction2Props {
 	className?: string;

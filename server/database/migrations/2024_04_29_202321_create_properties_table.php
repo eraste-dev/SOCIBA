@@ -20,21 +20,19 @@ return new class extends Migration
             $table->longText('excerpt')->nullable();
             $table->longText('content')->nullable();
             $table->string('address')->nullable();
-            $table->string('location')->nullable();
             $table->string('client_address')->nullable();
-            $table->string('property_type')->nullable();
-            $table->string('price')->nullable();
-            $table->string('deposit_price')->nullable();
-            $table->string('post_type')->nullable()->comment('ADMIN :admin CUSTOMER:customer');
-            $table->string('city')->default('Kutch')->nullable();
-            $table->string('country')->nullable();
-            $table->string('state')->nullable();
+            $table->enum('type', ['ACHAT', 'VENTE', 'LOCATION', 'AUTRE'])->nullable();
+            $table->double('price')->nullable();
+            $table->double('deposit_price')->nullable();
+            // $table->string('post_type')->nullable()->comment('ADMIN :admin CUSTOMER:customer');
+            $table->string('location_id')->nullable(); // municipalities id
+            $table->string('location_description')->nullable();
             $table->string('video_link')->nullable();
             $table->double('latitude')->nullable();
             $table->double('longitude')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
-            $table->string('status')->default(0)->comment(' 0: Deactive 1: Active');
+            $table->enum('status', ['PUBLISH', 'DRAFT', 'DELETED', 'REJECTED', 'PENDING', 'BLOCKED'])->default('PENDING');
             $table->bigInteger('total_click')->default(0)->nullable();
             $table->timestamps();
         });

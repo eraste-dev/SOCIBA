@@ -1,4 +1,4 @@
-import { IPropertyCategory } from "app/properties/propertiy-category";
+import { IPropertyCategory } from "app/reducer/products/propertiy-category";
 import React, { FC } from "react";
 
 export interface IPropertyType {

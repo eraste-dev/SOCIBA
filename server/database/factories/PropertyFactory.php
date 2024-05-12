@@ -20,9 +20,11 @@ class PropertyFactory extends Factory
         if (!defined('PROPERTY_STATUS')) {
             define('PROPERTY_STATUS', [
                 'PUBLISH'   => 'PUBLISH',
-                'UNPUBLISH' => 'UNPUBLISH',
                 'DRAFT'     => 'DRAFT',
                 'DELETED'   => 'DELETED',
+                'REJECTED' => 'REJECTED',
+                'PENDING'   => 'PENDING',
+                'BLOCKED'   => 'BLOCKED',
             ]);
         }
 
@@ -37,20 +39,16 @@ class PropertyFactory extends Factory
         return [
             'category_id' => $this->faker->numberBetween(1, 5),
             'title' => $this->faker->sentence,
-            'title' => ($this->faker->sentence),
             'slug' => Str::slug($this->faker->sentence),
-            // 'description' => $this->faker->paragraph,
             'excerpt' => $this->faker->paragraph(2),
             'content' => $content,
             'address' => $this->faker->address,
-            'location' => $this->faker->city,
             'client_address' => $this->faker->address,
-            // 'property_type' => $this->faker->randomElement(['Appartement', 'Maison', 'Villa']),
+            'type' => $this->faker->randomElement(['ACHAT', 'VENTE', 'LOCATION', 'AUTRE']),
             'price' => $this->faker->numberBetween(500000, 90000000),
-            'post_type' => $this->faker->randomElement(POST_TYPE),
-            'country' => $this->faker->country,
-            'city' => $this->faker->city,
-            'state' => $this->faker->citySuffix(),
+            // 'post_type' => $this->faker->randomElement(POST_TYPE),
+            'location_id' => $this->faker->numberBetween(1, 10),
+            'location_description' => $this->faker->realText(100),
             'video_link' => $this->faker->boolean(10) ?  'https://v3.cdnpk.net/videvo_files/video/free/2012-09/large_preview/hd1854.mp4' : null,
             'latitude' => $this->faker->latitude,
             'longitude' => $this->faker->longitude,

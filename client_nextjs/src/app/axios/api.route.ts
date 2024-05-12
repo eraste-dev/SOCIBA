@@ -19,6 +19,9 @@ export interface IServerEndpoint {
 		sliders: {
 			get: IAxiosRequestConfig;
 		};
+		locations: {
+			get: IAxiosRequestConfig;
+		};
 		properties: {
 			categories: IAxiosRequestConfig;
 			search: (query: IGetSearchPropertiesParams) => IAxiosRequestConfig;
@@ -46,6 +49,9 @@ export const serverEndpoints: IServerEndpoint = {
 	public: {
 		sliders: {
 			get: { method: "GET", url: `${v100}/sliders` },
+		},
+		locations: {
+			get: { method: "GET", url: `${v100}/locations` },
 		},
 		properties: {
 			categories: { method: "GET", url: `${v100}/categories` },

@@ -3,7 +3,7 @@ import { AppDispatch } from "app/store";
 import { IServerResponse, ProductRequest, RegisterRequest } from "./api.type";
 import { serverEndpoints } from "./api.route";
 import { axiosRequest } from "./api";
-import { fetchCategoriesFailure, fetchCategoriesStart, fetchCategoriesSuccess } from "app/properties/propertiy-category";
+import { fetchCategoriesFailure, fetchCategoriesStart, fetchCategoriesSuccess } from "app/reducer/products/propertiy-category";
 import {
 	IPropertyFilter,
 	fetchAllPropertiesFailure,
@@ -24,7 +24,7 @@ import {
 	postProductStart,
 	postProductSuccess,
 	postProductFailure,
-} from "app/properties/propertiy";
+} from "app/reducer/products/propertiy";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import { initAuthentication, loginFailure, loginStart, loginSuccess, registerFailure, registerStart, registerSuccess } from "app/auth/auth";
 

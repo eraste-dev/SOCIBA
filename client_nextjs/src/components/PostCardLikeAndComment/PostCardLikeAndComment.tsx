@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import PostCardCommentBtn from "components/PostCardCommentBtn/PostCardCommentBtn";
 import PostCardLikeContainer from "containers/PostCardLikeContainer/PostCardLikeContainer";
 import { PostDataType } from "data/types";
-import { IProperty } from "app/properties/propertiy";
+import { IProperty } from "app/reducer/products/propertiy";
 
 export interface PostCardLikeAndCommentProps {
 	className?: string;

@@ -24,8 +24,18 @@ class UserSeeder extends Seeder
             'type'              => 'ADMIN', 'status' => 'ACTIVE'
         ]);
 
+        User::create([
+            'name'              => 'EK',
+            'last_name'          => '',
+            'email'             => 'admingrc@candyde.click',
+            'email_verified_at' => now(),
+            'password'          => Hash::make('100100100'),
+            'remember_token'    => null,
+            'type'              => 'ADMIN', 'status' => 'ACTIVE'
+        ]);
 
-        User::factory(10)->create();
+
+        // User::factory(10)->create();
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',

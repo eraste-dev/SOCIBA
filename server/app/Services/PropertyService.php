@@ -45,6 +45,8 @@ class PropertyService
         if ($payload['top_seed']) {
             // Ajoutez votre logique de tri ici
             $query->orderBy('total_click', 'desc');
+        } else {
+            $query->orderBy('created_at', 'desc');
         }
 
         // Renvoie les données paginées avec une collection

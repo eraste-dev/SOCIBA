@@ -5,13 +5,15 @@
  *
  */
 
-use App\Http\Controllers\API\PropertyCategoryController;
+use App\Http\Controllers\PropertyCategoryController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\SliderController;
+use App\Http\Controllers\SliderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyImagesController;
+use App\Http\Middleware\JwtMiddleware;
 use App\Services\ResponseService;
 
 Route::get('/', function () {
@@ -20,21 +22,30 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'v1'], function () {
     // ? PUBLIC ROUTE
-    Route::resource('sliders', SliderController::class);
-    Route::resource('categories', PropertyCategoryController::class);
-    Route::group(['prefix' => 'properties'], function () {
-        Route::get('/', [PropertyController::class, 'get']);
-        Route::post('/', [PropertyController::class, 'store']);
+    Route::group(['prefix' => ''], function () {
+        Route::resource('sliders', SliderController::class);
+        Route::resource('categories', PropertyCategoryController::class);
+        Route::group(['prefix' => 'properties'], function () {
+            Route::get('/', [PropertyController::class, 'get']);
+        });
+        Route::group(['prefix' => 'locations'], function () {
+            Route::get('/', [MunicipalityController::class, 'index']);
+        });
+        // Route::resource('property-images', PropertyImagesController::class);
     });
-    // Route::resource('property-images', PropertyImagesController::class);
 
     // * AUTH ROUTE
+    Route::group(['prefix' => 'auth'], function () {
+        Route::post('login',    [AuthController::class, 'login']);
+        Route::post('register', [AuthController::class, 'register']);
+        Route::post('logout',   [AuthController::class, 'logout']);
+    });
 
-    // AUTH
-    Route::post('auth/login',    [AuthController::class, 'login']);
-    Route::post('auth/register', [AuthController::class, 'register']);
-    Route::post('auth/logout',   [AuthController::class, 'logout']);
-
-    // ! PROTECED ROUTE
-
+    // ! PROTECTED ROUTE
+    Route::group(['prefix' => '/admin', 'middleware' => [JwtMiddleware::class]], function () {
+        // Route::get('/', [Controller::class, 'adminIndex'])->name('admin.index');
+        Route::group(['prefix' => 'products'], function () {
+            Route::post('/', [PropertyController::class, 'store'])->name('admin.products.store');
+        });
+    });
 });

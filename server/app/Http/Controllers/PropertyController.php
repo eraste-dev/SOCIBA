@@ -10,6 +10,8 @@ use App\Services\PropertyService;
 use App\Services\ResponseService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class PropertyController extends Controller
 {
@@ -35,36 +37,47 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        // Valider les données de la requête
-        $validatedData = $request->validate([
-            'title'         => 'required|string',
-            'category_id'   => 'required|integer',
-            'excerpt'       => 'required|string',
-            'content'       => 'required|string',
-            'property_type' => 'required|string',
-            'city'          => 'required|string',
-            'state'         => 'required|string',
-            'price'         => 'required|numeric',
-            'deposit_price' => 'required|numeric',
-            'images.*'      => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validation pour les images
+        $validator = Validator::make($request->all(), [
+            'title'                => 'required|string',
+            'category_id'          => 'required|integer|exists:property_categories,id',
+            'excerpt'              => 'required|string',
+            'content'              => 'required|string',
+            'type'                 => 'required|string|in:ACHAT,VENTE,LOCATION,AUTRE',
+            'location_id'          => 'required|string|exists:municipalities,id',
+            'location_description' => 'nullable|string',
+            'price'                => 'required|numeric',
+            'deposit_price'        => 'nullable|numeric',
+            'images.*'             => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validation pour les images
         ]);
 
+        if ($validator->fails()) {
+            return ResponseService::error("Erreur d'enregistrement", 422, $validator->errors());
+        }
+
         // Enregistrer les données dans la base de données
+        $validatedData = $validator->validated();
+
         $product = new Property();
         $product->title         = $validatedData['title'];
         $product->slug          = Str::slug($validatedData['title']);
         $product->category_id   = $validatedData['category_id'];
         $product->excerpt       = $validatedData['excerpt'];
         $product->content       = $validatedData['content'];
-        $product->property_type = $validatedData['property_type'];
-        $product->city          = $validatedData['city'];
-        $product->state         = $validatedData['state'];
+        $product->type          = $validatedData['type'];
+        $product->location_id   = $validatedData['location_id'];
+        $product->location_description = $validatedData['location_description'];
         $product->price         = $validatedData['price'];
         $product->deposit_price = $validatedData['deposit_price'];
+
+        // default values
+        $product->status = 'PENDING';
+        // $product->createSlug(Property::class, 'slug', $validatedData['title']);
+        $product->created_by = auth()->user()->id;
 
         $product->save();
         $insert = $product->refresh();
 
+        // Enregistrer les images
         if ($request->hasFile('images')) {
             $imageUrls = [];
             foreach ($request->file('images') as $key => $image) {
@@ -80,31 +93,7 @@ class PropertyController extends Controller
             // $product->images = $imageUrls;
         }
 
-        return ResponseService::success($product->refresh(), 201);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Property $property)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Property $property)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Property $property)
-    {
-        //
+        return ResponseService::success($product->refresh(), "Product created successfully");
     }
 
     /**

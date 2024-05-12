@@ -6,7 +6,7 @@ import NextPrev from "components/NextPrev/NextPrev";
 import Card11 from "components/Card/Card11/Card11";
 import ncNanoId from "utils/ncNanoId";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { PropertyAction } from "app/properties/propertiy";
+import { PropertyAction } from "app/reducer/products/propertiy";
 import { useSelector } from "react-redux";
 import { fetchFeatureProperties } from "app/axios/api.action";
 

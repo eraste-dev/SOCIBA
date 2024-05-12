@@ -47,8 +47,8 @@ export interface ProductRequest {
 	excerpt: string;
 	content: string;
 	property_type: string;
-	city: string;
-	state: string; // detail commune location
+	location_id: string;
+	location_description: string; // detail commune location
 	price: number;
 	deposit_price: number;
 	images: FileList | null;

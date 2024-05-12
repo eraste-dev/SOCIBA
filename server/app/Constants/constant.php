@@ -1,9 +1,11 @@
 <?php
 define('PROPERTY_STATUS', [
     'PUBLISH'   => 'PUBLISH',
-    'UNPUBLISH' => 'UNPUBLISH',
     'DRAFT'     => 'DRAFT',
     'DELETED'   => 'DELETED',
+    'REJECTED' => 'REJECTED',
+    'PENDING'   => 'PENDING',
+    'BLOCKED'   => 'BLOCKED',
 ]);
 
 define('POST_TYPE', [

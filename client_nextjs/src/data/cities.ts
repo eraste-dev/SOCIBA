@@ -1,20 +1,4 @@
-export interface ICity {
-	id?: number;
-	name: string;
-	href?: string;
-	description?: string;
-	thumbnail?: string;
-	lat?: string;
-	lng?: string;
-	country: string;
-	iso2: string;
-	admin_name?: string;
-	capital?: string;
-	population?: string;
-	population_proper?: string;
-}
-
-export const CITIES: ICity[] = [
+export const CITIES: any[] = [
 	{
 		name: "Abidjan",
 		lat: "5.3167",
@@ -391,7 +375,7 @@ export const CITIES: ICity[] = [
 	},
 ];
 
-export const getCities = (): ICity[] => {
+export const getCities = (): any[] => {
 	let i: number = 0;
 	return CITIES.map((city) => {
 		i++;

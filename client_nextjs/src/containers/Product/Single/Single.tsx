@@ -9,7 +9,7 @@ import SingleContent from "containers/PageSingle/SingleContent";
 import SingleRelatedPosts from "containers/PageSingle/SingleRelatedPosts";
 import SingleHeader from "containers/PageSingle/SingleHeader";
 import ModalPhotos from "./ModalPhotos";
-import { PropertyAction } from "app/properties/propertiy";
+import { PropertyAction } from "app/reducer/products/propertiy";
 import { fetchSingleProperties } from "app/axios/api.action";
 import { useParams } from "react-router-dom";
 import SingleBreadcrumb from "containers/PageSingle/SingleBreadcrumb";

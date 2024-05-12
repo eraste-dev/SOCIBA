@@ -3,7 +3,7 @@ import NcImage from "components/NcImage/NcImage";
 import { TaxonomyType, TwMainColor } from "data/types";
 import { Link } from "react-router-dom";
 import Badge from "components/Badge/Badge";
-import { IPropertyCategory } from "app/properties/propertiy-category";
+import { IPropertyCategory } from "app/reducer/products/propertiy-category";
 
 export interface CardCategory2Props {
 	className?: string;

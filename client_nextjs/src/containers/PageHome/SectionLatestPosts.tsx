@@ -8,7 +8,7 @@ import { DEMO_AUTHORS } from "data/authors";
 import Pagination from "components/Pagination/Pagination";
 import Card11 from "components/Card/Card11/Card11";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { IProperty, PropertyAction } from "app/properties/propertiy";
+import { IProperty, PropertyAction } from "app/reducer/products/propertiy";
 import { useSelector } from "react-redux";
 import { fetchAllProperties } from "app/axios/api.action";
 import WidgetSort from "components/Widgets/WidgetSort/WidgetSort";

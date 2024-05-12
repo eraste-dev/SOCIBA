@@ -5,7 +5,7 @@ import { SinglePageType } from "./PageSingleTemp3Sidebar";
 import PostMeta2 from "components/PostMeta2/PostMeta2";
 import SingleMetaAction2 from "./SingleMetaAction2";
 import { Helmet } from "react-helmet";
-import { IProperty } from "app/properties/propertiy";
+import { IProperty } from "app/reducer/products/propertiy";
 import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
 import { FaMapMarkerAlt } from "react-icons/fa";
 

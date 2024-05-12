@@ -10,4 +10,9 @@ abstract class Controller
     {
         return ResponseService::success([], "Welcome to the Sociba Server API");
     }
+
+    public function adminIndex()
+    {
+        return ResponseService::success([], "Welcome to the Sociba Server API || ADMIN GUARD ");
+    }
 }
