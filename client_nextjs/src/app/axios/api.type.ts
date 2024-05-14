@@ -46,7 +46,7 @@ export interface ProductRequest {
 	category_id: number;
 	excerpt: string;
 	content: string;
-	property_type: string;
+	type: string;
 	location_id: string;
 	location_description: string; // detail commune location
 	price: number;

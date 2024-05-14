@@ -106,7 +106,7 @@ export const postProduct = (payload: ProductRequest) => async (dispatch: AppDisp
 	dispatch(postProductStart());
 
 	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.post(payload) }, false);
+		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.post(payload) }, true);
 		dispatch(postProductSuccess(response.data));
 	} catch (error: any) {
 		dispatch(postProductFailure(error.message));

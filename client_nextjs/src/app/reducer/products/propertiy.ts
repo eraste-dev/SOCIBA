@@ -3,6 +3,7 @@ import { IStoreAction, IStoreDataState, ProductRequest } from "../../axios/api.t
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 import { IUser } from "app/auth/auth";
+import { ILocation } from "../locations/locations";
 
 export interface IPropertyImage {
 	id: number;
@@ -10,8 +11,6 @@ export interface IPropertyImage {
 	image: string;
 	created_at: Date;
 }
-
-export interface Ilocation {}
 
 export interface IProperty {
 	id: number;
@@ -24,7 +23,7 @@ export interface IProperty {
 	client_address: string;
 	price: number;
 	location_description: string;
-	location: Ilocation;
+	location: ILocation;
 	city: string;
 	status: string;
 	total_click: number;
@@ -97,7 +96,7 @@ const initialState: IStoreDataState<IStorePropertyData | undefined> = {
 };
 
 export const PropertiesSlice = createSlice({
-	name: "sliders",
+	name: "Products",
 	initialState,
 	reducers: {
 		// ALL

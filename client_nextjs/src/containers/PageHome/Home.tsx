@@ -7,6 +7,7 @@ import SectionLatestPosts from "./SectionLatestPosts";
 import SectionGridCategoryBox from "components/SectionGridCategoryBox/SectionGridCategoryBox";
 import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import SectionHeroSlider from "components/SectionHero/SectionHeroSlider";
+import SectionGridCitiesBox from "components/SectionGridCitiesBox/SectionGridCitiesBox";
 
 // DEMO DATA
 const POSTS = DEMO_POSTS;
@@ -40,7 +41,8 @@ const Home: React.FC = () => {
 				{/* className="pt-10 pb-16 md:py-16 lg:py-28" */}
 				<SectionHeroSlider className="pb-16 " />
 
-				<SectionGridCategoryBox headingCenter={false} categoryCardType="card2" className="pb-8 lg:pb-10" />
+				{/* <SectionGridCategoryBox headingCenter={false} categoryCardType="card2" className="pb-8 lg:pb-10" /> */}
+				<SectionGridCitiesBox headingCenter={false} categoryCardType="card1" className="pb-8 lg:pb-10" />
 
 				{/* === SECTION 8 === */}
 				<SectionSliderPosts

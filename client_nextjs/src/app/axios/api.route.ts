@@ -56,7 +56,7 @@ export const serverEndpoints: IServerEndpoint = {
 		properties: {
 			categories: { method: "GET", url: `${v100}/categories` },
 			search: (query: IGetSearchPropertiesParams) => ({ method: "GET", url: `${v100}/properties${QueryBuilder.searchProperties(query)}` }),
-			post: (product: ProductRequest) => ({ method: "POST", url: `${v100}/properties`, data: product }),
+			post: (product: ProductRequest) => ({ method: "POST", url: `${v100}/admin/products`, data: product }),
 		},
 		auth: {
 			login: (data: { email: string; password: string }) => ({ method: "POST", url: `${v100}/auth/login`, data }),

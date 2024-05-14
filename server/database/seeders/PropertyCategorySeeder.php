@@ -17,41 +17,16 @@ class PropertyCategorySeeder extends Seeder
         // Catégories principales
         $categories = [
             [
-                'name' => 'Maison',
-                'slug' => 'maison',
-                'icon' => 'fa fa-envelope',
-                'description' => ''
+                'name' => 'Maison', 'slug' => 'maison', 'icon' => '', 'description' => ''
             ],
             [
-                'name' => 'Appartement',
-                'slug' => 'appartement',
-                'icon' => 'fa fa-envelope',
-                'description' => ''
+                'name' => 'Magasin', 'slug' => 'magasin', 'icon' => '', 'description' => ''
             ],
             [
-                'name' => 'Hôtel',
-                'slug' => 'hotel',
-                'icon' => 'fa fa-envelope',
-                'description' => ''
+                'name' => 'Entrepot', 'slug' => 'entrepot', 'icon' => '', 'description' => ''
             ],
-            [
-                'name' => 'Service',
-                'slug' => 'Service',
-                'icon' => 'fa fa-envelope',
-                'description' => ''
-            ],
-            [
-                'name' => 'Terrain',
-                'slug' => 'Terrain',
-                'icon' => 'fa fa-envelope',
-                'description' => ''
-            ],
-            [
-                'name' => 'Résidence',
-                'slug' => 'Résidence',
-                'icon' => 'fa fa-envelope',
-                'description' => ''
-            ],
+            ['name' => 'Location', 'slug' => 'location', 'icon' => '', 'description' => ''],
+            ['name' => '', 'slug' => '', 'icon' => '', 'description' => ''],
         ];
 
         // Insérer les catégories principales
@@ -64,14 +39,27 @@ class PropertyCategorySeeder extends Seeder
             // Sous-catégories pour la catégorie principale "Maison"
             if ($category->name === 'Maison') {
                 $subCategories = [
-                    [
-                        'name' => 'Villa',
-                        'slug' => 'villa',
-                    ],
-                    [
-                        'name' => 'Maison de ville',
-                        'slug' => 'maison-de-ville',
-                    ],
+                    ['name' => 'Studio', 'slug' => 'studio',],
+                    ['name' => 'Chambre', 'slug' => 'chambre',],
+                    ['name' => 'Chambre salon', 'slug' => 'chambre-salon',],
+                    ['name' => '2 Chambres salon', 'slug' => '2-chambre-salon',],
+                    ['name' => 'Villa', 'slug' => 'villa',],
+                    ['name' => 'Duplex', 'slug' => 'duplex',],
+                    ['name' => 'Triplex', 'slug' => 'triplex',],
+                ];
+
+                foreach ($subCategories as $subCategoryData) {
+                    $category->children()->create([
+                        'name' => $subCategoryData['name'],
+                        'slug' => $subCategoryData['slug'],
+                    ]);
+                }
+            }
+
+            if ($category->name === 'Entrepot') {
+                $subCategories = [
+                    ['name' => 'Espace à louer', 'slug' => 'espace-a-louer',],
+                    ['name' => 'Autres', 'slug' => 'autres',],
                 ];
 
                 foreach ($subCategories as $subCategoryData) {
@@ -82,7 +70,5 @@ class PropertyCategorySeeder extends Seeder
                 }
             }
         }
-
-        // PropertyCategoryFactory::new()->count(150)->create();
     }
 }

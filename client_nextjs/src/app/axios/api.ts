@@ -1,5 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { serverUrl } from "./api.route";
+import { AuthAction, IUser } from "app/auth/auth";
+import { useSelector } from "react-redux";
 
 const axiosInstance: AxiosInstance = axios.create({
 	baseURL: "http://localhost:8000",
@@ -17,22 +19,13 @@ export const setAuthToken = (token: string | null): void => {
 export const axiosRequest = async <T>(config: AxiosRequestConfig, withAuth: boolean = false): Promise<T> => {
 	try {
 		if (withAuth) {
-			// Ajouter le jeton d'authentification aux en-têtes de la requête
-			const token = localStorage.getItem("token"); // Adapter la récupération du jeton à votre logique
 			config.baseURL = serverUrl;
+			const token: string | undefined = useSelector(AuthAction.data)?.token;
 			if (token) {
 				config.headers = {
 					...config.headers,
-					"Content-Type": "application/json",
-					Accept: "application/json",
-					// "Access-Control-Allow-Origin": "*",
-					// "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-					// "Access-Control-Allow-Headers": "Content-Type, Authorization, Content-Length, X-Requested-With",
-					// "Access-Control-Allow-Credentials": "true",
-					// "Access-Control-Expose-Headers": "Authorization",
-					Authorization: `Bearer ${token}`,
+					Authorization: "Bearer " + token,
 				};
-				// setAuthToken(token);
 			}
 		}
 		const response: { data: T } = await axiosInstance.request<T>(config);

@@ -48,14 +48,12 @@ const DashboardSubmitPost = () => {
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files;
 		const urls = [];
-
 		if (files) {
 			for (let i = 0; i < files.length; i++) {
 				const url = URL.createObjectURL(files[i]);
 				urls.push(url);
 			}
 		}
-
 		setValue("images", files);
 		setPreviewUrls(urls);
 	};
@@ -94,8 +92,8 @@ const DashboardSubmitPost = () => {
 
 					<SelectProductType
 						options={["Vente", "Location", "Achat", "Autre"]}
-						onChangeOption={(value) => setValue("property_type", value)}
-						selected={watch("property_type")}
+						onChangeOption={(value) => setValue("type", value)}
+						selected={watch("type")}
 					/>
 				</label>
 
@@ -137,6 +135,29 @@ const DashboardSubmitPost = () => {
 
 						<div>
 							{/* <label className="flex justify-start items-center p-2 cursor-pointer ">Catégorie</label> */}
+
+							{false && (
+								<div className="block md:col-span-2 p-2">
+									<Select
+										name="category_id"
+										onChange={(event) => {
+											handleSelectedCategory(
+												((categoryParent && categories && categoryParent.children) || []).filter(
+													(c) => c.id.toString() === event.target.value
+												)[0] || null
+											);
+										}}
+									>
+										{((categoryParent && categories && categoryParent?.children) || [])
+											.filter((category) => category.parent_id === null && category.children.length != 0)
+											.map((category) => (
+												<option key={category.id} value={category.id}>
+													{category.name}
+												</option>
+											))}
+									</Select>
+								</div>
+							)}
 
 							<SelectProductCategories
 								options={(categoryParent && categories && categoryParent.children) || []}

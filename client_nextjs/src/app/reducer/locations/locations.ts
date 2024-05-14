@@ -33,7 +33,7 @@ export interface ICountry {
 	updated_at: string;
 }
 
-export interface Location {
+export interface ILocation {
 	id: number;
 	name: string;
 	href: string;
@@ -47,7 +47,7 @@ export interface Location {
 	updated_at: string | null;
 }
 
-const initialState: IStoreDataState<Location[] | undefined> = {
+const initialState: IStoreDataState<ILocation[] | undefined> = {
 	data: undefined,
 	success: false,
 	message: "",
@@ -66,7 +66,7 @@ export const LocationSlice = createSlice({
 			state.success = false;
 			state.message = "";
 		},
-		fetchLocationsSuccess: (state, action: PayloadAction<Location[]>) => {
+		fetchLocationsSuccess: (state, action: PayloadAction<ILocation[]>) => {
 			state.loading = false;
 			state.error = null;
 			state.data = action.payload;
@@ -80,7 +80,7 @@ export const LocationSlice = createSlice({
 
 export const { fetchLocationsStart, fetchLocationsSuccess, fetchLocationsFailure } = LocationSlice.actions;
 
-export const LocationAction: IStoreAction<Location[]> = {
+export const LocationAction: IStoreAction<ILocation[]> = {
 	data: (state: RootState) => state.locations.data,
 	loading: (state: RootState) => state.locations.loading,
 	error: (state: RootState) => state.locations.error,
