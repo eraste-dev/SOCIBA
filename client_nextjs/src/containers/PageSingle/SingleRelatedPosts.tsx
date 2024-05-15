@@ -23,11 +23,11 @@ const SingleRelatedPosts: FC<SingleRelatedPostsProps> = ({ relatedPosts = demoRe
 					<Heading className="mb-10 text-neutral-900 dark:text-neutral-50" desc="">
 						Related posts
 					</Heading>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+					{/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
 						{relatedPosts.map((post) => (
 							<Card11 key={post.id} post={post} />
 						))}
-					</div>
+					</div> */}
 				</div>
 
 				{/* MORE FROM AUTHOR */}

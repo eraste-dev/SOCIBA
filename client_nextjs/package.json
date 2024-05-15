@@ -53,9 +53,11 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@types/react": "^17.0.33",
+    "@types/numeral": "^2.0.5",
+    "@types/react": "^17.0.80",
     "@types/react-dom": "^17.0.10",
     "@types/react-router-dom": "^5.1.7",
+    "@types/react-slick": "^0.23.13",
     "@vitejs/plugin-react": "^1.0.7",
     "autoprefixer": "^10.4.2",
     "cssjanus": "^2.1.0",

@@ -72,7 +72,7 @@ const Card2: FC<Card2Props> = ({
         </div>
         <CardAuthor2 className="relative my-4" date={date} author={author} />
         <div className="flex items-center justify-between mt-auto">
-          <PostCardLikeAndComment className="relative" postData={post} />
+          {/* <PostCardLikeAndComment className="relative" postData={post} /> */}
           <PostCardSaveAction
             className="relative"
             postData={post}

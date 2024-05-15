@@ -17,9 +17,9 @@ const SectionGridCategory: React.FC<SectionGridCategoryProps> = ({
     <div className="nc-SectionGridCategory">
       <Heading>📚 Categories</Heading>
       <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 xl:gap-8">
-        {categories.map((item) => (
+        {/* {categories.map((item) => (
           <CardCategory1 key={item.id} taxonomy={item} size="large" />
-        ))}
+        ))} */}
       </div>
     </div>
   );

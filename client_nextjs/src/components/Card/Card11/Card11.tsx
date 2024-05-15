@@ -17,7 +17,7 @@ export interface Card11Props {
 }
 
 const Card11: FC<Card11Props> = ({ className = "h-full", post, hiddenAuthor = false, ratio = "aspect-w-4 aspect-h-3" }) => {
-	const { title, href, price, category, updated_at, state, city, country } = post;
+	const { title, href, price, category, updated_at, location, location_description } = post;
 	const [isHover, setIsHover] = useState(false);
 	const dispatch = useAppDispatch();
 	const history = useHistory();
@@ -61,7 +61,7 @@ const Card11: FC<Card11Props> = ({ className = "h-full", post, hiddenAuthor = fa
 				</div>
 				<span className="text-xs text-neutral-500 flex justify-items-center ">
 					<FaMapMarkerAlt className="mr-1" />
-					{state}, {city}, {country}
+					{location_description}, {location.name} , {location.city?.name}
 				</span>
 				<span className="text-xs text-neutral-500">{updated_at}</span>
 

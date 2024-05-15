@@ -42,7 +42,7 @@ const PageSingleTemp2Sidebar: FC<PageSingleTemp2SidebarProps> = ({
         {/* SINGLE HEADER */}
         <header className="container rounded-xl">
           <div className="max-w-screen-md mx-auto">
-            <SingleHeader hiddenDesc pageData={SINGLE} />
+            {/* <SingleHeader hiddenDesc pageData={SINGLE} /> */}
           </div>
         </header>
 
@@ -56,7 +56,7 @@ const PageSingleTemp2Sidebar: FC<PageSingleTemp2SidebarProps> = ({
         {/* SINGLE MAIN CONTENT */}
         <div className="container flex flex-col my-10 lg:flex-row ">
           <div className="w-full lg:w-3/5 xl:w-2/3 xl:pr-20">
-            <SingleContent data={SINGLE} />
+            {/* <SingleContent data={SINGLE} /> */}
           </div>
           <div className="w-full mt-12 lg:mt-0 lg:w-2/5 lg:pl-10 xl:pl-0 xl:w-1/3">
             <Sidebar />

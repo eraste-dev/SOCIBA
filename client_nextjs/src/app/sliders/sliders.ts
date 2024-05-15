@@ -51,6 +51,7 @@ export const sliderAction: IStoreAction<Slider[]> = {
 	data: (state: RootState) => state.sliders.data,
 	loading: (state: RootState) => state.sliders.loading,
 	error: (state: RootState) => state.sliders.error,
+	errors: (state: RootState) => state.sliders.errors,
 	message: (state: RootState) => state.sliders.message,
 	success: (state: RootState) => state.sliders.success,
 };

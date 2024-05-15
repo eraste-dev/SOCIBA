@@ -169,21 +169,21 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
 
           {/* LOOP ITEMS */}
           {/* LOOP ITEMS POSTS */}
-          {tabActive === "Articles" && (
+          {/* {tabActive === "Articles" && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-8 mt-8 lg:mt-10">
               {posts.map((post) => (
                 <Card11 key={post.id} post={post} />
               ))}
             </div>
-          )}
+          )} */}
           {/* LOOP ITEMS CATEGORIES */}
-          {tabActive === "Categories" && (
+          {/* {tabActive === "Categories" && (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 md:gap-8 mt-8 lg:mt-10">
               {cats.map((cat) => (
                 <CardCategory2 key={cat.id} taxonomy={cat} />
               ))}
             </div>
-          )}
+          )} */}
           {/* LOOP ITEMS TAGS */}
           {tabActive === "Tags" && (
             <div className="flex flex-wrap mt-12 ">

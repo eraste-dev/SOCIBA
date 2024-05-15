@@ -19,11 +19,11 @@ const SingleMetaAction: FC<SingleMetaActionProps> = ({
   return (
     <div className={`nc-SingleMetaAction ${className}`}>
       <div className="flex flex-col space-y-4 mt-auto sm:flex-row sm:space-x-3 sm:space-y-0 sm:items-center sm:justify-between">
-        <PostCardLikeAndComment
+        {/* <PostCardLikeAndComment
           itemClass="px-4 h-9 text-sm"
           hiddenCommentOnMobile={false}
           postData={meta}
-        />
+        /> */}
 
         <div className="flex space-x-3 items-center sm:space-x-4">
           <SocialsShare
@@ -40,11 +40,11 @@ const SingleMetaAction: FC<SingleMetaActionProps> = ({
               containerClassName="h-9 w-9 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
               iconClass="h-5 w-5"
             />
-            <PostActionDropdown
+            {/* <PostActionDropdown
               containerClassName="h-9 w-9 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
               iconClass="h-5 w-5"
               postData={meta}
-            />
+            /> */}
           </div>
         </div>
       </div>

@@ -43,13 +43,13 @@ const Card19: FC<Card19Props> = ({
       data-nc-id="Card19"
     >
       <div className="absolute inset-x-0 top-0 p-3 flex items-center justify-between transition-all opacity-0 z-[-1] group-hover:opacity-100 group-hover:z-10 duration-300">
-        <PostCardLikeAndComment className="relative" postData={post} />
+        {/* <PostCardLikeAndComment className="relative" postData={post} /> */}
         <PostCardSaveAction className="relative" postData={post} />
       </div>
       <div className={`flex items-start relative w-full ${ratio}`}></div>
       {postType === "audio" ? (
         <div className="absolute inset-0">
-          <PostFeaturedMedia post={post} />
+          {/* <PostFeaturedMedia post={post} /> */}
         </div>
       ) : (
         <Link to={href}>

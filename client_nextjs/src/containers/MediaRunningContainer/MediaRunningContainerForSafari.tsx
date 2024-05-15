@@ -217,7 +217,7 @@ const MediaRunningContainerForSafari: FC<MediaRunningContainerForSafariProps> =
             </div>
           </Link>
           <div className="hidden md:flex flex-shrink-0 px-6 dark text-white space-x-2.5">
-            <PostCardLikeContainer like={like} postId={id} />
+            {/* <PostCardLikeContainer like={like} postId={id} /> */}
             <BookmarkContainer
               initBookmarked={bookmark.isBookmarked}
               postId={id}

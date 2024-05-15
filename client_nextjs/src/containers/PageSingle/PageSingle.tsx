@@ -40,7 +40,7 @@ const PageSingle: FC<PageSingleProps> = ({ className = "" }) => {
         {/* SINGLE HEADER */}
         <header className="container rounded-xl">
           <div className="max-w-screen-md mx-auto">
-            <SingleHeader pageData={SINGLE} />
+            {/* <SingleHeader pageData={SINGLE} /> */}
           </div>
         </header>
 
@@ -53,7 +53,7 @@ const PageSingle: FC<PageSingleProps> = ({ className = "" }) => {
 
         {/* SINGLE MAIN CONTENT */}
         <div className="container">
-          <SingleContent data={SINGLE} />
+          {/* <SingleContent data={SINGLE} /> */}
         </div>
 
         {/* RELATED POSTS */}

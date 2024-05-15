@@ -38,7 +38,7 @@ const Card7: FC<Card7Props> = ({
       data-nc-id="Card7"
     >
       <div className="absolute inset-x-0 top-0 p-3  flex items-center justify-between transition-all opacity-0 z-[-1] group-hover:opacity-100 group-hover:z-10 duration-300">
-        <PostCardLikeAndComment className="relative" postData={post} />
+        {/* <PostCardLikeAndComment className="relative" postData={post} /> */}
         <PostCardSaveAction className="relative" postData={post} />
       </div>
       <Link to={href} className={`flex items-start relative w-full ${ratio}`}>

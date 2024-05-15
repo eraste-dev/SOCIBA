@@ -115,7 +115,7 @@ const Header: FC<HeaderProps> = ({ mainNavStyle = "style1", currentPage }) => {
 
 						{/* ACTION */}
 						<div className="flex items-center space-x-2 text-neutral-800 sm:space-x-3 dark:text-neutral-100">
-							<PostCardLikeContainer postId={SINGLE.id} like={SINGLE.like} />
+							{/* <PostCardLikeContainer postId={SINGLE.id} like={SINGLE.like} /> */}
 							<BookmarkContainer initBookmarked={bookmark.isBookmarked} postId={id} />
 							<div className="border-l border-neutral-300 dark:border-neutral-700 h-6"></div>
 							<SocialsShare className="flex space-x-2" itemClass="w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300" />

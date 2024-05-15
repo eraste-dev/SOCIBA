@@ -60,7 +60,7 @@ const Card3: FC<Card3Props> = ({
           <PostCardMeta meta={{ ...post }} />
         </div>
         <div className="flex items-center flex-wrap justify-between mt-auto">
-          <PostCardLikeAndComment postData={post} />
+          {/* <PostCardLikeAndComment postData={post} /> */}
           <PostCardSaveAction postData={post} readingTime={readingTime} />
         </div>
       </div>

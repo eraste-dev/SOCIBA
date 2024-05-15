@@ -9,7 +9,6 @@ import categoryReducer from "./reducer/products/propertiy-category";
 import productReducer from "./reducer/products/propertiy";
 import authReducer from "./auth/auth";
 import locationReducer from "./reducer/locations/locations";
-import snackbarReducer from "./reducer/snackbar/Snackbar";
 
 const rootReducers = {
 	bookmark: bookmarkReducer,

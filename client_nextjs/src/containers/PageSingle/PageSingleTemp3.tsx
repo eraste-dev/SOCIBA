@@ -41,11 +41,11 @@ const PageSingleTemplate3: FC<PageSingleTemplate3Props> = ({
           {/* SINGLE HEADER */}
           <div className="dark container relative z-10">
             <div className="max-w-screen-md">
-              <SingleHeader
+              {/* <SingleHeader
                 hiddenDesc
                 metaActionStyle="style2"
                 pageData={SINGLE}
-              />
+              /> */}
             </div>
           </div>
 
@@ -62,7 +62,7 @@ const PageSingleTemplate3: FC<PageSingleTemplate3Props> = ({
 
         {/* SINGLE MAIN CONTENT */}
         <div className="container mt-10">
-          <SingleContent data={SINGLE} />
+          {/* <SingleContent data={SINGLE} /> */}
         </div>
 
         {/* RELATED POSTS */}

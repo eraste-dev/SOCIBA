@@ -5,19 +5,19 @@ dotenvCra.config();
 //
 
 const plugins = {
-  tailwindcss: {},
-  autoprefixer: {},
+	tailwindcss: {},
+	autoprefixer: {},
 };
 
 if (process.env.VITE_LRT_OR_RTL === "rtl") {
-  plugins["postcss-cssjanus"] = {
-    transformDirInUrl: false,
-    transformEdgeInUrl: false,
-  };
+	plugins["postcss-cssjanus"] = {
+		transformDirInUrl: false,
+		transformEdgeInUrl: false,
+	};
 }
 
 module.exports = () => {
-  return {
-    plugins,
-  };
+	return {
+		plugins,
+	};
 };

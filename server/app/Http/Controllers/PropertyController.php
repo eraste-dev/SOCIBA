@@ -27,6 +27,7 @@ class PropertyController extends Controller
             'categories' => $request->categories ?? null,
             'top_seed'   => $request->top ?? false,
             'limit'      => $request->limit ?? 84,
+            'created_by' => $request->created_by ?? null,
         ];
 
         return ResponseService::success(PropertyService::search($payload), Response::HTTP_OK);

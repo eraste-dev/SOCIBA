@@ -41,6 +41,10 @@ class PropertyService
             $query->whereIn('category_id', $payload['categories']);
         }
 
+        if($payload['created_by']) {
+            $query->where('created_by', $payload['created_by']);
+        }
+
         // Trie par pertinence si demandé
         if ($payload['top_seed']) {
             // Ajoutez votre logique de tri ici

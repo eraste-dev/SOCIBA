@@ -59,7 +59,7 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
         </div>
         <div className="w-full space-y-6 mt-12 lg:mt-0 lg:w-2/5 lg:pl-10 xl:pl-0 xl:w-1/3 ">
           <WidgetTags tags={tags} />
-          <WidgetCategories categories={categories} />
+          {/* <WidgetCategories categories={categories} /> */}
           <WidgetAuthors authors={authors} />
           <WidgetPosts posts={widgetPosts} />
         </div>

@@ -52,14 +52,14 @@ const SingleHeader4: FC<SingleHeader4Props> = ({
 
         <div className=" space-y-10">
           <div className="flex flex-col sm:flex-row justify-between sm:items-end space-y-5 sm:space-y-0 sm:space-x-5">
-            <PostMeta2
+            {/* <PostMeta2
               size="large"
               className="leading-none flex-shrink-0"
               meta={pageData}
               hiddenCategories
               avatarRounded="rounded-full shadow-inner"
-            />
-            <SingleMetaAction2 meta={pageData} />
+            /> */}
+            {/* <SingleMetaAction2 meta={pageData} /> */}
           </div>
           <div className="w-full border-b border-neutral-100 dark:border-neutral-800"></div>
         </div>

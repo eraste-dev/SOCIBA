@@ -85,7 +85,7 @@ const PageHomeDemo5: React.FC = () => {
         {/* === SECTION 11 === */}
         <div className="dark bg-neutral-900 dark:bg-black dark:bg-opacity-20 text-neutral-100">
           <div className="relative container">
-            <SectionGridPosts
+            {/* <SectionGridPosts
               className="py-16 lg:py-28"
               headingIsCenter
               postCardName="card10V2"
@@ -93,7 +93,7 @@ const PageHomeDemo5: React.FC = () => {
               subHeading="Hover on the post card and preview video 🥡"
               posts={DEMO_POSTS_VIDEO.filter((_, i) => i > 5 && i < 12)}
               gridClass="md:grid-cols-2 lg:grid-cols-3"
-            />
+            /> */}
           </div>
         </div>
 

@@ -1,14 +1,14 @@
 import React, { FC } from "react";
 
 interface ErrorMessageProps {
-	errors: any;
+	errors: { [key: string]: string[] };
 	error: string;
 }
 
 const ErrorMessage: FC<ErrorMessageProps> = ({ errors, error }) => {
 	return errors && errors[error] ? (
 		<>
-			{Object.values(errors[error]).map((e, index) => (
+			{errors[error].map((e, index) => (
 				<div key={index} className="text-red-500">
 					{e}
 				</div>
