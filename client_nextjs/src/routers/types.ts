@@ -1,7 +1,7 @@
 import { ComponentType } from "react";
 
 export interface LocationStates {
-	"/"?: {};
+	// "/"?: {};
 	"/#"?: {};
 	"/archive/:slug"?: {};
 	"/archive-video/:slug"?: {};
@@ -57,7 +57,7 @@ export interface LocationStates {
 	"/home-demo-5"?: {};
 	"/home-demo-6"?: {};
 	"/home-demo-7"?: {};
-	"/sociba"?: {};
+	"/"?: {};
 	"/annonces"?: {};
 	"/annonces/:slug"?: {};
 	"/annonce/:slug"?: {};

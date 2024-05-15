@@ -263,65 +263,65 @@ const singleChildrenMenus: NavItemType = {
 };
 
 const demoChildMenus: NavItemType[] = [
-	{
-		id: ncNanoId(),
-		name: import.meta.env.VITE_LRT_OR_RTL === "rtl" ? "Default Demo - LTR" : "Default Demo",
-		targetBlank: import.meta.env.VITE_LRT_OR_RTL === "rtl",
-		href: import.meta.env.VITE_LRT_OR_RTL === "rtl" ? "https://chisnghiax.com/ncmaz/" : "/",
-	},
-	{
-		id: ncNanoId(),
-		href: import.meta.env.VITE_LRT_OR_RTL !== "rtl" ? "https://chisnghiax.com/ncmaz-rtl/" : "/",
-		name: "Home Demo - RTL",
-		targetBlank: import.meta.env.VITE_LRT_OR_RTL !== "rtl",
-		isNew: true,
-	},
-	{
-		id: ncNanoId(),
-		href: "/home-demo-2",
-		name: "Home Demo 2",
-	},
-	{
-		id: ncNanoId(),
-		href: "/home-demo-3",
-		name: "Home Demo 3",
-	},
-	{
-		id: ncNanoId(),
-		href: "/home-demo-4",
-		name: "Home Demo 4",
-	},
-	{
-		id: ncNanoId(),
-		href: "/home-demo-6",
-		name: "Home - News",
-	},
-	{
-		id: ncNanoId(),
-		href: "/home-header-style2",
-		name: "Header Styles",
-		isNew: true,
-		type: "dropdown",
-		children: [
-			{
-				id: ncNanoId(),
-				href: "/",
-				name: "Header - 1",
-			},
-			{
-				id: ncNanoId(),
-				href: "/home-header-style2",
-				name: "Header - 2",
-				isNew: true,
-			},
-			{
-				id: ncNanoId(),
-				href: "/home-header-style2-logedin",
-				name: "Header - Logedin",
-				isNew: true,
-			},
-		],
-	},
+	// {
+	// 	id: ncNanoId(),
+	// 	name: import.meta.env.VITE_LRT_OR_RTL === "rtl" ? "Default Demo - LTR" : "Default Demo",
+	// 	targetBlank: import.meta.env.VITE_LRT_OR_RTL === "rtl",
+	// 	href: import.meta.env.VITE_LRT_OR_RTL === "rtl" ? "https://chisnghiax.com/ncmaz/" : "/",
+	// },
+	// {
+	// 	id: ncNanoId(),
+	// 	href: import.meta.env.VITE_LRT_OR_RTL !== "rtl" ? "https://chisnghiax.com/ncmaz-rtl/" : "/",
+	// 	name: "Home Demo - RTL",
+	// 	targetBlank: import.meta.env.VITE_LRT_OR_RTL !== "rtl",
+	// 	isNew: true,
+	// },
+	// {
+	// 	id: ncNanoId(),
+	// 	href: "/home-demo-2",
+	// 	name: "Home Demo 2",
+	// },
+	// {
+	// 	id: ncNanoId(),
+	// 	href: "/home-demo-3",
+	// 	name: "Home Demo 3",
+	// },
+	// {
+	// 	id: ncNanoId(),
+	// 	href: "/home-demo-4",
+	// 	name: "Home Demo 4",
+	// },
+	// {
+	// 	id: ncNanoId(),
+	// 	href: "/home-demo-6",
+	// 	name: "Home - News",
+	// },
+	// {
+	// 	id: ncNanoId(),
+	// 	href: "/home-header-style2",
+	// 	name: "Header Styles",
+	// 	isNew: true,
+	// 	type: "dropdown",
+	// 	children: [
+	// 		{
+	// 			id: ncNanoId(),
+	// 			href: "/",
+	// 			name: "Header - 1",
+	// 		},
+	// 		{
+	// 			id: ncNanoId(),
+	// 			href: "/home-header-style2",
+	// 			name: "Header - 2",
+	// 			isNew: true,
+	// 		},
+	// 		{
+	// 			id: ncNanoId(),
+	// 			href: "/home-header-style2-logedin",
+	// 			name: "Header - Logedin",
+	// 			isNew: true,
+	// 		},
+	// 	],
+	// },
 ];
 
 const templateChilds: NavItemType[] = [

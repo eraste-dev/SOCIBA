@@ -112,7 +112,7 @@ export const pages: Page[] = [
 	// { path: "/home-demo-7", component: PageHomeDemo7 },
 
 	// PUBLIC PAGES
-	{ path: "/sociba", component: Home },
+	{ path: "/", component: Home },
 	{ path: "/annonces", component: ListProduct },
 	{ path: "/annonce/:slug", component: Single },
 
@@ -122,7 +122,7 @@ export const pages: Page[] = [
 
 const Routes = () => {
 	return (
-		<BrowserRouter basename={import.meta.env.VITE_LRT_OR_RTL === "rtl" ? "/ncmaz-rtl" : "/ncmaz"}>
+		<BrowserRouter basename={import.meta.env.VITE_LRT_OR_RTL === "rtl" ? "/rtl" : "/"}>
 			<ScrollToTop />
 			<HeaderContainer />
 			<Switch>
