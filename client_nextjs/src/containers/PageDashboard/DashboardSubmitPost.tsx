@@ -10,20 +10,31 @@ import { AuthAction, IUser } from "app/auth/auth";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 import SelectProductCategories from "components/Products/add/SelectProductCategories";
 import { useAppSelector } from "app/hooks";
-import { fetchCategories, postProduct } from "app/axios/api.action";
+import { fetchCategories, initProductState, postProduct } from "app/axios/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
 import { getCities } from "data/cities";
 import { ProductRequest } from "app/axios/api.type";
 import { LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
+import { useSnackbar } from "notistack";
+import { PropertyAction } from "app/reducer/products/propertiy";
+import ErrorMessage from "components/Form/ErrorMessage";
+import { useHistory } from "react-router-dom";
+import { route } from "routers/route";
 
 const DashboardSubmitPost = () => {
 	const CURRENCY: string = "FCFA";
 
 	const dispatch = useDispatch();
+	const snackbar = useSnackbar();
+	const history = useHistory();
 
 	const user: IUser | undefined = useSelector(AuthAction.data)?.user;
+	const errorMessage = useSelector(PropertyAction.error);
+	const errorArray = useSelector(PropertyAction.errors);
+	const success = useSelector(PropertyAction.success);
+	const loading = useSelector(PropertyAction.loading);
 
 	const categories = useSelector(CategoryAction.data);
 	const categoriesLoading = useAppSelector(CategoryAction.loading);
@@ -31,7 +42,7 @@ const DashboardSubmitPost = () => {
 	const locations = useSelector(LocationAction.data);
 	const locationLoading = useAppSelector(CategoryAction.loading);
 
-	// const [initialize, setInitialize] = useState(false);
+	const [initialize, setInitialize] = useState(false);
 	const [categoryParent, setCategoryParent] = useState(null as IPropertyCategory | null);
 	const [categorySelected, setCategorySelected] = useState(null as IPropertyCategory | null);
 	const [previewUrls, setPreviewUrls]: any = useState([]);
@@ -40,7 +51,7 @@ const DashboardSubmitPost = () => {
 		register,
 		handleSubmit,
 		watch,
-		formState: { errors },
+		formState: { errors, isValid },
 		reset,
 		setValue,
 	} = useForm<ProductRequest>();
@@ -64,9 +75,16 @@ const DashboardSubmitPost = () => {
 	};
 
 	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
-		console.log(data);
+		// console.log(data);
 		dispatch(postProduct(data));
 	};
+
+	useEffect(() => {
+		if (!initialize) {
+			dispatch(initProductState());
+			setInitialize(true);
+		}
+	}, [dispatch, initProductState, setInitialize, initialize]);
 
 	useEffect(() => {
 		if (!categories && !categoriesLoading) {
@@ -80,6 +98,19 @@ const DashboardSubmitPost = () => {
 		}
 	}, [dispatch, fetchLocation, locations, locationLoading]);
 
+	useEffect(() => {
+		if (errorMessage) {
+			snackbar.enqueueSnackbar(errorMessage, { variant: "error" });
+		}
+	}, [errorMessage, snackbar]);
+
+	useEffect(() => {
+		if (success && !loading) {
+			snackbar.enqueueSnackbar("Annonce publiee avec succes", { variant: "success" });
+			history.push(route("dashboard"));
+		}
+	}, [snackbar, success, loading, history]);
+
 	return (
 		<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6">
 			<h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-200">Rédigez votre annonce</h3>
@@ -91,10 +122,12 @@ const DashboardSubmitPost = () => {
 					</Label>
 
 					<SelectProductType
-						options={["Vente", "Location", "Achat", "Autre"]}
+						options={["VENTE", "LOCATION", "ACHAT", "AUTRE"]}
 						onChangeOption={(value) => setValue("type", value)}
 						selected={watch("type")}
 					/>
+
+					<ErrorMessage errors={errorArray} error="type" />
 				</label>
 
 				{/* TITLE */}
@@ -103,6 +136,7 @@ const DashboardSubmitPost = () => {
 						Titre <span className="text-red-500">*</span>
 					</Label>
 					<Input type="text" className="mt-1" {...register("title", { required: true })} />
+					<ErrorMessage errors={errorArray} error="title" />
 				</label>
 
 				{/* CATEGORY */}
@@ -156,6 +190,7 @@ const DashboardSubmitPost = () => {
 												</option>
 											))}
 									</Select>
+									<ErrorMessage errors={errorArray} error="category_id" />
 								</div>
 							)}
 
@@ -177,7 +212,7 @@ const DashboardSubmitPost = () => {
 							</Label>
 
 							<div className="block md:col-span-2 p-2">
-								<Select name="city" required onChange={(event) => setValue("location_id", event.target.value)}>
+								<Select name="location_id" required onChange={(event) => setValue("location_id", event.target.value)}>
 									{locations &&
 										locations.map((location) => (
 											<option key={location.id} value={location.id}>
@@ -185,6 +220,7 @@ const DashboardSubmitPost = () => {
 											</option>
 										))}
 								</Select>
+								<ErrorMessage errors={errorArray} error="location_id" />
 							</div>
 						</div>
 
@@ -194,6 +230,7 @@ const DashboardSubmitPost = () => {
 									Quartier <span className="text-red-500">*</span>
 								</Label>
 								<Input type="text" className="mt-1" {...register("location_description", { required: true })} />
+								<ErrorMessage errors={errorArray} error="location_description" />
 							</label>
 						</div>
 					</div>
@@ -212,16 +249,18 @@ const DashboardSubmitPost = () => {
 									<span className="text-lg ml-2 text-neutral-300"> {CURRENCY} </span>
 								</div>
 							</Label>
+							<ErrorMessage errors={errorArray} error="price" />
 						</div>
 
 						<div>
 							<label className="block md:col-span-2">
 								Caution <span className="text-red-500">*</span>
 								<div className="flex items-center">
-									<Input type="number" className="mt-1" {...register("price", { required: true })} />
+									<Input type="number" className="mt-1" {...register("deposit_price", { required: true })} />
 									<span className="text-lg ml-2 text-neutral-300"> {CURRENCY} </span>
 								</div>
 							</label>
+							<ErrorMessage errors={errorArray} error="deposit_price" />
 						</div>
 					</div>
 				</label>
@@ -261,6 +300,7 @@ const DashboardSubmitPost = () => {
 							</div>
 							<p className="text-xs text-neutral-500">PNG, JPG, GIF up to 2MB</p>
 						</div>
+						<ErrorMessage errors={errorArray} error="files" />
 					</div>
 
 					{/* IMAGE PREVIEW */}
@@ -287,16 +327,18 @@ const DashboardSubmitPost = () => {
 					{watch("excerpt") && (
 						<span className={watch("excerpt").length == 250 ? "text-red-500" : "text-neutral-500"}>{watch("excerpt").length} / 250</span>
 					)}
+					<ErrorMessage errors={errorArray} error="excerpt" />
 				</label>
 
 				{/* CONTENT */}
 				<label className="block md:col-span-2">
 					<Label> Post Content</Label>
 					<EditorText onEditorChange={(content: string) => setValue("content", content)} />
+					<ErrorMessage errors={errorArray} error="content" />
 				</label>
 
 				{/* SUBMIT */}
-				<ButtonPrimary className="md:col-span-2" type="submit">
+				<ButtonPrimary className="md:col-span-2" type="submit" disabled={!isValid}>
 					Publier Maintenant
 				</ButtonPrimary>
 			</form>

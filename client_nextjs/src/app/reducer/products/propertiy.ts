@@ -177,6 +177,7 @@ export const PropertiesSlice = createSlice({
 			state.error = null;
 			state.data = undefined;
 			state.success = false;
+			state.errors = undefined;
 			state.message = "";
 		},
 		postProductSuccess: (state, action: PayloadAction<ProductRequest>) => {
@@ -228,7 +229,7 @@ export const PropertiesSlice = createSlice({
 		postTypeSuccess: (state, action: PayloadAction<{ types: IPropertyType[] }>) => {
 			state.loading = false;
 			state.error = null;
-			state.data = { ...state.data, types: action.payload };
+			// state.data = { ...state.data, types: action.payload };
 			state.success = true;
 			state.message = "";
 		},

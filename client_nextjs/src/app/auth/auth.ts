@@ -1,11 +1,6 @@
 import { IStoreAction, IStoreDataState } from "./../axios/api.type";
-import { serverEndpoints } from "./../axios/api.route";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { axiosRequest } from "app/axios/api";
-import { IServerResponse } from "app/axios/api.type";
-import { AppDispatch, RootState } from "app/store";
-import axios from "axios";
-import { Debug } from "utils/debug.utils";
+import { RootState } from "app/store";
 
 export interface IUser {
 	id: number;
@@ -65,6 +60,7 @@ export const AuthSlice = createSlice({
 		loginSuccess: (state, action: PayloadAction<IAuth>) => {
 			state.loading = false;
 			state.error = null;
+			state.success = true;
 			state.data = action.payload;
 		},
 		loginFailure: (state, action: PayloadAction<string>) => {
@@ -73,8 +69,19 @@ export const AuthSlice = createSlice({
 		},
 
 		// LOGOUT
-		logout: (state) => {
+		logoutStart: (state) => {
+			state.loading = true;
+			state.error = null;
 			state.data = undefined;
+			state.success = false;
+			state.message = "";
+		},
+		logoutSuccess: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.data = undefined;
+			state.success = false;
+			state.message = "";
 		},
 
 		// REGISTER
@@ -157,7 +164,8 @@ export const {
 	loginStart,
 	loginSuccess,
 	loginFailure,
-	logout,
+	logoutStart,
+	logoutSuccess,
 	registerStart,
 	registerSuccess,
 	registerFailure,

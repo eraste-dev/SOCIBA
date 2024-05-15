@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { initAuth, login } from "app/axios/api.action";
 import { AuthAction } from "app/auth/auth";
 import { Loading } from "components/Loading/Loading";
+import { useHistory } from "react-router-dom";
+import { route } from "routers/route";
+import { useSnackbar } from "notistack";
 
 export interface PageLoginProps {
 	className?: string;
@@ -41,8 +44,11 @@ type Inputs = {
 
 const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 	const dispatch = useDispatch();
+	const history = useHistory();
+	const snackbar = useSnackbar();
 	const user = useSelector(AuthAction.data)?.user;
 	const error = useSelector(AuthAction.error);
+	const success = useSelector(AuthAction.success);
 	const loading = useSelector(AuthAction.loading);
 	const [initialize, setInitialize] = useState(false);
 	const {
@@ -60,11 +66,25 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 	};
 
 	useEffect(() => {
-		if (!initialize && !user) {
+		// && !user
+		if (!initialize) {
 			setInitialize(true);
 			dispatch(initAuth());
 		}
-	}, [initialize, dispatch, initAuth, user]);
+	}, [initialize, dispatch, initAuth]);
+
+	useEffect(() => {
+		if (error && !loading) {
+			snackbar.enqueueSnackbar(error, { variant: "error" });
+		}
+	}, [error, snackbar, loading]);
+
+	useEffect(() => {
+		if (user && success && !loading) {
+			snackbar.enqueueSnackbar("Connexion reussie", { variant: "success" });
+			history.push(route("dashboard"));
+		}
+	}, [user, success, snackbar, history, route, loading]);
 
 	return (
 		<div className={`nc-PageLogin ${className}`} data-nc-id="PageLogin">

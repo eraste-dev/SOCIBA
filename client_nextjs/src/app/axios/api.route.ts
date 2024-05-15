@@ -30,7 +30,7 @@ export interface IServerEndpoint {
 		auth: {
 			login: (data: { email: string; password: string }) => IAxiosRequestConfig;
 			register: IAxiosRequestConfig;
-			logout: (data: string) => IAxiosRequestConfig;
+			logout: (data: { token: string }) => IAxiosRequestConfig;
 			forgetPassword: IAxiosRequestConfig;
 			resetPassword: IAxiosRequestConfig;
 			refreshToken: IAxiosRequestConfig;
@@ -56,12 +56,12 @@ export const serverEndpoints: IServerEndpoint = {
 		properties: {
 			categories: { method: "GET", url: `${v100}/categories` },
 			search: (query: IGetSearchPropertiesParams) => ({ method: "GET", url: `${v100}/properties${QueryBuilder.searchProperties(query)}` }),
-			post: (product: ProductRequest) => ({ method: "POST", url: `${v100}/admin/products`, data: product }),
+			post: (data: ProductRequest) => ({ method: "POST", url: `${v100}/admin/products`, data }),
 		},
 		auth: {
 			login: (data: { email: string; password: string }) => ({ method: "POST", url: `${v100}/auth/login`, data }),
 			register: { method: "POST", url: `${v100}/auth/register` },
-			logout: (token: string) => ({ method: "POST", url: `${v100}/auth/logout`, data: token }),
+			logout: (data: { token: string }) => ({ method: "POST", url: `${v100}/auth/logout`, data }),
 			forgetPassword: { method: "POST", url: `${v100}/auth/forget-password` },
 			resetPassword: { method: "POST", url: `${v100}/auth/reset-password` },
 			refreshToken: { method: "POST", url: `${v100}/auth/refresh-token` },
