@@ -1,0 +1,62 @@
+import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
+import React, { FC } from "react";
+import SingleTitle from "./SingleTitle";
+import { SinglePageType } from "./PageSingleTemp3Sidebar";
+import PostMeta2 from "components/PostMeta2/PostMeta2";
+import SingleMetaAction2 from "./SingleMetaAction2";
+import { Helmet } from "react-helmet";
+import { IProperty } from "app/reducer/products/propertiy";
+import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
+import { FaMapMarkerAlt } from "react-icons/fa";
+
+export interface SingleHeaderProps {
+	pageData?: IProperty;
+	hiddenDesc?: boolean;
+	metaActionStyle?: "style1" | "style2";
+	titleMainClass?: string;
+	className?: string;
+}
+
+const SingleHeader: FC<SingleHeaderProps> = ({ pageData, titleMainClass, hiddenDesc = false, className = "", metaActionStyle = "style1" }) => {
+	const { category, description, title, location } = pageData as any;
+
+	return (
+		<>
+			<Helmet>
+				<title>Single</title>
+			</Helmet>
+			<div className={`nc-SingleHeader ${className}`}>
+				<div className="space-y-5">
+					{category && <CategoryPropertyBadgeList category={category} />}
+
+					{pageData && (
+						<div className="flex flex-col sm:flex-row justify-between sm:items-end space-y-5 sm:space-y-0 sm:space-x-5">
+							<PostMeta2
+								size="large"
+								className="leading-none flex-shrink-0"
+								meta={pageData}
+								hiddenCategories
+								avatarRounded="rounded-full shadow-inner"
+							/>
+							<SingleMetaAction2 meta={pageData} />
+						</div>
+					)}
+
+					<div className="w-full border-b border-neutral-100 dark:border-neutral-800"></div>
+					<SingleTitle mainClass={titleMainClass} title={title} />
+
+					<div className="flex items-center space-x-3">
+						<FaMapMarkerAlt />
+						<h6 className="text-base text-neutral-500 md:text-lg dark:text-neutral-400">{location}</h6>
+					</div>
+
+					{!!description && !hiddenDesc && (
+						<span className="block text-base text-neutral-500 md:text-lg dark:text-neutral-400 pb-1">{description}</span>
+					)}
+				</div>
+			</div>
+		</>
+	);
+};
+
+export default SingleHeader;

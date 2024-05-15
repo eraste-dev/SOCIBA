@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "client_nextjs"
+		},
+		{
+			"path": "server"
+		}
+	],
+	"settings": {}
+}
