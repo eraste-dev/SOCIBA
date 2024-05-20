@@ -187,9 +187,10 @@ export const PropertiesSlice = createSlice({
 			state.success = true;
 			state.message = "";
 		},
-		postProductFailure: (state, action: PayloadAction<string>) => {
+		postProductFailure: (state, action: PayloadAction<{ error: string; errors: any }>) => {
 			state.loading = false;
-			state.error = action.payload;
+			state.error = action.payload.error;
+			state.errors = action.payload.errors;
 		},
 
 		// FIlTERS

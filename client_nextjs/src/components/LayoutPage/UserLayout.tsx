@@ -13,15 +13,19 @@ const UserLayout: FC<UserLayoutProps> = ({ className = "", heading, subHeading, 
 	return (
 		<div className={`nc-UserLayout relative ${className}`} data-nc-id="UserLayout">
 			<HeadBackgroundCommon />
-			<div className="container relative pt-10 pb-16 lg:pt-20 lg:pb-28">
+			{/* container relative pt-10 pb-16 lg:pt-20 lg:pb-28 */}
+			<div className="relative ">
 				{/* HEADER */}
-				<header className="text-center max-w-2xl mx-auto">
-					<Heading2 emoji={headingEmoji}>{heading}</Heading2>
-					{subHeading && <span className="block text-sm mt-2 text-neutral-700 sm:text-base dark:text-neutral-200">{subHeading}</span>}
-				</header>
+				{false && (
+					<header className="text-center max-w-2xl mx-auto">
+						<Heading2 emoji={headingEmoji}>{heading}</Heading2>
+						{subHeading && <span className="block text-sm mt-2 text-neutral-700 sm:text-base dark:text-neutral-200">{subHeading}</span>}
+					</header>
+				)}
 
 				{/* CONTENT */}
-				<div className="p-5 mx-auto bg-white rounded-[40px] shadow-lg sm:p-10 mt-10 lg:mt-20 lg:p-16 dark:bg-neutral-900">{children}</div>
+				{/* rounded-[40px] */}
+				<div className="p-5 mx-auto bg-white  shadow-lg sm:p-10 mt-10 lg:mt-20 lg:p-16 dark:bg-neutral-900">{children}</div>
 			</div>
 		</div>
 	);

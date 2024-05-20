@@ -111,6 +111,12 @@ const DashboardSubmitPost = () => {
 		}
 	}, [snackbar, success, loading, history]);
 
+	useEffect(() => {
+		if (!categoryParent && categories && categories.filter((cat) => cat.parent_id === null).length > 0 && initialize) {
+			setCategoryParent(categories.filter((cat) => cat.parent_id === null)[0]);
+		}
+	}, [categories, categoryParent, initialize]);
+
 	return (
 		<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6">
 			<h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-200">Rédigez votre annonce</h3>
@@ -127,7 +133,7 @@ const DashboardSubmitPost = () => {
 						selected={watch("type")}
 					/>
 
-					<ErrorMessage errors={errorArray} error="type" />
+					<ErrorMessage errors={errorArray} error="type" customMessage="Veuillez choisir un type d'offre" />
 				</label>
 
 				{/* TITLE */}
@@ -136,7 +142,7 @@ const DashboardSubmitPost = () => {
 						Titre <span className="text-red-500">*</span>
 					</Label>
 					<Input type="text" className="mt-1" {...register("title", { required: true })} />
-					<ErrorMessage errors={errorArray} error="title" />
+					<ErrorMessage errors={errorArray} error="title" customMessage="Veuillez choisir un titre" />
 				</label>
 
 				{/* CATEGORY */}
@@ -176,9 +182,7 @@ const DashboardSubmitPost = () => {
 										name="category_id"
 										onChange={(event) => {
 											handleSelectedCategory(
-												((categoryParent && categories && categoryParent.children) || []).filter(
-													(c) => c.id.toString() === event.target.value
-												)[0] || null
+												(categoryParent && categoryParent.children.filter((c) => c.id.toString() === event.target.value)[0]) || null
 											);
 										}}
 									>
@@ -194,12 +198,37 @@ const DashboardSubmitPost = () => {
 								</div>
 							)}
 
-							<SelectProductCategories
+							<div className="block md:col-span-2 p-2">
+								<Label>
+									{/* Type de bien  */}
+									<span className="text-red-500">*</span>
+								</Label>
+
+								<Select
+									name="category_id"
+									onChange={(event) => {
+										handleSelectedCategory(
+											((categoryParent && categoryParent?.children) || []).find((c) => c.id.toString() === event.target.value) || null
+										);
+									}}
+								>
+									<option value="">Choisir une sous catégorie</option>
+									{((categoryParent && categories && categoryParent.children) || []).map((category) => (
+										<option key={category.id} value={category.id}>
+											{category.name}
+										</option>
+									))}
+								</Select>
+								{/* <SelectProductCategories
 								options={(categoryParent && categories && categoryParent.children) || []}
 								onChangeOption={handleSelectedCategory}
 								selected={(categorySelected && categorySelected.id) ?? null}
-							/>
+							/> */}
+							</div>
 						</div>
+					</div>
+					<div>
+						<ErrorMessage errors={errorArray} error="category_id" customMessage="Veuillez choisir un type de bien" />
 					</div>
 				</label>
 
@@ -220,7 +249,7 @@ const DashboardSubmitPost = () => {
 											</option>
 										))}
 								</Select>
-								<ErrorMessage errors={errorArray} error="location_id" />
+								<ErrorMessage errors={errorArray} error="location_id" customMessage="Veuillez choisir une ville" />
 							</div>
 						</div>
 
@@ -230,7 +259,7 @@ const DashboardSubmitPost = () => {
 									Quartier <span className="text-red-500">*</span>
 								</Label>
 								<Input type="text" className="mt-1" {...register("location_description", { required: true })} />
-								<ErrorMessage errors={errorArray} error="location_description" />
+								<ErrorMessage errors={errorArray} error="location_description" customMessage="Veuillez saisir un quartier" />
 							</label>
 						</div>
 					</div>
@@ -249,7 +278,7 @@ const DashboardSubmitPost = () => {
 									<span className="text-lg ml-2 text-neutral-300"> {CURRENCY} </span>
 								</div>
 							</Label>
-							<ErrorMessage errors={errorArray} error="price" />
+							<ErrorMessage errors={errorArray} error="price" customMessage="Veuillez saisir un prix" />
 						</div>
 
 						<div>
@@ -260,7 +289,7 @@ const DashboardSubmitPost = () => {
 									<span className="text-lg ml-2 text-neutral-300"> {CURRENCY} </span>
 								</div>
 							</label>
-							<ErrorMessage errors={errorArray} error="deposit_price" />
+							<ErrorMessage errors={errorArray} error="deposit_price" customMessage="Veuillez saisir une caution" />
 						</div>
 					</div>
 				</label>
@@ -300,7 +329,7 @@ const DashboardSubmitPost = () => {
 							</div>
 							<p className="text-xs text-neutral-500">PNG, JPG, GIF up to 2MB</p>
 						</div>
-						<ErrorMessage errors={errorArray} error="files" />
+						<ErrorMessage errors={errorArray} error="files" customMessage="Veuillez ajouter au moins une image" />
 					</div>
 
 					{/* IMAGE PREVIEW */}
@@ -327,14 +356,14 @@ const DashboardSubmitPost = () => {
 					{watch("excerpt") && (
 						<span className={watch("excerpt").length == 250 ? "text-red-500" : "text-neutral-500"}>{watch("excerpt").length} / 250</span>
 					)}
-					<ErrorMessage errors={errorArray} error="excerpt" />
+					<ErrorMessage errors={errorArray} error="excerpt" customMessage="Veuillez ajouter une description" />
 				</label>
 
 				{/* CONTENT */}
 				<label className="block md:col-span-2">
 					<Label> Post Content</Label>
 					<EditorText onEditorChange={(content: string) => setValue("content", content)} />
-					<ErrorMessage errors={errorArray} error="content" />
+					<ErrorMessage errors={errorArray} error="content" customMessage="Veuillez ajouter du contenu" />
 				</label>
 
 				{/* SUBMIT */}

@@ -120,7 +120,7 @@ export const postProduct = (payload: ProductRequest) => async (dispatch: AppDisp
 		dispatch(postProductSuccess(response.data));
 	} catch (error: any) {
 		console.log(error);
-		dispatch(postProductFailure(error.message));
+		dispatch(postProductFailure({ error: error.message, errors: error.errors }));
 	}
 };
 

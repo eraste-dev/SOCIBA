@@ -12,7 +12,7 @@ export interface IGetSearchPropertiesParams {
 	offset?: number;
 	range?: { min: number; max: number };
 	limit?: number;
-	by?: number;
+	created_by?: number;
 }
 
 export class QueryBuilder {

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Http\Resources\Collection;
 use App\Http\Resources\MunicipalityResource;
+use App\Http\Resources\PropertyCategoryResource;
+use App\Http\Resources\UserResource;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -68,7 +70,11 @@ class Property extends Model
      */
     public function category()
     {
-        return PropertyCategory::find($this->category_id);
+        $cat = PropertyCategory::find($this->category_id);
+        if ($cat) {
+            return new PropertyCategoryResource($cat);
+        }
+        return null;
         // return $this->belongsTo(PropertyCategory::class, 'category_id');
     }
 
@@ -99,6 +105,16 @@ class Property extends Model
     public function get_images()
     {
         return PropertyImages::where('property_id', $this->id)->get();
+    }
+
+    public function getAuthor()
+    {
+        $user = User::find($this->created_by);
+        if ($user) {
+            return new UserResource($user);
+        } else {
+            return null;
+        }
     }
 
     /**

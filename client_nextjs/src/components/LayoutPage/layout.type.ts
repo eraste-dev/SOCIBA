@@ -7,7 +7,7 @@ import DashboardSubmitPost from "containers/PageDashboard/DashboardSubmitPost";
 import { ComponentType } from "react";
 
 export interface DashboardLocationState {
-	// "/root"?: {};
+	"/root"?: {};
 	"/posts"?: {};
 	"/edit-profile"?: {};
 	// "/subscription"?: {};
@@ -25,13 +25,13 @@ export interface DashboardPage {
 }
 
 export const USER_SUB_PAGES: DashboardPage[] = [
-	// {
-	// 	sPath: "/root",
-	// 	exact: true,
-	// 	component: DashboardRoot,
-	// 	emoij: "🕹",
-	// 	pageName: "Dash board",
-	// },
+	{
+		sPath: "/root",
+		exact: true,
+		component: DashboardRoot,
+		emoij: "🕹",
+		pageName: "Dash board",
+	},
 	{
 		sPath: "/posts",
 		component: DashboardPosts,

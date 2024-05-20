@@ -67,7 +67,7 @@ const Card11: FC<Card11Props> = ({ className = "h-full", post, hiddenAuthor = fa
 
 				<hr className="border-b border-neutral-200 dark:border-neutral-700 my-4" />
 
-				<PostPropertyCardMetaV2 meta={post} />
+				{post && post.author && post.author.href && <PostPropertyCardMetaV2 meta={post} />}
 			</div>
 		</div>
 	);

@@ -22,7 +22,29 @@ class PropertyCategory extends Model
         return $this->hasMany(PropertyCategory::class, 'parent_id');
     }
 
-    public static function getParents() {
+    public function getChildren()
+    {
+        $children = PropertyCategory::where('parent_id', $this->id)->get();
+        return PropertyCategoryResource::collection($children);
+    }
+
+    public function getParent()
+    {
+        if ($this->parent_id == null) {
+            return null;
+        }
+
+        $cat = PropertyCategory::find($this->parent_id);
+
+        if ($cat) {
+            return new PropertyCategoryResource($cat);
+        }
+
+        return null;
+    }
+
+    public static function getParents()
+    {
         $categories          = PropertyCategory::with('children')->whereNull('parent_id')->get();
         $formattedCategories = PropertyCategoryResource::collection($categories);
         return $formattedCategories;

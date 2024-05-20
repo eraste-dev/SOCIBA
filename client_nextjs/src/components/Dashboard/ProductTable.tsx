@@ -36,9 +36,9 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 	};
 
 	const columns: ColumnProductTable[] = [
-		{ id: "id", label: "ID", minWidth: 170 },
+		// { id: "id", label: "ID", minWidth: 170 },
 		{ id: "title", label: "Title", minWidth: 100 },
-		{ id: "excerpt", label: "Excerpt", minWidth: 100 },
+		// { id: "excerpt", label: "Excerpt", minWidth: 100 },
 		// { id: "content", label: "Content", minWidth: 100 },
 		{ id: "type", label: "Type de bien", minWidth: 100 },
 		{ id: "categorie", label: "Catégorie", minWidth: 100 },
@@ -54,22 +54,22 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 	const getStatus = (status: STATUS_TEXT) => {
 		switch (status) {
 			case "BLOCKED":
-				return "Blocqué";
+				return <span className="text-red-500">Blocqué</span>;
 
 			case "REJECTED":
-				return "Refusé";
+				return <span className="text-red-200">Refusé</span>;
 
 			case "DRAFT":
-				return "Brouillon";
+				return <span className="text-yellow-500">Brouillon</span>;
 
 			case "PUBLISH":
-				return "Publie";
+				return <span className="text-green-500">Publie</span>;
 
 			case "PENDING":
-				return "En attente";
+				return <span className="text-blue-500">En attente</span>;
 
 			default:
-				return status;
+				return <span className="text-red-500">status</span>;
 		}
 	};
 
@@ -88,16 +88,26 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 					</TableHead>
 					<TableBody>
 						{rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-							const { id, title, description, category, status } = row;
+							const { id, title, description, category, status, images, featured_image } = row;
 							return (
 								<TableRow hover role="checkbox" tabIndex={-1} key={id}>
+									{/* align={column.align} */}
+									{/* {column.format && typeof value === "number" ? column.format(value) : value} */}
 									<TableCell>
-										{/* align={column.align} */}
-										{/* {column.format && typeof value === "number" ? column.format(value) : value} */}
-										{id}
+										<div className="flex justify-start items-center p-2 cursor-pointer ">
+											<div className="post-image-container mr-2" style={{ width: 70, height: 70 }}>
+												<img
+													src={featured_image ? featured_image : "https://via.placeholder.com/150"}
+													alt="image"
+													style={{ width: "100%", height: "100%" }}
+												/>
+											</div>
+											<div>
+												<h4 className="text-xl">{title}</h4>
+												<p>{description}</p>
+											</div>
+										</div>
 									</TableCell>
-									<TableCell>{title}</TableCell>
-									<TableCell>{description}</TableCell>
 									<TableCell>{category.name}</TableCell>
 									<TableCell>{category.name}</TableCell>
 									<TableCell>{getStatus(status as STATUS_TEXT)}</TableCell>
