@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Utils\Utils;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -24,7 +25,7 @@ class UserResource extends JsonResource
             "phone"     => $this->phone,
             "type"      => $this->type,
             "status"    => $this->status,
-            "updated_at" => Carbon::parse($this->updated_at)->format('d/m/Y H:i'),
+            "updated_at" => Carbon::parse($this->updated_at)->format(Utils::DATE_FORMAT()),
         ];
     }
 }

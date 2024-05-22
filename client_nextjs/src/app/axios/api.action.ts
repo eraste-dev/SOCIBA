@@ -1,3 +1,4 @@
+import { IUser } from "./../auth/auth";
 import { fetchSlidersFailure, fetchSlidersStart, fetchSlidersSuccess } from "app/sliders/sliders";
 import { AppDispatch } from "app/store";
 import { IServerResponse, ProductRequest, RegisterRequest } from "./api.type";
@@ -24,6 +25,9 @@ import {
 	postProductStart,
 	postProductSuccess,
 	postProductFailure,
+	deleteProductStart,
+	deleteProductSuccess,
+	deleteProductFailure,
 } from "app/reducer/products/propertiy";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import {
@@ -124,6 +128,18 @@ export const postProduct = (payload: ProductRequest) => async (dispatch: AppDisp
 	}
 };
 
+export const deleteProduct = (payload: number) => async (dispatch: AppDispatch) => {
+	dispatch(deleteProductStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.delete(payload) });
+		dispatch(deleteProductSuccess(response.data));
+	} catch (error: any) {
+		console.log(error);
+		dispatch(deleteProductFailure(error.message));
+	}
+};
+
 export const initProductState = () => async (dispatch: AppDispatch) => {
 	dispatch(postProductStart());
 };
@@ -178,4 +194,20 @@ export const getErrors = (errorArray: any, key: string) => {
 	}
 
 	return undefined;
+};
+
+export const isAdmin = (user: IUser) => {
+	return user.type === "ADMIN";
+};
+
+export const isGuest = (user: IUser) => {
+	return user.type === "GUEST";
+};
+
+export const isAgent = (user: IUser) => {
+	return user.type === "AGENT";
+};
+
+export const isCustomer = (user: IUser) => {
+	return user.type === "USER";
 };

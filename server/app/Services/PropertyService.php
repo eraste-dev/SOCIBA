@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Resources\Collection;
 use App\Http\Resources\PropertyResource;
 use App\Models\Property;
+use App\Utils\Utils;
 
 class PropertyService
 {
@@ -41,16 +42,21 @@ class PropertyService
             $query->whereIn('category_id', $payload['categories']);
         }
 
-        if($payload['created_by']) {
+        if ($payload['created_by']) {
             $query->where('created_by', $payload['created_by']);
         }
 
         // Trie par pertinence si demandé
         if ($payload['top_seed']) {
-            // Ajoutez votre logique de tri ici
             $query->orderBy('total_click', 'desc');
         } else {
             $query->orderBy('created_at', 'desc');
+        }
+
+        // ? if user is not admin no show deleted properties
+        $user_condition = Utils::userLogged() && Utils::userLogged()->role != 'ADMIN';
+        if(!$user_condition) {
+            $query->whereNotIn('status', [Utils::STATE_DELETED()]);
         }
 
         // Renvoie les données paginées avec une collection
@@ -58,6 +64,5 @@ class PropertyService
 
         // Transformer les données avec la ressource PropertyResource
         return PropertyResource::collection($properties);
-        // return Collection::make($properties)->response()->getData(true);
     }
 }

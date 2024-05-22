@@ -8,6 +8,7 @@ use App\Models\Property;
 use App\Models\PropertyImages;
 use App\Services\PropertyService;
 use App\Services\ResponseService;
+use App\Utils\Utils;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -20,17 +21,10 @@ class PropertyController extends Controller
      */
     public function get(Request $request)
     {
-        $payload = [
-            'id'         => $request->id ?? null,
-            'slug'       => $request->slug ?? null,
-            'category'   => $request->category ?? null,
-            'categories' => $request->categories ?? null,
-            'top_seed'   => $request->top ?? false,
-            'limit'      => $request->limit ?? 84,
-            'created_by' => $request->created_by ?? null,
-        ];
-
-        return ResponseService::success(PropertyService::search($payload), Response::HTTP_OK);
+        return ResponseService::success(
+            PropertyService::search(Property::requestSearch()),
+            Response::HTTP_OK
+        );
     }
 
     /**
@@ -100,8 +94,22 @@ class PropertyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Property $property)
+    public function delete(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:properties,id',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error("Resource introuvable", 404, $validator->errors());
+        }
+
+        $product = Property::find($request->id);
+        $product->status  = Utils::STATE_DELETED();
+        // $proudct->delete();
+        return ResponseService::success(
+            PropertyService::search(Property::requestSearch()),
+            "Suppression effectuée avec succès"
+        );
     }
 }

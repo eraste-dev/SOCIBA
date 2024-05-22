@@ -34,19 +34,6 @@ class PropertyCategory extends Model
             return null;
         }
 
-        $cat = PropertyCategory::find($this->parent_id);
-
-        if ($cat) {
-            return new PropertyCategoryResource($cat);
-        }
-
-        return null;
-    }
-
-    public static function getParents()
-    {
-        $categories          = PropertyCategory::with('children')->whereNull('parent_id')->get();
-        $formattedCategories = PropertyCategoryResource::collection($categories);
-        return $formattedCategories;
+        return PropertyCategory::find($this->parent_id);
     }
 }

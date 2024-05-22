@@ -14,7 +14,7 @@ const DashboardPosts = () => {
 	const loading = useSelector(PropertyAction.loading);
 
 	useEffect(() => {
-		if (!products && !loading && auth && auth.user && auth.user.id) {
+		if (!products && auth && auth.user && auth.user.id) {
 			dispatch(fetchAllProperties({ created_by: auth.user.id }));
 		}
 	}, [dispatch, fetchAllProperties, products, loading, auth]);

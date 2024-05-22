@@ -25,7 +25,7 @@ export interface IProperty {
 	location_description: string;
 	location: ILocation;
 	city: string;
-	status: string;
+	status: "PUBLISH" | "DRAFT" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED" | null;
 	total_click: number;
 	latitude: number;
 	longitude: number;
@@ -61,6 +61,13 @@ export interface IPropertyType {
 	name: string;
 }
 
+export interface IStorePropertyDataAction {
+	success?: boolean;
+	message?: string;
+	Loading?: boolean;
+	error?: string | null;
+}
+
 export interface IStorePropertyData {
 	all?: IProperty[] | undefined;
 	features?: IProperty[] | undefined;
@@ -68,6 +75,10 @@ export interface IStorePropertyData {
 	single?: IProperty | undefined;
 	filters?: IPropertyFilter;
 	types?: IPropertyType[];
+	actions?: {
+		delete?: IStorePropertyDataAction;
+		store?: IStorePropertyDataAction;
+	};
 }
 
 export const defaultFilters: IPropertyFilter = {
@@ -193,6 +204,27 @@ export const PropertiesSlice = createSlice({
 			state.errors = action.payload.errors;
 		},
 
+		// DELETE
+		deleteProductStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.data = undefined;
+			state.success = false;
+			state.errors = undefined;
+			state.message = "";
+		},
+		deleteProductSuccess: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = null;
+			// state.data = undefined;
+			state.success = true;
+			state.message = action.payload;
+		},
+		deleteProductFailure: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
+
 		// FIlTERS
 		setFiltersSuccess: (state, action: PayloadAction<IPropertyFilter>) => {
 			state.data = { ...state.data, filters: { ...state.data?.filters, ...action.payload } };
@@ -262,6 +294,9 @@ export const {
 	postProductStart,
 	postProductSuccess,
 	postProductFailure,
+	deleteProductStart,
+	deleteProductSuccess,
+	deleteProductFailure,
 } = PropertiesSlice.actions;
 
 export const PropertyAction: IStoreAction<IStorePropertyData> = {

@@ -127,4 +127,19 @@ class Property extends Model
     {
         $this->images()->createMany($images);
     }
+
+    public static function requestSearch(): array
+    {
+        $payload = [
+            'id'         => request()->id ?? null,
+            'slug'       => request()->slug ?? null,
+            'category'   => request()->category ?? null,
+            'categories' => request()->categories ?? null,
+            'top_seed'   => request()->top ?? false,
+            'limit'      => request()->limit ?? 84,
+            'created_by' => request()->created_by ?? null,
+        ];
+
+        return $payload;
+    }
 }

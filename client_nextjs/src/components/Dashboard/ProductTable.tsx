@@ -8,6 +8,11 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { IProperty } from "app/reducer/products/propertiy";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
+import { route } from "routers/route";
+import ProductTableAction from "./ProductTableAction";
+import ConfirmDialog from "components/Dialog/ConfirmDialog";
 
 export interface ColumnProductTable {
 	id: "id" | "title" | "excerpt" | "content" | "actions" | "type" | "categorie" | "status";
@@ -23,6 +28,9 @@ export interface ProductTableProps {
 }
 
 const ProductTable: FC<ProductTableProps> = ({ rows }) => {
+	const history = useHistory();
+	const [openDelete, setOpenDelete] = React.useState(false);
+	const [rowSelected, setRowSelected]: any = React.useState(null);
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -52,24 +60,25 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 
 	type STATUS_TEXT = "PENDING" | "BLOCKED" | "REJECTED" | "DRAFT" | "PUBLISH" | "PENDING";
 	const getStatus = (status: STATUS_TEXT) => {
+		const className: string = "text-white p-1 px-3 rounded-lg";
 		switch (status) {
 			case "BLOCKED":
-				return <span className="text-red-500">Blocqué</span>;
+				return <span className={`${className} bg-red-500`}>Blocqué</span>;
 
 			case "REJECTED":
-				return <span className="text-red-200">Refusé</span>;
+				return <span className={`${className} bg-red-500`}>Refusé</span>;
 
 			case "DRAFT":
-				return <span className="text-yellow-500">Brouillon</span>;
+				return <span className={`${className} bg-yellow-500`}>Brouillon</span>;
 
 			case "PUBLISH":
-				return <span className="text-green-500">Publie</span>;
+				return <span className={`${className} bg-green-500`}>Publie</span>;
 
 			case "PENDING":
-				return <span className="text-blue-500">En attente</span>;
+				return <span className={`${className} bg-blue-500`}>En attente</span>;
 
 			default:
-				return <span className="text-red-500">status</span>;
+				return <span className={`${className} bg-red-500`}>status</span>;
 		}
 	};
 
@@ -77,7 +86,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 		<Paper sx={{ width: "100%", overflow: "hidden" }}>
 			<TableContainer sx={{ maxHeight: 440 }}>
 				<Table stickyHeader aria-label="sticky table">
-					<TableHead>
+					<TableHead className="bg-gray-500">
 						<TableRow>
 							{columns.map((column) => (
 								<TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
@@ -88,7 +97,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 					</TableHead>
 					<TableBody>
 						{rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-							const { id, title, description, category, status, images, featured_image } = row;
+							const { id, title, description, category, status, images, featured_image, location, location_description } = row;
 							return (
 								<TableRow hover role="checkbox" tabIndex={-1} key={id}>
 									{/* align={column.align} */}
@@ -105,13 +114,22 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 											<div>
 												<h4 className="text-xl">{title}</h4>
 												<p>{description}</p>
+												<p>{`${location_description}, ${location.name}, ${location.city && location.city.name}`}</p>
 											</div>
 										</div>
 									</TableCell>
 									<TableCell>{category.name}</TableCell>
 									<TableCell>{category.name}</TableCell>
 									<TableCell>{getStatus(status as STATUS_TEXT)}</TableCell>
-									<TableCell> </TableCell>
+									<TableCell>
+										<ProductTableAction
+											row={row}
+											handleOpenDelete={() => {
+												setOpenDelete(true);
+												setRowSelected(row);
+											}}
+										/>
+									</TableCell>
 								</TableRow>
 							);
 						})}
@@ -127,6 +145,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 				onPageChange={handleChangePage}
 				onRowsPerPageChange={handleChangeRowsPerPage}
 			/>
+			<ConfirmDialog handleClose={() => setOpenDelete(false)} open={openDelete} row={rowSelected} />
 		</Paper>
 	);
 };
