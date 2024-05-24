@@ -23,6 +23,7 @@ class PropertyResource extends JsonResource
             'address'              => $this->address,
             'client_address'       => $this->client_address,
             'price'                => $this->price,
+            'deposit_price'        => $this->deposit_price,
             'location_description' => $this->location_description,
             'location'             => $this->getLocation(),
             'status'               => $this->status,

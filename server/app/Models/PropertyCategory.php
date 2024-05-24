@@ -28,6 +28,12 @@ class PropertyCategory extends Model
         return PropertyCategoryResource::collection($children);
     }
 
+    public static function getByParent()
+    {
+        $parents = PropertyCategory::where('parent_id', null)->get();
+        return PropertyCategoryResource::collection($parents);
+    }
+
     public function getParent()
     {
         if ($this->parent_id == null) {

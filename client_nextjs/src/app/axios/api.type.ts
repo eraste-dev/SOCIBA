@@ -42,6 +42,7 @@ export interface RegisterRequest {
 }
 
 export interface ProductRequest {
+	id?: number;
 	title: string;
 	category_id: number;
 	excerpt: string;

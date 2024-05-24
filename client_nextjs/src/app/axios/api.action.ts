@@ -98,14 +98,8 @@ export const fetchSingleProperties = (query: IGetSearchPropertiesParams) => asyn
 	}
 };
 
-export const setSingleProperties = (product: IProperty) => async (dispatch: AppDispatch) => {
-	dispatch(setSinglePropertiesStart());
-
-	try {
-		dispatch(setSinglePropertiesSuccess(product));
-	} catch (error: any) {
-		dispatch(setSinglePropertiesFailure("Impossible de définir les propriétés"));
-	}
+export const setSingleProduct = (product: IProperty) => async (dispatch: AppDispatch) => {
+	dispatch(setSinglePropertiesSuccess(product));
 };
 
 export const setFilters = (filters: IPropertyFilter) => async (dispatch: AppDispatch) => {
@@ -133,7 +127,7 @@ export const deleteProduct = (payload: number) => async (dispatch: AppDispatch) 
 
 	try {
 		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.delete(payload) });
-		dispatch(deleteProductSuccess(response.data));
+		dispatch(deleteProductSuccess(response.message));
 	} catch (error: any) {
 		console.log(error);
 		dispatch(deleteProductFailure(error.message));

@@ -15,7 +15,7 @@ class PropertyCategoryController extends Controller
      */
     public function index()
     {
-        return ResponseService::success(PropertyCategory::getParents(), Response::HTTP_OK);
+        return ResponseService::success(PropertyCategory::getByParent(), Response::HTTP_OK);
     }
 
     /**

@@ -20,8 +20,8 @@ export interface SelectProductTypeProps {
 }
 
 const SelectProductType: FC<SelectProductTypeProps> = ({ options, onChangeOption, selected }) => {
-	const className = "cursor-pointer bg-gray-200 rounded-md p-2 m-2";
-	const classNameSelected = "cursor-pointer bg-yellow-300 rounded-md p-2 m-2";
+	const className = "cursor-pointer bg-gray-200 rounded-md p-2 m-2 dark:bg-neutral-800";
+	const classNameSelected = "cursor-pointer bg-yellow-300 rounded-md p-2 m-2 dark:bg-yellow-800 dark:text-white";
 
 	return (
 		<div className="flex flex-wrap justify-start">

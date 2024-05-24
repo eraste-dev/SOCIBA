@@ -4,13 +4,14 @@ import { Editor } from "@tinymce/tinymce-react";
 
 export interface EditorTextProps {
 	onEditorChange: (content: string) => void;
+	initialValue?: string;
 }
 
-const EditorText: FC<EditorTextProps> = ({ onEditorChange }) => {
+const EditorText: FC<EditorTextProps> = ({ onEditorChange, initialValue }) => {
 	return (
 		<Editor
-      apiKey='yzz1chogxlfmvur9dccog16q7rw63ajhx4po8tcxi6fbzhpg'
-			initialValue=""
+			apiKey="yzz1chogxlfmvur9dccog16q7rw63ajhx4po8tcxi6fbzhpg"
+			initialValue={initialValue}
 			init={{
 				height: 500,
 				menubar: true,

@@ -95,11 +95,11 @@ export const pages: Page[] = [
 ];
 
 const Routes = () => {
-	const win = window.location.href
+	const win = window.location.href;
 	return (
 		<BrowserRouter basename={import.meta.env.VITE_LRT_OR_RTL === "rtl" ? "/rtl" : "/"}>
 			<ScrollToTop />
-			{!isAdminPage() && <HeaderContainer />}
+			<HeaderContainer />
 			<Switch>
 				{/* return <Route key={path} component={component} exact={!!exact} path={path} />; */}
 				{pages.map(({ component, path, exact }) => {

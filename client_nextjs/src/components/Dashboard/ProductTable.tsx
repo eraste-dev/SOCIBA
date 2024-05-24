@@ -13,6 +13,8 @@ import { useHistory } from "react-router-dom";
 import { route } from "routers/route";
 import ProductTableAction from "./ProductTableAction";
 import ConfirmDialog from "components/Dialog/ConfirmDialog";
+import { useDispatch } from "react-redux";
+import { initProductState } from "app/axios/api.action";
 
 export interface ColumnProductTable {
 	id: "id" | "title" | "excerpt" | "content" | "actions" | "type" | "categorie" | "status";
@@ -29,6 +31,7 @@ export interface ProductTableProps {
 
 const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 	const [openDelete, setOpenDelete] = React.useState(false);
 	const [rowSelected, setRowSelected]: any = React.useState(null);
 	const [page, setPage] = React.useState(0);

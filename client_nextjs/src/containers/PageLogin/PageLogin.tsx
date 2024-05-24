@@ -75,13 +75,13 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 
 	useEffect(() => {
 		if (error && !loading) {
-			snackbar.enqueueSnackbar(error, { variant: "error" });
+			snackbar.enqueueSnackbar(error, { variant: "error", autoHideDuration: 3000 });
 		}
 	}, [error, snackbar, loading]);
 
 	useEffect(() => {
 		if (user && success && !loading) {
-			snackbar.enqueueSnackbar("Connexion reussie", { variant: "success" });
+			snackbar.enqueueSnackbar("Connexion reussie", { variant: "success", autoHideDuration: 3000 });
 			history.push(route("dashboard"));
 		}
 	}, [user, success, snackbar, history, route, loading]);

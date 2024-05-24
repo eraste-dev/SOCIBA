@@ -18,10 +18,12 @@ export interface IProperty {
 	category: IPropertyCategory;
 	title: string;
 	description: string;
+	excerpt: string;
 	content: string;
 	address: string;
 	client_address: string;
 	price: number;
+	deposit_price: number;
 	location_description: string;
 	location: ILocation;
 	city: string;
@@ -29,14 +31,14 @@ export interface IProperty {
 	total_click: number;
 	latitude: number;
 	longitude: number;
-	property_type: string;
+	// property_type: string;
 	details: string | null;
 	whatsapp_link: null;
 	facebook_link: null;
 	video_link: string;
 	images: IPropertyImage[];
 	featured_image: string;
-	post_type: string;
+	type: string;
 	created_by: string;
 	updated_by: string;
 	created_at: Date;
@@ -66,7 +68,27 @@ export interface IStorePropertyDataAction {
 	message?: string;
 	Loading?: boolean;
 	error?: string | null;
+	selected?: IProperty | null;
 }
+
+const successProductDataAction = (selected: IProperty, message: string = "") => {
+	const output: IStorePropertyDataAction = {
+		success: true,
+		Loading: false,
+		error: null,
+		selected: selected,
+		message: message,
+	};
+};
+
+const failProductDataAction = (message: string = "") => {
+	const output: IStorePropertyDataAction = {
+		success: false,
+		Loading: false,
+		error: null,
+		message: message,
+	};
+};
 
 export interface IStorePropertyData {
 	all?: IProperty[] | undefined;
@@ -181,6 +203,8 @@ export const PropertiesSlice = createSlice({
 			state.loading = false;
 			state.error = action.payload;
 		},
+
+		// set selected to actions by user
 
 		// POST
 		postProductStart: (state) => {
