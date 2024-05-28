@@ -18,25 +18,27 @@ export interface IProperty {
 	category: IPropertyCategory;
 	title: string;
 	description: string;
+	excerpt: string;
 	content: string;
 	address: string;
 	client_address: string;
 	price: number;
+	deposit_price: number;
 	location_description: string;
 	location: ILocation;
 	city: string;
-	status: string;
+	status: "PUBLISH" | "DRAFT" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED" | null;
 	total_click: number;
 	latitude: number;
 	longitude: number;
-	property_type: string;
+	// property_type: string;
 	details: string | null;
 	whatsapp_link: null;
 	facebook_link: null;
 	video_link: string;
 	images: IPropertyImage[];
 	featured_image: string;
-	post_type: string;
+	type: string;
 	created_by: string;
 	updated_by: string;
 	created_at: Date;
@@ -61,6 +63,33 @@ export interface IPropertyType {
 	name: string;
 }
 
+export interface IStorePropertyDataAction {
+	success?: boolean;
+	message?: string;
+	Loading?: boolean;
+	error?: string | null;
+	selected?: IProperty | null;
+}
+
+const successProductDataAction = (selected: IProperty, message: string = "") => {
+	const output: IStorePropertyDataAction = {
+		success: true,
+		Loading: false,
+		error: null,
+		selected: selected,
+		message: message,
+	};
+};
+
+const failProductDataAction = (message: string = "") => {
+	const output: IStorePropertyDataAction = {
+		success: false,
+		Loading: false,
+		error: null,
+		message: message,
+	};
+};
+
 export interface IStorePropertyData {
 	all?: IProperty[] | undefined;
 	features?: IProperty[] | undefined;
@@ -68,6 +97,10 @@ export interface IStorePropertyData {
 	single?: IProperty | undefined;
 	filters?: IPropertyFilter;
 	types?: IPropertyType[];
+	actions?: {
+		delete?: IStorePropertyDataAction;
+		store?: IStorePropertyDataAction;
+	};
 }
 
 export const defaultFilters: IPropertyFilter = {
@@ -171,6 +204,8 @@ export const PropertiesSlice = createSlice({
 			state.error = action.payload;
 		},
 
+		// set selected to actions by user
+
 		// POST
 		postProductStart: (state) => {
 			state.loading = true;
@@ -187,7 +222,29 @@ export const PropertiesSlice = createSlice({
 			state.success = true;
 			state.message = "";
 		},
-		postProductFailure: (state, action: PayloadAction<string>) => {
+		postProductFailure: (state, action: PayloadAction<{ error: string; errors: any }>) => {
+			state.loading = false;
+			state.error = action.payload.error;
+			state.errors = action.payload.errors;
+		},
+
+		// DELETE
+		deleteProductStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.data = undefined;
+			state.success = false;
+			state.errors = undefined;
+			state.message = "";
+		},
+		deleteProductSuccess: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = null;
+			// state.data = undefined;
+			state.success = true;
+			state.message = action.payload;
+		},
+		deleteProductFailure: (state, action: PayloadAction<string>) => {
 			state.loading = false;
 			state.error = action.payload;
 		},
@@ -261,6 +318,9 @@ export const {
 	postProductStart,
 	postProductSuccess,
 	postProductFailure,
+	deleteProductStart,
+	deleteProductSuccess,
+	deleteProductFailure,
 } = PropertiesSlice.actions;
 
 export const PropertyAction: IStoreAction<IStorePropertyData> = {

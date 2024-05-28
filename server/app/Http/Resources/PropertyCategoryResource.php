@@ -10,7 +10,6 @@ class PropertyCategoryResource extends JsonResource
 {
     public function toArray($request)
     {
-        $children = PropertyCategory::where('parent_id', $this->id)->get();
         return [
             'id'           => $this->id,
             'name'         => $this->name,
@@ -18,8 +17,9 @@ class PropertyCategoryResource extends JsonResource
             'description'  => $this->description,
             'thumbnail'    => $this->icon,
             'parent_id'    => $this->parent_id,
-            'count'        => count($children),
-            'children'     => PropertyCategoryResource::collection($children),
+            'count'        => count($this->getChildren()),
+            'children'     => $this->getChildren(),
+            'parent'       => $this->getParent(),
         ];
     }
 }

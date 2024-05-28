@@ -4,14 +4,14 @@ import { RootState } from "app/store";
 
 export interface ICity {
 	name: string;
+	description: string | null;
 	slug: string;
 	iso3: string | null;
 	iso2: string | null;
-	description: string | null;
-	country: ICountry | null;
 	lat: number | null;
 	long: number | null;
 	thumbnail: string | null;
+	country: ICountry | null;
 	updated_at: string;
 }
 
@@ -36,11 +36,11 @@ export interface ICountry {
 export interface ILocation {
 	id: number;
 	name: string;
+	description: string | null;
 	href: string;
 	city: ICity | null;
 	iso3: string | null;
 	iso2: string | null;
-	description: string | null;
 	lat: number | null;
 	long: number | null;
 	thumbnail: string | null;

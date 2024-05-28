@@ -8,6 +8,7 @@ use App\Models\Property;
 use App\Models\PropertyImages;
 use App\Services\PropertyService;
 use App\Services\ResponseService;
+use App\Utils\Utils;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -20,17 +21,10 @@ class PropertyController extends Controller
      */
     public function get(Request $request)
     {
-        $payload = [
-            'id'         => $request->id ?? null,
-            'slug'       => $request->slug ?? null,
-            'category'   => $request->category ?? null,
-            'categories' => $request->categories ?? null,
-            'top_seed'   => $request->top ?? false,
-            'limit'      => $request->limit ?? 84,
-            'created_by' => $request->created_by ?? null,
-        ];
-
-        return ResponseService::success(PropertyService::search($payload), Response::HTTP_OK);
+        return ResponseService::success(
+            PropertyService::search(Property::requestSearch()),
+            Response::HTTP_OK
+        );
     }
 
     /**
@@ -39,6 +33,7 @@ class PropertyController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'id'                  => 'nullable|integer|exists:properties,id',
             'title'                => 'required|string',
             'category_id'          => 'required|integer|exists:property_categories,id',
             'excerpt'              => 'required|string',
@@ -58,22 +53,28 @@ class PropertyController extends Controller
         // Enregistrer les données dans la base de données
         $validatedData = $validator->validated();
 
-        $product = new Property();
-        $product->title         = $validatedData['title'];
-        $product->slug          = Str::slug($validatedData['title']);
-        $product->category_id   = $validatedData['category_id'];
-        $product->excerpt       = $validatedData['excerpt'];
-        $product->content       = $validatedData['content'];
-        $product->type          = $validatedData['type'];
-        $product->location_id   = $validatedData['location_id'];
-        $product->location_description = $validatedData['location_description'];
-        $product->price         = $validatedData['price'];
-        $product->deposit_price = $validatedData['deposit_price'];
+        if ($validatedData['id']) {
+            $product = Property::find($validatedData['id']);
+            // default values
+            $product->status = $validatedData['status'] ?? $product->status;
+            $product->updated_by = auth()->user()->id;
+        } else {
+            $product = new Property();
+            // default values
+            $product->status = 'PENDING';
+            $product->created_by = auth()->user()->id;
+        }
 
-        // default values
-        $product->status = 'PENDING';
-        // $product->createSlug(Property::class, 'slug', $validatedData['title']);
-        $product->created_by = auth()->user()->id;
+        $product->slug                 = Str::slug($validatedData['title']);
+        $product->title                = $validatedData['title'];
+        $product->category_id          = $validatedData['category_id'];
+        $product->excerpt              = $validatedData['excerpt'];
+        $product->content              = $validatedData['content'];
+        $product->type                 = $validatedData['type'];
+        $product->location_id          = $validatedData['location_id'];
+        $product->location_description = $validatedData['location_description'];
+        $product->price                = $validatedData['price'];
+        $product->deposit_price        = $validatedData['deposit_price'];
 
         $product->save();
         $insert = $product->refresh();
@@ -100,8 +101,23 @@ class PropertyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Property $property)
+    public function delete(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:properties,id',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error("Resource introuvable", 404, $validator->errors());
+        }
+
+        $product = Property::find($request->id);
+        $product->status  = Utils::STATE_DELETED();
+        $product->save();
+        // $proudct->delete();
+        return ResponseService::success(
+            PropertyService::search(Property::requestSearch()),
+            "Suppression effectuée avec succès"
+        );
     }
 }

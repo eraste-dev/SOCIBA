@@ -6,7 +6,7 @@ import { IProperty } from "app/reducer/products/propertiy";
 import PostPropertyCardMetaV2 from "components/PostPropertyCardMeta/PostCardMetaV2";
 import { _f } from "utils/money-format";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { setSingleProperties } from "app/axios/api.action";
+import { setSingleProduct } from "app/axios/api.action";
 import { useAppDispatch } from "app/hooks";
 
 export interface Card11Props {
@@ -23,7 +23,7 @@ const Card11: FC<Card11Props> = ({ className = "h-full", post, hiddenAuthor = fa
 	const history = useHistory();
 
 	const handleSingleClick = () => {
-		dispatch(setSingleProperties(post));
+		dispatch(setSingleProduct(post));
 		history.push(post.href);
 	};
 
@@ -67,7 +67,7 @@ const Card11: FC<Card11Props> = ({ className = "h-full", post, hiddenAuthor = fa
 
 				<hr className="border-b border-neutral-200 dark:border-neutral-700 my-4" />
 
-				<PostPropertyCardMetaV2 meta={post} />
+				{post && post.author && post.author.href && <PostPropertyCardMetaV2 meta={post} />}
 			</div>
 		</div>
 	);

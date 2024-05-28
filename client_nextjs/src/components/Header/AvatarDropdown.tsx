@@ -1,6 +1,6 @@
 import { Popover, Transition } from "@headlessui/react";
 import { AuthAction } from "app/auth/auth";
-import { logout } from "app/axios/api.action";
+import { isAdmin, logout } from "app/axios/api.action";
 import Avatar from "components/Avatar/Avatar";
 import { avatarImgs } from "contains/fakeData";
 import { Fragment } from "react";
@@ -52,7 +52,7 @@ export default function AvatarDropdown() {
 												<h4 className="font-semibold">
 													{user.name} {user.last_name}
 												</h4>
-												{/* <p className="text-sm text-neutral-500 dark:text-neutral-400">UI Designer</p> */}
+												{isAdmin(user) && <p className="text-sm text-neutral-500 dark:text-neutral-400"> {user && user.type} </p>}
 											</div>
 										</div>
 

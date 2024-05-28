@@ -7,7 +7,7 @@ import DashboardSubmitPost from "containers/PageDashboard/DashboardSubmitPost";
 import { ComponentType } from "react";
 
 export interface DashboardLocationState {
-	// "/root"?: {};
+	"/root"?: {};
 	"/posts"?: {};
 	"/edit-profile"?: {};
 	// "/subscription"?: {};
@@ -17,33 +17,19 @@ export interface DashboardLocationState {
 }
 
 export interface DashboardPage {
-	sPath: keyof DashboardLocationState;
+	sPath?: keyof DashboardLocationState;
 	exact?: boolean;
-	component: ComponentType<Object>;
-	emoij: string;
+	component?: ComponentType<Object>;
+	emoij?: string;
 	pageName: string;
 }
 
 export const USER_SUB_PAGES: DashboardPage[] = [
-	// {
-	// 	sPath: "/root",
-	// 	exact: true,
-	// 	component: DashboardRoot,
-	// 	emoij: "🕹",
-	// 	pageName: "Dash board",
-	// },
-	{
-		sPath: "/posts",
-		component: DashboardPosts,
-		emoij: "📕",
-		pageName: "Annonces",
-	},
-	{
-		sPath: "/edit-profile",
-		component: DashboardEditProfile,
-		emoij: "🛠",
-		pageName: "Modifier Profile",
-	},
+	{ sPath: "/root", exact: true, component: DashboardRoot, emoij: "🕹", pageName: "Dash board" },
+	{ pageName: "Annonces" },
+	{ sPath: "/submit-post", component: DashboardSubmitPost, emoij: "✍", pageName: "Publier une annonce" },
+	{ sPath: "/posts", component: DashboardPosts, emoij: "📕", pageName: "Mes annonces" },
+	{ sPath: "/edit-profile", component: DashboardEditProfile, emoij: "🛠", pageName: "Modifier Profile" },
 	// {
 	// 	sPath: "/subscription",
 	// 	component: DashboardSubcription,
@@ -56,10 +42,4 @@ export const USER_SUB_PAGES: DashboardPage[] = [
 	// 	emoij: "✈",
 	// 	pageName: "Billing address",
 	// },
-	{
-		sPath: "/submit-post",
-		component: DashboardSubmitPost,
-		emoij: "✍",
-		pageName: "Publier une annonce",
-	},
 ];

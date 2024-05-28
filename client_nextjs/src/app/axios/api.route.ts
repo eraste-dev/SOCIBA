@@ -1,5 +1,6 @@
 import { IGetQueryParams, IGetSearchPropertiesParams, QueryBuilder } from "utils/query-builder.utils";
 import { ProductRequest } from "./api.type";
+import { IProperty } from "app/reducer/products/propertiy";
 
 export const apiBase: string = "http://localhost:8000";
 
@@ -26,6 +27,7 @@ export interface IServerEndpoint {
 			categories: IAxiosRequestConfig;
 			search: (query: IGetSearchPropertiesParams) => IAxiosRequestConfig;
 			post: (product: ProductRequest) => IAxiosRequestConfig;
+			delete: (id: number) => IAxiosRequestConfig;
 		};
 		auth: {
 			login: (data: { email: string; password: string }) => IAxiosRequestConfig;
@@ -57,6 +59,7 @@ export const serverEndpoints: IServerEndpoint = {
 			categories: { method: "GET", url: `${v100}/categories` },
 			search: (query: IGetSearchPropertiesParams) => ({ method: "GET", url: `${v100}/properties${QueryBuilder.searchProperties(query)}` }),
 			post: (data: ProductRequest) => ({ method: "POST", url: `${v100}/admin/products`, data }),
+			delete: (id: number) => ({ method: "DELETE", url: `${v100}/admin/products`, data: { id } }),
 		},
 		auth: {
 			login: (data: { email: string; password: string }) => ({ method: "POST", url: `${v100}/auth/login`, data }),
