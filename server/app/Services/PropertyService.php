@@ -46,6 +46,10 @@ class PropertyService
             $query->where('created_by', $payload['created_by']);
         }
 
+        if ($payload['location_id']) {
+            $query->where('location_id', $payload['location_id']);
+        }
+
         // Trie par pertinence si demandé
         if ($payload['top_seed']) {
             $query->orderBy('total_click', 'desc');

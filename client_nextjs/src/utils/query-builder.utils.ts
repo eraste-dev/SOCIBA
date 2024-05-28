@@ -12,6 +12,7 @@ export interface IGetSearchPropertiesParams {
 	offset?: number;
 	range?: { min: number; max: number };
 	limit?: number;
+	location?: number | string;
 	created_by?: number;
 }
 

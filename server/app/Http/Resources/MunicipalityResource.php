@@ -19,7 +19,7 @@ class MunicipalityResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'href' =>  '/communes/' . $this->slug,
+            'href' =>  "/annonces/?location=" . $this->slug . "&location_id=" . $this->id,
             'city' => $this->getCity(),
             'iso3' => $this->iso3,
             'iso2' => $this->iso2,

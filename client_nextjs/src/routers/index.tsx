@@ -46,6 +46,9 @@ import { isAdminPage } from "utils/utils";
 export const pages: Page[] = [
 	// ADMIN OR USERS PAGES
 	{ path: "/dashboard", component: PageDashboard },
+	
+	{ path: "/annonce/:slug", component: Single },
+	{ path: "/annonces", component: ListProduct },
 
 	{ path: "/", exact: true, component: Home },
 	// { path: "/#", exact: true, component: Home },
@@ -89,9 +92,7 @@ export const pages: Page[] = [
 	// { path: "/home-demo-7", component: PageHomeDemo7 },
 
 	// PUBLIC PAGES
-	{ path: "/", component: Home },
-	{ path: "/annonces", component: ListProduct },
-	{ path: "/annonce/:slug", component: Single },
+	// { path: "/", component: Home },
 ];
 
 const Routes = () => {

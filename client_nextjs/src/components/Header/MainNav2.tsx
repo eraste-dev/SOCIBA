@@ -61,7 +61,7 @@ const MainNav2: FC<MainNav2Props> = () => {
 
 				<div className="flex-shrink-0 flex items-center justify-end text-neutral-700 dark:text-neutral-100 space-x-1">
 					<div className="hidden items-center xl:flex space-x-2">
-						{!isDashboard() && <Navigation navigations={NAVIGATION_SHORT_DEMO} />}
+						{!isDashboard() && false && <Navigation navigations={NAVIGATION_SHORT_DEMO} />}
 
 						<div className="hidden sm:block h-10 border-l border-neutral-300 dark:border-neutral-6000"></div>
 						<DarkModeContainer />
@@ -100,9 +100,9 @@ const MainNav2: FC<MainNav2Props> = () => {
 				</div>
 			</div>
 
-			{false && (
-				<div className="container pb-2 relative flex justify-between items-center ">
-					<div className="hidden sm:flex flex-shrink-0 items-center space-x-1.5">
+			{!isDashboard() && (
+				<div className="container pb-2 relative flex justify-between items-center mt-5 ">
+					<div className="hidden sm:flex justify-between">
 						<Navigation navigations={NAVIGATION_SHORT_DEMO} />
 					</div>
 				</div>

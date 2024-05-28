@@ -2,6 +2,7 @@ import { MegamenuItem, NavItemType } from "components/Navigation/NavigationItem"
 import ncNanoId from "utils/ncNanoId";
 import __megamenu from "./jsons/__megamenu.json";
 import { route } from "routers/route";
+import { MEGA_MENU1, MEGA_MENU2, MEGA_MENU3, MEGA_MENU4, NAV_COLUMN_FOUR, NAV_COLUMN_ONE, NAV_COLUMN_THREE, NAV_COLUMN_TWO } from "./navigations-data";
 
 const megaMenuDemo: MegamenuItem[] = [
 	{
@@ -60,32 +61,26 @@ const megaMenu3ItemDemo: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
 		image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
-		title: "Corporate",
-		items: __megamenu.map((i) => ({
-			id: ncNanoId(),
-			href: "#",
-			name: i.Corporate,
-		})),
+		title: "Annonce de location",
+		items: NAV_COLUMN_ONE.map((i) => i),
 	},
 	{
 		id: ncNanoId(),
-		image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y2FyfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
-		title: "Car Model",
-		items: __megamenu.map((i) => ({
-			id: ncNanoId(),
-			href: "#",
-			name: i.CarModel,
-		})),
+		image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
+		title: "Annonce de réservation",
+		items: NAV_COLUMN_TWO.map((i) => i),
 	},
 	{
 		id: ncNanoId(),
-		image: "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cmV0YWlsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
-		title: "Department",
-		items: __megamenu.map((i) => ({
-			id: ncNanoId(),
-			href: "#",
-			name: i.Department,
-		})),
+		image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
+		title: "Annonce de vente",
+		items: NAV_COLUMN_THREE.map((i) => i),
+	},
+	{
+		id: ncNanoId(),
+		image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
+		title: "Annonce évènementiels",
+		items: NAV_COLUMN_FOUR.map((i) => i),
 	},
 ];
 
@@ -386,16 +381,38 @@ export const NAVIGATION_DEMO: NavItemType[] = [
 export const NAVIGATION_SHORT_DEMO: NavItemType[] = [
 	// {
 	// 	id: ncNanoId(),
-	// 	href: route("home"),
-	// 	name: "Home",
-	// 	type: "dropdown",
-	// 	children: demoChildMenus,
+	// 	href: "#",
+	// 	name: "Menu",
+	// 	type: "megaMenu",
+	// 	megaMenu: megaMenu3ItemDemo,
 	// },
 	{
 		id: ncNanoId(),
 		href: "#",
-		name: "Discover",
+		// image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
+		name: "Annonce de location",
 		type: "megaMenu",
-		megaMenu: megaMenu3ItemDemo,
+		megaMenu: MEGA_MENU1,
+	},
+	{
+		id: ncNanoId(),
+		href: "#",
+		name: "Annonce de réservation",
+		type: "megaMenu",
+		megaMenu: MEGA_MENU2,
+	},
+	{
+		id: ncNanoId(),
+		href: "#",
+		name: "Annonce de vente",
+		type: "megaMenu",
+		megaMenu: MEGA_MENU3,
+	},
+	{
+		id: ncNanoId(),
+		href: "#",
+		name: "Annonce évènementiels",
+		type: "megaMenu",
+		megaMenu: MEGA_MENU4,
 	},
 ];

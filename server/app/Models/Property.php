@@ -135,6 +135,7 @@ class Property extends Model
             'slug'       => request()->slug ?? null,
             'category'   => request()->category ?? null,
             'categories' => request()->categories ?? null,
+            'location_id' => request()->location_id ?? null,
             'top_seed'   => request()->top ?? false,
             'limit'      => request()->limit ?? 84,
             'created_by' => request()->created_by ?? null,

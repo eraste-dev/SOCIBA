@@ -57,15 +57,19 @@ const SingleContent: FC<SingleContentProps> = ({ data }) => {
 			</div>
 
 			{/* COMMENT FORM */}
-			<div id="comment" ref={commentRef} className="max-w-screen-md mx-auto pt-5">
-				<h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Responses ({commentCount})</h3>
-				<SingleCommentForm onClickSubmit={(id) => console.log(id)} onClickCancel={(id) => console.log(id)} />
-			</div>
+			{false && (
+				<>
+					<div id="comment" ref={commentRef} className="max-w-screen-md mx-auto pt-5">
+						<h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Responses ({commentCount})</h3>
+						<SingleCommentForm onClickSubmit={(id) => console.log(id)} onClickCancel={(id) => console.log(id)} />
+					</div>
 
-			{/* COMMENTS LIST */}
-			<div className="max-w-screen-md mx-auto">
-				<SingleCommentLists comments={comments} />
-			</div>
+					{/* COMMENTS LIST */}
+					<div className="max-w-screen-md mx-auto">
+						<SingleCommentLists comments={comments} />
+					</div>
+				</>
+			)}
 		</div>
 	);
 };

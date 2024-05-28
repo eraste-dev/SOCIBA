@@ -102,18 +102,19 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 			</div>
 		);
 	};
+
 	return (
 		<>
 			{post && !post.single ? (
 				<SingleNotFound />
 			) : (
 				<>
-					<div className="bg-gray-100">{post && post.single && <SingleBreadcrumb meta={post.single} />}</div>
+					<div className="bg-gray-100 dark:bg-neutral-800">{post && post.single && <SingleBreadcrumb meta={post.single} />}</div>
 
 					<div className={`nc-Single pt-8 lg:pt-16 ${className}`} data-nc-id="Single">
 						{/* SINGLE HEADER */}
 						<header className="container rounded-xl">
-							<SingleHeader metaActionStyle="style2" hiddenDesc pageData={post?.single} />
+							{/* <SingleHeader metaActionStyle="style2" hiddenDesc pageData={post?.single} /> */}
 
 							{galleryGrid()}
 						</header>
