@@ -21,7 +21,16 @@ export interface SectionSliderPostsProps {
 	uniqueSliderClass: string;
 }
 
-const SectionSliderPosts: FC<SectionSliderPostsProps> = ({ heading, subHeading, className = "", posts, postCardName = "card4", sliderStype = "style1", perView = 4, uniqueSliderClass }) => {
+const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
+	heading,
+	subHeading,
+	className = "",
+	posts,
+	postCardName = "card4",
+	sliderStype = "style1",
+	perView = 4,
+	uniqueSliderClass,
+}) => {
 	const UNIQUE_CLASS = "SectionSliderPosts_" + ncNanoId(uniqueSliderClass);
 
 	const dispatch = useAppDispatch();
@@ -43,21 +52,10 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({ heading, subHeading, 
 		gap: 32,
 		bound: true,
 		breakpoints: {
-			1280: {
-				perView: perView - 1,
-			},
-			1023: {
-				perView: perView - 2 || 1.2,
-				gap: 20,
-			},
-			767: {
-				perView: perView - 2 || 1.2,
-				gap: 20,
-			},
-			639: {
-				perView: 1.2,
-				gap: 20,
-			},
+			1280: { perView: perView - 1 },
+			1023: { perView: perView - 2 || 1.2, gap: 20 },
+			767: { perView: perView - 2 || 1.2, gap: 20 },
+			639: { perView: 1.2, gap: 20 },
 		},
 	});
 

@@ -5,7 +5,7 @@ import { SnackbarProvider } from "notistack";
 function App() {
 	return (
 		<div className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
-			<SnackbarProvider maxSnack={3}>
+			<SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
 				<MyRouter />
 			</SnackbarProvider>
 		</div>

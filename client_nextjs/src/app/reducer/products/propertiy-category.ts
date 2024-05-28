@@ -14,6 +14,7 @@ export interface IPropertyCategory {
 	count: number;
 	color?: TwMainColor | string;
 	children: IPropertyCategory[];
+	parent: IPropertyCategory | null;
 }
 
 export interface IStoreDataCategorie {

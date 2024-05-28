@@ -6,26 +6,26 @@ import { useLocation } from "react-router-dom";
 import { LocationStates } from "routers/types";
 
 export interface HeaderContainerProps {
-  className?: string;
+	className?: string;
 }
 
 const HeaderContainer: FC<HeaderContainerProps> = ({ className = "" }) => {
-  const currentPage = useAppSelector(selectCurrentPageData);
-  let location = useLocation();
+	const currentPage = useAppSelector(selectCurrentPageData);
+	let location = useLocation();
 
-  const getMainNavStyle = (): HeaderProps["mainNavStyle"] => {
-    if (location.pathname === "/home-header-style2") {
-      return "style2";
-    }
-    if (location.pathname === "/home-header-style2-logedin") {
-      return "style2Logedin";
-    }
-    return "style1";
-  };
+	const getMainNavStyle = (): HeaderProps["mainNavStyle"] => {
+		if (location.pathname === "/home-header-style2") {
+			return "style2";
+		}
+		if (location.pathname === "/home-header-style2-logedin") {
+			return "style2Logedin";
+		}
+		return "style1";
+	};
 
-  console.log(getMainNavStyle());
+	console.log(getMainNavStyle());
 
-  return <Header mainNavStyle={getMainNavStyle()} currentPage={currentPage} />;
+	return <Header mainNavStyle={getMainNavStyle()} currentPage={currentPage} />;
 };
 
 export default HeaderContainer;

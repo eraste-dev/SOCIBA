@@ -8,6 +8,13 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { IProperty } from "app/reducer/products/propertiy";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
+import { route } from "routers/route";
+import ProductTableAction from "./ProductTableAction";
+import ConfirmDialog from "components/Dialog/ConfirmDialog";
+import { useDispatch } from "react-redux";
+import { initProductState } from "app/axios/api.action";
 
 export interface ColumnProductTable {
 	id: "id" | "title" | "excerpt" | "content" | "actions" | "type" | "categorie" | "status";
@@ -23,6 +30,10 @@ export interface ProductTableProps {
 }
 
 const ProductTable: FC<ProductTableProps> = ({ rows }) => {
+	const history = useHistory();
+	const dispatch = useDispatch();
+	const [openDelete, setOpenDelete] = React.useState(false);
+	const [rowSelected, setRowSelected]: any = React.useState(null);
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -36,9 +47,9 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 	};
 
 	const columns: ColumnProductTable[] = [
-		{ id: "id", label: "ID", minWidth: 170 },
+		// { id: "id", label: "ID", minWidth: 170 },
 		{ id: "title", label: "Title", minWidth: 100 },
-		{ id: "excerpt", label: "Excerpt", minWidth: 100 },
+		// { id: "excerpt", label: "Excerpt", minWidth: 100 },
 		// { id: "content", label: "Content", minWidth: 100 },
 		{ id: "type", label: "Type de bien", minWidth: 100 },
 		{ id: "categorie", label: "Catégorie", minWidth: 100 },
@@ -52,24 +63,25 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 
 	type STATUS_TEXT = "PENDING" | "BLOCKED" | "REJECTED" | "DRAFT" | "PUBLISH" | "PENDING";
 	const getStatus = (status: STATUS_TEXT) => {
+		const className: string = "text-white p-1 px-3 rounded-lg";
 		switch (status) {
 			case "BLOCKED":
-				return "Blocqué";
+				return <span className={`${className} bg-red-500`}>Blocqué</span>;
 
 			case "REJECTED":
-				return "Refusé";
+				return <span className={`${className} bg-red-500`}>Refusé</span>;
 
 			case "DRAFT":
-				return "Brouillon";
+				return <span className={`${className} bg-yellow-500`}>Brouillon</span>;
 
 			case "PUBLISH":
-				return "Publie";
+				return <span className={`${className} bg-green-500`}>Publie</span>;
 
 			case "PENDING":
-				return "En attente";
+				return <span className={`${className} bg-blue-500`}>En attente</span>;
 
 			default:
-				return status;
+				return <span className={`${className} bg-red-500`}>status</span>;
 		}
 	};
 
@@ -77,7 +89,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 		<Paper sx={{ width: "100%", overflow: "hidden" }}>
 			<TableContainer sx={{ maxHeight: 440 }}>
 				<Table stickyHeader aria-label="sticky table">
-					<TableHead>
+					<TableHead className="bg-gray-500">
 						<TableRow>
 							{columns.map((column) => (
 								<TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
@@ -88,20 +100,39 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 					</TableHead>
 					<TableBody>
 						{rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-							const { id, title, description, category, status } = row;
+							const { id, title, description, category, status, images, featured_image, location, location_description } = row;
 							return (
 								<TableRow hover role="checkbox" tabIndex={-1} key={id}>
+									{/* align={column.align} */}
+									{/* {column.format && typeof value === "number" ? column.format(value) : value} */}
 									<TableCell>
-										{/* align={column.align} */}
-										{/* {column.format && typeof value === "number" ? column.format(value) : value} */}
-										{id}
+										<div className="flex justify-start items-center p-2 cursor-pointer ">
+											<div className="post-image-container mr-2" style={{ width: 70, height: 70 }}>
+												<img
+													src={featured_image ? featured_image : "https://via.placeholder.com/150"}
+													alt="image"
+													style={{ width: "100%", height: "100%" }}
+												/>
+											</div>
+											<div>
+												<h4 className="text-xl">{title}</h4>
+												<p>{description}</p>
+												<p>{`${location_description}, ${location.name}, ${location.city && location.city.name}`}</p>
+											</div>
+										</div>
 									</TableCell>
-									<TableCell>{title}</TableCell>
-									<TableCell>{description}</TableCell>
 									<TableCell>{category.name}</TableCell>
 									<TableCell>{category.name}</TableCell>
 									<TableCell>{getStatus(status as STATUS_TEXT)}</TableCell>
-									<TableCell> </TableCell>
+									<TableCell>
+										<ProductTableAction
+											row={row}
+											handleOpenDelete={() => {
+												setOpenDelete(true);
+												setRowSelected(row);
+											}}
+										/>
+									</TableCell>
 								</TableRow>
 							);
 						})}
@@ -117,6 +148,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 				onPageChange={handleChangePage}
 				onRowsPerPageChange={handleChangeRowsPerPage}
 			/>
+			<ConfirmDialog handleClose={() => setOpenDelete(false)} open={openDelete} row={rowSelected} />
 		</Paper>
 	);
 };

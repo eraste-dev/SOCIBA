@@ -46,6 +46,7 @@ Route::group(['prefix' => 'v1'], function () {
         // Route::get('/', [Controller::class, 'adminIndex'])->name('admin.index');
         Route::group(['prefix' => 'products'], function () {
             Route::post('/', [PropertyController::class, 'store'])->name('admin.products.store');
+            Route::delete('/', [PropertyController::class, 'delete'])->name('admin.products.delete');
         });
     });
 });

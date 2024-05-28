@@ -10,6 +10,7 @@ export interface IUser {
 	phone: string;
 	href: string;
 	avatar: string;
+	type: "ADMIN" | "USER" | "GUEST" | "AGENT";
 }
 
 export interface IAuth {

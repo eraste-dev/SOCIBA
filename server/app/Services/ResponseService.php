@@ -11,11 +11,12 @@ class ResponseService
      * @param string|null $message An optional message to be included in the response.
      * @return \Illuminate\Http\JsonResponse The JSON response with the success status, data, message, and error.
      */
-    public static function success($data, string $message = null)
+    public static function success($data, string $message = null, array $pagination = [])
     {
         return response()->json([
             'success' => true,
             'data' => $data,
+            'pagination' => $pagination,
             'message' => $message,
             'error' => null,
         ]);

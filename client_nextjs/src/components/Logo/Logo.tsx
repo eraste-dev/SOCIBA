@@ -14,7 +14,7 @@ const Logo: React.FC<LogoProps> = ({
   imgLight = logoLightImg,
 }) => {
   return (
-    <Link to="/sociba" className="ttnc-logo inline-block text-primary-6000">
+    <Link to="" className="ttnc-logo inline-block text-primary-6000">
       {/* THIS USE FOR MY MULTI DEMO */}
       {/* IF YOU ARE MY CLIENT. PLESE DELETE THIS CODE AND YOU YOUR IMAGE PNG BY BELLOW CODE */}
       <LogoSvg />
