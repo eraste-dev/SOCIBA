@@ -10,7 +10,7 @@ import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/Cate
 import { FaMapMarkerAlt } from "react-icons/fa";
 
 export interface SingleHeaderProps {
-	pageData?: IProperty;
+	pageData: IProperty;
 	hiddenDesc?: boolean;
 	metaActionStyle?: "style1" | "style2";
 	titleMainClass?: string;
@@ -18,15 +18,20 @@ export interface SingleHeaderProps {
 }
 
 const SingleHeader: FC<SingleHeaderProps> = ({ pageData, titleMainClass, hiddenDesc = false, className = "", metaActionStyle = "style1" }) => {
-	const { category, description, title, location } = pageData as any;
+	const { category, description, title, location, location_description, price, deposit_price } = pageData as IProperty;
 
 	return (
 		<>
 			<Helmet>
-				<title>Single</title>
+				<title>{title}</title>
 			</Helmet>
+
 			<div className={`nc-SingleHeader ${className}`}>
 				<div className="space-y-5">
+					<SingleTitle mainClass={titleMainClass} title={title} price={{ price, deposit_price }} />
+
+					<div className="w-full border-b border-neutral-100 dark:border-neutral-800"></div>
+
 					{category && <CategoryPropertyBadgeList category={category} />}
 
 					{pageData && (
@@ -38,16 +43,14 @@ const SingleHeader: FC<SingleHeaderProps> = ({ pageData, titleMainClass, hiddenD
 								hiddenCategories
 								avatarRounded="rounded-full shadow-inner"
 							/>
+
 							<SingleMetaAction2 meta={pageData} />
 						</div>
 					)}
 
-					<div className="w-full border-b border-neutral-100 dark:border-neutral-800"></div>
-					<SingleTitle mainClass={titleMainClass} title={title} />
-
 					<div className="flex items-center space-x-3">
 						<FaMapMarkerAlt />
-						<h6 className="text-base text-neutral-500 md:text-lg dark:text-neutral-400">{location}</h6>
+						<span className="text-base text-neutral-500 md:text-lg dark:text-neutral-400">{`${location_description} | ${location.name} | ${location.city?.name}`}</span>
 					</div>
 
 					{!!description && !hiddenDesc && (

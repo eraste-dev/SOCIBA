@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AuthAction } from "app/auth/auth";
 import { RegisterRequest } from "app/axios/api.type";
 import { getErrors, initAuth, registerUser } from "app/axios/api.action";
-import { Loading } from "components/Loading/Loading";
+import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ErrorMessage from "components/Form/ErrorMessage";
 import SignUpSuccess from "./SignUpSuccess";
@@ -150,7 +150,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 								S'inscrire
 							</ButtonPrimary>
 						) : (
-							<Loading />
+							<LoadingSpinner />
 						)}
 					</form>
 
