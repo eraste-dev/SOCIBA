@@ -15,6 +15,7 @@ import WidgetSort from "components/Widgets/WidgetSort/WidgetSort";
 import WidgePrice from "components/Widgets/WidgePrice/WidgePrice";
 import { useParams, useLocation } from "react-router-dom";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
+import Loading from "components/UI/Loading";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -70,6 +71,10 @@ const ListProducts: FC<ListProductsProps> = ({
 	const renderCard = (post: IProperty) => {
 		return <Card11 key={post.id} post={post} />;
 	};
+
+	if (loading) {
+		<Loading />;
+	}
 
 	return (
 		<div className={`nc-ListProducts relative ${className}`}>
