@@ -8,7 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { initAuth, login } from "app/axios/api.action";
 import { AuthAction } from "app/auth/auth";
-import { Loading } from "components/Loading/Loading";
+import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 import { useHistory } from "react-router-dom";
 import { route } from "routers/route";
 import { useSnackbar } from "notistack";
@@ -141,7 +141,7 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 							<Input type="password" className="mt-1" {...register("password", { required: true })} />
 						</label>
 
-						{!loading ? <ButtonPrimary type="submit">Se connecter</ButtonPrimary> : <Loading />}
+						{!loading ? <ButtonPrimary type="submit">Se connecter</ButtonPrimary> : <LoadingSpinner />}
 					</form>
 
 					<div>{error && !loading && <p className="text-red-500 text-center">{error}</p>}</div>

@@ -190,7 +190,7 @@ export const PropertiesSlice = createSlice({
 		setSinglePropertiesStart: (state) => {
 			state.loading = true;
 			state.error = null;
-			state.data = { ...state.data, single: undefined };
+			state.data = { ...state.data, single: undefined, similars: undefined };
 			state.success = false;
 			state.message = "";
 		},
@@ -258,7 +258,7 @@ export const PropertiesSlice = createSlice({
 		},
 
 		// SIMILAR
-		fetchSimilars: (state) => {
+		fetchSimilarsStart: (state) => {
 			state.loading = true;
 			state.error = null;
 			state.data = { ...state.data, similars: [] };
@@ -310,7 +310,7 @@ export const {
 	fetchFeaturePropertiesStart,
 	fetchFeaturePropertiesSuccess,
 	fetchFeaturePropertiesFailure,
-	fetchSimilars,
+	fetchSimilarsStart,
 	fetchSimilarsSuccess,
 	fetchSimilarsFailure,
 	setFiltersSuccess,

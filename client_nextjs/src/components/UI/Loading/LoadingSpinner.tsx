@@ -1,4 +1,4 @@
-export const Loading = () => {
+export const LoadingSpinner = () => {
 	return (
 		<div className="flex justify-center">
 			<div role="status">

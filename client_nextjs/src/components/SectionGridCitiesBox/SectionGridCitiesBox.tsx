@@ -1,12 +1,6 @@
 import { fetchLocation } from "app/axios/actions/api.others.action";
-import { fetchCategories } from "app/axios/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { LocationAction } from "app/reducer/locations/locations";
-import CardCategory1 from "components/Card/CardCategory1/CardCategory1";
-import CardCategory2 from "components/Card/CardCategory2/CardCategory2";
-import CardCategory3 from "components/Card/CardCategory3/CardCategory3";
-import CardCategory4 from "components/Card/CardCategory4/CardCategory4";
-import CardCategory5 from "components/Card/CardCategory5/CardCategory5";
 import CardCities1 from "components/Card/CardCities1/CardCities1";
 import Heading from "components/Heading/Heading";
 import { DEMO_CATEGORIES } from "data/taxonomies";
@@ -49,7 +43,7 @@ const SectionGridCitiesBox: React.FC<SectionGridCitiesBoxProps> = ({ categories 
 
 	return (
 		<div className={`nc-SectionGridCitiesBox relative ${className}`}>
-			<Heading desc="Catégories" isCenter={headingCenter}>
+			<Heading desc="Vous recherchez une annonce dans quelle ville ?" isCenter={headingCenter}>
 				{" "}
 			</Heading>
 			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6 md:gap-8">

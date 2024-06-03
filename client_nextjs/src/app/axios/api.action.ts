@@ -28,6 +28,9 @@ import {
 	deleteProductStart,
 	deleteProductSuccess,
 	deleteProductFailure,
+	fetchSimilarsSuccess,
+	fetchSimilarsFailure,
+	fetchSimilarsStart,
 } from "app/reducer/products/propertiy";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import {
@@ -95,6 +98,17 @@ export const fetchSingleProperties = (query: IGetSearchPropertiesParams) => asyn
 		dispatch(fetchSinglePropertiesSuccess(response.data));
 	} catch (error: any) {
 		dispatch(fetchSinglePropertiesFailure(error.message));
+	}
+};
+
+export const fetchSimilars = (query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
+	dispatch(fetchSimilarsStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.search(query) });
+		dispatch(fetchSimilarsSuccess(response.data));
+	} catch (error: any) {
+		dispatch(fetchSimilarsFailure(error.message));
 	}
 };
 

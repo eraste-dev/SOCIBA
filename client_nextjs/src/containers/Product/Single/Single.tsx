@@ -10,11 +10,15 @@ import SingleRelatedPosts from "containers/PageSingle/SingleRelatedPosts";
 import SingleHeader from "containers/PageSingle/SingleHeader";
 import ModalPhotos from "./ModalPhotos";
 import { PropertyAction } from "app/reducer/products/propertiy";
-import { fetchSingleProperties } from "app/axios/api.action";
+import { fetchSimilars, fetchSingleProperties } from "app/axios/api.action";
 import { useParams } from "react-router-dom";
 import SingleBreadcrumb from "containers/PageSingle/SingleBreadcrumb";
 import SingleNotFound from "./SingleNotFound";
 import SingleImage from "containers/PageSingle/SingleImage";
+import { _f, _suffix } from "utils/money-format";
+import Loading from "components/UI/Loading";
+import ContactSeller from "containers/PageSingle/sellerData";
+import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 
 export interface SingleProps {
 	className?: string;
@@ -31,9 +35,11 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 	const { slug } = useParams<{ slug: string }>();
 
 	const single = useAppSelector(PropertyAction.data)?.single;
+	const related = useAppSelector(PropertyAction.data)?.similars;
+	const [fetchRelated, setFetchRelated] = useState(false);
+	const loading = useAppSelector(PropertyAction.loading);
 	const [isOpen, setIsOpen] = useState(false);
 	const [openFocusIndex, setOpenFocusIndex] = useState(0);
-	const [requestAttempted, setRequestAttempted] = useState(false);
 
 	// UPDATE CURRENTPAGE DATA IN PAGEREDUCERS
 	useEffect(() => {
@@ -44,11 +50,26 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 	}, []);
 
 	useEffect(() => {
-		if (!requestAttempted && !single && slug) {
+		if (!loading && !single && slug) {
 			dispatch(fetchSingleProperties({ slug: slug }));
-			setRequestAttempted(true);
 		}
-	}, [single, slug, dispatch, fetchSingleProperties, requestAttempted]);
+	}, [single, slug, dispatch, fetchSingleProperties, loading]);
+
+	useEffect(() => {
+		const condition1 = single && (single.category.id || single?.location.id);
+		const condition2 = !related && !loading;
+		if (condition1 && condition2) {
+			const payload: IGetSearchPropertiesParams = {};
+			if (single?.category.id) {
+				payload.category = single?.category.id;
+			}
+
+			if (single?.location.id) {
+				payload.location = single?.location.id;
+			}
+			dispatch(fetchSimilars({ ...payload, limit: 6 }));
+		}
+	}, [related, single, dispatch, fetchSimilars, loading]);
 
 	const handleOpenModal = (index: number) => {
 		setIsOpen(true);
@@ -75,7 +96,11 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 		);
 	};
 
-	if (!single) {
+	if (loading) {
+		return <Loading />;
+	}
+
+	if (!loading && !single) {
 		<SingleNotFound />;
 	}
 
@@ -85,29 +110,34 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 
 			<div className={`nc-Single pt-8 lg:pt-16 ${className}`} data-nc-id="Single">
 				{/* SINGLE HEADER */}
-				<header className="container rounded-xl">
-					{/* <SingleHeader metaActionStyle="style2" hiddenDesc pageData={post?.single} /> */}
+				<div className="container">
+					<header className="rounded-xl">{single && <SingleHeader metaActionStyle="style2" hiddenDesc pageData={single} />}</header>
+
+					<ContactSeller productLink={single?.href} />
 
 					{single && <SingleImage meta={single} handleOpenModal={handleOpenModal} />}
-				</header>
 
-				{/* MODAL PHOTOS */}
-				{single && (
-					<ModalPhotos imgs={single.images.map((item) => item.image) || []} isOpen={isOpen} onClose={handleCloseModal} initFocus={openFocusIndex} />
-				)}
+					{/* MODAL PHOTOS */}
+					{single && (
+						<ModalPhotos
+							imgs={single.images.map((item) => item.image) || []}
+							isOpen={isOpen}
+							onClose={handleCloseModal}
+							initFocus={openFocusIndex}
+						/>
+					)}
 
-				{/* FEATURED IMAGE */}
-				<div className=""></div>
-				{/* SINGLE MAIN CONTENT */}
+					{/* SINGLE MAIN CONTENT */}
 
-				{single && (
-					<div className="container">
-						<SingleContent data={single} />
-					</div>
-				)}
+					{single && (
+						<div className="container">
+							<SingleContent data={single} />
+						</div>
+					)}
 
-				{/* RELATED POSTS */}
-				<SingleRelatedPosts />
+					{/* RELATED POSTS */}
+				</div>
+				{related && <SingleRelatedPosts related={related} />}
 			</div>
 		</>
 	);

@@ -14,6 +14,11 @@ export interface PostMeta2Props {
 
 const PostMeta2: FC<PostMeta2Props> = ({ className = "leading-none", meta, hiddenCategories = false, size = "normal", avatarRounded }) => {
 	const { updated_at, author, category, total_click } = meta;
+
+	if (!author) {
+		return <> {""} </>;
+	}
+
 	return (
 		<div
 			className={`nc-PostMeta2 flex items-center flex-wrap text-neutral-700 text-left dark:text-neutral-200 ${
