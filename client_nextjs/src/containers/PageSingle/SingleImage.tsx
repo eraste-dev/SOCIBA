@@ -1,5 +1,6 @@
 import { IProperty } from "app/reducer/products/propertiy";
 import NcImage from "components/NcImage/NcImage";
+import SingleNotFound from "containers/Product/Single/SingleNotFound";
 import React, { FC } from "react";
 import { FaAngleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -12,6 +13,10 @@ interface SingleImageProps {
 
 const SingleImage: FC<SingleImageProps> = ({ meta, handleOpenModal }) => {
 	const imgs = meta.images || [];
+
+	if (imgs.length === 0) {
+		return <></>;
+	}
 
 	return (
 		<div className="relative grid grid-cols-3 sm:grid-cols-4 gap-2 my-10">

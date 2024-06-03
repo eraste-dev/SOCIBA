@@ -52,8 +52,8 @@ class PropertyFactory extends Factory
             'video_link' => $this->faker->boolean(10) ?  'https://v3.cdnpk.net/videvo_files/video/free/2012-09/large_preview/hd1854.mp4' : null,
             'latitude' => $this->faker->latitude,
             'longitude' => $this->faker->longitude,
-            'created_by' => $this->faker->name,
-            'updated_by' => $this->faker->name,
+            'created_by' => $this->faker->numberBetween(1, 2),
+            'updated_by' => $this->faker->numberBetween(1, 2),
             'status' => $this->faker->randomElement(PROPERTY_STATUS),
             'total_click' => $this->faker->numberBetween(500, 5000),
         ];
