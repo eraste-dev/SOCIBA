@@ -18,7 +18,7 @@ export interface PostFeaturedMediaProps {
 let PREV_RATIO = 0.0;
 
 const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({ className = " w-full h-full ", post, isHover = false }) => {
-	const { featured_image, property_type, video_link, images, id, title } = post || {};
+	const { featured_image, type, video_link, images, id, title } = post || {};
 
 	const videoRef = useRef(null);
 
