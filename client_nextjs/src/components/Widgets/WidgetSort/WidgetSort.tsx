@@ -1,28 +1,27 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import WidgetHeading1 from "components/WidgetHeading1/WidgetHeading1";
 import ProductSortOption from "./ProductSortOption";
 import { FaArrowDown, FaArrowUp, FaUserAlt, FaUserAltSlash } from "react-icons/fa";
 import { sortIconSize } from "./WidgetSort.type";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { PropertyAction } from "app/reducer/products/propertiy";
-import { setFilters } from "app/axios/api.action";
+import { fetchAllProperties, setFilters } from "app/axios/api.action";
 import { route } from "routers/route";
+import { IGetSearchPropertiesParams, getFiltersFromIPropertyFilter } from "utils/query-builder.utils";
 
 export interface WidgetSortProps {
 	className?: string;
+	handleFetch?: () => void;
 }
 
-const WidgetSort: FC<WidgetSortProps> = ({ className = "bg-neutral-100 dark:bg-neutral-800" }) => {
+const WidgetSort: FC<WidgetSortProps> = ({ className = "bg-neutral-100 dark:bg-neutral-800", handleFetch }) => {
 	const dispatch = useAppDispatch();
 	const filters = useAppSelector(PropertyAction.data)?.filters;
 
 	const handleChangeSortPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-		console.log(event.target.value);
-		dispatch(
-			setFilters({
-				sort: event.target.value as "price_asc" | "price_desc",
-			})
-		);
+		// console.log(event.target.value);
+		dispatch(setFilters({ sort: event.target.value as "price_asc" | "price_desc" }));
+		handleFetch && handleFetch();
 	};
 
 	const handleChangeSortType = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +39,7 @@ const WidgetSort: FC<WidgetSortProps> = ({ className = "bg-neutral-100 dark:bg-n
 			<div className="flex flex-wrap p-4 xl:p-5">
 				{/* Option de tri par prix */}
 				<ProductSortOption
-					label="Prix croissant"
+					label="Prix"
 					name="filter_price"
 					value="price_asc"
 					type="radio"
@@ -48,28 +47,12 @@ const WidgetSort: FC<WidgetSortProps> = ({ className = "bg-neutral-100 dark:bg-n
 					handleChange={handleChangeSortPrice}
 				/>
 				<ProductSortOption
-					label="Prix décroissant"
+					label="Prix"
 					name="filter_price"
 					value="price_desc"
 					type="radio"
 					icon={<FaArrowUp size={sortIconSize} className="mr-2 text-neutral-500" />}
 					handleChange={handleChangeSortPrice}
-				/>
-				<hr className="my-4 border-neutral-200 dark:border-neutral-700" />
-				{/* Option de tri par type de publication */}
-				<ProductSortOption
-					label="Admin"
-					value="admin"
-					name="filter_type"
-					handleChange={handleChangeSortType}
-					icon={<FaUserAlt size={sortIconSize} className="mr-2 text-neutral-500" />}
-				/>
-				<ProductSortOption
-					label="Membres"
-					value="member"
-					name="filter_type"
-					handleChange={handleChangeSortType}
-					icon={<FaUserAltSlash size={sortIconSize} className="mr-2 text-neutral-500" />}
 				/>
 				{/* <ProductSortOption
 					label="Top"

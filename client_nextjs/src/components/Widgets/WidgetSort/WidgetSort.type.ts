@@ -7,4 +7,4 @@ export interface ProductSortOptionProps {
 	icon?: JSX.Element;
 }
 
-export const sortIconSize: number = 25;
+export const sortIconSize: number = 18;

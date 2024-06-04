@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\ImageService;
 use App\Utils\Utils;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class MunicipalityResource extends JsonResource
             'description' => $this->description,
             'lat' => $this->lat,
             'long' => $this->long,
-            'thumbnail' => $this->thumbnail,
+            'thumbnail' => ImageService::getImage($this->thumbnail),
             'updated_at' => Carbon::parse($this->updated_at)->format(Utils::DATE_FORMAT()),
         ];
     }
