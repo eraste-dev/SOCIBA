@@ -1,11 +1,11 @@
 import { fetchCategories, setFilters } from "app/axios/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { PropertyAction } from "app/reducer/products/propertiy";
-import propertiyCategory, { CategoryAction } from "app/reducer/products/propertiy-category";
+import propertiyCategory, { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 import CardCategory1 from "components/Card/CardCategory1/CardCategory1";
 import WidgetHeading1 from "components/WidgetHeading1/WidgetHeading1";
 import { TaxonomyType } from "data/types";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, SetStateAction, useEffect, useState } from "react";
 import { APP_ROUTE, route } from "routers/route";
 import ProductSortOption from "../WidgetSort/ProductSortOption";
 import { FaAnchor, FaArrowCircleRight, FaPlusCircle, FaTable, FaTabletAlt } from "react-icons/fa";
@@ -13,19 +13,23 @@ import { sortIconSize } from "../WidgetSort/WidgetSort.type";
 
 export interface WidgetCategoriesProps {
 	className?: string;
+	handleFetch?: () => void;
 }
 
-const WidgetCategories: FC<WidgetCategoriesProps> = ({ className = "bg-neutral-100 dark:bg-neutral-800" }) => {
+const WidgetCategories: FC<WidgetCategoriesProps> = ({ className = "bg-neutral-100 dark:bg-neutral-800", handleFetch }) => {
 	const dispatch = useAppDispatch();
 	const filters = useAppSelector(PropertyAction.data)?.filters;
 	const categories = useAppSelector(CategoryAction.data);
 	const loading = useAppSelector(CategoryAction.loading);
-	const [categoriesSelect, setCategoriesSelect] = useState([]);
+	const [categoriesSelect, setCategoriesSelect] = useState<IPropertyCategory[]>([]);
 	const [searchCategory, setSearchCategory] = useState("");
 
-	const handleChangeCategory = (event: React.ChangeEvent<HTMLInputElement>) => {
-		// setCategoriesSelect(event.target.value);
-		dispatch(setFilters({ categories: categoriesSelect }));
+	const handleChangeCategory = (item: IPropertyCategory) => {
+		console.log(item, "handleChangeCategory");
+
+		setCategoriesSelect([item]);
+		dispatch(setFilters({ categories: [item.id] }));
+		handleFetch && handleFetch();
 	};
 
 	useEffect(() => {
@@ -58,15 +62,31 @@ const WidgetCategories: FC<WidgetCategoriesProps> = ({ className = "bg-neutral-1
 							categories
 								.filter((category) => category.name.toLowerCase().includes(searchCategory.toLowerCase()))
 								.map((category) => (
-									<ProductSortOption
-										key={category.id}
-										label={category.name}
-										name="categories"
-										value={`${category.id}`}
-										type="checkbox"
-										icon={<FaPlusCircle size={18} className="mr-2 text-neutral-500" />}
-										handleChange={handleChangeCategory}
-									/>
+									<div>
+										<ProductSortOption
+											key={category.id}
+											label={category.name}
+											name="categories"
+											value={`${category.id}`}
+											type="checkbox"
+											icon={<FaPlusCircle size={18} className="mr-2 text-neutral-500" />}
+											handleChange={handleChangeCategory}
+										/>
+										{category &&
+											category.children?.map((child) => (
+												<div className="pl-2">
+													<ProductSortOption
+														key={child.id}
+														label={child.name}
+														name="categories"
+														value={`${child.id}`}
+														type="checkbox"
+														icon={<FaArrowCircleRight size={18} className="mr-2 text-neutral-500" />}
+														handleChange={handleChangeCategory}
+													/>
+												</div>
+											))}
+									</div>
 								))}
 
 						{/* <CardCategory1 className="p-4 xl:p-5 hover:bg-neutral-200 dark:hover:bg-neutral-700" key={category.id} category={category} size="normal" /> */}

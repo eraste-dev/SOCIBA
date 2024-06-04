@@ -10,17 +10,18 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyImagesController;
 use App\Http\Middleware\JwtMiddleware;
 use App\Services\ResponseService;
 
-Route::get('/', function () {
-    return ResponseService::success([], "Welcome to the Sociba Server API");
-});
+// Route::get('/', [HomeController::class, 'index']);
 
 Route::group(['prefix' => 'v1'], function () {
+    Route::get('/', [HomeController::class, 'index']);
+
     // ? PUBLIC ROUTE
     Route::group(['prefix' => ''], function () {
         Route::resource('sliders', SliderController::class);

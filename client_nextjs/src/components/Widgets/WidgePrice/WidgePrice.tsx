@@ -8,16 +8,17 @@ import React, { FC, useState } from "react";
 
 export interface WidgetAuthorsProps {
 	className?: string;
+	handleFetch?: () => void;
 }
 
-const WidgePrice: FC<WidgetAuthorsProps> = ({ className = "bg-neutral-100 dark:bg-neutral-800" }) => {
+const WidgePrice: FC<WidgetAuthorsProps> = ({ className = "bg-neutral-100 dark:bg-neutral-800" , handleFetch }) => {
 	const dispatch = useAppDispatch();
-	const filters = useAppSelector(PropertyAction.data)?.filters;
 	const [price, setPrice]: any = useState([0, 9999999999999]);
 
 	const handleChange = () => {
 		if (price && price.length > 2 && price[0] > price[1]) {
 			dispatch(setFilters({ price_range: { min: price[0], max: price[1] } }));
+			handleFetch && handleFetch();
 		}
 	};
 

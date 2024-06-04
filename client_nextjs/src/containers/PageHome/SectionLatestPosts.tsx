@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import Heading from "components/Heading/Heading";
 import { DEMO_POSTS } from "data/posts";
 import { DEMO_CATEGORIES, DEMO_TAGS } from "data/taxonomies";
@@ -13,6 +13,9 @@ import { useSelector } from "react-redux";
 import { fetchAllProperties } from "app/axios/api.action";
 import WidgetSort from "components/Widgets/WidgetSort/WidgetSort";
 import WidgePrice from "components/Widgets/WidgePrice/WidgePrice";
+import { IGetSearchPropertiesParams, getFiltersFromIPropertyFilter } from "utils/query-builder.utils";
+import Loading from "components/UI/Loading";
+import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -50,6 +53,8 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 	const data = useAppSelector(PropertyAction.data);
 	const loading = useSelector(PropertyAction.loading);
 
+	const handleFetch = () => dispatch(fetchAllProperties(getFiltersFromIPropertyFilter(data?.filters || {})));
+
 	useEffect(() => {
 		if (data && !data.all && !loading) {
 			dispatch(fetchAllProperties({ limit: 33, orderBy: "desc" }));
@@ -86,13 +91,17 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 			</div>
 
 			<div className="flex flex-col lg:flex-row">
-				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
-					<WidgetSort />
-					<WidgetCategories />
-					<WidgePrice />
+				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/5 xl:pl-0 xl:w-1/6 ">
+					<WidgetSort handleFetch={handleFetch} />
+					<WidgetCategories handleFetch={handleFetch} />
+					{/* <WidgePrice handleFetch={handleFetch} /> */}
 				</div>
-				<div className="w-full lg:w-3/4 xl:w-5/6 xl:pl-14 lg:pl-7">
-					<div className={`grid gap-6 md:gap-8 ${gridClass}`}>{data && data?.all && data?.all.map((post) => renderCard(post))}</div>
+				<div className="w-full lg:w-3/4 xl:w-4/5 lg:pl-7">
+					{loading ? (
+						<LoadingSpinner />
+					) : (
+						<div className={`grid gap-6 md:gap-8 ${gridClass}`}>{data && data?.all && data?.all.map((post) => renderCard(post))}</div>
+					)}
 					<div className="flex flex-col mt-12 md:mt-20 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-center sm:items-center">
 						<Pagination />
 						{/* <ButtonPrimary>Show me more</ButtonPrimary> */}

@@ -9,8 +9,8 @@ const useMySelector = () => {
 };
 
 const axiosInstance: AxiosInstance = axios.create({
-	// baseURL: "http://localhost:8000",
-	baseURL: "https://dev.eebtp-ci.com/api/", // PROD
+	baseURL: "http://localhost:8000",
+	// baseURL: "https://dev.eebtp-ci.com/api/", // PROD
 });
 
 export const axiosRequest = async <T>(config: AxiosRequestConfig): Promise<T> => {
