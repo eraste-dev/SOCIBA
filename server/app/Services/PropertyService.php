@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Resources\Collection;
 use App\Http\Resources\PropertyResource;
 use App\Models\Property;
+use App\Models\Slider;
 use App\Utils\Utils;
 
 class PropertyService
@@ -64,8 +65,6 @@ class PropertyService
         // Renvoie les données paginées avec une collection
         $properties = $query->paginate($payload['limit']);
 
-        // Transformer les données avec la ressource PropertyResource
-        // return PropertyResource::collection($properties);
-        return Collection::collection($properties);
+        return PropertyResource::collection($properties);
     }
 }
