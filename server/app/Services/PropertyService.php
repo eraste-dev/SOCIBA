@@ -65,6 +65,7 @@ class PropertyService
         $properties = $query->paginate($payload['limit']);
 
         // Transformer les données avec la ressource PropertyResource
-        return PropertyResource::collection($properties);
+        // return PropertyResource::collection($properties);
+        return Collection::collection($properties);
     }
 }
