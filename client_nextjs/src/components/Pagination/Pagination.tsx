@@ -1,9 +1,8 @@
 import { useAppSelector } from "app/hooks";
 import { PropertyAction } from "app/reducer/products/propertiy";
 import { IPagination, IPaginationAllLinks } from "app/reducer/products/type";
-import { CustomLink } from "data/types";
 import React, { FC } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import twFocusClass from "utils/twFocusClass";
 
 export interface PaginationProps {
@@ -12,76 +11,77 @@ export interface PaginationProps {
 
 const Pagination: FC<PaginationProps> = ({ className = "" }) => {
 	const pagination: IPagination | undefined = useAppSelector(PropertyAction.data)?.paginate;
-	// const pageMap: IPaginationAllLinks[] | undefined = pagination && pagination.all_links.slice(1, pagination.all_links.length - 1);
+	const history = useHistory();
 
 	const FirstPageTsx = () => {
-		if (pagination?.links.first === null) {
-			return <span className={`inline-flex w-11 h-11 items-center justify-center rounded-full bg-primary-6000 text-white ${twFocusClass()}`}>1</span>;
+		if (!pagination?.links.first) {
+			return <button className="cursor-not-allowed" disabled={true} dangerouslySetInnerHTML={{ __html: "&laquo;" }} />;
 		}
-		return <Link to={pagination?.links.first ?? "#"} dangerouslySetInnerHTML={{ __html: pagination?.all_links[0].label ?? "<<" }} />;
+		return <a className="mr-2" href={pagination?.links.first ?? "#"} dangerouslySetInnerHTML={{ __html: "&laquo;" }} />;
 	};
 
 	const PrevPageTsx = () => {
 		if (!pagination?.links.prev) {
-			return <></>;
+			return <button className="cursor-not-allowed" disabled={true} dangerouslySetInnerHTML={{ __html: "Précédent" }} />;
 		}
-
-		return <Link to={pagination?.links.prev ?? "#"} dangerouslySetInnerHTML={{ __html: pagination?.all_links[1].label ?? "" }} />;
+		return <Link to={pagination?.links.prev ?? "#"} dangerouslySetInnerHTML={{ __html: "&lsaquo;" }} />;
 	};
 
 	const NextPageTsx = () => {
 		if (!pagination?.links.next) {
-			return <></>;
+			return <button className="cursor-not-allowed" disabled={true} dangerouslySetInnerHTML={{ __html: "suivant" }} />;
 		}
-
-		return <Link to={pagination?.links.next ?? "#"} dangerouslySetInnerHTML={{ __html: pagination?.all_links[-2].label ?? "" }} />;
+		return <Link to={pagination?.links.next ?? "#"} dangerouslySetInnerHTML={{ __html: "suivant" }} />;
 	};
 
 	const LastPageTsx = () => {
 		if (!pagination?.links.last) {
-			return <></>;
+			return <button className="cursor-not-allowed" disabled={true} dangerouslySetInnerHTML={{ __html: "&raquo;" }} />;
 		}
-
-		return <Link to={pagination?.links.last ?? "#"} dangerouslySetInnerHTML={{ __html: pagination?.all_links[pagination.all_links.length].label ?? "" }} />;
+		return <Link to={pagination?.links.last ?? "#"} dangerouslySetInnerHTML={{ __html: "&raquo;" }} />;
 	};
 
 	const RenderItemTsx = () => {
 		const className: string =
-			"inline-flex w-11 h-11 items-center justify-center rounded-full bg-white  border border-neutral-200  dark:text-neutral-400 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700 mx-2";
+			"inline-flex w-11 h-11 items-center justify-center rounded-full bg-white border border-neutral-200 dark:text-neutral-400 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700 mx-2";
 
 		const activeClasseName: string = "bg-primary-6000 text-white dark:bg-primary-500 hover:bg-secondary-500";
 
 		const getActiveClasseName = (active: boolean) => (active ? activeClasseName : "text-neutral-6000 hover:bg-neutral-100");
-		// FIRST PAGE
-		// PREV PAGE
 
-		// ALL PAGE NUMBER
+		let start = 0;
+		let end = pagination?.all_links.length ?? 0;
 
-		// NEXT PAGE
-		// LAST PAGE
+		// Calculate the start and end for slicing the page links to display only 10 pages max
+		if (pagination) {
+			const currentIndex = pagination.all_links.findIndex((link) => link.active);
+			if (currentIndex > -1) {
+				start = Math.max(currentIndex - 5, 0);
+				end = Math.min(currentIndex + 5, pagination.all_links.length);
+			}
+		}
 
-		// RETURN UNACTIVE PAGINATION
+		const pageLinks = pagination?.all_links.slice(start, end);
+
 		return (
-			<div className="flex">
-				{/* {pagination && pagination.links && pagination.links.first && <FirstPageTsx />} */}
+			<div className="flex items-center  ">
+				<FirstPageTsx />
+				<PrevPageTsx />
 
-				{/* {pagination && pagination.links && pagination.links.prev && <PrevPageTsx />} */}
-
-				{pagination &&
-					pagination.all_links.map((link, index) => (
-						<>
+				{pageLinks &&
+					pageLinks
+						.slice(1, pageLinks.length)
+						.map((link, index) => (
 							<a
 								key={`index_${index}`}
 								className={`${className} ${twFocusClass()} ${getActiveClasseName(link.active)} `}
 								href={link.url ?? "#"}
 								dangerouslySetInnerHTML={{ __html: link.label }}
 							/>
-						</>
-					))}
+						))}
 
-				{/* {pagination && pagination.links && pagination.links.next && <NextPageTsx />} */}
-
-				{/* {pagination && pagination.links && pagination.links.last && <LastPageTsx />} */}
+				<NextPageTsx />
+				<LastPageTsx />
 			</div>
 		);
 	};
