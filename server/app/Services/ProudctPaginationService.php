@@ -2,19 +2,28 @@
 
 namespace App\Services;
 
-use App\Http\Resources\Collection;
+use App\Models\Property;
+use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class PaginationService
+class ProudctPaginationService
 {
     public function paginate($items, $perPage = 10, $page = null, $path = null, $fragment = null)
     {
         $page = $page ?: 1;
-        $items = $items instanceof Collection ? $items : collect($items);
+        // dd($perPage);
+        // $items = $items instanceof Collection ? $items : collect($items);
+        request()->limit = 999999999999;
+        $count =  PropertyService::search(Property::requestSearch())->count();
+
+        if ($path === null) {
+            // Define path for pagination
+            $path = request()->path() ?: (env('APP_ENV') === 'production' ? 'https://dev.eebtp-ci.com/' : 'http://localhost:3000/');
+        }
 
         $pagination = new LengthAwarePaginator(
             $items->forPage($page, $perPage),
-            $items->count(),
+            $count,  //$items->count(),
             $perPage,
             $page,
             [
@@ -25,7 +34,6 @@ class PaginationService
 
         return [
             // 'data' => $pagination->items(),
-            // 'pagination' => $pagination,
             'meta' => [
                 'current_page' => $pagination->currentPage(),
                 'from' => $pagination->firstItem(),

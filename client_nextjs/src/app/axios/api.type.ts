@@ -1,3 +1,4 @@
+import { IPagination } from "app/reducer/products/type";
 import { RootState } from "app/store";
 import { AxiosRequestConfig } from "axios";
 
@@ -6,6 +7,8 @@ export interface IServerResponse {
 	message: string;
 	data: any;
 	error: any;
+	errors?: any[];
+	pagination?: IPagination;
 }
 
 export interface IAxiosRequestConfig extends AxiosRequestConfig {

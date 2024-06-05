@@ -24,5 +24,5 @@ export interface IPaginationMeta {
 export interface IPagination {
 	meta: IPaginationMeta;
 	links: IPaginationLinks;
-	allLinks: IPaginationAllLinks[];
+	all_links: IPaginationAllLinks[];
 }

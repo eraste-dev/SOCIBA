@@ -73,7 +73,7 @@ export const fetchAllProperties = (query: IGetSearchPropertiesParams) => async (
 
 	try {
 		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.search(query) });
-		dispatch(fetchAllPropertiesSuccess(response.data));
+		dispatch(fetchAllPropertiesSuccess({ data: response.data, pagination: response.pagination || undefined }));
 	} catch (error: any) {
 		dispatch(fetchAllPropertiesFailure(error.message));
 	}
