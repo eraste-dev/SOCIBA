@@ -103,17 +103,19 @@ class AuthController extends Controller
             'avatar'         => 'nullable|file',
         ]);
 
+        // dd($validator->fails());
+
         if ($validator->fails()) {
             return ResponseService::error("Erreur de mise a jour", 422, $validator->errors());
         }
 
         try {
-            $user = User::find($request->input('id'));
-            $user->name = $request->input('name');
-            $user->last_name = $request->input('last_name');
-            $user->phone = $request->input('phone');
-            $user->phone_whatsapp = $request->input('phone_whatsapp');
-            $user->password = $request->input('password') ? Hash::make($request->input('password')) : $user->password;
+            $user = User::find($request->id);
+            $user->name = $request->name;
+            $user->last_name = $request->last_name;
+            $user->phone = $request->phone;
+            $user->phone_whatsapp = $request->phone_whatsapp;
+            $user->password = $request->password ? Hash::make($request->password) : $user->password;
             // $user->email = $request->input('email');
 
             if ($request->hasFile('avatar')) {

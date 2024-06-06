@@ -54,7 +54,7 @@ export type UpdateUserRequest = {
 	last_name?: string;
 	phone?: string;
 	phone_whatsapp?: string;
-	avatar?: FileList | null;
+	avatar?: File | null;
 };
 
 export interface ProductRequest {

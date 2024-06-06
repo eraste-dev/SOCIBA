@@ -200,11 +200,14 @@ export const initAuth = () => async (dispatch: AppDispatch) => {
  * @param params { email: string; password: string }
  * @returns
  */
-export const updateUser = (params: UpdateUserRequest) => async (dispatch: AppDispatch) => {
+export const updateUser = (params: FormData) => async (dispatch: AppDispatch) => {
 	dispatch(updateUserStart());
 
 	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.auth.updateProfile(params) });
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.auth.updateProfile(params),
+			headers: { "Content-Type": "multipart/form-data" },
+		});
 		dispatch(updateUserSuccess(response.data));
 	} catch (error: any) {
 		dispatch(updateUserFailure(error.message));

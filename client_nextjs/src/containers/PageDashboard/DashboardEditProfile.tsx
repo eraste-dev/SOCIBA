@@ -26,7 +26,8 @@ const DashboardEditProfile = () => {
 
 	const [initialize, setInitialize] = useState(false);
 	const [isSubmited, setIsSubmited] = useState(false);
-	const [previewUrls, setPreviewUrls]: any = useState([]);
+	const [avatar, setAvatar] = useState<string | null>(null);
+	const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
 	const {
 		register,
@@ -38,22 +39,18 @@ const DashboardEditProfile = () => {
 
 	const onSubmit: SubmitHandler<UpdateUserRequest> = (data) => {
 		if (data && !loading && user) {
-			dispatch(updateUser({ ...data, id: user?.id }));
+			const payload: UpdateUserRequest = { ...data, id: user.id };
+			const formData = new FormData();
+			formData.append("id", String(user.id));
+			data.name && formData.append("name", data.name);
+			data.last_name && formData.append("last_name", data.last_name);
+			data.phone && formData.append("phone", data.phone);
+			data.phone_whatsapp && formData.append("phone_whatsapp", data.phone_whatsapp);
+			if (avatarFile) formData.append("avatar", avatarFile);
+
+			dispatch(updateUser(formData));
 			setIsSubmited(true);
 		}
-	};
-
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const files = e.target.files;
-		const urls = [];
-		if (files) {
-			for (let i = 0; i < files.length; i++) {
-				const url = URL.createObjectURL(files[i]);
-				urls.push(url);
-			}
-		}
-		setValue("avatar", files);
-		setPreviewUrls(urls);
 	};
 
 	useEffect(() => {
@@ -71,7 +68,7 @@ const DashboardEditProfile = () => {
 	return (
 		<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6">
 			<form className="grid md:grid-cols-2 gap-6" onSubmit={handleSubmit(onSubmit)}>
-				<AvatarUpload defaultUrl={user?.avatar ?? ""} />
+				<AvatarUpload defaultUrl={user?.avatar ?? ""} avatar={avatar ?? ""} setAvatar={setAvatar} setAvatarFile={setAvatarFile} />
 
 				<label className="block">
 					<Label>Prénoms</Label>

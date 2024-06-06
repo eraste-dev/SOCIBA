@@ -3,44 +3,47 @@ import React, { FC, useState } from "react";
 
 export interface AvatarUploadProps {
 	defaultUrl?: string;
+	avatar?: string;
+	setAvatar?: (avatar: string | null) => void;
+	setAvatarFile?: (avatar: File | null) => void;
 }
 
-const AvatarUpload: FC<AvatarUploadProps> = ({ defaultUrl }) => {
-	const [avatar, setAvatar] = useState<string | null>(null);
+const AvatarUpload: FC<AvatarUploadProps> = ({ defaultUrl, avatar, setAvatar, setAvatarFile }) => {
 	const [error, setError] = useState("");
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (file) {
 			if (!file.type.startsWith("image/")) {
-				setAvatar(null);
+				if (setAvatar) setAvatar(null);
 				setError("File is not an image");
 				return;
 			}
 
 			if (file.size > 2 * 1024 * 1024) {
 				// 2MB
-				setAvatar(null);
+				if (setAvatar) setAvatar(null);
 				setError("File size exceeds 2MB");
 				return;
 			}
 
-			setAvatar("");
+			if (setAvatar) setAvatar("");
 			setError("");
 			const reader = new FileReader();
 			reader.onload = () => {
 				if (typeof reader.result === "string") {
-					setAvatar(reader.result);
+					if (setAvatar) setAvatar(reader.result);
 				} else {
-					setAvatar(null);
+					if (setAvatar) setAvatar(null);
 					setError("Failed to read file");
 				}
 			};
 			reader.onerror = () => {
-				setAvatar(null);
+				if (setAvatar) setAvatar(null);
 				setError("Error reading file");
 			};
 			reader.readAsDataURL(file);
+			if (setAvatarFile) setAvatarFile(file);
 		}
 	};
 
@@ -50,8 +53,7 @@ const AvatarUpload: FC<AvatarUploadProps> = ({ defaultUrl }) => {
 				<div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-700 border-dashed rounded-full w-1/3">
 					<div className="space-y-1 text-center">
 						{avatar || defaultUrl ? (
-							// <img className="mx-auto h-24 w-24 rounded-full" src={avatar} alt="Avatar Preview" />
-							<Avatar radius="rounded-full" imgUrl={avatar || defaultUrl} sizeClass="w-25 h-25 sm:w-9 sm:h-9" />
+							<Avatar radius="rounded-full" imgUrl={avatar || defaultUrl} sizeClass="w-32 h-32 sm:w-32 sm:h-32" />
 						) : (
 							<svg className="mx-auto h-12 w-12 text-neutral-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
 								<path
@@ -65,12 +67,11 @@ const AvatarUpload: FC<AvatarUploadProps> = ({ defaultUrl }) => {
 						<div className="flex flex-col sm:flex-row text-sm text-neutral-6000">
 							<label
 								htmlFor="avatar"
-								className="relative cursor-pointer rounded-md font-medium text-primary-6000 hover:text-primary-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
+								className="relative text-center cursor-pointer rounded-md font-medium text-primary-6000 hover:text-primary-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
 							>
 								<span>Changer de photo</span>
 								<input id="avatar" type="file" className="sr-only" name="avatar" onChange={handleFileChange} />
 							</label>
-							{/* <p className="pl-1">or drag and drop</p> */}
 						</div>
 						<p className="text-xs text-neutral-500">PNG, JPG, GIF, taille max. 2MB</p>
 						{error && <p className="text-xs text-red-500">{error}</p>}
