@@ -50,7 +50,7 @@ const AvatarUpload: FC<AvatarUploadProps> = ({ defaultUrl, avatar, setAvatar, se
 	return (
 		<div className="block md:col-span-2">
 			<div className="flex justify-center">
-				<div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-700 border-dashed rounded-full w-1/3">
+				<div className="mt-1 flex justify-center px-6 pt-5 pb-6 w-1/3">
 					<div className="space-y-1 text-center">
 						{avatar || defaultUrl ? (
 							<Avatar radius="rounded-full" imgUrl={avatar || defaultUrl} sizeClass="w-32 h-32 sm:w-32 sm:h-32" />
@@ -64,7 +64,7 @@ const AvatarUpload: FC<AvatarUploadProps> = ({ defaultUrl, avatar, setAvatar, se
 								/>
 							</svg>
 						)}
-						<div className="flex flex-col sm:flex-row text-sm text-neutral-6000">
+						<div className="flex justify-center flex-col sm:flex-row text-sm text-neutral-6000">
 							<label
 								htmlFor="avatar"
 								className="relative text-center cursor-pointer rounded-md font-medium text-primary-6000 hover:text-primary-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"

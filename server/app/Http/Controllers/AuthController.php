@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Services\ResponseService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
@@ -94,35 +95,37 @@ class AuthController extends Controller
             'id'             => 'required|integer|exists:users,id',
             'name'           => 'nullable|string|max:255',
             'last_name'      => 'nullable|string|max:255',
-            // 'email' => 'nullable|string|email|max:255',
             'phone'          => 'nullable|string|max:255',
             'phone_whatsapp' => 'nullable|string|max:255',
             'password'       => 'nullable|string',
-            'type'           => 'nullable|string|inADMIN,USER,GUEST',
+            'type'           => 'nullable|string|in:ADMIN,USER,GUEST',
             'status'         => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
-            'avatar'         => 'nullable|file',
+            'avatar'         => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // dd($validator->fails());
-
         if ($validator->fails()) {
-            return ResponseService::error("Erreur de mise a jour", 422, $validator->errors());
+            return ResponseService::error("Erreur de mise à jour", 422, $validator->errors());
         }
 
         try {
-            $user = User::find($request->id);
-            $user->name = $request->name;
-            $user->last_name = $request->last_name;
-            $user->phone = $request->phone;
-            $user->phone_whatsapp = $request->phone_whatsapp;
-            $user->password = $request->password ? Hash::make($request->password) : $user->password;
-            // $user->email = $request->input('email');
+            $user = User::findOrFail($request->id);
+
+            $user->fill($request->only([
+                'name', 'last_name', 'phone', 'phone_whatsapp', 'type', 'status'
+            ]));
+
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->password);
+            }
 
             if ($request->hasFile('avatar')) {
+                if ($user->avatar) {
+                    Storage::disk('public')->delete($user->avatar);
+                }
                 $user->avatar = $request->file('avatar')->store('avatars', 'public');
             }
-            $user->save();
 
+            $user->save();
             return ResponseService::success(new UserResource($user), "Successfully updated");
         } catch (\Throwable $th) {
             return ResponseService::error("Failed to update");

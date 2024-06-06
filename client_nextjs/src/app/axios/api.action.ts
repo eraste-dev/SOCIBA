@@ -200,7 +200,7 @@ export const initAuth = () => async (dispatch: AppDispatch) => {
  * @param params { email: string; password: string }
  * @returns
  */
-export const updateUser = (params: FormData) => async (dispatch: AppDispatch) => {
+export const updateUser = (params: FormData | UpdateUserRequest) => async (dispatch: AppDispatch) => {
 	dispatch(updateUserStart());
 
 	try {

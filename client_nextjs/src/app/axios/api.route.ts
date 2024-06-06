@@ -37,7 +37,7 @@ export interface IServerEndpoint {
 			resetPassword: IAxiosRequestConfig;
 			refreshToken: IAxiosRequestConfig;
 			profile: IAxiosRequestConfig;
-			updateProfile: (data: FormData) => IAxiosRequestConfig;
+			updateProfile: (data: FormData | UpdateUserRequest) => IAxiosRequestConfig;
 			updatePassword: (data: UpdateUserRequest) => IAxiosRequestConfig;
 			verifyEmail: IAxiosRequestConfig;
 			resendEmail: IAxiosRequestConfig;
@@ -72,7 +72,7 @@ export const serverEndpoints: IServerEndpoint = {
 			verifyEmail: { method: "POST", url: `${v100}/auth/verify-email` },
 			resendEmail: { method: "POST", url: `${v100}/auth/resend-email` },
 			confirmEmail: { method: "POST", url: `${v100}/auth/confirm-email` },
-			updateProfile: (data: FormData) => ({ method: "PUT", url: `${v100}/user/update-profile`, data }),
+			updateProfile: (data: FormData | UpdateUserRequest) => ({ method: "PUT", url: `${v100}/user/update-profile`, data }),
 			updatePassword: (data: UpdateUserRequest) => ({ method: "PUT", url: `${v100}/user/update-password` }),
 		},
 	},

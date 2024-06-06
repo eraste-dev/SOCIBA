@@ -12,6 +12,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import AvatarUpload from "./updateUser/AvatarUpload";
+import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 
 const DashboardEditProfile = () => {
 	const dispatch = useDispatch();
@@ -25,7 +26,6 @@ const DashboardEditProfile = () => {
 	const loading = useSelector(AuthAction.loading);
 
 	const [initialize, setInitialize] = useState(false);
-	const [isSubmited, setIsSubmited] = useState(false);
 	const [avatar, setAvatar] = useState<string | null>(null);
 	const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
@@ -41,6 +41,7 @@ const DashboardEditProfile = () => {
 		if (data && !loading && user) {
 			const payload: UpdateUserRequest = { ...data, id: user.id };
 			const formData = new FormData();
+
 			formData.append("id", String(user.id));
 			data.name && formData.append("name", data.name);
 			data.last_name && formData.append("last_name", data.last_name);
@@ -49,19 +50,18 @@ const DashboardEditProfile = () => {
 			if (avatarFile) formData.append("avatar", avatarFile);
 
 			dispatch(updateUser(formData));
-			setIsSubmited(true);
 		}
 	};
 
 	useEffect(() => {
 		if (!loading && success && isSubmitted) {
-			snackbar.enqueueSnackbar("Votre profile a bien éte mis à jour", { variant: "success", transitionDuration: 300 });
+			snackbar.enqueueSnackbar("Votre profile a bien éte mis à jour", { variant: "success", autoHideDuration: 2000 });
 		}
 	}, [loading, success, snackbar, isSubmitted]);
 
 	useEffect(() => {
 		if (!loading && error && isSubmitted) {
-			snackbar.enqueueSnackbar(error, { variant: "error", transitionDuration: 300 });
+			snackbar.enqueueSnackbar(error, { variant: "error", autoHideDuration: 2000 });
 		}
 	}, [loading, error, snackbar]);
 
@@ -112,9 +112,15 @@ const DashboardEditProfile = () => {
 					<ErrorMessage errors={errorArray} error="name" />
 				</label>  */}
 
-				<ButtonPrimary className="md:col-span-2" type="submit">
-					Mise à jour du profil
-				</ButtonPrimary>
+				{loading ? (
+					<div className="flex justify-center">
+						<LoadingSpinner />
+					</div>
+				) : (
+					<ButtonPrimary className="md:col-span-2" type="submit">
+						Mise à jour du profil
+					</ButtonPrimary>
+				)}
 			</form>
 		</div>
 	);
