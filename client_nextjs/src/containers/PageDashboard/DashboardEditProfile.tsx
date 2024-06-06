@@ -1,6 +1,6 @@
 import { AuthAction } from "app/auth/auth";
 import { initAuth, updateUser } from "app/axios/api.action";
-import { RegisterRequest } from "app/axios/api.type";
+import { RegisterRequest, UpdateUserRequest } from "app/axios/api.type";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import ProductPreviewImageItem from "components/Dashboard/ProductPreviewImageItem";
 import ErrorMessage from "components/Form/ErrorMessage";
@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import AvatarUpload from "./updateUser/AvatarUpload";
 
 const DashboardEditProfile = () => {
 	const dispatch = useDispatch();
@@ -32,12 +33,12 @@ const DashboardEditProfile = () => {
 		handleSubmit,
 		watch,
 		setValue,
-		formState: { errors },
-	} = useForm<RegisterRequest>();
+		formState: { errors, isSubmitting, isLoading, isSubmitted },
+	} = useForm<UpdateUserRequest>();
 
-	const onSubmit: SubmitHandler<RegisterRequest> = (data) => {
-		if (data && !loading) {
-			dispatch(updateUser(data));
+	const onSubmit: SubmitHandler<UpdateUserRequest> = (data) => {
+		if (data && !loading && user) {
+			dispatch(updateUser({ ...data, id: user?.id }));
 			setIsSubmited(true);
 		}
 	};
@@ -55,47 +56,22 @@ const DashboardEditProfile = () => {
 		setPreviewUrls(urls);
 	};
 
+	useEffect(() => {
+		if (!loading && success && isSubmitted) {
+			snackbar.enqueueSnackbar("Votre profile a bien éte mis à jour", { variant: "success", transitionDuration: 300 });
+		}
+	}, [loading, success, snackbar, isSubmitted]);
+
+	useEffect(() => {
+		if (!loading && error && isSubmitted) {
+			snackbar.enqueueSnackbar(error, { variant: "error", transitionDuration: 300 });
+		}
+	}, [loading, error, snackbar]);
+
 	return (
 		<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6">
 			<form className="grid md:grid-cols-2 gap-6" onSubmit={handleSubmit(onSubmit)}>
-				{/* IMAGE */}
-				<div className="block md:col-span-2">
-					<Label>Ajoutez des photos*</Label>
-					<p className="text-xs text-neutral-500">Ajoutez plusieurs photos pour augmenter vos chances d'être contacté</p>
-
-					<div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-700 border-dashed rounded-md">
-						<div className="space-y-1 text-center">
-							<svg className="mx-auto h-12 w-12 text-neutral-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-								<path
-									d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								></path>
-							</svg>
-							<div className="flex flex-col sm:flex-row text-sm text-neutral-6000">
-								<label
-									htmlFor="files"
-									className="relative cursor-pointer rounded-md font-medium text-primary-6000 hover:text-primary-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
-								>
-									<span>Upload a file</span>
-									<input
-										id="files"
-										type="file"
-										className="sr-only"
-										name="files"
-										multiple
-										// ref={register}
-										onChange={handleFileChange}
-									/>
-								</label>
-								<p className="pl-1">or drag and drop</p>
-							</div>
-							<p className="text-xs text-neutral-500">PNG, JPG, GIF up to 2MB</p>
-						</div>
-						<ErrorMessage errors={errorArray} error="files" customMessage="Veuillez ajouter au moins une image" />
-					</div>
-				</div>
+				<AvatarUpload defaultUrl={user?.avatar ?? ""} />
 
 				<label className="block">
 					<Label>Prénoms</Label>
@@ -117,17 +93,17 @@ const DashboardEditProfile = () => {
 
 				<label className="block">
 					<Label> Téléphone</Label>
-					<Input type="email" className="mt-1 " {...register("phone")} defaultValue={user?.phone} />
+					<Input type="text" className="mt-1 " {...register("phone")} defaultValue={user?.phone} />
 					<ErrorMessage errors={errorArray} error="phone" />
 				</label>
 
 				<label className="block">
 					<Label> Numéro WhatsApp</Label>
-					<Input type="email" className="mt-1 " {...register("phone_whatsapp")} defaultValue={user?.phone_whatsapp} />
+					<Input type="text" className="mt-1 " {...register("phone_whatsapp")} defaultValue={user?.phone_whatsapp} />
 					<ErrorMessage errors={errorArray} error="phone_whatsapp" />
 				</label>
 
-				<label className="block">
+				{/* <label className="block">
 					<Label>Current password</Label>
 					<Input placeholder="***" type="password" className="mt-1" />
 					<ErrorMessage errors={errorArray} error="name" />
@@ -137,7 +113,7 @@ const DashboardEditProfile = () => {
 					<Label>New password</Label>
 					<Input type="password" className="mt-1" />
 					<ErrorMessage errors={errorArray} error="name" />
-				</label>
+				</label>  */}
 
 				<ButtonPrimary className="md:col-span-2" type="submit">
 					Mise à jour du profil

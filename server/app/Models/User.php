@@ -69,4 +69,15 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public static function getImagePath()
+    {
+        return '/images/users';
+    }
+
+
+    public static function getAvatarPath()
+    {
+        return User::getImagePath() + '/avatars';
+    }
 }

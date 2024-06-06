@@ -100,21 +100,30 @@ class AuthController extends Controller
             'password'       => 'nullable|string',
             'type'           => 'nullable|string|inADMIN,USER,GUEST',
             'status'         => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
+            'avatar'         => 'nullable|file',
         ]);
 
         if ($validator->fails()) {
-            return ResponseService::error("Erreur d'enregistrement", 422, $validator->errors());
+            return ResponseService::error("Erreur de mise a jour", 422, $validator->errors());
         }
 
-        $user = User::find($request->input('id'));
-        $user->name = $request->input('name');
-        $user->last_name = $request->input('last_name');
-        $user->phone = $request->input('phone');
-        $user->phone_whatsapp = $request->input('phone_whatsapp');
-        $user->password = $request->input('password') ? Hash::make($request->input('password')) : $user->password;
-        // $user->email = $request->input('email');
-        $user->save();
+        try {
+            $user = User::find($request->input('id'));
+            $user->name = $request->input('name');
+            $user->last_name = $request->input('last_name');
+            $user->phone = $request->input('phone');
+            $user->phone_whatsapp = $request->input('phone_whatsapp');
+            $user->password = $request->input('password') ? Hash::make($request->input('password')) : $user->password;
+            // $user->email = $request->input('email');
 
-        return ResponseService::success($user, "Successfully updated");
+            if ($request->hasFile('avatar')) {
+                $user->avatar = $request->file('avatar')->store('avatars', 'public');
+            }
+            $user->save();
+
+            return ResponseService::success(new UserResource($user), "Successfully updated");
+        } catch (\Throwable $th) {
+            return ResponseService::error("Failed to update");
+        }
     }
 }

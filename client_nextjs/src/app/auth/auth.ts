@@ -31,6 +31,13 @@ export interface IAuth {
 		loading?: boolean;
 		error?: string | null;
 	};
+	updateAccount?: {
+		success?: boolean;
+		message?: string;
+		loading?: boolean;
+		error?: string | null;
+		errors?: any;
+	};
 }
 
 const initialState: IStoreDataState<IAuth | undefined> = {

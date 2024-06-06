@@ -1,7 +1,7 @@
 import { IUser, updateUserFailure, updateUserStart, updateUserSuccess } from "./../auth/auth";
 import { fetchSlidersFailure, fetchSlidersStart, fetchSlidersSuccess } from "app/sliders/sliders";
 import { AppDispatch } from "app/store";
-import { IServerResponse, ProductRequest, RegisterRequest } from "./api.type";
+import { IServerResponse, ProductRequest, RegisterRequest, UpdateUserRequest } from "./api.type";
 import { serverEndpoints } from "./api.route";
 import { axiosRequest } from "./api";
 import { fetchCategoriesFailure, fetchCategoriesStart, fetchCategoriesSuccess } from "app/reducer/products/propertiy-category";
@@ -200,11 +200,11 @@ export const initAuth = () => async (dispatch: AppDispatch) => {
  * @param params { email: string; password: string }
  * @returns
  */
-export const updateUser = (params: RegisterRequest) => async (dispatch: AppDispatch) => {
+export const updateUser = (params: UpdateUserRequest) => async (dispatch: AppDispatch) => {
 	dispatch(updateUserStart());
 
 	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.auth.login(params) });
+		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.auth.updateProfile(params) });
 		dispatch(updateUserSuccess(response.data));
 	} catch (error: any) {
 		dispatch(updateUserFailure(error.message));

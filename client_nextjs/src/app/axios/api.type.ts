@@ -47,11 +47,14 @@ export interface RegisterRequest {
 
 export type UpdateUserRequest = {
 	// email: string;
+	id: number;
 	password?: string;
+	confirmPassword?: string;
 	name?: string;
 	last_name?: string;
 	phone?: string;
 	phone_whatsapp?: string;
+	avatar?: FileList | null;
 };
 
 export interface ProductRequest {

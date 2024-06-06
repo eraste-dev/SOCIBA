@@ -1,5 +1,5 @@
 import { IGetQueryParams, IGetSearchPropertiesParams, QueryBuilder } from "utils/query-builder.utils";
-import { ProductRequest } from "./api.type";
+import { ProductRequest, UpdateUserRequest } from "./api.type";
 import { IProperty } from "app/reducer/products/propertiy";
 
 export const apiBase: string = "http://localhost:8000";
@@ -37,8 +37,8 @@ export interface IServerEndpoint {
 			resetPassword: IAxiosRequestConfig;
 			refreshToken: IAxiosRequestConfig;
 			profile: IAxiosRequestConfig;
-			updateProfile: IAxiosRequestConfig;
-			updatePassword: IAxiosRequestConfig;
+			updateProfile: (data: UpdateUserRequest) => IAxiosRequestConfig;
+			updatePassword: (data: UpdateUserRequest) => IAxiosRequestConfig;
 			verifyEmail: IAxiosRequestConfig;
 			resendEmail: IAxiosRequestConfig;
 			confirmEmail: IAxiosRequestConfig;
@@ -69,11 +69,11 @@ export const serverEndpoints: IServerEndpoint = {
 			resetPassword: { method: "POST", url: `${v100}/auth/reset-password` },
 			refreshToken: { method: "POST", url: `${v100}/auth/refresh-token` },
 			profile: { method: "GET", url: `${v100}/auth/profile` },
-			updateProfile: { method: "PUT", url: `${v100}/auth/profile` },
-			updatePassword: { method: "PUT", url: `${v100}/auth/password` },
 			verifyEmail: { method: "POST", url: `${v100}/auth/verify-email` },
 			resendEmail: { method: "POST", url: `${v100}/auth/resend-email` },
 			confirmEmail: { method: "POST", url: `${v100}/auth/confirm-email` },
+			updateProfile: (data: UpdateUserRequest) => ({ method: "PUT", url: `${v100}/user/update-profile`, data }),
+			updatePassword: (data: UpdateUserRequest) => ({ method: "PUT", url: `${v100}/user/update-password` }),
 		},
 	},
 };

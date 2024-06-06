@@ -86,7 +86,7 @@ const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
 					</ul>
 				</div>
 
-				<div className="h-full w-4/6 ml-auto md:ml-auto">
+				<div className="h-full w-5/6 ml-auto">
 					<div className="flex flex-col space-y-8 xl:space-y-0 xl:flex-row">
 						{/* SIDEBAR */}
 
