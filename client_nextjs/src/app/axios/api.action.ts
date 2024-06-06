@@ -1,4 +1,4 @@
-import { IUser } from "./../auth/auth";
+import { IUser, updateUserFailure, updateUserStart, updateUserSuccess } from "./../auth/auth";
 import { fetchSlidersFailure, fetchSlidersStart, fetchSlidersSuccess } from "app/sliders/sliders";
 import { AppDispatch } from "app/store";
 import { IServerResponse, ProductRequest, RegisterRequest } from "./api.type";
@@ -192,6 +192,23 @@ export const registerUser = (params: RegisterRequest) => async (dispatch: AppDis
 
 export const initAuth = () => async (dispatch: AppDispatch) => {
 	dispatch(initAuthentication());
+};
+
+/**
+ * Update the current user
+ * use for change password
+ * @param params { email: string; password: string }
+ * @returns
+ */
+export const updateUser = (params: RegisterRequest) => async (dispatch: AppDispatch) => {
+	dispatch(updateUserStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.auth.login(params) });
+		dispatch(updateUserSuccess(response.data));
+	} catch (error: any) {
+		dispatch(updateUserFailure(error.message));
+	}
 };
 // ----------------------------------------
 

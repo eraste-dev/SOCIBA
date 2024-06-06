@@ -42,7 +42,17 @@ export interface RegisterRequest {
 	last_name: string;
 	phone: string;
 	phone_whatsapp?: string;
+	avatar?: FileList | null;
 }
+
+export type UpdateUserRequest = {
+	// email: string;
+	password?: string;
+	name?: string;
+	last_name?: string;
+	phone?: string;
+	phone_whatsapp?: string;
+};
 
 export interface ProductRequest {
 	id?: number;

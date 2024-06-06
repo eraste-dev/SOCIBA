@@ -42,14 +42,14 @@ class AuthController extends Controller
     {
         // Validation des données saisies
         $validator = Validator::make($request->all(), [
-            'name'       => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'phone'      => 'required|string|max:255',
-            'phone_whatsapp'      => 'required|string|max:255',
-            'email'      => 'required|string|email|max:255|unique:users',
-            'password'   => 'required|string|min:6',
-            'status'     => 'nullable|string|max:255',
-            'type'     => 'nullable|string|max:255'
+            'name'           => 'required|string|max:255',
+            'last_name'      => 'required|string|max:255',
+            'phone'          => 'required|string|max:255',
+            'phone_whatsapp' => 'required|string|max:255',
+            'email'          => 'required|string|email|max:255|unique:users',
+            'password'       => 'required|string|min:6',
+            'status'         => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
+            'type'           => 'nullable|string|inADMIN,USER,GUEST'
         ]);
 
         // Si la validation échoue, renvoyer les erreurs
@@ -86,5 +86,35 @@ class AuthController extends Controller
         JWTAuth::invalidate($token); // Invalide le token, l'ajoutant à la liste noire
 
         return ResponseService::success("Successfully logged out");
+    }
+
+    public function updateUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id'             => 'required|integer|exists:users,id',
+            'name'           => 'nullable|string|max:255',
+            'last_name'      => 'nullable|string|max:255',
+            // 'email' => 'nullable|string|email|max:255',
+            'phone'          => 'nullable|string|max:255',
+            'phone_whatsapp' => 'nullable|string|max:255',
+            'password'       => 'nullable|string',
+            'type'           => 'nullable|string|inADMIN,USER,GUEST',
+            'status'         => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error("Erreur d'enregistrement", 422, $validator->errors());
+        }
+
+        $user = User::find($request->input('id'));
+        $user->name = $request->input('name');
+        $user->last_name = $request->input('last_name');
+        $user->phone = $request->input('phone');
+        $user->phone_whatsapp = $request->input('phone_whatsapp');
+        $user->password = $request->input('password') ? Hash::make($request->input('password')) : $user->password;
+        // $user->email = $request->input('email');
+        $user->save();
+
+        return ResponseService::success($user, "Successfully updated");
     }
 }

@@ -31,11 +31,13 @@ const NAV_COLUMN_THREE: NavItemType[] = [
 
 const NAV_COLUMN_FOUR: NavItemType[] = [createNavItem("Restaurant / maquis/ Point Chaud", href(1)), createNavItem("Concert/ plein air", href(2))];
 
+const NAV_COLUMN_FIVE: NavItemType[] = [createNavItem("A propos de nous", "/about")];
+
 const MEGA_MENU1: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
 		image: "../images/default/p-474x232.png",
-		title: "Annonce de location",
+		title: "location",
 		items: NAV_COLUMN_ONE.map((i) => i),
 	},
 ];
@@ -44,7 +46,7 @@ const MEGA_MENU2: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
 		image: "../images/default/p-474x232.png",
-		title: "Annonce de réservation",
+		title: "réservation",
 		items: NAV_COLUMN_TWO.map((i) => i),
 	},
 ];
@@ -53,7 +55,7 @@ const MEGA_MENU3: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
 		image: "../images/default/p-474x232.png",
-		title: "Annonce de vente",
+		title: "vente",
 		items: NAV_COLUMN_THREE.map((i) => i),
 	},
 ];
@@ -67,4 +69,13 @@ const MEGA_MENU4: MegamenuItem[] = [
 	},
 ];
 
-export { NAV_COLUMN_ONE, NAV_COLUMN_TWO, NAV_COLUMN_THREE, NAV_COLUMN_FOUR, MEGA_MENU1, MEGA_MENU2, MEGA_MENU3, MEGA_MENU4 };
+const MEGA_MENU5: MegamenuItem[] = [
+	{
+		id: ncNanoId(),
+		image: "../images/default/p-474x232.png",
+		title: "Autres",
+		items: NAV_COLUMN_FIVE.map((i) => i),
+	},
+];
+
+export { NAV_COLUMN_ONE, NAV_COLUMN_TWO, NAV_COLUMN_THREE, NAV_COLUMN_FOUR, NAV_COLUMN_FIVE, MEGA_MENU1, MEGA_MENU2, MEGA_MENU3, MEGA_MENU4, MEGA_MENU5 };

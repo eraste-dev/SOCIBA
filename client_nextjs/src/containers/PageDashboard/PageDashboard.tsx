@@ -7,8 +7,9 @@ import { AuthAction } from "app/auth/auth";
 import UserLayout from "components/LayoutPage/UserLayout";
 import { USER_SUB_PAGES } from "components/LayoutPage/layout.type";
 import { logout } from "app/axios/api.action";
-import { FaSignOutAlt } from "react-icons/fa";
+import { FaHome, FaSignOutAlt } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
+import { route } from "routers/route";
 
 export interface PageDashboardProps {
 	className?: string;
@@ -24,8 +25,12 @@ const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
 	const handleLogout = () => {
 		if (token) {
 			dispatch(logout(token));
-			history.push("/login");
+			history.push(route("home"));
 		}
+	};
+
+	const handleHomePage = () => {
+		history.push(route("home"));
 	};
 
 	if (!user) {
@@ -66,6 +71,12 @@ const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
 								</li>
 							);
 						})}
+						<li className="px-6 py-2.5 font-medium cursor-pointer " onClick={handleHomePage}>
+							<span className="flex">
+								<FaHome className="w-8 mr-2" />
+								Page d'accueil
+							</span>
+						</li>
 						<li className="px-6 py-2.5 font-medium cursor-pointer " onClick={handleLogout}>
 							<span className="flex">
 								<FaSignOutAlt className="w-8 transform rotate-180 mr-2" />

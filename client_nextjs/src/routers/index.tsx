@@ -46,7 +46,7 @@ import { isAdminPage } from "utils/utils";
 export const pages: Page[] = [
 	// ADMIN OR USERS PAGES
 	{ path: "/dashboard", component: PageDashboard },
-	
+
 	{ path: "/annonce/:slug", component: Single },
 	{ path: "/annonces", component: ListProduct },
 
@@ -101,6 +101,7 @@ const Routes = () => {
 		<BrowserRouter basename={import.meta.env.VITE_LRT_OR_RTL === "rtl" ? "/rtl" : "/"}>
 			<ScrollToTop />
 			<HeaderContainer />
+			{/* <div className="" style={{ minHeight: "100vh" }}> */}
 			<Switch>
 				{/* return <Route key={path} component={component} exact={!!exact} path={path} />; */}
 				{pages.map(({ component, path, exact }) => {
@@ -108,6 +109,7 @@ const Routes = () => {
 				})}
 				<Route component={Page404} />
 			</Switch>
+			{/* </div> */}
 			<Footer />
 			{/* MEDIA */}
 

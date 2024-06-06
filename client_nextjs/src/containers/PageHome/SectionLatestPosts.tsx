@@ -60,7 +60,7 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 
 	useEffect(() => {
 		if (data && !data.all && !loading && !error && !fetchState) {
-			dispatch(fetchAllProperties({ limit: 9, orderBy: "desc", path: window.location.href }));
+			dispatch(fetchAllProperties({ limit: 33, orderBy: "desc", path: window.location.href }));
 			setFetchState(true);
 		}
 	}, [dispatch, fetchAllProperties, data, loading, error, fetchState, setFetchState]);

@@ -8,6 +8,7 @@ export interface IUser {
 	last_name: string;
 	email: string;
 	phone: string;
+	phone_whatsapp: string;
 	href: string;
 	avatar: string;
 	type: "ADMIN" | "USER" | "GUEST" | "AGENT";

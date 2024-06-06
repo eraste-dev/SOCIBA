@@ -30,6 +30,7 @@ export const USER_SUB_PAGES: DashboardPage[] = [
 	{ sPath: "/submit-post", component: DashboardSubmitPost, emoij: "✍", pageName: "Publier une annonce" },
 	{ sPath: "/posts", component: DashboardPosts, emoij: "📕", pageName: "Mes annonces" },
 	{ sPath: "/edit-profile", component: DashboardEditProfile, emoij: "🛠", pageName: "Modifier Profile" },
+	{ pageName: "Autres" },
 	// {
 	// 	sPath: "/subscription",
 	// 	component: DashboardSubcription,
