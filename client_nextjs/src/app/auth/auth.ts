@@ -11,7 +11,9 @@ export interface IUser {
 	phone_whatsapp: string;
 	href: string;
 	avatar: string;
+	status: "ACTIVE" | "INACTIVE" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED";
 	type: "ADMIN" | "USER" | "GUEST" | "AGENT";
+	count_products: number;
 }
 
 export interface IAuth {

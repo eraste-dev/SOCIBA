@@ -29,6 +29,8 @@ class UserResource extends JsonResource
             "type"      => $this->type,
             "status"    => $this->status,
             "updated_at" => Carbon::parse($this->updated_at)->format(Utils::DATE_FORMAT()),
+            // "products" => $this->getProductsByUser($this->id),
+            "count_products" => $this->countProducts()
         ];
     }
 }

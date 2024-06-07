@@ -43,6 +43,9 @@ export interface IServerEndpoint {
 			resendEmail: IAxiosRequestConfig;
 			confirmEmail: IAxiosRequestConfig;
 		};
+		users: {
+			getAll: IAxiosRequestConfig;
+		};
 	};
 	authentificated?: any;
 }
@@ -74,6 +77,9 @@ export const serverEndpoints: IServerEndpoint = {
 			confirmEmail: { method: "POST", url: `${v100}/auth/confirm-email` },
 			updateProfile: (data: FormData | UpdateUserRequest) => ({ method: "PUT", url: `${v100}/user/update-profile`, data }),
 			updatePassword: (data: UpdateUserRequest) => ({ method: "PUT", url: `${v100}/user/update-password` }),
+		},
+		users: {
+			getAll: { method: "GET", url: `${v100}/user/list` },
 		},
 	},
 };

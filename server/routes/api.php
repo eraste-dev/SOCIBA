@@ -14,6 +14,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyImagesController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\JwtMiddleware;
 use App\Services\ResponseService;
 
@@ -47,7 +48,7 @@ Route::group(['prefix' => 'v1'], function () {
         // ? PROTECTED PRODUCTS ROUTES
         Route::group(['prefix' => '/admin'], function () {
             Route::group(['prefix' => 'products'], function () {
-                Route::post('/', [PropertyController::class, 'store'])->name('admin.products.store');
+                Route::post('/',   [PropertyController::class, 'store'])->name('admin.products.store');
                 Route::delete('/', [PropertyController::class, 'delete'])->name('admin.products.delete');
             });
         });
@@ -55,6 +56,7 @@ Route::group(['prefix' => 'v1'], function () {
         // ? PROTECTED USER ROUTES
         Route::group(['prefix' => '/user'], function () {
             Route::put('update-profile',   [AuthController::class, 'updateUser'])->name('user.update-profile');
+            Route::get('list',             [UserController::class, 'listUsers'])->name('user.list');
         });
     });
 });

@@ -59,8 +59,9 @@ class PropertyService
         }
 
         // ? if user is not admin no show deleted properties
-        $admin_condition = Utils::userLogged() && Utils::userLogged()->role == 'ADMIN';
-        $query->whereNotIn('status', $admin_condition ? [Utils::STATE_DELETED()] : []);
+        // $admin_condition = Utils::userLogged() && Utils::userLogged()->role == 'ADMIN';
+        // $query->whereNotIn('status', $admin_condition ? [Utils::STATE_DELETED()] : []);
+        $query->whereNotIn('status', [Utils::STATE_DELETED()]);
 
         // Renvoie les données paginées avec une collection
         $properties = $query->paginate($payload['limit']);
