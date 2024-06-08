@@ -1,9 +1,10 @@
 import { IPropertyCategory } from "app/reducer/products/propertiy-category";
-import { IStoreAction, IStoreDataState, ProductRequest } from "../../axios/api.type";
+import { IServerResponse, IStoreAction, IStoreDataState, ProductRequest } from "../../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 import { IUser } from "app/auth/auth";
 import { ILocation } from "../locations/locations";
+import { IPagination } from "./type";
 
 export interface IPropertyImage {
 	id: number;
@@ -92,6 +93,7 @@ const failProductDataAction = (message: string = "") => {
 
 export interface IStorePropertyData {
 	all?: IProperty[] | undefined;
+	paginate?: IPagination;
 	features?: IProperty[] | undefined;
 	similars?: IProperty[] | undefined;
 	single?: IProperty | undefined;
@@ -140,13 +142,14 @@ export const PropertiesSlice = createSlice({
 			state.success = false;
 			state.message = "";
 		},
-		fetchAllPropertiesSuccess: (state, action: PayloadAction<IProperty[]>) => {
+		fetchAllPropertiesSuccess: (state, action: PayloadAction<{ data: IProperty[]; pagination: IPagination | undefined }>) => {
 			state.loading = false;
 			state.error = null;
-			state.data = { ...state.data, all: action.payload };
+			state.data = { ...state.data, all: action.payload?.data, paginate: action.payload?.pagination };
 		},
 		fetchAllPropertiesFailure: (state, action: PayloadAction<string>) => {
 			state.loading = false;
+			state.data = { ...state.data, all: undefined, paginate: undefined };
 			state.error = action.payload;
 		},
 

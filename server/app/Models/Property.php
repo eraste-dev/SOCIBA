@@ -139,6 +139,7 @@ class Property extends Model
             'top_seed'   => request()->top ?? false,
             'limit'      => request()->limit ?? 84,
             'created_by' => request()->created_by ?? null,
+            'page'       => request()->page ?? 1
         ];
 
         return $payload;

@@ -16,6 +16,7 @@ export interface IGetSearchPropertiesParams {
 	limit?: number;
 	location?: number | string;
 	created_by?: number;
+	path?: string;
 }
 
 export class QueryBuilder {

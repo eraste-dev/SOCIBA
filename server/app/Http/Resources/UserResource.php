@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\ImageService;
 use App\Utils\Utils;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,9 +24,13 @@ class UserResource extends JsonResource
             "href"      => "user/" . $this->id,
             "email"     => $this->email,
             "phone"     => $this->phone,
+            "phone_whatsapp"     => $this->phone_whatsapp,
+            'avatar'    => ImageService::getImage($this->avatar),
             "type"      => $this->type,
             "status"    => $this->status,
             "updated_at" => Carbon::parse($this->updated_at)->format(Utils::DATE_FORMAT()),
+            // "products" => $this->getProductsByUser($this->id),
+            "count_products" => $this->countProducts()
         ];
     }
 }

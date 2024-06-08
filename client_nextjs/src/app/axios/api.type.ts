@@ -1,3 +1,4 @@
+import { IPagination } from "app/reducer/products/type";
 import { RootState } from "app/store";
 import { AxiosRequestConfig } from "axios";
 
@@ -6,6 +7,8 @@ export interface IServerResponse {
 	message: string;
 	data: any;
 	error: any;
+	errors?: any[];
+	pagination?: IPagination;
 }
 
 export interface IAxiosRequestConfig extends AxiosRequestConfig {
@@ -39,7 +42,20 @@ export interface RegisterRequest {
 	last_name: string;
 	phone: string;
 	phone_whatsapp?: string;
+	avatar?: FileList | null;
 }
+
+export type UpdateUserRequest = {
+	// email: string;
+	id: number;
+	password?: string;
+	confirmPassword?: string;
+	name?: string;
+	last_name?: string;
+	phone?: string;
+	phone_whatsapp?: string;
+	avatar?: File | null;
+};
 
 export interface ProductRequest {
 	id?: number;

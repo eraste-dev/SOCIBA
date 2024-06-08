@@ -5,10 +5,11 @@ import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthAction } from "app/auth/auth";
 import UserLayout from "components/LayoutPage/UserLayout";
-import { USER_SUB_PAGES } from "components/LayoutPage/layout.type";
-import { logout } from "app/axios/api.action";
-import { FaSignOutAlt } from "react-icons/fa";
+import { ADMIN_SUB_PAGES, USER_SUB_PAGES } from "components/LayoutPage/layout.type";
+import { isAdmin, logout } from "app/axios/api.action";
+import { FaHome, FaSignOutAlt } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
+import { route } from "routers/route";
 
 export interface PageDashboardProps {
 	className?: string;
@@ -24,8 +25,12 @@ const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
 	const handleLogout = () => {
 		if (token) {
 			dispatch(logout(token));
-			history.push("/login");
+			history.push(route("home"));
 		}
+	};
+
+	const handleHomePage = () => {
+		history.push(route("home"));
 	};
 
 	if (!user) {
@@ -66,6 +71,41 @@ const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
 								</li>
 							);
 						})}
+
+						{user && isAdmin(user) && (
+							<>
+								{ADMIN_SUB_PAGES.map(({ sPath, pageName, emoij }, index) => {
+									return (
+										<li key={index}>
+											{sPath && emoij ? (
+												<NavLink
+													className="flex items-center px-8 py-2.5 font-medium hover:text-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+													to={`${url}${sPath}`}
+													activeClassName="bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
+												>
+													<span className="w-8 mr-1">{emoij}</span>
+													{pageName}
+												</NavLink>
+											) : (
+												<>
+													<span className="flex items-center px-6 py-2.5 font-medium hover:text-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-100">
+														{pageName}
+													</span>
+													<hr className="w-full border-t border-neutral-200 dark:border-neutral-700" />
+												</>
+											)}
+										</li>
+									);
+								})}
+							</>
+						)}
+
+						<li className="px-6 py-2.5 font-medium cursor-pointer " onClick={handleHomePage}>
+							<span className="flex">
+								<FaHome className="w-8 mr-2" />
+								Page d'accueil
+							</span>
+						</li>
 						<li className="px-6 py-2.5 font-medium cursor-pointer " onClick={handleLogout}>
 							<span className="flex">
 								<FaSignOutAlt className="w-8 transform rotate-180 mr-2" />
@@ -75,7 +115,7 @@ const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
 					</ul>
 				</div>
 
-				<div className="h-full w-4/6 ml-auto md:ml-auto">
+				<div className="h-full w-5/6 ml-auto">
 					<div className="flex flex-col space-y-8 xl:space-y-0 xl:flex-row">
 						{/* SIDEBAR */}
 
@@ -83,6 +123,10 @@ const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
 						<div className="flex-grow">
 							<Switch>
 								{USER_SUB_PAGES.filter((item) => item.component != undefined).map(({ component, sPath, exact }, index) => {
+									return <Route key={index} exact={exact} component={component} path={!!sPath ? `${path}${sPath}` : path} />;
+								})}
+
+								{ADMIN_SUB_PAGES.filter((item) => item.component != undefined).map(({ component, sPath, exact }, index) => {
 									return <Route key={index} exact={exact} component={component} path={!!sPath ? `${path}${sPath}` : path} />;
 								})}
 								<Redirect to={path + "/root"} />

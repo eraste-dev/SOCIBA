@@ -14,6 +14,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyImagesController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\JwtMiddleware;
 use App\Services\ResponseService;
 
@@ -43,11 +44,19 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     // ! PROTECTED ROUTE
-    Route::group(['prefix' => '/admin', 'middleware' => [JwtMiddleware::class]], function () {
-        // Route::get('/', [Controller::class, 'adminIndex'])->name('admin.index');
-        Route::group(['prefix' => 'products'], function () {
-            Route::post('/', [PropertyController::class, 'store'])->name('admin.products.store');
-            Route::delete('/', [PropertyController::class, 'delete'])->name('admin.products.delete');
+    Route::group(['middleware' => [JwtMiddleware::class]], function () {
+        // ? PROTECTED PRODUCTS ROUTES
+        Route::group(['prefix' => '/admin'], function () {
+            Route::group(['prefix' => 'products'], function () {
+                Route::post('/',   [PropertyController::class, 'store'])->name('admin.products.store');
+                Route::delete('/', [PropertyController::class, 'delete'])->name('admin.products.delete');
+            });
+        });
+
+        // ? PROTECTED USER ROUTES
+        Route::group(['prefix' => '/user'], function () {
+            Route::put('update-profile',   [AuthController::class, 'updateUser'])->name('user.update-profile');
+            Route::get('list',             [UserController::class, 'listUsers'])->name('user.list');
         });
     });
 });

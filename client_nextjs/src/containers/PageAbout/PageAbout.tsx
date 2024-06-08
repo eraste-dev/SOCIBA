@@ -1,49 +1,47 @@
-import SectionHero from "components/SectionHero/SectionHero";
-import rightImg from "images/about-hero-right.png";
-import React, { FC } from "react";
+import { FC } from "react";
 import SectionFounder from "./SectionFounder";
 import SectionStatistic from "./SectionStatistic";
 import { Helmet } from "react-helmet";
-import SectionSubscribe2 from "components/SectionSubscribe2/SectionSubscribe2";
 import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import BackgroundSection from "components/BackgroundSection/BackgroundSection";
+import SectionContact from "./SectionContact";
 
 export interface PageAboutProps {
-  className?: string;
+	className?: string;
 }
 
+export const ABOUT_TEXT: { TITLE: string; DESCRIPTION: string } = {
+	TITLE: "",
+	DESCRIPTION:
+		"Notre vision avec est de permettre à toute personne de trouver en quelques clics son futur logement ou réservation de son choix à un prix adapté à son budget et en toute sécurité. Nous sommes déterminés à offrir un site web d'annonces et de promotion immobilières qui offre une liste infinie de choix pour la population. Grâce à notre plateforme, vous pouvez facilement trouver votre logement idéal, sans vous soucier des formalités et des coûts associés à la recherche traditionnelle.",
+};
+
 const PageAbout: FC<PageAboutProps> = ({ className = "" }) => {
-  return (
-    <div
-      className={`nc-PageAbout overflow-hidden relative ${className}`}
-      data-nc-id="PageAbout"
-    >
-      <Helmet>
-        <title>About || Blog Magazine React Template</title>
-      </Helmet>
+	return (
+		<div className={`nc-PageAbout overflow-hidden relative ${className}`} data-nc-id="PageAbout">
+			<Helmet>
+				<title>A propos || SOCIBA</title>
+			</Helmet>
 
-      {/* ======== BG GLASS ======== */}
-      <BgGlassmorphism />
+			{/* ======== BG GLASS ======== */}
+			<BgGlassmorphism />
 
-      <div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
-        <SectionHero
-          rightImg={rightImg}
-          heading="👋 About Us."
-          btnText=""
-          subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
-        />
+			<div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
+				{/* <SectionHero rightImg={rightImg} heading={ABOUT_TEXT.TITLE} btnText="" subHeading={ABOUT_TEXT.DESCRIPTION} /> */}
 
-        <SectionFounder />
+				<SectionFounder />
 
-        <div className="relative py-16">
-          <BackgroundSection />
-          <SectionStatistic />
-        </div>
+				<div className="relative py-16">
+					<BackgroundSection />
+					<SectionStatistic />
+				</div>
 
-        <SectionSubscribe2 />
-      </div>
-    </div>
-  );
+				{/* <SectionSubscribe2 /> */}
+
+				<SectionContact />
+			</div>
+		</div>
+	);
 };
 
 export default PageAbout;

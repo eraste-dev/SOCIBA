@@ -20,25 +20,26 @@ class UserSeeder extends Seeder
             'email'             => 'admin@sociba.com',
             'email_verified_at' => now(),
             'password'          => Hash::make('password'),
+            'phone'             => '0789670552',
+            'phone_whatsapp'    => '0789670552',
+            'avatar'            => '/images/users/avatars/logo-sociba-400xauto.png',
             'remember_token'    => null,
-            'type'              => 'ADMIN', 'status' => 'ACTIVE'
+            'type'              => 'ADMIN',
+            'status' => 'ACTIVE'
         ]);
 
         User::create([
-            'name'              => 'EK',
-            'last_name'          => '',
-            'email'             => 'admingrc@candyde.click',
+            'name'              => 'E',
+            'last_name'          => 'Kouakou',
+            'email'             => 'keraste38@gmail.com',
+            'phone'             => '0789670552',
+            'phone_whatsapp'    => '0153220218',
+            'avatar'            => '/images/users/avatars/keraste38.jpg',
             'email_verified_at' => now(),
-            'password'          => Hash::make('100100100'),
+            'password'          => Hash::make('password'),
             'remember_token'    => null,
-            'type'              => 'ADMIN', 'status' => 'ACTIVE'
+            'type'              => 'USER',
+            'status' => 'ACTIVE'
         ]);
-
-
-        // User::factory(10)->create();
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }

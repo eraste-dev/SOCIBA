@@ -16,6 +16,7 @@ import WidgePrice from "components/Widgets/WidgePrice/WidgePrice";
 import { IGetSearchPropertiesParams, getFiltersFromIPropertyFilter } from "utils/query-builder.utils";
 import Loading from "components/UI/Loading";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
+import ButtonPrimary from "components/Button/ButtonPrimary";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -52,14 +53,17 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 	const dispatch = useAppDispatch();
 	const data = useAppSelector(PropertyAction.data);
 	const loading = useSelector(PropertyAction.loading);
+	const error = useSelector(PropertyAction.error);
+	const [fetchState, setFetchState] = useState<boolean>(false);
 
 	const handleFetch = () => dispatch(fetchAllProperties(getFiltersFromIPropertyFilter(data?.filters || {})));
 
 	useEffect(() => {
-		if (data && !data.all && !loading) {
-			dispatch(fetchAllProperties({ limit: 33, orderBy: "desc" }));
+		if (data && !data.all && !loading && !error && !fetchState) {
+			dispatch(fetchAllProperties({ limit: 33, orderBy: "desc", path: window.location.href }));
+			setFetchState(true);
 		}
-	}, [dispatch, fetchAllProperties, data, loading]);
+	}, [dispatch, fetchAllProperties, data, loading, error, fetchState, setFetchState]);
 
 	const renderCard = (post: IProperty) => {
 		return <Card11 key={post.id} post={post} />;

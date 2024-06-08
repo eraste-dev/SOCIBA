@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Services\ResponseService;
 use Illuminate\Http\Request;
+use App\Models\Contact;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactMail;
+use Illuminate\Support\Env;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
