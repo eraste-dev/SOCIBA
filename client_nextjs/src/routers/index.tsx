@@ -41,7 +41,7 @@ import PageSingleTemp4Sidebar from "containers/PageSingle/PageSingleTemp4Sidebar
 import Home from "containers/PageHome/Home";
 import Single from "containers/Product/Single/Single";
 import ListProduct from "containers/Product/List";
-import { isAdminPage } from "utils/utils";
+// import { isAdminPage } from "utils/utils";
 
 export const pages: Page[] = [
 	// ADMIN OR USERS PAGES

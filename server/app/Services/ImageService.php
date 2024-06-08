@@ -2,13 +2,18 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Env;
+
 class ImageService
 {
     public static function getImage(string $imageName): ?string
     {
-        $imagePath = public_path('assets' . $imageName);
-
         // Vérifie si le fichier image existe
+        if (Env('APP_ENV') == 'production') {
+            return 'https://api.eebtp-ci.com/assets' . $imageName;
+        }
+
+        $imagePath = public_path('assets' . $imageName);
         if (file_exists($imagePath)) {
             return asset('assets' . $imageName);
         }
