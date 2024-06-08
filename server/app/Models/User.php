@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Http\Resources\PropertyResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -68,5 +70,28 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public static function getImagePath()
+    {
+        return '/images/users';
+    }
+
+
+    public static function getAvatarPath()
+    {
+        return User::getImagePath() + '/avatars';
+    }
+
+    public function countProducts()
+    {
+        return Property::where(['created_by' => $this->id])->count();
+        // return $this->hasMany(Property::class)->count();
+    }
+
+    public function getPublishedProductsByUser()
+    {
+        //  'status' => 'PUBLISHED'
+        return PropertyResource::collection(Property::where(['created_by' => $this->id,])->get());
     }
 }

@@ -2,44 +2,39 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Services\ImageService;
 
 class Collection extends ResourceCollection
 {
     public function toArray($request)
     {
+        // dd($this->collection);
+
         return [
             'data' => $this->collection,
             'links' => [
-                'first' => $this->url(1),
-                'last' => $this->url($this->lastPage()),
-                'prev' => $this->previousPageUrl(),
-                'next' => $this->nextPageUrl(),
-            ],
-            'meta' => [
-                'current_page' => $this->currentPage(),
-                'from' => $this->firstItem(),
-                'last_page' => $this->lastPage(),
-                'path' => $this->path(),
-                'per_page' => $this->perPage(),
-                'to' => $this->lastItem(),
-                'total' => $this->total(),
+                'first' => $this->collection->url(1),
             ],
         ];
-    }
 
-    public function paginate($items, $perPage, $page = null, $options = [])
-    {
-        $page = $page ?: LengthAwarePaginator::resolveCurrentPage();
 
-        return new LengthAwarePaginator(
-            $items->forPage($page, $perPage),
-            $items->count(),
-            $perPage,
-            $page,
-            $options
-        );
+        // return [
+        //     'data' => $this->collection,
+        //     'links' => [
+        //         'first' => $this->resource->url(1),
+        //         'last' => $this->resource->url($this->resource->lastPage()),
+        //         'prev' => $this->resource->previousPageUrl(),
+        //         'next' => $this->resource->nextPageUrl(),
+        //     ],
+        //     'meta' => [
+        //         'current_page' => $this->resource->currentPage(),
+        //         'from' => $this->resource->firstItem(),
+        //         'last_page' => $this->resource->lastPage(),
+        //         'path' => $this->resource->path(),
+        //         'per_page' => $this->resource->perPage(),
+        //         'to'       => $this->resource->lastItem(),
+        //         'total'    => $this->resource->total(),
+        //     ],
+        // ];
     }
 }

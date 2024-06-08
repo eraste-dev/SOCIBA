@@ -6,6 +6,7 @@ use App\Http\Resources\Collection;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImages;
+use App\Services\ProudctPaginationService;
 use App\Services\PropertyService;
 use App\Services\ResponseService;
 use App\Utils\Utils;
@@ -21,9 +22,13 @@ class PropertyController extends Controller
      */
     public function get(Request $request)
     {
+        $products = PropertyService::search(Property::requestSearch());
+        $paginationService = new ProudctPaginationService;
+
         return ResponseService::success(
-            PropertyService::search(Property::requestSearch()),
-            Response::HTTP_OK
+            $products,
+            Response::HTTP_OK,
+            $paginationService->paginate($products, $request->limit, $request->page ?? 1, null, null),
         );
     }
 

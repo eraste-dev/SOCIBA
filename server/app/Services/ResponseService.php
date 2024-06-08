@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+
 class ResponseService
 {
     /**
@@ -11,8 +13,11 @@ class ResponseService
      * @param string|null $message An optional message to be included in the response.
      * @return \Illuminate\Http\JsonResponse The JSON response with the success status, data, message, and error.
      */
-    public static function success($data, string $message = null, array $pagination = [])
-    {
+    public static function success(
+        $data,
+        string $message = null,
+        LengthAwarePaginator | array $pagination = []
+    ) {
         return response()->json([
             'success' => true,
             'data' => $data,

@@ -7,6 +7,7 @@ import mediaRunningReducer from "./mediaRunning/mediaRunning";
 import sliderReducer from "./sliders/sliders";
 import categoryReducer from "./reducer/products/propertiy-category";
 import productReducer from "./reducer/products/propertiy";
+import usersReducer from "./reducer/users/users";
 import authReducer from "./auth/auth";
 import locationReducer from "./reducer/locations/locations";
 
@@ -17,13 +18,12 @@ const rootReducers = {
 	commentLikes: commentLikesReducer,
 	pages: pagesReducer,
 	mediaRunning: mediaRunningReducer,
-	// ADDONS
 	sliders: sliderReducer,
 	categories: categoryReducer,
 	products: productReducer,
 	auth: authReducer,
 	locations: locationReducer,
-	// snackbars: snackbarReducer,
+	usersManagement: usersReducer,
 };
 
 export default rootReducers;

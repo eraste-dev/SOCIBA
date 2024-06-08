@@ -2,7 +2,17 @@ import { MegamenuItem, NavItemType } from "components/Navigation/NavigationItem"
 import ncNanoId from "utils/ncNanoId";
 import __megamenu from "./jsons/__megamenu.json";
 import { route } from "routers/route";
-import { MEGA_MENU1, MEGA_MENU2, MEGA_MENU3, MEGA_MENU4, NAV_COLUMN_FOUR, NAV_COLUMN_ONE, NAV_COLUMN_THREE, NAV_COLUMN_TWO } from "./navigations-data";
+import {
+	MEGA_MENU1,
+	MEGA_MENU2,
+	MEGA_MENU3,
+	MEGA_MENU4,
+	MEGA_MENU5,
+	NAV_COLUMN_FOUR,
+	NAV_COLUMN_ONE,
+	NAV_COLUMN_THREE,
+	NAV_COLUMN_TWO,
+} from "./navigations-data";
 
 const megaMenuDemo: MegamenuItem[] = [
 	{
@@ -61,19 +71,19 @@ const megaMenu3ItemDemo: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
 		image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
-		title: "Annonce de location",
+		title: "location",
 		items: NAV_COLUMN_ONE.map((i) => i),
 	},
 	{
 		id: ncNanoId(),
 		image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
-		title: "Annonce de réservation",
+		title: "réservation",
 		items: NAV_COLUMN_TWO.map((i) => i),
 	},
 	{
 		id: ncNanoId(),
 		image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
-		title: "Annonce de vente",
+		title: "vente",
 		items: NAV_COLUMN_THREE.map((i) => i),
 	},
 	{
@@ -390,29 +400,36 @@ export const NAVIGATION_SHORT_DEMO: NavItemType[] = [
 		id: ncNanoId(),
 		href: "#",
 		// image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
-		name: "Annonce de location",
+		name: "Location",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU1,
 	},
 	{
 		id: ncNanoId(),
 		href: "#",
-		name: "Annonce de réservation",
+		name: "Réservation",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU2,
 	},
 	{
 		id: ncNanoId(),
 		href: "#",
-		name: "Annonce de vente",
+		name: "Vente",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU3,
 	},
 	{
 		id: ncNanoId(),
 		href: "#",
-		name: "Annonce évènementiels",
+		name: "Évènementiels",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU4,
+	},
+	{
+		id: ncNanoId(),
+		href: "/about",
+		name: "Autres",
+		type: "megaMenu",
+		megaMenu: MEGA_MENU5,
 	},
 ];

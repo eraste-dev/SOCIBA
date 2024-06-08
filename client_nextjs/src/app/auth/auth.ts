@@ -8,9 +8,12 @@ export interface IUser {
 	last_name: string;
 	email: string;
 	phone: string;
+	phone_whatsapp: string;
 	href: string;
 	avatar: string;
+	status: "ACTIVE" | "INACTIVE" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED";
 	type: "ADMIN" | "USER" | "GUEST" | "AGENT";
+	count_products: number;
 }
 
 export interface IAuth {
@@ -29,6 +32,13 @@ export interface IAuth {
 		message?: string;
 		loading?: boolean;
 		error?: string | null;
+	};
+	updateAccount?: {
+		success?: boolean;
+		message?: string;
+		loading?: boolean;
+		error?: string | null;
+		errors?: any;
 	};
 }
 

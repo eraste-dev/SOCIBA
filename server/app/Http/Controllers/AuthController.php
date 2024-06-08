@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Services\ResponseService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
@@ -42,14 +43,14 @@ class AuthController extends Controller
     {
         // Validation des données saisies
         $validator = Validator::make($request->all(), [
-            'name'       => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'phone'      => 'required|string|max:255',
-            'phone_whatsapp'      => 'required|string|max:255',
-            'email'      => 'required|string|email|max:255|unique:users',
-            'password'   => 'required|string|min:6',
-            'status'     => 'nullable|string|max:255',
-            'type'     => 'nullable|string|max:255'
+            'name'           => 'required|string|max:255',
+            'last_name'      => 'required|string|max:255',
+            'phone'          => 'required|string|max:255',
+            'phone_whatsapp' => 'required|string|max:255',
+            'email'          => 'required|string|email|max:255|unique:users',
+            'password'       => 'required|string|min:6',
+            'status'         => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
+            'type'           => 'nullable|string|inADMIN,USER,GUEST'
         ]);
 
         // Si la validation échoue, renvoyer les erreurs
@@ -86,5 +87,48 @@ class AuthController extends Controller
         JWTAuth::invalidate($token); // Invalide le token, l'ajoutant à la liste noire
 
         return ResponseService::success("Successfully logged out");
+    }
+
+    public function updateUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id'             => 'required|integer|exists:users,id',
+            'name'           => 'nullable|string|max:255',
+            'last_name'      => 'nullable|string|max:255',
+            'phone'          => 'nullable|string|max:255',
+            'phone_whatsapp' => 'nullable|string|max:255',
+            'password'       => 'nullable|string',
+            'type'           => 'nullable|string|in:ADMIN,USER,GUEST',
+            'status'         => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
+            'avatar'         => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error("Erreur de mise à jour", 422, $validator->errors());
+        }
+
+        try {
+            $user = User::findOrFail($request->id);
+
+            $user->fill($request->only([
+                'name', 'last_name', 'phone', 'phone_whatsapp', 'type', 'status'
+            ]));
+
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->password);
+            }
+
+            if ($request->hasFile('avatar')) {
+                if ($user->avatar) {
+                    Storage::disk('public')->delete($user->avatar);
+                }
+                $user->avatar = $request->file('avatar')->store('avatars', 'public');
+            }
+
+            $user->save();
+            return ResponseService::success(new UserResource($user), "Successfully updated");
+        } catch (\Throwable $th) {
+            return ResponseService::error("Failed to update");
+        }
     }
 }
