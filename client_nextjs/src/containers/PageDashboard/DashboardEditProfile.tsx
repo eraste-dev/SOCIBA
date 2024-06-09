@@ -49,7 +49,10 @@ const DashboardEditProfile = () => {
 			data.phone_whatsapp && formData.append("phone_whatsapp", data.phone_whatsapp);
 			if (avatarFile) formData.append("avatar", avatarFile);
 
-			dispatch(updateUser(formData));
+			dispatch(
+				// updateUser(formData);
+				updateUser(payload)
+			);
 		}
 	};
 

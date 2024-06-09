@@ -19,6 +19,7 @@ import { IUser } from "app/auth/auth";
 import ChangeUserType from "./ChangeUserType";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
 import UpdateUserDialog from "./UpdateUserDialog";
+import { VIEW_ADMIN_USER } from "containers/PageDashboard/DashboardUsers";
 
 export interface ColumnUserManagementTable {
 	id: "id" | "name" | "status" | "phone" | "phone_whatsapp" | "type" | "count_products" | "actions";
@@ -26,10 +27,6 @@ export interface ColumnUserManagementTable {
 	minWidth?: number;
 	align?: "right";
 	format?: (value: number) => string;
-}
-
-export interface UserManagementTableProps {
-	rows: IUser[];
 }
 
 export const LIST_TYPE: ListBoxItemType[] = [{ name: "ADMIN" }, { name: "USER" }];
@@ -44,7 +41,12 @@ export const LIST_STATUS: ListBoxItemType[] = [
 	{ name: "BLOCKED" },
 ];
 
-const UserManagementTable: FC<UserManagementTableProps> = ({ rows }) => {
+export interface UserManagementTableProps {
+	rows: IUser[];
+	handleChangeView: (value: VIEW_ADMIN_USER, user: IUser) => void;
+}
+
+const UserManagementTable: FC<UserManagementTableProps> = ({ rows, handleChangeView }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const [openDelete, setOpenDelete] = React.useState(false);
@@ -115,7 +117,7 @@ const UserManagementTable: FC<UserManagementTableProps> = ({ rows }) => {
 
 	return (
 		<Paper sx={{ width: "100%", overflow: "hidden" }}>
-			<TableContainer sx={{ maxHeight: 440 }}>
+			<TableContainer sx={{ minHeight: 640 }}>
 				<Table stickyHeader aria-label="sticky table">
 					<TableHead className="bg-gray-500">
 						<TableRow>
@@ -168,6 +170,7 @@ const UserManagementTable: FC<UserManagementTableProps> = ({ rows }) => {
 									<TableCell>
 										<UserTableAction
 											row={row}
+											handleChangeView={(view: VIEW_ADMIN_USER) => handleChangeView(view, row)}
 											handleOpenUpdate={() => {
 												setOpenUpdate(true);
 												setRowSelected(row);
