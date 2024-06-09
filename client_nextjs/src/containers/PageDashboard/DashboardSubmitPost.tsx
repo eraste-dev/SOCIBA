@@ -128,7 +128,7 @@ const DashboardSubmitPost = () => {
 	};
 
 	const initForm = (value: ProductRequest) => {
-        setValue("id", value.id);
+		setValue("id", value.id);
 		setValue("category_id", value.category_id);
 		setValue("location_id", value.location_id);
 		setValue("title", value.title);
@@ -249,7 +249,7 @@ const DashboardSubmitPost = () => {
 					<SelectProductType
 						options={["VENTE", "LOCATION", "ACHAT", "AUTRE"]}
 						onChangeOption={(value) => setValue("type", value)}
-						selected={watch("type")}
+						selected={watch("type") ?? ""}
 					/>
 					<ErrorMessage errors={errorArray} error="type" customMessage="Veuillez choisir un type d'offre" />
 				</label>
@@ -461,7 +461,9 @@ const DashboardSubmitPost = () => {
 						Donnez une description détaillée de votre article. N’indiquez pas vos coordonnées (e-mail, téléphones, …) dans la description.
 					</p>
 					{watch("excerpt") && (
-						<span className={watch("excerpt").length == 250 ? "text-red-500" : "text-neutral-500"}>{watch("excerpt").length} / 250</span>
+						<span className={((watch("excerpt") && watch("excerpt")!.length) ?? 0) == 250 ? "text-red-500" : "text-neutral-500"}>
+							{watch("excerpt") && watch("excerpt")!.length} / 250
+						</span>
 					)}
 					<ErrorMessage errors={errorArray} error="excerpt" customMessage="Veuillez ajouter une description" />
 				</label>
