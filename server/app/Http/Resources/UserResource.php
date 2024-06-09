@@ -18,17 +18,17 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id"        => $this->id,
-            "name"      => $this->name,
-            "last_name" => $this->last_name,
-            "href"      => "user/" . $this->id,
-            "email"     => $this->email,
-            "phone"     => $this->phone,
-            "phone_whatsapp"     => $this->phone_whatsapp,
-            'avatar'    => ImageService::getImage($this->avatar),
-            "type"      => $this->type,
-            "status"    => $this->status,
-            "updated_at" => Carbon::parse($this->updated_at)->format(Utils::DATE_FORMAT()),
+            "id"             => $this->id,
+            "name"           => $this->name,
+            "last_name"      => $this->last_name,
+            "href"           => "user/" . $this->id,
+            "email"          => $this->email,
+            "phone"          => $this->phone,
+            "phone_whatsapp" => $this->phone_whatsapp,
+            'avatar'         => $this->avatar != null ? ImageService::getImage($this->avatar) : null,
+            "type"           => $this->type,
+            "status"         => $this->status,
+            "updated_at"     => Carbon::parse($this->updated_at)->format(Utils::DATE_FORMAT()),
             // "products" => $this->getProductsByUser($this->id),
             "count_products" => $this->countProducts()
         ];

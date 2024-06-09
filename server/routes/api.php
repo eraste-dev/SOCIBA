@@ -5,18 +5,16 @@
  *
  */
 
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PropertyCategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\PropertyController;
-use App\Http\Controllers\PropertyImagesController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\JwtMiddleware;
-use App\Services\ResponseService;
 
 // Route::get('/', [HomeController::class, 'index']);
 
@@ -41,6 +39,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('login',    [AuthController::class, 'login']);
         Route::post('register', [AuthController::class, 'register']);
         Route::post('logout',   [AuthController::class, 'logout']);
+        Route::post('/password/email', [AuthController::class, 'sendResetLinkEmail']);
+        Route::post('/password/reset', [AuthController::class, 'resetPassword']);
+        Route::post('/password/change', [AuthController::class, 'changePassword'])->middleware([JwtMiddleware::class]);
     });
 
     // ! PROTECTED ROUTE
@@ -57,6 +58,12 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => '/user'], function () {
             Route::put('update-profile',   [AuthController::class, 'updateUser'])->name('user.update-profile');
             Route::get('list',             [UserController::class, 'listUsers'])->name('user.list');
+            // NOTIFICATION USER
+            Route::get('notifications',                     [NotificationController::class, 'index'])->name('user.notifications');
+            Route::get('/notifications/unread',             [NotificationController::class, 'unread']);
+            Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead']);
+            Route::delete('/notifications/{id}',            [NotificationController::class, 'destroy']);
+            Route::post('/notifications/mark-all-as-read',  [NotificationController::class, 'markAllAsRead']);
         });
     });
 });
