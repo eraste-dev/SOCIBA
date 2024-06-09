@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 
 class PropertyController extends Controller
 {
+    private $limit_product = 9999999999999;
     /**
      * Display a listing of the resource.
      */
@@ -28,7 +29,7 @@ class PropertyController extends Controller
         return ResponseService::success(
             $products,
             Response::HTTP_OK,
-            $paginationService->paginate($products, $request->limit, $request->page ?? 1, null, null),
+            $paginationService->paginate($products, $request->limit ?? $this->limit_product, $request->page ?? 1, null, null),
         );
     }
 
@@ -39,14 +40,15 @@ class PropertyController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id'                  => 'nullable|integer|exists:properties,id',
-            'title'                => 'required|string',
-            'category_id'          => 'required|integer|exists:property_categories,id',
-            'excerpt'              => 'required|string',
-            'content'              => 'required|string',
-            'type'                 => 'required|string|in:ACHAT,VENTE,LOCATION,AUTRE',
-            'location_id'          => 'required|string|exists:municipalities,id',
+            'title'                => 'nullable|string',
+            'category_id'          => 'nullable|integer|exists:property_categories,id',
+            'excerpt'              => 'nullable|string',
+            'content'              => 'nullable|string',
+            'type'                 => 'nullable|string|in:ACHAT,VENTE,LOCATION,AUTRE',
+            'status'              => 'nullable|string', // TODO : definie in : xxx, xxx, xx
+            'location_id'          => 'nullable|string|exists:municipalities,id',
             'location_description' => 'nullable|string',
-            'price'                => 'required|numeric',
+            'price'                => 'nullable|numeric',
             'deposit_price'        => 'nullable|numeric',
             'images.*'             => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validation pour les images
         ]);
@@ -59,46 +61,32 @@ class PropertyController extends Controller
         $validatedData = $validator->validated();
 
         if ($validatedData['id']) {
+            // ? UPDATE
             $product = Property::find($validatedData['id']);
-            // default values
             $product->status = $validatedData['status'] ?? $product->status;
             $product->updated_by = auth()->user()->id;
+            if (isset($validatedData['title'])) $product->slug = Str::slug($validatedData['title']);
+
+            $product->update($validatedData);
         } else {
+            // ? CREATION
             $product = new Property();
-            // default values
             $product->status = 'PENDING';
-            $product->created_by = auth()->user()->id;
+            $product->slug                 = Str::slug($validatedData['title']);
+            $product->created_by           = auth()->user()->id;
+            $product->title                = $validatedData['title'];
+            $product->category_id          = $validatedData['category_id'];
+            $product->excerpt              = $validatedData['excerpt'];
+            $product->content              = $validatedData['content'];
+            $product->type                 = $validatedData['type'];
+            $product->location_id          = $validatedData['location_id'];
+            $product->location_description = $validatedData['location_description'];
+            $product->price                = $validatedData['price'];
+            $product->deposit_price        = $validatedData['deposit_price'];
+
+            $product->save();
         }
 
-        $product->slug                 = Str::slug($validatedData['title']);
-        $product->title                = $validatedData['title'];
-        $product->category_id          = $validatedData['category_id'];
-        $product->excerpt              = $validatedData['excerpt'];
-        $product->content              = $validatedData['content'];
-        $product->type                 = $validatedData['type'];
-        $product->location_id          = $validatedData['location_id'];
-        $product->location_description = $validatedData['location_description'];
-        $product->price                = $validatedData['price'];
-        $product->deposit_price        = $validatedData['deposit_price'];
-
-        $product->save();
-        $insert = $product->refresh();
-
-        // Enregistrer les images
-        if ($request->hasFile('images')) {
-            $imageUrls = [];
-            foreach ($request->file('images') as $key => $image) {
-                if ($image->store('images')) {
-                    $productImage = new PropertyImages();
-                    $productImage->property_id = $insert->id;
-                    $productImage->image = $image->hashName();
-                    $productImage->featured_image = $key == 0 ? true : false;
-                    $productImage->save();
-                }
-                // $imageUrls[] = Storage::url($path);
-            }
-            // $product->images = $imageUrls;
-        }
 
         return ResponseService::success($product->refresh(), "Product created successfully");
     }

@@ -25,7 +25,7 @@ const UserLayout: FC<UserLayoutProps> = ({ className = "", heading, subHeading, 
 
 				{/* CONTENT */}
 				{/* rounded-[40px] */}
-				<div className="p-5 md:px-5 mx-auto bg-white shadow-lg sm:p-10 mt-10 lg:mt-20 lg:p-16 dark:bg-neutral-900">{children}</div>
+				<div className="p-5 md:px-5 mx-auto bg-white shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900">{children}</div>
 			</div>
 		</div>
 	);

@@ -1,5 +1,5 @@
 import { IPropertyCategory } from "app/reducer/products/propertiy-category";
-import { IServerResponse, IStoreAction, IStoreDataState, ProductRequest } from "../../axios/api.type";
+import { IServerResponse, IStoreAction, IStoreDataState, IStoreDataStateItem, ProductRequest, createStoreDataStateItem } from "../../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
 import { IUser } from "app/auth/auth";
@@ -93,6 +93,7 @@ const failProductDataAction = (message: string = "") => {
 
 export interface IStorePropertyData {
 	all?: IProperty[] | undefined;
+	user?: IStoreDataStateItem<IProperty[] | undefined>;
 	paginate?: IPagination;
 	features?: IProperty[] | undefined;
 	similars?: IProperty[] | undefined;
@@ -150,6 +151,28 @@ export const PropertiesSlice = createSlice({
 		fetchAllPropertiesFailure: (state, action: PayloadAction<string>) => {
 			state.loading = false;
 			state.data = { ...state.data, all: undefined, paginate: undefined };
+			state.error = action.payload;
+		},
+
+		// FROM USER ALL
+		fetchUserProductStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.data = { ...state.data, all: [], user: undefined };
+			state.success = false;
+			state.message = "";
+		},
+		fetchUserProductSuccess: (state, action: PayloadAction<{ data: IProperty[]; pagination: IPagination | undefined }>) => {
+			state.loading = false;
+			state.error = null;
+			state.data = {
+				...state.data,
+				user: createStoreDataStateItem<IProperty[] | undefined>(action.payload.data, false, true),
+			};
+		},
+		fetchUserProductFailure: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.data = { ...state.data, user: createStoreDataStateItem<IProperty[] | undefined>(undefined, false, false, action.payload) };
 			state.error = action.payload;
 		},
 
@@ -324,6 +347,10 @@ export const {
 	deleteProductStart,
 	deleteProductSuccess,
 	deleteProductFailure,
+
+	fetchUserProductStart,
+	fetchUserProductSuccess,
+	fetchUserProductFailure,
 } = PropertiesSlice.actions;
 
 export const PropertyAction: IStoreAction<IStorePropertyData> = {

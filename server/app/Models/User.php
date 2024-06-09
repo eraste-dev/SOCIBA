@@ -85,7 +85,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function countProducts()
     {
-        return Property::where(['created_by' => $this->id])->count();
+        return Property::where(['created_by' => $this->id])->whereNotIn('status', ['DELETED'])->count();
         // return $this->hasMany(Property::class)->count();
     }
 
