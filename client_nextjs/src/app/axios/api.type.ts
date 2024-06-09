@@ -1,6 +1,7 @@
 import { IPagination } from "app/reducer/products/type";
 import { RootState } from "app/store";
 import { AxiosRequestConfig } from "axios";
+import { STATUS_LABEL } from "components/Dashboard/Products/ChangeProductType";
 
 export interface IServerResponse {
 	success: boolean;
@@ -15,6 +16,32 @@ export interface IAxiosRequestConfig extends AxiosRequestConfig {
 	// Add any custom properties here
 }
 
+export interface IStoreDataStateItem<T> {
+	get?: T | undefined;
+	loading: boolean;
+	error?: string | null;
+	errors?: any;
+	message?: string | null;
+	success?: boolean;
+}
+
+export const createStoreDataStateItem = <T>(
+	get: T,
+	loading: boolean = true,
+	success: boolean = false,
+	error: string | null = null,
+	errors: any = null,
+	message: string | null = null
+): IStoreDataStateItem<T> => {
+	return {
+		get: get,
+		loading: loading,
+		error: error,
+		success: success,
+		errors: errors,
+		message: message,
+	};
+};
 export interface IStoreDataState<T> {
 	data: T;
 	success: boolean;
@@ -59,14 +86,15 @@ export type UpdateUserRequest = {
 
 export interface ProductRequest {
 	id?: number;
-	title: string;
-	category_id: number;
-	excerpt: string;
-	content: string;
-	type: string;
-	location_id: string;
-	location_description: string; // detail commune location
-	price: number;
-	deposit_price: number;
-	images: FileList | null;
+	title?: string;
+	category_id?: number;
+	excerpt?: string;
+	content?: string;
+	type?: string;
+	status?: STATUS_LABEL;
+	location_id?: string;
+	location_description?: string; // detail commune location
+	price?: number;
+	deposit_price?: number;
+	images?: FileList | null;
 }

@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Services\NotificationService;
 use App\Services\ResponseService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
@@ -69,10 +72,27 @@ class AuthController extends Controller
             'status'     => $request->status ? $request->status : 'ACTIVE',
         ]);
 
+
+        // send notification
+        try {
+            NotificationService::notify(
+                $user,
+                'Merci de vous être inscrit',
+                'Merci de faire confiance à SOCIBA, vous pouvez publier votre première annonce',
+                [
+                    'title' => 'Nouvel utilisateur',
+                    'message' => 'Nouvel utilisateur enregisté : ' . $user->name . ' ' . $user->last_name
+                ]
+            );
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
         // Générer le token JWT pour l'utilisateur nouvellement enregistré
         $token = JWTAuth::fromUser($user);
         $user = new UserResource($user);
         $expire = time() + JWTAuth::factory()->getTTL() * 60;
+
         return ResponseService::success(compact('token', 'user', 'expire'), "Successfully registered and logged in");
     }
 
@@ -130,5 +150,72 @@ class AuthController extends Controller
         } catch (\Throwable $th) {
             return ResponseService::error("Failed to update");
         }
+    }
+
+
+    /**
+     * Envoie un lien de réinitialisation de mot de passe à l'utilisateur.
+     */
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email|exists:users,email']);
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        if ($status == Password::RESET_LINK_SENT) {
+            return ResponseService::success([], __($status));
+        }
+
+        return ResponseService::error(__($status), 500);
+    }
+
+    /**
+     * Réinitialise le mot de passe de l'utilisateur.
+     */
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|string',
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->password = Hash::make($password);
+                $user->save();
+            }
+        );
+
+        if ($status == Password::PASSWORD_RESET) {
+            return ResponseService::success([], __($status));
+        }
+
+        return ResponseService::error(__($status), 500);
+    }
+
+    /**
+     * Change le mot de passe de l'utilisateur authentifié.
+     */
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => ['Current password is incorrect'],
+            ]);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        // $user->save(); // TODO : fix
+
+        return ResponseService::success([], 'Password changed successfully');
     }
 }

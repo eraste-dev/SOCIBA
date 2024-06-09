@@ -16,6 +16,7 @@ import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ErrorMessage from "components/Form/ErrorMessage";
 import SignUpSuccess from "./SignUpSuccess";
+import { Tooltip } from "@mui/material";
 
 export interface PageSignUpProps {
 	className?: string;
@@ -96,14 +97,16 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 
 						{/* ? PASSWORD */}
 						<label className="block">
-							<span className="flex items-center text-neutral-800 dark:text-neutral-200">
-								Password <span className="text-red-500">*</span>{" "}
-								{showPassword ? (
-									<FaEye className="cursor-pointer ml-2 text-gray-400 " onClick={() => setShowPassword(!showPassword)} />
-								) : (
-									<FaEyeSlash className="cursor-pointer ml-2 text-gray-400 " onClick={() => setShowPassword(!showPassword)} />
-								)}
-							</span>
+							<Tooltip title="Afficher le mot de passe pour être sûr que vous écrivez cette valeur">
+								<span className="flex items-center text-neutral-800 dark:text-neutral-200">
+									Password <span className="text-red-500">*</span>{" "}
+									{showPassword ? (
+										<FaEye className="cursor-pointer ml-2 text-gray-400 " onClick={() => setShowPassword(!showPassword)} />
+									) : (
+										<FaEyeSlash className="cursor-pointer ml-2 text-gray-400 " onClick={() => setShowPassword(!showPassword)} />
+									)}
+								</span>
+							</Tooltip>
 							<div className="position-relative">
 								<Input
 									type={showPassword ? "text" : "password"}
