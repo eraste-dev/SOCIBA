@@ -9,12 +9,12 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { PropertyAction } from "app/reducer/products/propertiy";
 import { useSelector } from "react-redux";
 import { fetchFeatureProperties } from "app/axios/api.action";
+import CardSkeleton from "components/Card/CardSkeleton/CardSkeleton";
 
 export interface SectionSliderPostsProps {
 	className?: string;
 	heading: string;
 	subHeading?: string;
-	posts: PostDataType[];
 	postCardName?: "card4" | "card7" | "card9" | "card10" | "card10V2" | "card11";
 	sliderStype?: "style1" | "style2";
 	perView?: 2 | 3 | 4;
@@ -25,7 +25,6 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 	heading,
 	subHeading,
 	className = "",
-	posts,
 	postCardName = "card4",
 	sliderStype = "style1",
 	perView = 4,
@@ -34,13 +33,13 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 	const UNIQUE_CLASS = "SectionSliderPosts_" + ncNanoId(uniqueSliderClass);
 
 	const dispatch = useAppDispatch();
-	const data = useAppSelector(PropertyAction.data);
-	const loading = useSelector(PropertyAction.loading);
+	const data = useAppSelector(PropertyAction.data)?.features?.get;
+	const loading = useSelector(PropertyAction.data)?.features?.loading;
 	// const error = useSelector(PropertyAction.error);
 	// const success = useSelector(PropertyAction.success);
 
 	useEffect(() => {
-		if (data && !data.features && !loading) {
+		if (!data && !loading) {
 			dispatch(fetchFeatureProperties({ top: true, limit: 8 }));
 		}
 	}, [dispatch, fetchFeatureProperties, data, loading]);
@@ -54,13 +53,11 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 		breakpoints: {
 			1280: { perView: perView - 1 },
 			1023: { perView: perView - 2 || 1.2, gap: 20 },
-			767: { perView: perView - 2 || 1.2, gap: 20 },
-			639: { perView: 1.2, gap: 20 },
 		},
 	});
 
 	useEffect(() => {
-		if (!MY_GLIDE) return;
+		if (!MY_GLIDE && data) return;
 		MY_GLIDE.mount();
 	}, [MY_GLIDE]);
 
@@ -102,15 +99,18 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 	};
 
 	const CardName = getPostComponent();
+
 	return (
 		<div className={`nc-SectionSliderPosts ${className}`}>
 			<div className={`${UNIQUE_CLASS}`}>
 				{renderHeading()}
+
+				{loading && loading && <CardSkeleton arrayLength={4} />}
+
 				<div className="glide__track" data-glide-el="track">
 					<ul className="glide__slides">
 						{data &&
-							data?.features &&
-							data?.features.map((item, index) => (
+							data.map((item, index) => (
 								<li key={index} className={`glide__slide h-auto  ${sliderStype === "style2" ? "pb-12 xl:pb-16" : ""}`}>
 									<CardName post={item} />
 								</li>

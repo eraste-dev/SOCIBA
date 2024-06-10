@@ -48,7 +48,7 @@ const ListProduct: React.FC = () => {
 						categories={DEMO_CATEGORIES.filter((_, i) => i > 2 && i < 8)}
 						tags={DEMO_CATEGORIES}
 						postCardName="card11"
-						gridClass="sm:grid-cols-2 lg:grid-cols-3"
+						gridClass="sm:grid-cols-2 lg:grid-cols-4"
 						className="pb-16 lg:pb-28"
 					/>
 				</div>

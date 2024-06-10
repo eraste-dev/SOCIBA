@@ -16,7 +16,7 @@ const Home: React.FC = () => {
 	useEffect(() => {
 		const $body = document.querySelector("body");
 		if ($body) {
-			$body.className = "theme-fuchsia-blueGrey";
+			$body.className = "theme-cyan-blueGrey";
 		}
 		return () => {
 			if ($body) {
@@ -50,8 +50,7 @@ const Home: React.FC = () => {
 					postCardName="card11"
 					heading="Top annonce"
 					subHeading=""
-					posts={POSTS.filter((_, i) => i < 8)}
-					uniqueSliderClass="PageHomeDemo3"
+					uniqueSliderClass="slider-top"
 				/>
 
 				{/* === SECTION 1 === */}
@@ -64,7 +63,7 @@ const Home: React.FC = () => {
 					categories={DEMO_CATEGORIES.filter((_, i) => i > 2 && i < 8)}
 					tags={DEMO_CATEGORIES}
 					postCardName="card11"
-					gridClass="xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+					gridClass="grid-cols-2 sm:grid-cols-2 lg:grid-cols-4"
 					className="pb-16 lg:pb-28"
 				/>
 			</div>
