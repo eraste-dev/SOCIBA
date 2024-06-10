@@ -70,7 +70,12 @@ const PageHomeDemo3: React.FC = () => {
 					subHeading="Let stay at home and share with everyone the most beautiful stories in your hometown 🎈"
 				/>
 
-				<SectionGridCategoryBox headingCenter={false} categoryCardType="card2" className="pb-16 lg:pb-28" categories={DEMO_CATEGORIES.filter((_, i) => i < 10)} />
+				<SectionGridCategoryBox
+					headingCenter={false}
+					categoryCardType="card2"
+					className="pb-16 lg:pb-28"
+					categories={DEMO_CATEGORIES.filter((_, i) => i < 10)}
+				/>
 
 				{/* === SECTION 1 === */}
 				<div className="relative py-16">
@@ -79,7 +84,13 @@ const PageHomeDemo3: React.FC = () => {
 				</div>
 
 				{/* === SECTION 8 === */}
-				<SectionSliderPosts className="py-16 lg:py-28" postCardName="card10" heading="Sea travel enthusiast" subHeading="Over 218 articles about sea travel" posts={POSTS.filter((_, i) => i < 8)} uniqueSliderClass="PageHomeDemo3" />
+				<SectionSliderPosts
+					className="py-16 lg:py-28"
+					postCardName="card10"
+					heading="Sea travel enthusiast"
+					subHeading="Over 218 articles about sea travel"
+					uniqueSliderClass="PageHomeDemo3"
+				/>
 
 				{/* === SECTION 1 === */}
 				<SectionAds />
@@ -100,7 +111,12 @@ const PageHomeDemo3: React.FC = () => {
 				{/* === SECTION 7 === */}
 				<div className="relative py-16">
 					<BackgroundSection />
-					<SectionSliderNewAuthors heading="Newest authors" subHeading="Say hello to future creator potentials" authors={DEMO_AUTHORS.filter((_, i) => i < 10)} uniqueSliderClass="PageHomeDemo3" />
+					<SectionSliderNewAuthors
+						heading="Newest authors"
+						subHeading="Say hello to future creator potentials"
+						authors={DEMO_AUTHORS.filter((_, i) => i < 10)}
+						uniqueSliderClass="PageHomeDemo3"
+					/>
 				</div>
 
 				{/* SECTION 3 */}

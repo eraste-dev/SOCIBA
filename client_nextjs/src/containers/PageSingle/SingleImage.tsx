@@ -1,4 +1,4 @@
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProperty, IPropertyImage } from "app/reducer/products/propertiy";
 import NcImage from "components/NcImage/NcImage";
 import SingleNotFound from "containers/Product/Single/SingleNotFound";
 import React, { FC } from "react";
@@ -18,20 +18,27 @@ const SingleImage: FC<SingleImageProps> = ({ meta, handleOpenModal }) => {
 		return <></>;
 	}
 
+	const getImgs = (imgs: IPropertyImage[]): string[] => {
+		if (imgs.length >= 4) {
+			return imgs && imgs.slice(0, 4).map((img) => img.image);
+		}
+
+		return imgs.map((img) => img.image);
+	};
+
 	return (
 		<div className="relative grid grid-cols-3 sm:grid-cols-4 gap-2 my-10">
-			{imgs &&
-				imgs.map((item, index) => (
-					<div key={index} className={`relative rounded-xl overflow-hidden ${index >= 2 ? "hidden sm:block" : ""}`}>
-						<NcImage containerClassName="aspect-w-6 aspect-h-5" className="object-cover w-full h-full rounded-xl " src={item.image} />
+			{getImgs(imgs).map((item, index) => (
+				<div key={index} className={`relative rounded-xl overflow-hidden ${index >= 2 ? "hidden sm:block" : ""}`}>
+					<NcImage containerClassName="aspect-w-6 aspect-h-5" className="object-cover w-full h-full rounded-xl " src={item} />
 
-						{/* OVERLAY */}
-						<div
-							className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
-							onClick={() => handleOpenModal(index + 1)}
-						/>
-					</div>
-				))}
+					{/* OVERLAY */}
+					<div
+						className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
+						onClick={() => handleOpenModal(index + 1)}
+					/>
+				</div>
+			))}
 
 			<div
 				className="absolute hidden md:flex md:items-center md:justify-center right-3 bottom-3 px-4 py-2 rounded-full bg-neutral-100 text-neutral-500 cursor-pointer hover:bg-neutral-200 z-10"

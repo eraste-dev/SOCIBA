@@ -92,7 +92,6 @@ const PageHomeDemo7: React.FC = () => {
 							heading="Explore latest audio articles"
 							subHeading="Click on the icon to enjoy the music or podcast 🎧"
 							sliderStype="style2"
-							posts={DEMO_POSTS_AUDIO.filter((_, i) => i > 3 && i < 10)}
 							uniqueSliderClass="PageHomeDemo7_section1"
 						/>
 					</div>
@@ -151,7 +150,6 @@ const PageHomeDemo7: React.FC = () => {
 							postCardName="card11"
 							heading=" More design articles"
 							subHeading="Over 1118 articles "
-							posts={DEMO_POSTS.filter((p, i) => i > 3 && i < 25 && p.postType === "standard")}
 							sliderStype="style2"
 							uniqueSliderClass="PageHomeDemo7_section2"
 						/>
