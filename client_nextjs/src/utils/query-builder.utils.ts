@@ -5,7 +5,7 @@ export interface IGetQueryParams {
 }
 
 export interface IGetSearchPropertiesParams {
-	id?: number;
+	id?: number | string;
 	slug?: string;
 	category?: number;
 	categories?: number[];

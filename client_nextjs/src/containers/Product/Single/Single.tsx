@@ -11,7 +11,7 @@ import SingleHeader from "containers/PageSingle/SingleHeader";
 import ModalPhotos from "./ModalPhotos";
 import { PropertyAction } from "app/reducer/products/propertiy";
 import { fetchSimilars, fetchSingleProperties } from "app/axios/api.action";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import SingleBreadcrumb from "containers/PageSingle/SingleBreadcrumb";
 import SingleNotFound from "./SingleNotFound";
 import SingleImage from "containers/PageSingle/SingleImage";
@@ -41,17 +41,25 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [openFocusIndex, setOpenFocusIndex] = useState(0);
 
+	const location = useLocation();
+	const searchParams = new URLSearchParams(location.search);
+	const idParam = searchParams.get("id");
+
 	// UPDATE CURRENTPAGE DATA IN PAGEREDUCERS
-	useEffect(() => {
-		dispatch(changeCurrentPage({ type: "/single/:slug", data: SINGLE_GALLERY }));
-		return () => {
-			dispatch(changeCurrentPage({ type: "/", data: {} }));
-		};
-	}, []);
+	// useEffect(() => {
+	// 	dispatch(changeCurrentPage({ type: "/single/:slug", data: SINGLE_GALLERY }));
+	// 	return () => {
+	// 		dispatch(changeCurrentPage({ type: "/", data: {} }));
+	// 	};
+	// }, []);
 
 	useEffect(() => {
 		if (!loading && !single && slug) {
-			dispatch(fetchSingleProperties({ slug: slug }));
+			if (idParam) {
+				dispatch(fetchSingleProperties({ id: idParam }));
+			} else {
+				dispatch(fetchSingleProperties({ slug: slug }));
+			}
 		}
 	}, [single, slug, dispatch, fetchSingleProperties, loading]);
 

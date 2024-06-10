@@ -9,7 +9,7 @@ import DashboardUsers from "containers/PageDashboard/DashboardUsers";
 import { ComponentType } from "react";
 
 export interface DashboardLocationState {
-	"/root"?: {};
+	// "/root"?: {};
 	"/posts"?: {};
 	"/users"?: {};
 	"/edit-profile"?: {};
@@ -29,7 +29,7 @@ export interface DashboardPage {
 }
 
 export const USER_SUB_PAGES: DashboardPage[] = [
-	{ sPath: "/root", exact: true, component: DashboardRoot, emoij: "🕹", pageName: "Dash board" },
+	// { sPath: "/root", exact: true, component: DashboardRoot, emoij: "🕹", pageName: "Dash board" },
 	{ pageName: "Annonces" },
 	{ sPath: "/submit-post", component: DashboardSubmitPost, emoij: "✍", pageName: "Publier une annonce" },
 	{ sPath: "/posts", component: DashboardPosts, emoij: "📕", pageName: "Mes annonces" },

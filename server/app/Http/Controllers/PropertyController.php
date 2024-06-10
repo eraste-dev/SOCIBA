@@ -18,13 +18,15 @@ use Illuminate\Support\Facades\Validator;
 class PropertyController extends Controller
 {
     private $limit_product = 9999999999999;
+
     /**
      * Display a listing of the resource.
      */
     public function get(Request $request)
     {
-        $products = PropertyService::search(Property::requestSearch());
         $paginationService = new ProudctPaginationService;
+        $products = PropertyService::search(Property::requestSearch());
+        // dd($products);
 
         return ResponseService::success(
             $products,

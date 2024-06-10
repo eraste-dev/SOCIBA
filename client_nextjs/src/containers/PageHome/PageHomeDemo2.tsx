@@ -70,7 +70,6 @@ const PageHomeDemo2: React.FC = () => {
             sliderStype="style2"
             heading="Sea travel enthusiast"
             subHeading="Over 218 articles about sea travel"
-            posts={POSTS.filter((_, i) => i < 8)}
             uniqueSliderClass="PageHomeDemo2_section1"
           />
         </div>
@@ -116,7 +115,6 @@ const PageHomeDemo2: React.FC = () => {
             postCardName="card9"
             heading="Sea travel enthusiast"
             subHeading="Over 218 articles about sea travel"
-            posts={POSTS.filter((_, i) => i < 8)}
             uniqueSliderClass="PageHomeDemo2_section2"
           />
         </div>

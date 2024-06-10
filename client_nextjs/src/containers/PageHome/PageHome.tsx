@@ -51,7 +51,12 @@ const PageHome: React.FC = () => {
 					{/* === SECTION  === */}
 					<div className="relative py-16">
 						<BackgroundSection />
-						<SectionSliderNewAuthors heading="Newest authors" subHeading="Say hello to future creator potentials" authors={DEMO_AUTHORS.filter((_, i) => i < 10)} uniqueSliderClass="PageHome" />
+						<SectionSliderNewAuthors
+							heading="Newest authors"
+							subHeading="Say hello to future creator potentials"
+							authors={DEMO_AUTHORS.filter((_, i) => i < 10)}
+							uniqueSliderClass="PageHome"
+						/>
 					</div>
 
 					{/* === SECTION 5 === */}
@@ -72,7 +77,6 @@ const PageHome: React.FC = () => {
 							heading="Explore latest audio articles"
 							subHeading="Click on the icon to enjoy the music or podcast 🎧"
 							sliderStype="style2"
-							posts={DEMO_POSTS_AUDIO.filter((_, i) => i > 3 && i < 10)}
 							uniqueSliderClass="pageHome-section6"
 						/>
 					</div>
@@ -131,7 +135,6 @@ const PageHome: React.FC = () => {
 							postCardName="card11"
 							heading=" More design articles"
 							subHeading="Over 1118 articles "
-							posts={DEMO_POSTS.filter((p, i) => i > 3 && i < 25 && p.postType === "standard")}
 							sliderStype="style2"
 							uniqueSliderClass="pageHome-section12"
 						/>

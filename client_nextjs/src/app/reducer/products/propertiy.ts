@@ -8,9 +8,7 @@ import { IPagination } from "./type";
 
 export interface IPropertyImage {
 	id: number;
-	property_id: number;
 	image: string;
-	created_at: Date;
 }
 
 export interface IProperty {
@@ -92,10 +90,10 @@ const failProductDataAction = (message: string = "") => {
 };
 
 export interface IStorePropertyData {
-	all?: IProperty[] | undefined;
+	all?: IStoreDataStateItem<IProperty[] | undefined>;
 	user?: IStoreDataStateItem<IProperty[] | undefined>;
 	paginate?: IPagination;
-	features?: IProperty[] | undefined;
+	features?: IStoreDataStateItem<IProperty[] | undefined>;
 	similars?: IProperty[] | undefined;
 	single?: IProperty | undefined;
 	filters?: IPropertyFilter;
@@ -139,26 +137,27 @@ export const PropertiesSlice = createSlice({
 		fetchAllPropertiesStart: (state) => {
 			state.loading = true;
 			state.error = null;
-			state.data = { ...state.data, all: [], single: undefined };
+			state.data = { ...state.data, all: createStoreDataStateItem(undefined, true), single: undefined };
 			state.success = false;
 			state.message = "";
 		},
 		fetchAllPropertiesSuccess: (state, action: PayloadAction<{ data: IProperty[]; pagination: IPagination | undefined }>) => {
 			state.loading = false;
 			state.error = null;
-			state.data = { ...state.data, all: action.payload?.data, paginate: action.payload?.pagination };
+			// paginate: action.payload?.pagination
+			state.data = { ...state.data, all: createStoreDataStateItem(action.payload?.data, false, true) };
 		},
 		fetchAllPropertiesFailure: (state, action: PayloadAction<string>) => {
 			state.loading = false;
-			state.data = { ...state.data, all: undefined, paginate: undefined };
-			state.error = action.payload;
+			state.data = { ...state.data, all: createStoreDataStateItem(undefined, false, false, action.payload), paginate: undefined };
+			// state.error = action.payload;
 		},
 
 		// FROM USER ALL
 		fetchUserProductStart: (state) => {
 			state.loading = true;
 			state.error = null;
-			state.data = { ...state.data, all: [], user: undefined };
+			state.data = { ...state.data, all: undefined, user: undefined };
 			state.success = false;
 			state.message = "";
 		},
@@ -180,18 +179,19 @@ export const PropertiesSlice = createSlice({
 		fetchFeaturePropertiesStart: (state) => {
 			state.loading = true;
 			state.error = null;
-			state.data = { ...state.data, features: [] };
+			state.data = { ...state.data, features: createStoreDataStateItem(undefined, true) };
 			state.success = false;
 			state.message = "";
 		},
 		fetchFeaturePropertiesSuccess: (state, action: PayloadAction<IProperty[]>) => {
 			state.loading = false;
 			state.error = null;
-			state.data = { ...state.data, features: action.payload };
+			state.data = { ...state.data, features: createStoreDataStateItem(action.payload, false, true) };
 		},
 		fetchFeaturePropertiesFailure: (state, action: PayloadAction<string>) => {
 			state.loading = false;
-			state.error = action.payload;
+			state.data = { ...state.data, features: createStoreDataStateItem(undefined, false, false, action.payload) };
+			// state.error = action.payload;
 		},
 
 		// SINGLE

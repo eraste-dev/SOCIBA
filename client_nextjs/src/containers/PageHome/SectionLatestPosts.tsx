@@ -3,20 +3,14 @@ import Heading from "components/Heading/Heading";
 import { DEMO_POSTS } from "data/posts";
 import { DEMO_CATEGORIES, DEMO_TAGS } from "data/taxonomies";
 import { PostAuthorType, PostDataType, TaxonomyType } from "data/types";
-import WidgetCategories from "components/Widgets/WidgetCategories/WidgetCategories";
 import { DEMO_AUTHORS } from "data/authors";
-import Pagination from "components/Pagination/Pagination";
 import Card11 from "components/Card/Card11/Card11";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { IProperty, PropertyAction } from "app/reducer/products/propertiy";
 import { useSelector } from "react-redux";
 import { fetchAllProperties } from "app/axios/api.action";
-import WidgetSort from "components/Widgets/WidgetSort/WidgetSort";
-import WidgePrice from "components/Widgets/WidgePrice/WidgePrice";
-import { IGetSearchPropertiesParams, getFiltersFromIPropertyFilter } from "utils/query-builder.utils";
-import Loading from "components/UI/Loading";
-import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
-import ButtonPrimary from "components/Button/ButtonPrimary";
+import ProductFilterSidebar from "components/Widgets/ProductFilterSidebar";
+import CardSkeleton from "components/Card/CardSkeleton/CardSkeleton";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -51,19 +45,19 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 	className = "",
 }) => {
 	const dispatch = useAppDispatch();
-	const data = useAppSelector(PropertyAction.data);
-	const loading = useSelector(PropertyAction.loading);
-	const error = useSelector(PropertyAction.error);
-	const [fetchState, setFetchState] = useState<boolean>(false);
+	const data = useAppSelector(PropertyAction.data)?.all?.get;
+	const loading = useSelector(PropertyAction.data)?.all?.loading;
+	const error = useSelector(PropertyAction.data)?.all?.error;
+	// const [fetchState, setFetchState] = useState<boolean>(false);
 
-	const handleFetch = () => dispatch(fetchAllProperties(getFiltersFromIPropertyFilter(data?.filters || {})));
+	// const handleFetch = () => dispatch(fetchAllProperties(getFiltersFromIPropertyFilter(data?.filters || {})));
 
 	useEffect(() => {
-		if (data && !data.all && !loading && !error && !fetchState) {
+		if (!data && !loading && !error) {
 			dispatch(fetchAllProperties({ limit: 33, orderBy: "desc", path: window.location.href }));
-			setFetchState(true);
+			// setFetchState(true);
 		}
-	}, [dispatch, fetchAllProperties, data, loading, error, fetchState, setFetchState]);
+	}, [dispatch, fetchAllProperties, data, loading, error]);
 
 	const renderCard = (post: IProperty) => {
 		return <Card11 key={post.id} post={post} />;
@@ -95,19 +89,21 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 			</div>
 
 			<div className="flex flex-col lg:flex-row">
-				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/5 xl:pl-0 xl:w-1/6 ">
-					<WidgetSort handleFetch={handleFetch} />
-					<WidgetCategories handleFetch={handleFetch} />
-					{/* <WidgePrice handleFetch={handleFetch} /> */}
-				</div>
-				<div className="w-full lg:w-3/4 xl:w-4/5 lg:pl-7">
-					{loading ? (
-						<LoadingSpinner />
+				{false && (
+					<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
+						<ProductFilterSidebar />
+					</div>
+				)}
+
+				{/* w-full lg:w-3/4 xl:w-4/5 lg:pl-7 */}
+				<div className="w-full lg:w-4/4 xl:w-5/5 lg:pl-7">
+					{loading && loading ? (
+						<CardSkeleton arrayLength={8} />
 					) : (
-						<div className={`grid gap-6 md:gap-8 ${gridClass}`}>{data && data?.all && data?.all.map((post) => renderCard(post))}</div>
+						<div className={`grid gap-6 md:gap-8 ${gridClass}`}>{data && data && data.map((post) => renderCard(post))}</div>
 					)}
 					<div className="flex flex-col mt-12 md:mt-20 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-center sm:items-center">
-						<Pagination />
+						{/* <Pagination /> */}
 						{/* <ButtonPrimary>Show me more</ButtonPrimary> */}
 					</div>
 				</div>
