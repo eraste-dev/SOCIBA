@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Http\Resources\Collection;
 use App\Http\Resources\MunicipalityResource;
 use App\Http\Resources\PropertyCategoryResource;
+use App\Http\Resources\PropertyImagesResource;
 use App\Http\Resources\UserResource;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -104,7 +104,7 @@ class Property extends Model
      */
     public function get_images()
     {
-        return PropertyImages::where('property_id', $this->id)->get();
+        return PropertyImagesResource::collection(PropertyImages::where('property_id', $this->id)->get());
     }
 
     public function getAuthor()

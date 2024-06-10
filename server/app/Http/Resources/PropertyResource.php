@@ -2,9 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Services\ImageService;
 use Carbon\Carbon;
 
 class PropertyResource extends JsonResource
@@ -14,7 +12,7 @@ class PropertyResource extends JsonResource
         // dd($this->getAuthor());
         return [
             'id'             => $this->id,
-            'href'           => "/annonce/{$this->slug}",
+            'href'           => "/annonce/{$this->slug}&?id=" . $this->id,
             'category'       => $this->category(),
             'title'          => $this->title,
             'excerpt'              => $this->excerpt,

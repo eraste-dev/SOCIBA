@@ -38,7 +38,7 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({ className = " w-full h-
 
 	const renderGallerySlider = () => {
 		if (!images || images.length === 0) return null;
-		const arrayImgs = images.map((item) => item.image);
+		const arrayImgs: string[] = images.map((item) => item.image);
 		return <GallerySlider galleryImgs={arrayImgs} uniqueClass={`PostFeaturedGallery_${id}`} />;
 	};
 
