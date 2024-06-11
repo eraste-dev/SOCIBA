@@ -1,13 +1,23 @@
-import React, { FC, useState } from "react";
+import { FC } from "react";
 import WidgetHeading1 from "components/WidgetHeading1/WidgetHeading1";
-import ProductSortOption from "./ProductSortOption";
-import { FaArrowDown, FaArrowUp, FaUserAlt, FaUserAltSlash } from "react-icons/fa";
-import { sortIconSize } from "./WidgetSort.type";
-import { useAppDispatch, useAppSelector } from "app/hooks";
-import { PropertyAction } from "app/reducer/products/propertiy";
-import { fetchAllProperties, setFilters } from "app/axios/api.action";
+import { useAppDispatch } from "app/hooks";
+import { SORT_TYPE } from "app/reducer/products/propertiy";
+import { setFilters } from "app/axios/api.action";
 import { route } from "routers/route";
-import { IGetSearchPropertiesParams, getFiltersFromIPropertyFilter } from "utils/query-builder.utils";
+import { updateParamsUrl } from "utils/utils";
+import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "./ListBoxSelectFilter";
+
+export const PRICE_SORT_LIST: IListBoxSelectFilterWidget[] = [
+	{ name: "Tous(*)", value: "*" },
+	{ name: "Prix croissant", value: "asc" },
+	{ name: "Prix décroissant", value: "desc" },
+];
+
+export const DEPOSIT_PRICE_SORT_LIST: IListBoxSelectFilterWidget[] = [
+	{ name: "Tous(*)", value: "*" },
+	{ name: "Loyer croissant", value: "asc" },
+	{ name: "Loyer décroissant", value: "desc" },
+];
 
 export interface WidgetSortProps {
 	className?: string;
@@ -16,21 +26,17 @@ export interface WidgetSortProps {
 
 const WidgetSort: FC<WidgetSortProps> = ({ className = "bg-neutral-100 dark:bg-neutral-800", handleFetch }) => {
 	const dispatch = useAppDispatch();
-	const filters = useAppSelector(PropertyAction.data)?.filters;
 
-	const handleChangeSortPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-		// console.log(event.target.value);
-		dispatch(setFilters({ sort: event.target.value as "price_asc" | "price_desc" }));
+	const handleChangeSortPrice = (item: IListBoxSelectFilterWidget) => {
+		updateParamsUrl("price_sort", item.value);
+		dispatch(setFilters({ price_sort: item.value as SORT_TYPE }));
 		handleFetch && handleFetch();
 	};
 
-	const handleChangeSortType = (event: React.ChangeEvent<HTMLInputElement>) => {
-		console.log(event.target.value);
-		dispatch(
-			setFilters({
-				posted_by: event.target.value as "admin" | number[],
-			})
-		);
+	const handleChangeDepositSortPrice = (item: IListBoxSelectFilterWidget) => {
+		updateParamsUrl("deposit_price_sort", item.value);
+		dispatch(setFilters({ deposit_price_sort: item.value as SORT_TYPE }));
+		handleFetch && handleFetch();
 	};
 
 	return (
@@ -38,29 +44,10 @@ const WidgetSort: FC<WidgetSortProps> = ({ className = "bg-neutral-100 dark:bg-n
 			<WidgetHeading1 title="Trier" viewAll={{ label: "View all", href: route("annonces") }} />
 			<div className="flex flex-wrap p-4 xl:p-5">
 				{/* Option de tri par prix */}
-				<ProductSortOption
-					label="Prix"
-					name="filter_price"
-					value="price_asc"
-					type="radio"
-					icon={<FaArrowDown size={sortIconSize} className="mr-2 text-neutral-500" />}
-					handleChange={handleChangeSortPrice}
-				/>
-				<ProductSortOption
-					label="Prix"
-					name="filter_price"
-					value="price_desc"
-					type="radio"
-					icon={<FaArrowUp size={sortIconSize} className="mr-2 text-neutral-500" />}
-					handleChange={handleChangeSortPrice}
-				/>
-				{/* <ProductSortOption
-					label="Top"
-					value="top"
-					name="filter_top"
-					handleChange={handleChangeTop}
-					icon={<FaArrowAltCircleUp size={sortIconSize} className="mr-2 bg-red-600 text-white rounded-full p-0.5" />}
-				/> */}
+				{/* <SelectFilterWidget className="w-full" handleChange={handleChangeSortPrice} lists={PRICE_SORT_LIST} /> */}
+				<ListBoxSelectFilter onChange={handleChangeSortPrice} options={PRICE_SORT_LIST} label="Prix" />
+
+				<ListBoxSelectFilter onChange={handleChangeDepositSortPrice} options={DEPOSIT_PRICE_SORT_LIST} label="Loyer" />
 			</div>
 		</div>
 	);

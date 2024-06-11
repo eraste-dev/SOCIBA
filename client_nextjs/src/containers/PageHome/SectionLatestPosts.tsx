@@ -11,6 +11,9 @@ import { useSelector } from "react-redux";
 import { fetchAllProperties } from "app/axios/api.action";
 import ProductFilterSidebar from "components/Widgets/ProductFilterSidebar";
 import CardSkeleton from "components/Card/CardSkeleton/CardSkeleton";
+import Pagination from "../../components/Pagination/Pagination";
+import { IGetSearchPropertiesParams, searchParamsFromRedux, searchParamsFromURL } from "utils/query-builder.utils";
+import { useHistory } from "react-router-dom";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -45,19 +48,27 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 	className = "",
 }) => {
 	const dispatch = useAppDispatch();
+	const history = useHistory();
 	const data = useAppSelector(PropertyAction.data)?.all?.get;
+	const filters = useAppSelector(PropertyAction.data)?.filters;
 	const loading = useSelector(PropertyAction.data)?.all?.loading;
 	const error = useSelector(PropertyAction.data)?.all?.error;
-	// const [fetchState, setFetchState] = useState<boolean>(false);
-
-	// const handleFetch = () => dispatch(fetchAllProperties(getFiltersFromIPropertyFilter(data?.filters || {})));
 
 	useEffect(() => {
-		if (!data && !loading && !error) {
-			dispatch(fetchAllProperties({ limit: 33, orderBy: "desc", path: window.location.href }));
-			// setFetchState(true);
+		if (!data && !loading && !error && filters) {
+			const params: IGetSearchPropertiesParams = searchParamsFromRedux(filters);
+			dispatch(fetchAllProperties(params));
 		}
 	}, [dispatch, fetchAllProperties, data, loading, error]);
+
+	const fetchAll = () => {
+		if (filters) {
+			const params: IGetSearchPropertiesParams = searchParamsFromRedux(filters);
+			console.log(params, history.location, "searchParamsFromURL()");
+			// return dispatch(fetchAllProperties(searchParamsFromURL()));
+			return dispatch(fetchAllProperties(params));
+		}
+	};
 
 	const renderCard = (post: IProperty) => {
 		return <Card11 key={post.id} post={post} />;
@@ -89,14 +100,11 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 			</div>
 
 			<div className="flex flex-col lg:flex-row">
-				{false && (
-					<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
-						<ProductFilterSidebar />
-					</div>
-				)}
+				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
+					<ProductFilterSidebar fetchAll={fetchAll} />
+				</div>
 
-				{/* w-full lg:w-3/4 xl:w-4/5 lg:pl-7 */}
-				<div className="w-full lg:w-4/4 xl:w-5/5 lg:pl-7">
+				<div className="w-full lg:w-3/4 xl:w-4/5 lg:pl-7">
 					{loading && loading ? (
 						<CardSkeleton arrayLength={8} />
 					) : (

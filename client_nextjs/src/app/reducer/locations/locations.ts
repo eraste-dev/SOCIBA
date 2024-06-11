@@ -45,6 +45,7 @@ export interface ILocation {
 	long: number | null;
 	thumbnail: string | null;
 	updated_at: string | null;
+	count_post: number | null;
 }
 
 const initialState: IStoreDataState<ILocation[] | undefined> = {

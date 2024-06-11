@@ -48,13 +48,28 @@ export interface IProperty {
 	commentCount: number;
 }
 
+export type SORT_TYPE = "asc" | "desc" | "*";
+
 export interface IPropertyFilter {
+	id?: number;
+	slug?: string;
 	price_range?: { min: number; max: number };
+	offset?: number;
+	limit?: number;
+	order_by?: SORT_TYPE;
 	sort?: "price_asc" | "price_desc" | "price_desc" | "rating_desc" | "rating_asc" | "featured" | "trending" | "latest";
+	price_sort?: SORT_TYPE;
+	deposit_price_sort?: SORT_TYPE;
 	posted_by?: number[] | "admin";
+	created_by?: number;
 	city?: string;
+	location?: number | string;
+	top?: boolean;
 	categories?: number[];
+	locations?: number[];
+	category?: number;
 	date?: "all" | "week" | "month" | "year";
+	page?: number;
 }
 
 export interface IPropertyType {
@@ -105,12 +120,9 @@ export interface IStorePropertyData {
 }
 
 export const defaultFilters: IPropertyFilter = {
-	price_range: { min: 0, max: 1000000 },
-	sort: "price_desc",
-	city: "",
-	categories: [],
-	date: "all",
-	posted_by: [],
+	limit: 33,
+	order_by: "desc",
+	page: 1,
 };
 
 const INITIAL_STORE_PROPERTY_DATA: IStorePropertyData = {
