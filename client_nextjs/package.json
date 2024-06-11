@@ -54,7 +54,9 @@
     "sass": "^1.49.9",
     "slick-carousel": "^1.8.1",
     "vite-tsconfig-paths": "^3.4.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@react-buddy/ide-toolbox": "^2.4.0",
+    "@react-buddy/palette-mui": "^5.0.1"
   },
   "devDependencies": {
     "@types/numeral": "^2.0.5",
