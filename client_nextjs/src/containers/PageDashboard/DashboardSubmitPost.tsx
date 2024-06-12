@@ -8,12 +8,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthAction, IUser } from "app/auth/auth";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
-import SelectProductCategories from "components/Products/add/SelectProductCategories";
 import { useAppSelector } from "app/hooks";
 import { fetchCategories, fetchSingleProperties, initProductState, postProduct } from "app/axios/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
-import { getCities } from "data/cities";
 import { ProductRequest } from "app/axios/api.type";
 import { ILocation, LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
@@ -23,10 +21,7 @@ import ErrorMessage from "components/Form/ErrorMessage";
 import { useHistory } from "react-router-dom";
 import { route } from "routers/route";
 import { useBoolean } from "react-use";
-import { Box, IconButton } from "@mui/material";
-import { Close as CloseIcon, Visibility as VisibilityIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import ProductPreviewImageItem from "components/Dashboard/ProductPreviewImageItem";
-import ShowImageDialog from "components/Dialog/ShowImageDialog";
+import ImageUploader from "components/Dashboard/Products/ImageUploader";
 
 const DashboardSubmitPost = () => {
 	const CURRENCY: string = "FCFA";
@@ -57,6 +52,7 @@ const DashboardSubmitPost = () => {
 	const [previewUrls, setPreviewUrls]: any = useState([]);
 	const [openLightbox, setOpenLightbox] = useBoolean(false);
 	const [currentImage, setCurrentImage] = useState<string | null>(null);
+	const [images, setImages] = useState<string[]>([]);
 
 	const {
 		register,
@@ -168,6 +164,7 @@ const DashboardSubmitPost = () => {
 				images: null,
 			};
 			setDefaultValue(value);
+			setImages(product.images.map((image) => image.image));
 			initForm(value);
 
 			if (categories && categories.length > 0) {
@@ -402,55 +399,7 @@ const DashboardSubmitPost = () => {
 
 				{/* IMAGE */}
 				<div className="block md:col-span-2">
-					<Label>Ajoutez des photos*</Label>
-					<p className="text-xs text-neutral-500">Ajoutez plusieurs photos pour augmenter vos chances d'être contacté</p>
-
-					<div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-700 border-dashed rounded-md">
-						<div className="space-y-1 text-center">
-							<svg className="mx-auto h-12 w-12 text-neutral-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-								<path
-									d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								></path>
-							</svg>
-							<div className="flex flex-col sm:flex-row text-sm text-neutral-6000">
-								<label
-									htmlFor="files"
-									className="relative cursor-pointer rounded-md font-medium text-primary-6000 hover:text-primary-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
-								>
-									<span>Upload a file</span>
-									<input
-										id="files"
-										type="file"
-										className="sr-only"
-										name="files"
-										multiple
-										// ref={register}
-										onChange={handleFileChange}
-									/>
-								</label>
-								<p className="pl-1">or drag and drop</p>
-							</div>
-							<p className="text-xs text-neutral-500">PNG, JPG, GIF up to 2MB</p>
-						</div>
-						<ErrorMessage errors={errorArray} error="files" customMessage="Veuillez ajouter au moins une image" />
-					</div>
-
-					{/* IMAGE PREVIEW */}
-					<div className="flex flex-wrap mt-4">
-						{previewUrls.map((url: string, index: number) => (
-							<ProductPreviewImageItem
-								key={index}
-								index={index}
-								url={url}
-								handleDelete={() => handleOnDeleteLightbox(index)}
-								handleOpen={() => handleOpenLightbox(url)}
-							/>
-						))}
-						<ShowImageDialog open={openLightbox} handleClose={handleCloseLightbox} currentImage={currentImage ?? ""} />
-					</div>
+					<ImageUploader initialImages={images} maxImages={5} images={images} setImages={setImages} />
 				</div>
 
 				{/* EXCERPT */}

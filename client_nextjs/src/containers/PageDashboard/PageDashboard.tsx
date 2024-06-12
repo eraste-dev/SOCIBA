@@ -11,6 +11,7 @@ import { FaHome, FaSignOutAlt } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import { route } from "routers/route";
 import { initializeUserProduct } from "app/axios/actions/api.products.action";
+import Logo from "components/Logo/Logo";
 
 export interface PageDashboardProps {
 	className?: string;
@@ -49,7 +50,9 @@ const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
 			<UserLayout subHeading={user.email} headingEmoji="⚙" heading={`${user?.name} ${user.last_name}`}>
 				<div className="pb-5 bg-white h-full w-1/6 fixed top-0 left-0 overflow-y-auto shadow-lg z-20 dark:bg-neutral-900	 ">
 					<ul className="flex flex-col text-base space-y-1 text-neutral-6000 mt-5 dark:text-neutral-400">
-						<li className="px-6 py-2.5 font-medium">LOGO CHANGE</li>
+						{/* <li className="px-6 py-2.5 font-medium">
+							<Logo />
+						</li> */}
 						{USER_SUB_PAGES.map(({ sPath, pageName, emoij }, index) => {
 							return (
 								<li key={index}>

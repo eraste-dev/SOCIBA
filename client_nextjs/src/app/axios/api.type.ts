@@ -96,5 +96,5 @@ export interface ProductRequest {
 	location_description?: string; // detail commune location
 	price?: number;
 	deposit_price?: number;
-	images?: FileList | null;
+	images?: FileList | string[] | null;
 }

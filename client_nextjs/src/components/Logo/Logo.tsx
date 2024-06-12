@@ -30,8 +30,8 @@ const Logo: React.FC<LogoProps> = ({}) => {
 	return (
 		<a href="/" className="ttnc-logo inline-block text-primary-6000">
 			<span className="flex items-center">
-				<NcImage src={logoImgTwo} className="hidden md:block" style={{ height: 85, width: "auto" }} alt="logo" />
-				<NcImage src={logoImg} className="block md:hidden" style={{ height: 55, width: "auto" }} alt="logo" />
+				<NcImage src={logoImgTwo} className="hidden md:blockhidden" style={{ height: 85, width: "auto" }} alt="logo" />
+				<NcImage src={logoImg} className="block md:block" style={{ height: 55, width: "auto" }} alt="logo" />
 			</span>
 
 			{/* {imgLight && !img && <NcImage src={imgLight} alt="logo" />} */}
