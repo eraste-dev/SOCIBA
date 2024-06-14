@@ -3,7 +3,7 @@ import NcImage from "components/NcImage/NcImage";
 import { PostDataType } from "data/types";
 import GallerySlider from "./GallerySlider";
 import MediaVideo from "./MediaVideo";
-import PostTypeFeaturedIcon from "components/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
+import PostTypeFeaturedIcon from "components/PostCard/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
 import MediaAudio from "./MediaAudio";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
 import { IProduct } from "app/reducer/products/product";

@@ -1,13 +1,12 @@
 import { Transition } from "@headlessui/react";
-import PostCardSaveAction from "components/PostCardSaveAction/PostCardSaveAction";
 import NcImage from "components/NcImage/NcImage";
 import NextPrev from "components/NextPrev/NextPrev";
-import PostCardLikeAndComment from "components/PostCardLikeAndComment/PostCardLikeAndComment";
 import { PostDataType } from "data/types";
 import React, { FC, Fragment } from "react";
 import { Link } from "react-router-dom";
 import CardAuthor2 from "components/Cards/CardAuthor2/CardAuthor2";
 import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
+import PostCardSaveAction from "components/PostCard/PostCardSaveAction/PostCardSaveAction";
 
 export interface CardLarge1Props {
   className?: string;

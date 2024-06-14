@@ -44,7 +44,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({ pageData, titleMainClass, hiddenD
 								avatarRounded="rounded-full shadow-inner"
 							/>
 
-							<SingleMetaAction2 meta={pageData} />
+							{/* <SingleMetaAction2 meta={pageData} /> */}
 						</div>
 					)}
 

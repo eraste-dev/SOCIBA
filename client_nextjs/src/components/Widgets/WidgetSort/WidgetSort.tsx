@@ -41,7 +41,7 @@ const WidgetSort: FC<WidgetSortProps> = ({ className = "bg-neutral-100 dark:bg-n
 
 	return (
 		<div className={`nc-WidgetSort rounded-3xl overflow-hidden ${className}`} data-nc-id="WidgetSort">
-			<WidgetHeading1 title="Trier" viewAll={{ label: "View all", href: route("annonces") }} />
+			<WidgetHeading1 title="Trier" viewAll={{ label: "", href: route("annonces") }} />
 			<div className="flex flex-wrap p-4 xl:p-5">
 				{/* Option de tri par prix */}
 				{/* <SelectFilterWidget className="w-full" handleChange={handleChangeSortPrice} lists={PRICE_SORT_LIST} /> */}

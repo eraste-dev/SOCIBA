@@ -1,10 +1,10 @@
 import React, { FC, useState } from "react";
-import PostCardSaveAction from "components/PostCardSaveAction/PostCardSaveAction";
+import PostCardSaveAction from "components/PostCard/PostCardSaveAction/PostCardSaveAction";
 import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
 import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
-import PostCardMetaV2 from "components/PostCardMeta/PostCardMetaV2";
-import PostFeaturedMedia from "components/PostFeaturedMedia/PostFeaturedMedia";
+import PostCardMetaV2 from "components/PostCard/PostCardMeta/PostCardMetaV2";
+import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeaturedMedia";
 
 export interface Card10Props {
 	className?: string;

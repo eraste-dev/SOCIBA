@@ -4,7 +4,7 @@ import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
 import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
 import Avatar from "components/Avatar/Avatar";
-import PostTypeFeaturedIcon from "components/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
+import PostTypeFeaturedIcon from "components/PostCard/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
 
 export interface Card14Props {
   className?: string;

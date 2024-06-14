@@ -9,7 +9,7 @@ import {
 } from "app/reducer/mediaRunning/mediaRunning";
 import LoadingVideo from "components/LoadingVideo/LoadingVideo";
 import iconPlaying from "images/icon-playing.gif";
-import PostTypeFeaturedIcon from "components/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
+import PostTypeFeaturedIcon from "components/PostCard/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
 import { PostDataType } from "data/types";
 import isSafariBrowser from "utils/isSafariBrowser";
 

@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 import NcImage from "components/NcImage/NcImage";
-import PostCardMeta from "components/PostCardMeta/PostCardMeta";
-import PostCardSaveAction from "components/PostCardSaveAction/PostCardSaveAction";
+import PostCardMeta from "components/PostCard/PostCardMeta/PostCardMeta";
+import PostCardSaveAction from "components/PostCard/PostCardSaveAction/PostCardSaveAction";
 import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
-import PostCardLikeAndComment from "components/PostCardLikeAndComment/PostCardLikeAndComment";
+// import PostCardLikeAndComment from "components/PostCard/PostCardLikeAndComment";
 import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
-import PostTypeFeaturedIcon from "components/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
+import PostTypeFeaturedIcon from "components/PostCard/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
 
 export interface Card6Props {
 	className?: string;
