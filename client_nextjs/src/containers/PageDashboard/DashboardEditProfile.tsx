@@ -1,11 +1,11 @@
-import { AuthAction } from "app/auth/auth";
-import { initAuth, updateUser } from "app/axios/api.action";
+import { AuthAction } from "app/reducer/auth/auth";
+import { initAuth, updateUser } from "app/axios/actions/api.action";
 import { RegisterRequest, UpdateUserRequest } from "app/axios/api.type";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import ProductPreviewImageItem from "components/Dashboard/ProductPreviewImageItem";
 import ErrorMessage from "components/Form/ErrorMessage";
-import Input from "components/Input/Input";
-import Label from "components/Label/Label";
+import Input from "components/Form/Input/Input";
+import Label from "components/Form/Label/Label";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";

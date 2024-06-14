@@ -2,7 +2,7 @@ import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
 import React, { FC } from "react";
 import SingleTitle from "./SingleTitle";
 import { SinglePageType } from "./PageSingleTemp3Sidebar";
-import PostMeta2 from "components/PostMeta2/PostMeta2";
+import PostMeta2 from "components/PostCard/PostMeta2/PostMeta2";
 import SingleMetaAction2 from "./SingleMetaAction2";
 import { Helmet } from "react-helmet";
 import NcImage from "components/NcImage/NcImage";

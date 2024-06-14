@@ -5,17 +5,17 @@ import {
   selectRecentRemoveds,
   removeLikedByPostId,
   addNewLikedByPostId,
-} from "app/postLikes/postLikes";
+} from "app/reducer/postLikes/postLikes";
 
 import { PostDataType } from "data/types";
 import PostCardLikeAction, {
   PostCardLikeActionProps,
-} from "components/PostCardLikeAction/PostCardLikeAction";
-import { IProperty } from "app/reducer/products/propertiy";
+} from "components/PostCard/PostCardLikeAction/PostCardLikeAction";
+import { IProduct } from "app/reducer/products/product";
 
 export interface PostCardLikeContainerProps
   extends Omit<PostCardLikeActionProps, "isLiked" | "likeCount"> {
-  like: IProperty["isLiked"];
+  like: IProduct["isLiked"];
 }
 
 const PostCardLikeContainer: FC<PostCardLikeContainerProps> = ({

@@ -6,7 +6,7 @@ import {
   removeSavedByPostId,
   selectRecentSaveds,
   selectRecentRemoveds,
-} from "app/bookmarks/bookmarksSlice";
+} from "app/reducer/bookmarks/bookmarksSlice";
 
 export type BookmarkContainerProps = Omit<NcBookmarkProps, "isBookmarked"> & {
   initBookmarked: boolean;

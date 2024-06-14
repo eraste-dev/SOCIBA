@@ -136,10 +136,13 @@ class Property extends Model
             'category'   => request()->category ?? null,
             'categories' => request()->categories ?? null,
             'location_id' => request()->location_id ?? null,
+            'locations' => request()->locations ?? null,
             'top_seed'   => request()->top ?? false,
             'limit'      => request()->limit ?? 84,
             'created_by' => request()->created_by ?? null,
-            'page'       => request()->page ?? 1
+            'page'       => request()->page ?? 1,
+            'price_sort' => request()->price_sort ?? null,
+            'deposit_price_sort' => request()->deposit_price_sort ?? null
         ];
 
         return $payload;

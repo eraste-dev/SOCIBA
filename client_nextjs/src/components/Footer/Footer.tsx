@@ -1,5 +1,5 @@
-import { AuthAction } from "app/auth/auth";
-import { isAdmin } from "app/axios/api.action";
+import { AuthAction } from "app/reducer/auth/auth";
+import { isAdmin } from "app/axios/actions/api.action";
 import Logo from "components/Logo/Logo";
 import SocialsList1 from "components/SocialsList1/SocialsList1";
 import { CustomLink } from "data/types";

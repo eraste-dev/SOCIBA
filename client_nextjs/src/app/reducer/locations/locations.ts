@@ -1,6 +1,6 @@
 import { IStoreAction, IStoreDataState } from "../../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "app/store";
+import { RootState } from "app/reducer/store";
 
 export interface ICity {
 	name: string;
@@ -45,6 +45,7 @@ export interface ILocation {
 	long: number | null;
 	thumbnail: string | null;
 	updated_at: string | null;
+	count_post: number | null;
 }
 
 const initialState: IStoreDataState<ILocation[] | undefined> = {

@@ -29,6 +29,7 @@ class MunicipalityResource extends JsonResource
             'long' => $this->long,
             'thumbnail' => ImageService::getImage($this->thumbnail),
             'updated_at' => Carbon::parse($this->updated_at)->format(Utils::DATE_FORMAT()),
+            'count_post' => $this->count_products() ?? 0
         ];
     }
 }

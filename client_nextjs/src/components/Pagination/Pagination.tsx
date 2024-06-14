@@ -1,5 +1,5 @@
 import { useAppSelector } from "app/hooks";
-import { PropertyAction } from "app/reducer/products/propertiy";
+import { PropertyAction } from "app/reducer/products/product";
 import { IPagination, IPaginationAllLinks } from "app/reducer/products/type";
 import React, { FC } from "react";
 import { Link, useHistory } from "react-router-dom";

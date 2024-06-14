@@ -1,5 +1,5 @@
 import { fetchLocationsFailure, fetchLocationsStart, fetchLocationsSuccess } from "app/reducer/locations/locations";
-import { AppDispatch } from "app/store";
+import { AppDispatch } from "app/reducer/store";
 import { axiosRequest } from "../api";
 import { IServerResponse } from "../api.type";
 import { serverEndpoints } from "../api.route";

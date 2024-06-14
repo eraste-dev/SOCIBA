@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import WidgetAuthors from "components/WidgetAuthors/WidgetAuthors";
+import WidgetAuthors from "components/Widgets/WidgetAuthors/WidgetAuthors";
 import WidgetCategories from "components/Widgets/WidgetCategories/WidgetCategories";
-import WidgetPosts from "components/WidgetPosts/WidgetPosts";
-import WidgetTags from "components/WidgetTags/WidgetTags";
+import WidgetPosts from "components/Widgets/WidgetPosts/WidgetPosts";
+import WidgetTags from "components/Widgets/WidgetTags/WidgetTags";
 import { DEMO_AUTHORS } from "data/authors";
 import { DEMO_POSTS } from "data/posts";
 import { DEMO_CATEGORIES, DEMO_TAGS } from "data/taxonomies";

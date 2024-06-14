@@ -1,4 +1,4 @@
-import { IUser } from "app/auth/auth";
+import { IUser } from "app/reducer/auth/auth";
 import Avatar from "components/Avatar/Avatar";
 import { PostAuthorType } from "data/types";
 import React, { FC } from "react";

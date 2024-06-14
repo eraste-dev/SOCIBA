@@ -1,5 +1,5 @@
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import Input from "components/Input/Input";
+import Input from "components/Form/Input/Input";
 import Logo from "components/Logo/Logo";
 import MenuBar from "components/MenuBar/MenuBar";
 import Navigation from "components/Navigation/Navigation";

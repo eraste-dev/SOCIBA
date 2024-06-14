@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "app/hooks";
-import { toogleDarkMode, selectDarkmodeState } from "app/darkmode/darkmode";
+import { toogleDarkMode, selectDarkmodeState } from "app/reducer/darkmode/darkmode";
 import SwitchDarkMode from "components/SwitchDarkMode/SwitchDarkMode";
 
 export interface DarkModeContainerProps {

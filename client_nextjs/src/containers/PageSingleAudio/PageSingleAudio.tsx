@@ -4,7 +4,7 @@ import { SINGLE_AUDIO } from "data/single";
 import { CommentType } from "components/CommentCard/CommentCard";
 import { useAppDispatch } from "app/hooks";
 import { Helmet } from "react-helmet";
-import { changeCurrentPage } from "app/pages/pages";
+import { changeCurrentPage } from "app/reducer/pages/pages";
 import SingleContent from "containers/PageSingle/SingleContent";
 import SingleRelatedPosts from "containers/PageSingle/SingleRelatedPosts";
 import Badge from "components/Badge/Badge";
@@ -13,7 +13,7 @@ import SingleMetaAction2 from "containers/PageSingle/SingleMetaAction2";
 import ButtonPlayMusicRunningContainer from "containers/ButtonPlayMusicRunningContainer/ButtonPlayMusicRunningContainer";
 import LoadingVideo from "components/LoadingVideo/LoadingVideo";
 import iconPlaying from "images/icon-playing.gif";
-import { MediaRunningState } from "app/mediaRunning/mediaRunning";
+import { MediaRunningState } from "app/reducer/mediaRunning/mediaRunning";
 
 export interface PageSingleAudioProps {
 	className?: string;

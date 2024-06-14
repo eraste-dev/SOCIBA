@@ -4,7 +4,7 @@ import Avatar from "components/Avatar/Avatar";
 import { SinglePageType } from "containers/PageSingle/PageSingle";
 import BookmarkContainer from "containers/BookmarkContainer/BookmarkContainer";
 import PostCardLikeContainer from "containers/PostCardLikeContainer/PostCardLikeContainer";
-import { PageItemType } from "app/pages/pages";
+import { PageItemType } from "app/reducer/pages/pages";
 import MainNav2Logged from "./MainNav2Logged";
 import MainNav2 from "./MainNav2";
 import MainNav1 from "./MainNav1";

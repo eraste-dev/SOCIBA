@@ -2,15 +2,15 @@ import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
 import React, { FC } from "react";
 import SingleTitle from "./SingleTitle";
 import { SinglePageType } from "./PageSingleTemp3Sidebar";
-import PostMeta2 from "components/PostMeta2/PostMeta2";
+import PostMeta2 from "components/PostCard/PostMeta2/PostMeta2";
 import SingleMetaAction2 from "./SingleMetaAction2";
 import { Helmet } from "react-helmet";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
 export interface SingleHeaderProps {
-	pageData: IProperty;
+	pageData: IProduct;
 	hiddenDesc?: boolean;
 	metaActionStyle?: "style1" | "style2";
 	titleMainClass?: string;
@@ -18,7 +18,7 @@ export interface SingleHeaderProps {
 }
 
 const SingleHeader: FC<SingleHeaderProps> = ({ pageData, titleMainClass, hiddenDesc = false, className = "", metaActionStyle = "style1" }) => {
-	const { category, description, title, location, location_description, price, deposit_price } = pageData as IProperty;
+	const { category, description, title, location, location_description, price, deposit_price } = pageData as IProduct;
 
 	return (
 		<>

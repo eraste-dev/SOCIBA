@@ -1,7 +1,7 @@
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { LocationAction } from "app/reducer/locations/locations";
-import CardCities1 from "components/Card/CardCities1/CardCities1";
+import CardCities1 from "components/Cards/CardCities1/CardCities1";
 import Heading from "components/Heading/Heading";
 import { DEMO_CATEGORIES } from "data/taxonomies";
 import { TaxonomyType } from "data/types";

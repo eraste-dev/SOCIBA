@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import LayoutPage from "components/LayoutPage/UserLayout";
-import Input from "components/Input/Input";
+import Input from "components/Form/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import NcLink from "components/NcLink/NcLink";
 import { Helmet } from "react-helmet";

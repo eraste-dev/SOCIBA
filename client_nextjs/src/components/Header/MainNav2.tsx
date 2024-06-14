@@ -1,7 +1,7 @@
-import { AuthAction } from "app/auth/auth";
+import { AuthAction } from "app/reducer/auth/auth";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import ButtonSecondary from "components/Button/ButtonSecondary";
-import Input from "components/Input/Input";
+import Input from "components/Form/Input/Input";
 import Logo from "components/Logo/Logo";
 import MenuBar from "components/MenuBar/MenuBar";
 import Navigation from "components/Navigation/Navigation";

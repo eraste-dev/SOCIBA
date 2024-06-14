@@ -1,7 +1,7 @@
 import { Popover, Transition } from "@headlessui/react";
-import { AuthAction } from "app/auth/auth";
+import { AuthAction } from "app/reducer/auth/auth";
 import { initializeUserProduct } from "app/axios/actions/api.products.action";
-import { isAdmin, logout } from "app/axios/api.action";
+import { isAdmin, logout } from "app/axios/actions/api.action";
 import Avatar from "components/Avatar/Avatar";
 import { avatarImgs } from "contains/fakeData";
 import { Fragment } from "react";

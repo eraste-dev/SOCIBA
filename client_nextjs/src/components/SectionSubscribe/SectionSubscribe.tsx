@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import Input from "components/Input/Input";
+import Input from "components/Form/Input/Input";
 
 export interface SectionSubscribeProps {
   className?: string;

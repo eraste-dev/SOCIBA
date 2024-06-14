@@ -31,4 +31,9 @@ class Municipality extends Model
             return null;
         }
     }
+
+    public function count_products()
+    {
+        return Property::where('location_id', '=', $this->id)->count();
+    }
 }

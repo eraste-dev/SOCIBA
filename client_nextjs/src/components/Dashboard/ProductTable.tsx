@@ -7,14 +7,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct, IProductImage } from "app/reducer/products/product";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { Link, useHistory } from "react-router-dom";
 import { route } from "routers/route";
 import ProductTableAction from "./ProductTableAction";
 import ConfirmDialog from "components/Dialog/ConfirmDialog";
 import { useDispatch } from "react-redux";
-import { initProductState, postProduct, updateUser } from "app/axios/api.action";
+import { initProductState, postProduct, updateUser } from "app/axios/actions/api.action";
 import ChangeUserType from "./Users/ChangeUserType";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
 import ChangeProductType, { STATUS_LABEL } from "./Products/ChangeProductType";
@@ -30,15 +30,15 @@ export interface ColumnProductTable {
 
 export interface ProductTableProps {
 	// columns: readonly ColumnProductTable[];
-	rows: IProperty[];
+	rows: IProduct[];
 }
 
 // "PUBLISH" | "DRAFT" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED" | null
 export const LIST_STATUS: ListBoxItemType[] = [
 	{ name: "PUBLISH" },
 	{ name: "DRAFT" },
-	{ name: "DELETED" },
-	{ name: "REJECTED" },
+	// { name: "DELETED" },
+	// { name: "REJECTED" },
 	{ name: "PENDING" },
 	{ name: "BLOCKED" },
 ];
@@ -61,7 +61,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 		setPage(0);
 	};
 
-	const handleChangeStatus = (row: IProperty, status: STATUS_LABEL) => {
+	const handleChangeStatus = (row: IProduct, status: STATUS_LABEL) => {
 		dispatch(postProduct({ id: row.id, status: status }));
 	};
 
@@ -107,6 +107,10 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 		}
 	};
 
+	const getFeatureImage = (images: IProductImage[]) => {
+		return images[0]?.image || "https://via.placeholder.com/150";
+	};
+
 	return (
 		<Paper sx={{ width: "100%", overflow: "hidden" }}>
 			<TableContainer>
@@ -132,19 +136,15 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 					</TableHead>
 					<TableBody>
 						{rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-							const { id, title, description, category, status, images, featured_image, location, location_description } = row;
+							const { id, title, description, category, status, images, location, location_description } = row;
 							return (
 								<TableRow hover role="checkbox" tabIndex={-1} key={id}>
 									{/* align={column.align} */}
 									{/* {column.format && typeof value === "number" ? column.format(value) : value} */}
 									<TableCell>
 										<div className="flex justify-start items-center p-2 cursor-pointer  ">
-											<div className="post-image-container mr-2" style={{ width: 200, height: 200 }}>
-												<img
-													src={featured_image ? featured_image : "https://via.placeholder.com/150"}
-													alt="image"
-													style={{ width: "100%", height: "100%" }}
-												/>
+											<div className="flex items-center post-image-container mr-2" style={{ width: 200, height: 200 }}>
+												<img src={getFeatureImage(images)} alt="image" style={{ width: "auto", height: "100%" }} />
 											</div>
 											<div>
 												<h4 className="text-xl">{title}</h4>
@@ -171,7 +171,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 										<ChangeProductType
 											lists={LIST_STATUS}
 											selectedIndex={LIST_STATUS.findIndex((item) => item.name === row.status)}
-											handleChange={(row: IProperty, status: STATUS_LABEL) => handleChangeStatus(row, status)}
+											handleChange={(row: IProduct, status: STATUS_LABEL) => handleChangeStatus(row, status)}
 											row={row}
 										/>
 									</TableCell>

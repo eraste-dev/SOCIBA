@@ -4,7 +4,7 @@ import HeaderFilter from "./HeaderFilter";
 import NcImage from "components/NcImage/NcImage";
 import PostCardMeta from "components/PostCardMeta/PostCardMeta";
 import { Link } from "react-router-dom";
-import CardAuthor2 from "components/Card/CardAuthor2/CardAuthor2";
+import CardAuthor2 from "components/Cards/CardAuthor2/CardAuthor2";
 
 export interface SectionMagazine6Props {
   tabs: string[];

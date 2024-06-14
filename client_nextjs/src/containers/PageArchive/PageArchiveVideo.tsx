@@ -14,7 +14,7 @@ import SectionGridCategoryBox from "components/SectionGridCategoryBox/SectionGri
 import ButtonSecondary from "components/Button/ButtonSecondary";
 import SectionSliderNewAuthors from "components/SectionSliderNewAthors/SectionSliderNewAuthors";
 import { DEMO_AUTHORS } from "data/authors";
-import Card10V2 from "components/Card/Card10/Card10V2";
+import Card10V2 from "components/Cards/Card10/Card10V2";
 
 export interface PageArchiveVideoProps {
 	className?: string;

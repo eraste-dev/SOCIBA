@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 import { PostDataType } from "data/types";
 import HeaderFilter from "./HeaderFilter";
-import Card12 from "components/Card/Card12/Card12";
-import Card13 from "components/Card/Card13/Card13";
+import Card12 from "components/Cards/Card12/Card12";
+import Card13 from "components/Cards/Card13/Card13";
 
 export interface SectionMagazine5Props {
   tabs: string[];

@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { PostDataType } from "data/types";
 import NcImage from "components/NcImage/NcImage";
 import ButtonSecondary from "components/Button/ButtonSecondary";
-import Card5 from "components/Card/Card5/Card5";
+import Card5 from "components/Cards/Card5/Card5";
 
 export interface SectionHero3Props {
   posts: PostDataType[];

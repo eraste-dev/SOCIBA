@@ -1,8 +1,8 @@
 import { FC, useEffect } from "react";
 import { FaRedoAlt, FaTimes } from "react-icons/fa";
-import { IUser } from "app/auth/auth";
+import { IUser } from "app/reducer/auth/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { PropertyAction } from "app/reducer/products/propertiy";
+import { PropertyAction } from "app/reducer/products/product";
 import { fetchUserProduct, initializeUserProduct } from "app/axios/actions/api.products.action";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import ProductTable from "../ProductTable";

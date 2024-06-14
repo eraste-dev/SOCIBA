@@ -1,4 +1,4 @@
-import { IProperty, IPropertyImage } from "app/reducer/products/propertiy";
+import { IProduct, IProductImage } from "app/reducer/products/product";
 import NcImage from "components/NcImage/NcImage";
 import SingleNotFound from "containers/Product/Single/SingleNotFound";
 import React, { FC } from "react";
@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { route } from "routers/route";
 
 interface SingleImageProps {
-	meta: IProperty;
+	meta: IProduct;
 	handleOpenModal: (index: number) => void;
 }
 
@@ -18,7 +18,7 @@ const SingleImage: FC<SingleImageProps> = ({ meta, handleOpenModal }) => {
 		return <></>;
 	}
 
-	const getImgs = (imgs: IPropertyImage[]): string[] => {
+	const getImgs = (imgs: IProductImage[]): string[] => {
 		if (imgs.length >= 4) {
 			return imgs && imgs.slice(0, 4).map((img) => img.image);
 		}

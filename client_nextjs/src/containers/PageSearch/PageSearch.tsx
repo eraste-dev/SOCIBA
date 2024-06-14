@@ -6,7 +6,7 @@ import ButtonPrimary from "components/Button/ButtonPrimary";
 import Nav from "components/Nav/Nav";
 import NavItem from "components/NavItem/NavItem";
 import ArchiveFilterListBox from "components/ArchiveFilterListBox/ArchiveFilterListBox";
-import Input from "components/Input/Input";
+import Input from "components/Form/Input/Input";
 import { Helmet } from "react-helmet";
 import SectionSubscribe2 from "components/SectionSubscribe2/SectionSubscribe2";
 import NcImage from "components/NcImage/NcImage";
@@ -17,11 +17,11 @@ import ButtonSecondary from "components/Button/ButtonSecondary";
 import { DEMO_CATEGORIES } from "data/taxonomies";
 import SectionGridCategoryBox from "components/SectionGridCategoryBox/SectionGridCategoryBox";
 import BackgroundSection from "components/BackgroundSection/BackgroundSection";
-import Card11 from "components/Card/Card11/Card11";
+import Card11 from "components/Cards/Card11/Card11";
 import ButtonCircle from "components/Button/ButtonCircle";
-import CardCategory2 from "components/Card/CardCategory2/CardCategory2";
+import CardCategory2 from "components/Cards/CardCategory2/CardCategory2";
 import Tag from "components/Tag/Tag";
-import CardAuthorBox2 from "components/Card/CardAuthorBox2/CardAuthorBox2";
+import CardAuthorBox2 from "components/Cards/CardAuthorBox2/CardAuthorBox2";
 
 export interface PageSearchProps {
   className?: string;

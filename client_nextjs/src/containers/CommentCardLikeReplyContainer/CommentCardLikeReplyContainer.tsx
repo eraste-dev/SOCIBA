@@ -5,7 +5,7 @@ import {
   selectCommentRecentRemoveds,
   removeLikedByPostId,
   addNewLikedByPostId,
-} from "app/commentLikes/commentLikes";
+} from "app/reducer/commentLikes/commentLikes";
 import CommentCardLikeReply, {
   CommentCardLikeReplyProps,
 } from "components/CommentCardLikeReply/CommentCardLikeReply";

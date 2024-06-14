@@ -5,12 +5,12 @@ import ModalReportItem from "components/ModalReportItem/ModalReportItem";
 import { PostDataType } from "data/types";
 import ModalHideAuthor from "./ModalHideAuthor";
 import { useHistory } from "react-router";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 
 export interface PostActionDropdownProps {
 	containerClassName?: string;
 	iconClass?: string;
-	postData: IProperty;
+	postData: IProduct;
 	dropdownPositon?: "up" | "down";
 }
 

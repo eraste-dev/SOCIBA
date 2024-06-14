@@ -1,5 +1,5 @@
 import { Popover, Transition } from "@headlessui/react";
-import Input from "components/Input/Input";
+import Input from "components/Form/Input/Input";
 import React, { Fragment } from "react";
 
 const SearchDropdown = () => {
