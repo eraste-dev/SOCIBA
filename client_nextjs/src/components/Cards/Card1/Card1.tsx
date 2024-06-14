@@ -2,8 +2,8 @@ import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import Avatar from "components/Avatar/Avatar";
 import { PostDataType } from "data/types";
-import PostCardSaveAction from "components/PostCardSaveAction/PostCardSaveAction";
-import PostCardMeta from "components/PostCardMeta/PostCardMeta";
+import PostCardSaveAction from "components/PostCard/PostCardSaveAction/PostCardSaveAction";
+import PostCardMeta from "components/PostCard/PostCardMeta/PostCardMeta";
 
 export interface Card1Props {
   className?: string;

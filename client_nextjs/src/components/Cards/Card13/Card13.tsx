@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import NcImage from "components/NcImage/NcImage";
-import PostCardMeta from "components/PostCardMeta/PostCardMeta";
+import PostCardMeta from "components/PostCard/PostCardMeta/PostCardMeta";
 import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
-import PostTypeFeaturedIcon from "components/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
+import PostTypeFeaturedIcon from "components/PostCard/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
 
 export interface Card13Props {
   className?: string;

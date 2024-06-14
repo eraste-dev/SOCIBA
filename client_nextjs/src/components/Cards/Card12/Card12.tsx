@@ -3,8 +3,8 @@ import NcImage from "components/NcImage/NcImage";
 import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
 import SocialsShare from "components/SocialsShare/SocialsShare";
-import PostCardMeta from "components/PostCardMeta/PostCardMeta";
-import PostTypeFeaturedIcon from "components/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
+import PostCardMeta from "components/PostCard/PostCardMeta/PostCardMeta";
+import PostTypeFeaturedIcon from "components/PostCard/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
 
 export interface Card12Props {
   className?: string;

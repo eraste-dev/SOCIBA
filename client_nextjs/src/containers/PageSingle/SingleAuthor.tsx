@@ -17,7 +17,7 @@ const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
 						<Avatar imgUrl={author.avatar} userName={author.name} sizeClass="h-12 w-12 text-lg sm:text-xl sm:h-24 sm:w-24 " radius="rounded-xl" />
 					</Link>
 					<div className="flex flex-col ml-3 max-w-lg sm:ml-5">
-						<span className="text-xs text-neutral-400 uppercase tracking-wider">WRITEN BY</span>
+						<span className="text-xs text-neutral-400 uppercase tracking-wider">Publié(e) par</span>
 						<h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-200">
 							<Link to={author.href}>{author.name}</Link>
 						</h2>

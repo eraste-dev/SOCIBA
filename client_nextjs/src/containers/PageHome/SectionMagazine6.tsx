@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { PostDataType } from "data/types";
 import HeaderFilter from "./HeaderFilter";
 import NcImage from "components/NcImage/NcImage";
-import PostCardMeta from "components/PostCardMeta/PostCardMeta";
+import PostCardMeta from "components/PostCard/PostCardMeta/PostCardMeta";
 import { Link } from "react-router-dom";
 import CardAuthor2 from "components/Cards/CardAuthor2/CardAuthor2";
 

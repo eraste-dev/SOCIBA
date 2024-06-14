@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import NcImage from "components/NcImage/NcImage";
-import PostCardSaveAction from "components/PostCardSaveAction/PostCardSaveAction";
+import PostCardSaveAction from "components/PostCard/PostCardSaveAction/PostCardSaveAction";
 import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
 import CardAuthor2 from "components/Cards/CardAuthor2/CardAuthor2";
