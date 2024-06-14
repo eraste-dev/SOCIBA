@@ -6,11 +6,11 @@ import MediaVideo from "./MediaVideo";
 import PostTypeFeaturedIcon from "components/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
 import MediaAudio from "./MediaAudio";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 
 export interface PostFeaturedMediaProps {
 	className?: string;
-	post?: IProperty;
+	post?: IProduct;
 	isHover?: boolean;
 }
 

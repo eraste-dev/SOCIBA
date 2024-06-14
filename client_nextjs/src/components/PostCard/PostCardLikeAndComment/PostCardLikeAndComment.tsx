@@ -2,12 +2,12 @@ import React, { FC } from "react";
 import PostCardCommentBtn from "components/PostCardCommentBtn/PostCardCommentBtn";
 import PostCardLikeContainer from "containers/PostCardLikeContainer/PostCardLikeContainer";
 import { PostDataType } from "data/types";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 
 export interface PostCardLikeAndCommentProps {
 	className?: string;
 	itemClass?: string;
-	postData: Pick<IProperty, "isLiked" | "id" | "href" | "commentCount">;
+	postData: Pick<IProduct, "isLiked" | "id" | "href" | "commentCount">;
 	hiddenCommentOnMobile?: boolean;
 	onClickLike?: (id: PostDataType["id"]) => void;
 }

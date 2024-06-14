@@ -1,4 +1,4 @@
-import CardAuthor from "components/Card/CardAuthor/CardAuthor";
+import CardAuthor from "components/Cards/CardAuthor/CardAuthor";
 import WidgetHeading1 from "components/WidgetHeading1/WidgetHeading1";
 import { PostAuthorType } from "data/types";
 import React, { FC } from "react";

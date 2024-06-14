@@ -2,11 +2,11 @@ import React, { FC } from "react";
 import Avatar from "components/Avatar/Avatar";
 import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 
 export interface PostPropertyCardMetaV2Props {
 	className?: string;
-	meta: IProperty;
+	meta: IProduct;
 	hiddenAvatar?: boolean;
 	size?: "large" | "normal";
 }

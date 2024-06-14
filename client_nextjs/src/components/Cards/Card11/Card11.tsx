@@ -2,16 +2,16 @@ import { FC, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
 import PostFeaturedMedia from "components/PostFeaturedMedia/PostFeaturedMedia";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 import PostPropertyCardMetaV2 from "components/PostPropertyCardMeta/PostCardMetaV2";
 import { _f } from "utils/money-format";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { setSingleProduct } from "app/axios/api.action";
+import { setSingleProduct } from "app/axios/actions/api.action";
 import { useAppDispatch } from "app/hooks";
 
 export interface Card11Props {
 	className?: string;
-	post: IProperty; // PostDataType
+	post: IProduct; // PostDataType
 	ratio?: string;
 	hiddenAuthor?: boolean;
 }

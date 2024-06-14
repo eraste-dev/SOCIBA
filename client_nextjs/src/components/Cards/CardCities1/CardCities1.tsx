@@ -6,7 +6,7 @@ import Badge from "components/Badge/Badge";
 import { IPropertyCategory } from "app/reducer/products/propertiy-category";
 import { ILocation } from "app/reducer/locations/locations";
 import { useDispatch } from "react-redux";
-import { fetchAllProperties, initProductState } from "app/axios/api.action";
+import { fetchAllProperties, initProductState } from "app/axios/actions/api.action";
 
 export interface CardCities1Props {
 	className?: string;

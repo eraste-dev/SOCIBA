@@ -1,6 +1,6 @@
-import { IUser, updateUserFailure, updateUserStart, updateUserSuccess } from "./../auth/auth";
-import { fetchSlidersFailure, fetchSlidersStart, fetchSlidersSuccess } from "app/sliders/sliders";
-import { AppDispatch } from "app/store";
+import { IUser, updateUserFailure, updateUserStart, updateUserSuccess } from "../reducer/auth/auth";
+import { fetchSlidersFailure, fetchSlidersStart, fetchSlidersSuccess } from "app/reducer/sliders/sliders";
+import { AppDispatch } from "app/reducer/store";
 import { IServerResponse, ProductRequest, RegisterRequest, UpdateUserRequest } from "./api.type";
 import { serverEndpoints } from "./api.route";
 import { axiosRequest } from "./api";
@@ -18,7 +18,7 @@ import {
 	fetchSinglePropertiesSuccess,
 	setFiltersSuccess,
 	resetFiltersSuccess,
-	IProperty,
+	IProduct,
 	setSinglePropertiesStart,
 	setSinglePropertiesSuccess,
 	setSinglePropertiesFailure,
@@ -31,7 +31,7 @@ import {
 	fetchSimilarsSuccess,
 	fetchSimilarsFailure,
 	fetchSimilarsStart,
-} from "app/reducer/products/propertiy";
+} from "app/reducer/products/product";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import {
 	initAuthentication,
@@ -43,7 +43,7 @@ import {
 	registerFailure,
 	registerStart,
 	registerSuccess,
-} from "app/auth/auth";
+} from "app/reducer/auth/auth";
 
 export const fetchSliders = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchSlidersStart());
@@ -112,7 +112,7 @@ export const fetchSimilars = (query: IGetSearchPropertiesParams) => async (dispa
 	}
 };
 
-export const setSingleProduct = (product: IProperty) => async (dispatch: AppDispatch) => {
+export const setSingleProduct = (product: IProduct) => async (dispatch: AppDispatch) => {
 	dispatch(setSinglePropertiesSuccess(product));
 };
 
