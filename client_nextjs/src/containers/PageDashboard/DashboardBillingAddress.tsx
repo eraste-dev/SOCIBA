@@ -1,8 +1,8 @@
 import React from "react";
-import Input from "components/Input/Input";
+import Input from "components/Form/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import Select from "components/Select/Select";
-import Label from "components/Label/Label";
+import Select from "components/Form/Select/Select";
+import Label from "components/Form/Label/Label";
 
 const DashboardBillingAddress = () => {
   return (

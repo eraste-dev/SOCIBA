@@ -4,7 +4,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/solid";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
 import ButtonDropdown from "components/ButtonDropdown/ButtonDropdown";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 
 export type STATUS_LABEL = "PUBLISH" | "DRAFT" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED" | null;
 
@@ -62,8 +62,8 @@ export interface ChangeProductTypeProps {
 	className?: string;
 	lists: ListBoxItemType[];
 	selectedIndex?: number;
-	row: IProperty;
-	handleChange: (row: IProperty, value: STATUS_LABEL) => void;
+	row: IProduct;
+	handleChange: (row: IProduct, value: STATUS_LABEL) => void;
 }
 
 const ChangeProductType: FC<ChangeProductTypeProps> = ({ className = "", lists, selectedIndex = 0, row, handleChange }) => {

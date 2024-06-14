@@ -5,8 +5,8 @@ import Slider from "react-slick";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { sliderAction } from "app/sliders/sliders";
-import { fetchSliders } from "app/axios/api.action";
+import { sliderAction } from "app/reducer/sliders/sliders";
+import { fetchSliders } from "app/axios/actions/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 
 export interface SectionHeroSliderProps {

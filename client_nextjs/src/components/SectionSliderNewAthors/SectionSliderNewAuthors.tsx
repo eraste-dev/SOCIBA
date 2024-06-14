@@ -2,7 +2,7 @@ import React, { FC, useEffect, useMemo } from "react";
 import Heading from "components/Heading/Heading";
 import Glide from "@glidejs/glide";
 import { PostDataType } from "data/types";
-import CardAuthorBox2 from "components/Card/CardAuthorBox2/CardAuthorBox2";
+import CardAuthorBox2 from "components/Cards/CardAuthorBox2/CardAuthorBox2";
 import NextPrev from "components/NextPrev/NextPrev";
 import ncNanoId from "utils/ncNanoId";
 

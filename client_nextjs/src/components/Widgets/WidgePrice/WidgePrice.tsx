@@ -1,8 +1,8 @@
-import { setFilters } from "app/axios/api.action";
+import { setFilters } from "app/axios/actions/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { PropertyAction } from "app/reducer/products/propertiy";
-import CardAuthor from "components/Card/CardAuthor/CardAuthor";
-import WidgetHeading1 from "components/WidgetHeading1/WidgetHeading1";
+import { PropertyAction } from "app/reducer/products/product";
+import CardAuthor from "components/Cards/CardAuthor/CardAuthor";
+import WidgetHeading1 from "components/Widgets/WidgetHeading1/WidgetHeading1";
 import { PostAuthorType } from "data/types";
 import React, { FC, useState } from "react";
 

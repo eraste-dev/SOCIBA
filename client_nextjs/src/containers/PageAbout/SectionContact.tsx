@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { INFO_CONTACT } from "containers/PageContact/PageContact";
 import SocialsList from "components/SocialsList/SocialsList";
-import Label from "components/Label/Label";
-import Input from "components/Input/Input";
+import Label from "components/Form/Label/Label";
+import Input from "components/Form/Input/Input";
 import Textarea from "components/Textarea/Textarea";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 export interface Statistic {

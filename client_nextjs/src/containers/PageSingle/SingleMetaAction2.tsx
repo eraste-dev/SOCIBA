@@ -1,15 +1,15 @@
 import React, { FC } from "react";
 import PostActionDropdown from "components/PostActionDropdown/PostActionDropdown";
-import PostCardLikeAndComment from "components/PostCardLikeAndComment/PostCardLikeAndComment";
+import PostCardLikeAndComment from "components/PostCard/PostCardLikeAndComment/PostCardLikeAndComment";
 import { SOCIALS_DATA } from "components/SocialsShare/SocialsShare";
 import BookmarkContainer from "containers/BookmarkContainer/BookmarkContainer";
 import { PostDataType } from "data/types";
 import NcDropDown from "components/NcDropDown/NcDropDown";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 
 export interface SingleMetaAction2Props {
 	className?: string;
-	meta?: IProperty;
+	meta?: IProduct;
 }
 
 const SingleMetaAction2: FC<SingleMetaAction2Props> = ({ className = "", meta }) => {

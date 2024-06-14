@@ -1,13 +1,13 @@
 import LayoutPage from "components/LayoutPage/UserLayout";
 import { FC, useEffect, useState } from "react";
-import Input from "components/Input/Input";
+import Input from "components/Form/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import NcLink from "components/NcLink/NcLink";
 import { Helmet } from "react-helmet";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { initAuth, login } from "app/axios/api.action";
-import { AuthAction } from "app/auth/auth";
+import { initAuth, login } from "app/axios/actions/api.action";
+import { AuthAction } from "app/reducer/auth/auth";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 import { useHistory } from "react-router-dom";
 import { route } from "routers/route";

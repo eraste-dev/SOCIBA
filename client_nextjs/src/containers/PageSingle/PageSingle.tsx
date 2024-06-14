@@ -5,7 +5,7 @@ import { SINGLE } from "data/single";
 import SingleContent from "./SingleContent";
 import { CommentType } from "components/CommentCard/CommentCard";
 import { useAppDispatch } from "app/hooks";
-import { changeCurrentPage } from "app/pages/pages";
+import { changeCurrentPage } from "app/reducer/pages/pages";
 import SingleHeader from "./SingleHeader";
 import SingleRelatedPosts from "./SingleRelatedPosts";
 

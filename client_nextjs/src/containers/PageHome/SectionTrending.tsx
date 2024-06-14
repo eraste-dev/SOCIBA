@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import Heading from "components/Heading/Heading";
 import { PostDataType } from "data/types";
-import Card5 from "components/Card/Card5/Card5";
+import Card5 from "components/Cards/Card5/Card5";
 
 export interface SectionTrendingProps {
 	posts: PostDataType[];

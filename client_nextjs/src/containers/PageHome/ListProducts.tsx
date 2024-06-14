@@ -1,15 +1,15 @@
 import { FC, useEffect } from "react";
 import Heading from "components/Heading/Heading";
-import Card11 from "components/Card/Card11/Card11";
+import Card11 from "components/Cards/Card11/Card11";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { IProperty, PropertyAction } from "app/reducer/products/propertiy";
+import { IProduct, PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
-import { fetchAllProperties } from "app/axios/api.action";
-import { useLocation } from "react-router-dom";
-import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
+import { fetchAllProperties } from "app/axios/actions/api.action";
+import { useHistory, useLocation } from "react-router-dom";
+import { IGetSearchPropertiesParams, searchParamsFromRedux } from "utils/query-builder.utils";
 import Loading from "components/UI/Loading";
 import ProductFilterSidebar from "components/Widgets/ProductFilterSidebar";
-import CardSkeleton from "components/Card/CardSkeleton/CardSkeleton";
+import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -22,13 +22,12 @@ export interface ListProductsProps {
 	postCardName?: "card3" | "card4" | "card7" | "card9" | "card10" | "card11" | "card14";
 }
 
-const ListProducts: FC<ListProductsProps> = ({
-	heading = "Annonces",
-	gridClass = "",
-	className = "",
-}) => {
+const ListProducts: FC<ListProductsProps> = ({ heading = "Annonces", gridClass = "", className = "" }) => {
 	const dispatch = useAppDispatch();
+	const history = useHistory();
+
 	const products = useAppSelector(PropertyAction.data)?.all?.get;
+	const filters = useAppSelector(PropertyAction.data)?.filters;
 	const loading = useSelector(PropertyAction.data)?.all?.loading;
 
 	const location = useLocation();
@@ -45,7 +44,16 @@ const ListProducts: FC<ListProductsProps> = ({
 		}
 	}, [dispatch, fetchAllProperties, products, loading]);
 
-	const renderCard = (post: IProperty) => {
+	const fetchAll = () => {
+		if (filters) {
+			const params: IGetSearchPropertiesParams = searchParamsFromRedux(filters);
+			console.log(params, history.location, "searchParamsFromURL()");
+			// return dispatch(fetchAllProperties(searchParamsFromURL()));
+			return dispatch(fetchAllProperties(params));
+		}
+	};
+
+	const renderCard = (post: IProduct) => {
 		return <Card11 key={post.id} post={post} />;
 	};
 
@@ -59,13 +67,11 @@ const ListProducts: FC<ListProductsProps> = ({
 				<Heading>{heading}</Heading>
 			</div>
 			<div className="flex flex-col lg:flex-row">
-				{false && (
-					<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
-						<ProductFilterSidebar />
-					</div>
-				)}
-				{/* TODO : w-full lg:w-3/4 xl:w-5/6 xl:pl-14 lg:pl- */}
-				<div className="w-full lg:w-4/4 xl:w-6/6 xl:pl-14 lg:pl-7">
+				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
+					<ProductFilterSidebar fetchAll={fetchAll} />
+				</div>
+
+				<div className="w-full lg:w-3/4 xl:w-5/6 xl:pl-14 lg:pl-7">
 					{loading && loading ? (
 						<CardSkeleton arrayLength={8} />
 					) : (

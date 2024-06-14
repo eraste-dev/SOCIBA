@@ -1,4 +1,4 @@
-import { IUser } from "app/auth/auth";
+import { IUser } from "app/reducer/auth/auth";
 import DashboardBillingAddress from "containers/PageDashboard/DashboardBillingAddress";
 import DashboardEditProfile from "containers/PageDashboard/DashboardEditProfile";
 import DashboardPosts from "containers/PageDashboard/DashboardPosts";

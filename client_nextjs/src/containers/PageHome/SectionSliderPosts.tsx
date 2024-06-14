@@ -3,13 +3,13 @@ import Heading from "components/Heading/Heading";
 import Glide from "@glidejs/glide";
 import { PostDataType } from "data/types";
 import NextPrev from "components/NextPrev/NextPrev";
-import Card11 from "components/Card/Card11/Card11";
+import Card11 from "components/Cards/Card11/Card11";
 import ncNanoId from "utils/ncNanoId";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { PropertyAction } from "app/reducer/products/propertiy";
+import { PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
-import { fetchFeatureProperties } from "app/axios/api.action";
-import CardSkeleton from "components/Card/CardSkeleton/CardSkeleton";
+import { fetchFeatureProperties } from "app/axios/actions/api.action";
+import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 
 export interface SectionSliderPostsProps {
 	className?: string;

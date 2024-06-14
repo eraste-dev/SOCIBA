@@ -1,11 +1,11 @@
-import { fetchCategories } from "app/axios/api.action";
+import { fetchCategories } from "app/axios/actions/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { CategoryAction } from "app/reducer/products/propertiy-category";
-import CardCategory1 from "components/Card/CardCategory1/CardCategory1";
-import CardCategory2 from "components/Card/CardCategory2/CardCategory2";
-import CardCategory3 from "components/Card/CardCategory3/CardCategory3";
-import CardCategory4 from "components/Card/CardCategory4/CardCategory4";
-import CardCategory5 from "components/Card/CardCategory5/CardCategory5";
+import CardCategory1 from "components/Cards/CardCategory1/CardCategory1";
+import CardCategory2 from "components/Cards/CardCategory2/CardCategory2";
+import CardCategory3 from "components/Cards/CardCategory3/CardCategory3";
+import CardCategory4 from "components/Cards/CardCategory4/CardCategory4";
+import CardCategory5 from "components/Cards/CardCategory5/CardCategory5";
 import Heading from "components/Heading/Heading";
 import { DEMO_CATEGORIES } from "data/taxonomies";
 import { TaxonomyType } from "data/types";

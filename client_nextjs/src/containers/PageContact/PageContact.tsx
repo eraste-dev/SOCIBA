@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import Input from "components/Input/Input";
-import Label from "components/Label/Label";
+import Input from "components/Form/Input/Input";
+import Label from "components/Form/Label/Label";
 import LayoutPage from "components/LayoutPage/UserLayout";
 import SocialsList from "components/SocialsList/SocialsList";
 import Textarea from "components/Textarea/Textarea";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { isAdmin } from "app/axios/api.action";
-import { AuthAction, IUser } from "app/auth/auth";
+import { isAdmin } from "app/axios/actions/api.action";
+import { AuthAction, IUser } from "app/reducer/auth/auth";
 import UserManagementTable from "components/Dashboard/Users/UserManagementTable";
 import { UserManagementAction } from "app/reducer/users/users";
 import { fetchAllUser } from "app/axios/actions/api.users.action";

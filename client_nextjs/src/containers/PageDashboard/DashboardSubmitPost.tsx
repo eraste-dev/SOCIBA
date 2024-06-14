@@ -1,32 +1,27 @@
 import React, { useEffect, useState } from "react";
-import Input from "components/Input/Input";
+import Input from "components/Form/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import Select from "components/Select/Select";
+import Select from "components/Form/Select/Select";
 import Textarea from "components/Textarea/Textarea";
-import Label from "components/Label/Label";
+import Label from "components/Form/Label/Label";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { AuthAction, IUser } from "app/auth/auth";
+import { AuthAction, IUser } from "app/reducer/auth/auth";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
-import SelectProductCategories from "components/Products/add/SelectProductCategories";
 import { useAppSelector } from "app/hooks";
-import { fetchCategories, fetchSingleProperties, initProductState, postProduct } from "app/axios/api.action";
+import { fetchCategories, fetchSingleProperties, initProductState, postProduct } from "app/axios/actions/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
-import { getCities } from "data/cities";
 import { ProductRequest } from "app/axios/api.type";
 import { ILocation, LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import { useSnackbar } from "notistack";
-import { PropertyAction } from "app/reducer/products/propertiy";
+import { PropertyAction } from "app/reducer/products/product";
 import ErrorMessage from "components/Form/ErrorMessage";
 import { useHistory } from "react-router-dom";
 import { route } from "routers/route";
 import { useBoolean } from "react-use";
-import { Box, IconButton } from "@mui/material";
-import { Close as CloseIcon, Visibility as VisibilityIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import ProductPreviewImageItem from "components/Dashboard/ProductPreviewImageItem";
-import ShowImageDialog from "components/Dialog/ShowImageDialog";
+import ImageUploader from "components/Dashboard/Products/ImageUploader";
 
 const DashboardSubmitPost = () => {
 	const CURRENCY: string = "FCFA";
@@ -57,6 +52,7 @@ const DashboardSubmitPost = () => {
 	const [previewUrls, setPreviewUrls]: any = useState([]);
 	const [openLightbox, setOpenLightbox] = useBoolean(false);
 	const [currentImage, setCurrentImage] = useState<string | null>(null);
+	const [images, setImages] = useState<string[]>([]);
 
 	const {
 		register,
@@ -86,13 +82,42 @@ const DashboardSubmitPost = () => {
 		cat && setValue("category_id", cat?.id);
 	};
 
-	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
+	/* const onSubmit: SubmitHandler<ProductRequest> = (data) => {
 		// console.log(data);
 		if (product && productId) {
 			data.id = parseInt(productId);
 		}
 		dispatch(postProduct(data));
+	};*/
+
+	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
+		const formData = new FormData();
+
+		// Convert data to FormData
+		for (const key in data) {
+			if (data.hasOwnProperty(key) && data[key as keyof ProductRequest] !== undefined) {
+				if (key === 'images' && data.images) {
+					if (data.images instanceof FileList) {
+						for (let i = 0; i < data.images.length; i++) {
+							formData.append('images[]', data.images[i]);
+						}
+					} else if (Array.isArray(data.images)) {
+						data.images.forEach(image => formData.append('images[]', image));
+					}
+				} else {
+					formData.append(key, (data[key as keyof ProductRequest] as any));
+				}
+			}
+		}
+
+		if (product && productId) {
+			formData.append('id', productId);
+		}
+
+		dispatch(postProduct(formData));
 	};
+
+
 
 	const getCategoryByID = (id: number) => {
 		return categories?.filter((_cat) => _cat.id === id)[0] || null;
@@ -168,6 +193,7 @@ const DashboardSubmitPost = () => {
 				images: null,
 			};
 			setDefaultValue(value);
+			setImages(product.images.map((image) => image.image));
 			initForm(value);
 
 			if (categories && categories.length > 0) {
@@ -232,14 +258,8 @@ const DashboardSubmitPost = () => {
 
 	return (
 		<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6">
-			<h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-200">Rédigez votre annonce</h3>
+			<h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-200 mb-5">Rédigez votre annonce</h3>
 			<form className="grid md:grid-cols-2 gap-6" onSubmit={handleSubmit(onSubmit)}>
-				<label className="block">
-					<span className="cursor-pointer" onClick={() => console.log(watch(), isValid)}>
-						test
-					</span>
-				</label>
-
 				{/* TYPE */}
 				<label className="block">
 					<Label>
@@ -314,12 +334,6 @@ const DashboardSubmitPost = () => {
 										</option>
 									))}
 								</Select>
-
-								{/* <SelectProductCategories
-								options={(categoryParent && categories && categoryParent.children) || []}
-								onChangeOption={handleSelectedCategory}
-								selected={(categorySelected && categorySelected.id) ?? null}
-							/> */}
 							</div>
 						</div>
 					</div>
@@ -402,55 +416,7 @@ const DashboardSubmitPost = () => {
 
 				{/* IMAGE */}
 				<div className="block md:col-span-2">
-					<Label>Ajoutez des photos*</Label>
-					<p className="text-xs text-neutral-500">Ajoutez plusieurs photos pour augmenter vos chances d'être contacté</p>
-
-					<div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-700 border-dashed rounded-md">
-						<div className="space-y-1 text-center">
-							<svg className="mx-auto h-12 w-12 text-neutral-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-								<path
-									d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								></path>
-							</svg>
-							<div className="flex flex-col sm:flex-row text-sm text-neutral-6000">
-								<label
-									htmlFor="files"
-									className="relative cursor-pointer rounded-md font-medium text-primary-6000 hover:text-primary-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
-								>
-									<span>Upload a file</span>
-									<input
-										id="files"
-										type="file"
-										className="sr-only"
-										name="files"
-										multiple
-										// ref={register}
-										onChange={handleFileChange}
-									/>
-								</label>
-								<p className="pl-1">or drag and drop</p>
-							</div>
-							<p className="text-xs text-neutral-500">PNG, JPG, GIF up to 2MB</p>
-						</div>
-						<ErrorMessage errors={errorArray} error="files" customMessage="Veuillez ajouter au moins une image" />
-					</div>
-
-					{/* IMAGE PREVIEW */}
-					<div className="flex flex-wrap mt-4">
-						{previewUrls.map((url: string, index: number) => (
-							<ProductPreviewImageItem
-								key={index}
-								index={index}
-								url={url}
-								handleDelete={() => handleOnDeleteLightbox(index)}
-								handleOpen={() => handleOpenLightbox(url)}
-							/>
-						))}
-						<ShowImageDialog open={openLightbox} handleClose={handleCloseLightbox} currentImage={currentImage ?? ""} />
-					</div>
+					<ImageUploader initialImages={images} maxImages={5} images={images} setImages={setImages} />
 				</div>
 
 				{/* EXCERPT */}

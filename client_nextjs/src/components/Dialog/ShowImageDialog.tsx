@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import { useTheme } from "@mui/material/styles";

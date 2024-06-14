@@ -39,16 +39,29 @@ class PropertyService
         }
 
         // Filtre par plusieurs catégories si spécifiées
-        if ($payload['categories']) {
-            $query->whereIn('category_id', $payload['categories']);
+        if ($payload['categories'] && count(explode(',', $payload['categories'])) > 0) {
+            $query->whereIn('category_id', explode(',', $payload['categories']));
         }
 
         if ($payload['created_by']) {
             $query->where('created_by', $payload['created_by']);
         }
 
-        if ($payload['location_id']) {
+        if (isset($payload['location_id']) && $payload['location_id'] !== '*') {
             $query->where('location_id', $payload['location_id']);
+        }
+
+        // dd(explode(',', $payload['locations']));
+        if (isset($payload['locations']) && count(explode(',', $payload['locations'])) > 0) {
+            $query->whereIn('location_id', explode(',', $payload['locations']));
+        }
+
+        if (isset($payload['price_sort']) && $payload['price_sort'] !== '*') {
+            $query->orderBy('price', $payload['price_sort']);
+        }
+
+        if (isset($payload['deposit_price_sort']) && $payload['deposit_price_sort'] !== '*') {
+            $query->orderBy('deposit_price', $payload['deposit_price_sort']);
         }
 
         // Trie par pertinence si demandé

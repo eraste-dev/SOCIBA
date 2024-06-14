@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
-import Card8 from "components/Card/Card8/Card8";
+import Card8 from "components/Cards/Card8/Card8";
 import { SectionMagazine1Props } from "./SectionMagazine1";
 import HeaderFilter from "./HeaderFilter";
-import Card9 from "components/Card/Card9/Card9";
+import Card9 from "components/Cards/Card9/Card9";
 
 export interface SectionMagazine4Props extends SectionMagazine1Props {}
 

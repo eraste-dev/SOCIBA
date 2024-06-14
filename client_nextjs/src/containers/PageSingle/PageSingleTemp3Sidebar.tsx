@@ -5,10 +5,10 @@ import SingleContent from "./SingleContent";
 import { CommentType } from "components/CommentCard/CommentCard";
 import SingleRelatedPosts from "./SingleRelatedPosts";
 import { useAppDispatch } from "app/hooks";
-import { changeCurrentPage } from "app/pages/pages";
+import { changeCurrentPage } from "app/reducer/pages/pages";
 import { Sidebar } from "./Sidebar";
 import SingleHeader from "./SingleHeader";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 
 export interface PageSingleTemp3SidebarProps {
 	className?: string;
@@ -18,7 +18,7 @@ export interface SinglePageType extends PostDataType {
 	tags: TaxonomyType[];
 	content: string | ReactNode;
 	comments: CommentType[];
-	post?: IProperty;
+	post?: IProduct;
 }
 
 const PageSingleTemp3Sidebar: FC<PageSingleTemp3SidebarProps> = ({ className = "" }) => {

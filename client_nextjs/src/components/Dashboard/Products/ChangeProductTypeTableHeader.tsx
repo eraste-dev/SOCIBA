@@ -4,7 +4,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/solid";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
 import ButtonDropdown from "components/ButtonDropdown/ButtonDropdown";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 import { STATUS_LABEL, getStatuslabel } from "./ChangeProductType";
 
 export interface ChangeProductTypeTableHeaderProps {
