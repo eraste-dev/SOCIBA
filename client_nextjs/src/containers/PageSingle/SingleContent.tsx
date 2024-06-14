@@ -6,11 +6,11 @@ import SingleCommentForm from "./SingleCommentForm";
 import SingleCommentLists from "./SingleCommentLists";
 import SingleContentDemo from "./SingleContentDemo";
 import { useLocation } from "react-router";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 import { CommentType } from "components/CommentCard/CommentCard";
 
 export interface SingleContentProps {
-	data: IProperty;
+	data: IProduct;
 }
 
 const SingleContent: FC<SingleContentProps> = ({ data }) => {

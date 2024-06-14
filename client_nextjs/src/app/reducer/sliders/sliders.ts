@@ -1,9 +1,9 @@
-import { IStoreAction, IStoreDataState } from "./../axios/api.type";
-import { serverEndpoints } from "./../axios/api.route";
+import { IStoreAction, IStoreDataState } from "../../axios/api.type";
+import { serverEndpoints } from "../../axios/api.route";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { axiosRequest } from "app/axios/api";
 import { IServerResponse } from "app/axios/api.type";
-import { AppDispatch, RootState } from "app/store";
+import { AppDispatch, RootState } from "app/reducer/store";
 import axios from "axios";
 import { Debug } from "utils/debug.utils";
 

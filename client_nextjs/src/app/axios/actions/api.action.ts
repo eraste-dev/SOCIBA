@@ -1,9 +1,9 @@
-import { IUser, updateUserFailure, updateUserStart, updateUserSuccess } from "../reducer/auth/auth";
+import { IUser, updateUserFailure, updateUserStart, updateUserSuccess } from "../../reducer/auth/auth";
 import { fetchSlidersFailure, fetchSlidersStart, fetchSlidersSuccess } from "app/reducer/sliders/sliders";
 import { AppDispatch } from "app/reducer/store";
-import { IServerResponse, ProductRequest, RegisterRequest, UpdateUserRequest } from "./api.type";
-import { serverEndpoints } from "./api.route";
-import { axiosRequest } from "./api";
+import { IServerResponse, ProductRequest, RegisterRequest, UpdateUserRequest } from "../api.type";
+import { serverEndpoints } from "../api.route";
+import { axiosRequest } from "../api";
 import { fetchCategoriesFailure, fetchCategoriesStart, fetchCategoriesSuccess } from "app/reducer/products/propertiy-category";
 import {
 	IPropertyFilter,
@@ -124,11 +124,11 @@ export const resetFilters = () => async (dispatch: AppDispatch) => {
 	dispatch(resetFiltersSuccess());
 };
 
-export const postProduct = (payload: ProductRequest) => async (dispatch: AppDispatch) => {
+export const postProduct = (payload: ProductRequest|FormData) => async (dispatch: AppDispatch) => {
 	dispatch(postProductStart());
 
 	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.post(payload) });
+		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.post(payload), data:payload });
 		dispatch(postProductSuccess(response.data));
 	} catch (error: any) {
 		console.log(error);

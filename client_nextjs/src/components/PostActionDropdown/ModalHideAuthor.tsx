@@ -3,7 +3,7 @@ import NcModal from "components/NcModal/NcModal";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import ButtonSecondary from "components/Button/ButtonSecondary";
 import { PostAuthorType } from "data/types";
-import { IUser } from "app/auth/auth";
+import { IUser } from "app/reducer/auth/auth";
 
 export interface ModalHideAuthorProps {
 	auhthor: IUser;

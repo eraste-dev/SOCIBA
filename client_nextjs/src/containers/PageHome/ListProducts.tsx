@@ -1,15 +1,15 @@
 import { FC, useEffect } from "react";
 import Heading from "components/Heading/Heading";
-import Card11 from "components/Card/Card11/Card11";
+import Card11 from "components/Cards/Card11/Card11";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { IProperty, PropertyAction } from "app/reducer/products/propertiy";
+import { IProduct, PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
-import { fetchAllProperties } from "app/axios/api.action";
+import { fetchAllProperties } from "app/axios/actions/api.action";
 import { useHistory, useLocation } from "react-router-dom";
 import { IGetSearchPropertiesParams, searchParamsFromRedux } from "utils/query-builder.utils";
 import Loading from "components/UI/Loading";
 import ProductFilterSidebar from "components/Widgets/ProductFilterSidebar";
-import CardSkeleton from "components/Card/CardSkeleton/CardSkeleton";
+import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -53,7 +53,7 @@ const ListProducts: FC<ListProductsProps> = ({ heading = "Annonces", gridClass =
 		}
 	};
 
-	const renderCard = (post: IProperty) => {
+	const renderCard = (post: IProduct) => {
 		return <Card11 key={post.id} post={post} />;
 	};
 

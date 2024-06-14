@@ -1,6 +1,6 @@
 import { IStoreAction, IStoreDataState } from "../../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "app/store";
+import { RootState } from "app/reducer/store";
 import { TwMainColor } from "data/types";
 
 export interface IPropertyCategory {

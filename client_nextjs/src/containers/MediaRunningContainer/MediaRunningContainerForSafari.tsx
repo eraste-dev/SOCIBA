@@ -4,7 +4,7 @@ import {
   selectCurrentMediaRunning,
   changeStateMediaRunning,
   removeMediaRunning,
-} from "app/mediaRunning/mediaRunning";
+} from "app/reducer/mediaRunning/mediaRunning";
 import ReactPlayer from "react-player";
 import { PostDataType } from "data/types";
 import NcImage from "components/NcImage/NcImage";

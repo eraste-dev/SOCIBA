@@ -1,7 +1,7 @@
-import { PostDataType } from "data/types";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
-import twFocusClass from "utils/twFocusClass";
+import {PostDataType} from "../../../data/types";
+import twFocusClass from "../../../utils/twFocusClass";
 
 export interface PostCardCommentBtnProps {
   className?: string;

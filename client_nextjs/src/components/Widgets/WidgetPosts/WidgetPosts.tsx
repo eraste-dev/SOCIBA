@@ -1,5 +1,5 @@
 import Card3Small from "components/Cards/Card3Small/Card3Small";
-import WidgetHeading1 from "components/WidgetHeading1/WidgetHeading1";
+import WidgetHeading1 from "components/Widgets/WidgetHeading1/WidgetHeading1";
 import { PostDataType } from "data/types";
 import React, { FC } from "react";
 

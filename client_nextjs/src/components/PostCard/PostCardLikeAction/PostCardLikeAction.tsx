@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import { PostDataType } from "data/types";
-import convertNumbThousand from "utils/convertNumbThousand";
-import twFocusClass from "utils/twFocusClass";
+import { PostDataType } from "../../../data/types";
+import convertNumbThousand from "../../../utils/convertNumbThousand";
+import twFocusClass from "../../../utils/twFocusClass";
 
 export interface PostCardLikeActionProps {
   className?: string;

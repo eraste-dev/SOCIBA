@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Tag from "components/Tag/Tag";
-import WidgetHeading1 from "components/WidgetHeading1/WidgetHeading1";
+import WidgetHeading1 from "components/Widgets/WidgetHeading1/WidgetHeading1";
 import { TaxonomyType } from "data/types";
 
 export interface WidgetTagsProps {

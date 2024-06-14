@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import PostCardCommentBtn from "components/PostCardCommentBtn/PostCardCommentBtn";
+import PostCardCommentBtn from "components/PostCard/PostCardCommentBtn/PostCardCommentBtn";
 import PostCardLikeContainer from "containers/PostCardLikeContainer/PostCardLikeContainer";
 import { PostDataType } from "data/types";
 import { IProduct } from "app/reducer/products/product";

@@ -1,5 +1,5 @@
 import { IPagination } from "app/reducer/products/type";
-import { RootState } from "app/store";
+import { RootState } from "app/reducer/store";
 import { AxiosRequestConfig } from "axios";
 import { STATUS_LABEL } from "components/Dashboard/Products/ChangeProductType";
 
@@ -42,6 +42,7 @@ export const createStoreDataStateItem = <T>(
 		message: message,
 	};
 };
+
 export interface IStoreDataState<T> {
 	data: T;
 	success: boolean;

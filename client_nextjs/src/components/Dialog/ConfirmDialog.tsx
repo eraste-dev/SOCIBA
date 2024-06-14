@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { IProperty, PropertyAction } from "app/reducer/products/propertiy";
+import { IProduct, PropertyAction } from "app/reducer/products/product";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -9,7 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useAppDispatch } from "app/hooks";
-import { deleteProduct, initProductState } from "app/axios/api.action";
+import { deleteProduct, initProductState } from "app/axios/actions/api.action";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 
@@ -17,7 +17,7 @@ export interface ConfirmDialogProps {
 	handleClose: () => void;
 	// handleClickOpen: () => void;
 	open: boolean;
-	row: IProperty;
+	row: IProduct;
 }
 
 const ConfirmDialog: FC<ConfirmDialogProps> = ({ open, handleClose, row }) => {

@@ -1,13 +1,13 @@
 import { FC } from "react";
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import { route } from "routers/route";
 import { useDispatch } from "react-redux";
-import { setSingleProduct } from "app/axios/api.action";
+import { setSingleProduct } from "app/axios/actions/api.action";
 
 export interface ProductTableActionProps {
-	row: IProperty;
+	row: IProduct;
 	// openDelete: boolean;
 	handleOpenDelete: () => void;
 }

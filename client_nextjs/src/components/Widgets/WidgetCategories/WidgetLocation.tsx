@@ -1,10 +1,10 @@
-import { setFilters } from "app/axios/api.action";
+import { setFilters } from "app/axios/actions/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import WidgetHeading1 from "components/WidgetHeading1/WidgetHeading1";
+import WidgetHeading1 from "components/Widgets/WidgetHeading1/WidgetHeading1";
 import { FC, useEffect } from "react";
 import ProductSortOption from "../WidgetSort/ProductSortOption";
 import { FaPlusCircle } from "react-icons/fa";
-import { PropertyAction } from "app/reducer/products/propertiy";
+import { PropertyAction } from "app/reducer/products/product";
 import { ILocation, LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import { updateParamsUrl } from "utils/utils";

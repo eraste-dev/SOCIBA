@@ -1,25 +1,25 @@
 import React, { FC, ReactNode } from "react";
-import Card3 from "components/Card/Card3/Card3";
+import Card3 from "components/Cards/Card3/Card3";
 import Heading from "components/Heading/Heading";
 import { DEMO_POSTS } from "data/posts";
 import { PostDataType } from "data/types";
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import Card4 from "components/Card/Card4/Card4";
-import Card7 from "components/Card/Card7/Card7";
-import Card9 from "components/Card/Card9/Card9";
-import Card11 from "components/Card/Card11/Card11";
-import Card14 from "components/Card/Card14/Card14";
-import Card15Podcast from "components/Card/Card15Podcast/Card15Podcast";
-import Card10 from "components/Card/Card10/Card10";
-import Card10V2 from "components/Card/Card10/Card10V2";
-import { IProperty } from "app/reducer/products/propertiy";
+import Card4 from "components/Cards/Card4/Card4";
+import Card7 from "components/Cards/Card7/Card7";
+import Card9 from "components/Cards/Card9/Card9";
+import Card11 from "components/Cards/Card11/Card11";
+import Card14 from "components/Cards/Card14/Card14";
+import Card15Podcast from "components/Cards/Card15Podcast/Card15Podcast";
+import Card10 from "components/Cards/Card10/Card10";
+import Card10V2 from "components/Cards/Card10/Card10V2";
+import { IProduct } from "app/reducer/products/product";
 
 // OTHER DEMO WILL PASS PROPS
 const postsDemo: PostDataType[] = DEMO_POSTS.filter((_, i) => i > 7 && i < 17);
 
 //
 export interface SectionGridPostsProps {
-  posts?: IProperty[];
+  posts?: IProduct[];
   className?: string;
   gridClass?: string;
   heading?: ReactNode;
@@ -46,7 +46,7 @@ const SectionGridPosts: FC<SectionGridPostsProps> = ({
   subHeading,
   headingIsCenter,
 }) => {
-  const renderCard = (post: IProperty) => {
+  const renderCard = (post: IProduct) => {
     switch (postCardName) {
       // case "card3":
       //   return (

@@ -3,7 +3,7 @@ import { PostDataType, TaxonomyType } from "data/types";
 import { SINGLE_VIDEO } from "data/single";
 import { CommentType } from "components/CommentCard/CommentCard";
 import { useAppDispatch } from "app/hooks";
-import { changeCurrentPage } from "app/pages/pages";
+import { changeCurrentPage } from "app/reducer/pages/pages";
 import SingleRelatedPosts from "containers/PageSingle/SingleRelatedPosts";
 import ReactPlayer from "react-player";
 import NcPlayIcon from "components/NcPlayIcon/NcPlayIcon";

@@ -1,11 +1,11 @@
-import { IProperty } from "app/reducer/products/propertiy";
+import { IProduct } from "app/reducer/products/product";
 import React, { FC } from "react";
 import { FaAngleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { route } from "routers/route";
 
 interface SingleBreadcrumbProps {
-	meta: IProperty;
+	meta: IProduct;
 }
 
 const SingleBreadcrumb: FC<SingleBreadcrumbProps> = ({ meta }) => {

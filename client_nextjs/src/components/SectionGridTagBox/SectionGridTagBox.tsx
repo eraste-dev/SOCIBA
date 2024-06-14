@@ -1,4 +1,4 @@
-import CardTagBox from "components/Card/CardTagBox/CardTagBox";
+import CardTagBox from "components/Cards/CardTagBox/CardTagBox";
 import Heading from "components/Heading/Heading";
 import { DEMO_CATEGORIES } from "data/taxonomies";
 import { TaxonomyType } from "data/types";

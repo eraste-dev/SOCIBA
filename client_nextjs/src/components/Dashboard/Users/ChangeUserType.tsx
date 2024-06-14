@@ -4,7 +4,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/solid";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
 import ButtonDropdown from "components/ButtonDropdown/ButtonDropdown";
-import { IUser } from "app/auth/auth";
+import { IUser } from "app/reducer/auth/auth";
 
 export interface ChangeUserTypeProps {
 	className?: string;

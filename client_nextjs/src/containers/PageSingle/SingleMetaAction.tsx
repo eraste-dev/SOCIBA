@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import PostActionDropdown from "components/PostActionDropdown/PostActionDropdown";
-import PostCardLikeAndComment from "components/PostCardLikeAndComment/PostCardLikeAndComment";
+import PostCardLikeAndComment from "components/PostCard/PostCardLikeAndComment/PostCardLikeAndComment";
 import SocialsShare from "components/SocialsShare/SocialsShare";
 import BookmarkContainer from "containers/BookmarkContainer/BookmarkContainer";
 import { PostDataType } from "data/types";

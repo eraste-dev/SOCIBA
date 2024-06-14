@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 import NcImage from "components/NcImage/NcImage";
-import PostCardSaveAction from "components/PostCardSaveAction/PostCardSaveAction";
+import PostCardSaveAction from "components/PostCard/PostCardSaveAction/PostCardSaveAction";
 import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
-import PostCardLikeAndComment from "components/PostCardLikeAndComment/PostCardLikeAndComment";
+import PostCardLikeAndComment from "components/PostCard/PostCardLikeAndComment/PostCardLikeAndComment";
 import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
-import PostTypeFeaturedIcon from "components/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
-import PostFeaturedMedia from "components/PostFeaturedMedia/PostFeaturedMedia";
+import PostTypeFeaturedIcon from "components/PostCard/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
+import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeaturedMedia";
 
 export interface Card9Props {
   className?: string;

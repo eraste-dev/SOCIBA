@@ -1,11 +1,11 @@
-import { fetchCategories, setFilters } from "app/axios/api.action";
+import { fetchCategories, setFilters } from "app/axios/actions/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
-import WidgetHeading1 from "components/WidgetHeading1/WidgetHeading1";
+import WidgetHeading1 from "components/Widgets/WidgetHeading1/WidgetHeading1";
 import { FC, useEffect, useState } from "react";
 import ProductSortOption from "../WidgetSort/ProductSortOption";
 import { FaArrowCircleRight, FaPlusCircle } from "react-icons/fa";
-import { PropertyAction } from "app/reducer/products/propertiy";
+import { PropertyAction } from "app/reducer/products/product";
 
 export interface WidgetCategoriesProps {
 	className?: string;

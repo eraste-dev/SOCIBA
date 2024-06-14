@@ -1,6 +1,6 @@
 import { serverEndpoints } from "./../api.route";
-import { fetchUserProductFailure, fetchUserProductStart, fetchUserProductSuccess } from "app/reducer/products/propertiy";
-import { AppDispatch } from "app/store";
+import { fetchUserProductFailure, fetchUserProductStart, fetchUserProductSuccess } from "app/reducer/products/product";
+import { AppDispatch } from "app/reducer/store";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import { axiosRequest } from "../api";
 import { IServerResponse } from "../api.type";

@@ -1,7 +1,7 @@
 import { IStoreAction, IStoreDataState } from "../../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "app/store";
-import { IUser } from "../../auth/auth";
+import { RootState } from "app/reducer/store";
+import { IUser } from "../auth/auth";
 
 export interface IUsersState {
 	users: IUser[];

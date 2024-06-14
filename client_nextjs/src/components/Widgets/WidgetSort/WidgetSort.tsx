@@ -1,8 +1,8 @@
 import { FC } from "react";
-import WidgetHeading1 from "components/WidgetHeading1/WidgetHeading1";
+import WidgetHeading1 from "components/Widgets/WidgetHeading1/WidgetHeading1";
 import { useAppDispatch } from "app/hooks";
-import { SORT_TYPE } from "app/reducer/products/propertiy";
-import { setFilters } from "app/axios/api.action";
+import { SORT_TYPE } from "app/reducer/products/product";
+import { setFilters } from "app/axios/actions/api.action";
 import { route } from "routers/route";
 import { updateParamsUrl } from "utils/utils";
 import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "./ListBoxSelectFilter";

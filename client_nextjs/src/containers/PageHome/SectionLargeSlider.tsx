@@ -1,4 +1,4 @@
-import CardLarge1 from "components/Card/CardLarge1/CardLarge1";
+import CardLarge1 from "components/Cards/CardLarge1/CardLarge1";
 import Heading from "components/Heading/Heading";
 import { PostDataType } from "data/types";
 import React, { FC, useState } from "react";

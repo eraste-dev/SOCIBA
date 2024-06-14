@@ -1,17 +1,17 @@
 import { IPropertyCategory } from "app/reducer/products/propertiy-category";
 import { IServerResponse, IStoreAction, IStoreDataState, IStoreDataStateItem, ProductRequest, createStoreDataStateItem } from "../../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "app/store";
-import { IUser } from "app/auth/auth";
+import { RootState } from "app/reducer/store";
+import { IUser } from "app/reducer/auth/auth";
 import { ILocation } from "../locations/locations";
 import { IPagination } from "./type";
 
-export interface IPropertyImage {
+export interface IProductImage {
 	id: number;
 	image: string;
 }
 
-export interface IProperty {
+export interface IProduct {
 	id: number;
 	href: string;
 	category: IPropertyCategory;
@@ -35,7 +35,7 @@ export interface IProperty {
 	whatsapp_link: null;
 	facebook_link: null;
 	video_link: string;
-	images: IPropertyImage[];
+	images: IProductImage[];
 	featured_image: string;
 	type: string;
 	created_by: string;
@@ -82,10 +82,10 @@ export interface IStorePropertyDataAction {
 	message?: string;
 	Loading?: boolean;
 	error?: string | null;
-	selected?: IProperty | null;
+	selected?: IProduct | null;
 }
 
-const successProductDataAction = (selected: IProperty, message: string = "") => {
+const successProductDataAction = (selected: IProduct, message: string = "") => {
 	const output: IStorePropertyDataAction = {
 		success: true,
 		Loading: false,
@@ -105,12 +105,12 @@ const failProductDataAction = (message: string = "") => {
 };
 
 export interface IStorePropertyData {
-	all?: IStoreDataStateItem<IProperty[] | undefined>;
-	user?: IStoreDataStateItem<IProperty[] | undefined>;
+	all?: IStoreDataStateItem<IProduct[] | undefined>;
+	user?: IStoreDataStateItem<IProduct[] | undefined>;
 	paginate?: IPagination;
-	features?: IStoreDataStateItem<IProperty[] | undefined>;
-	similars?: IProperty[] | undefined;
-	single?: IProperty | undefined;
+	features?: IStoreDataStateItem<IProduct[] | undefined>;
+	similars?: IProduct[] | undefined;
+	single?: IProduct | undefined;
 	filters?: IPropertyFilter;
 	types?: IPropertyType[];
 	actions?: {
@@ -153,7 +153,7 @@ export const PropertiesSlice = createSlice({
 			state.success = false;
 			state.message = "";
 		},
-		fetchAllPropertiesSuccess: (state, action: PayloadAction<{ data: IProperty[]; pagination: IPagination | undefined }>) => {
+		fetchAllPropertiesSuccess: (state, action: PayloadAction<{ data: IProduct[]; pagination: IPagination | undefined }>) => {
 			state.loading = false;
 			state.error = null;
 			// paginate: action.payload?.pagination
@@ -173,17 +173,17 @@ export const PropertiesSlice = createSlice({
 			state.success = false;
 			state.message = "";
 		},
-		fetchUserProductSuccess: (state, action: PayloadAction<{ data: IProperty[]; pagination: IPagination | undefined }>) => {
+		fetchUserProductSuccess: (state, action: PayloadAction<{ data: IProduct[]; pagination: IPagination | undefined }>) => {
 			state.loading = false;
 			state.error = null;
 			state.data = {
 				...state.data,
-				user: createStoreDataStateItem<IProperty[] | undefined>(action.payload.data, false, true),
+				user: createStoreDataStateItem<IProduct[] | undefined>(action.payload.data, false, true),
 			};
 		},
 		fetchUserProductFailure: (state, action: PayloadAction<string>) => {
 			state.loading = false;
-			state.data = { ...state.data, user: createStoreDataStateItem<IProperty[] | undefined>(undefined, false, false, action.payload) };
+			state.data = { ...state.data, user: createStoreDataStateItem<IProduct[] | undefined>(undefined, false, false, action.payload) };
 			state.error = action.payload;
 		},
 
@@ -195,7 +195,7 @@ export const PropertiesSlice = createSlice({
 			state.success = false;
 			state.message = "";
 		},
-		fetchFeaturePropertiesSuccess: (state, action: PayloadAction<IProperty[]>) => {
+		fetchFeaturePropertiesSuccess: (state, action: PayloadAction<IProduct[]>) => {
 			state.loading = false;
 			state.error = null;
 			state.data = { ...state.data, features: createStoreDataStateItem(action.payload, false, true) };
@@ -214,7 +214,7 @@ export const PropertiesSlice = createSlice({
 			state.success = false;
 			state.message = "";
 		},
-		fetchSinglePropertiesSuccess: (state, action: PayloadAction<IProperty>) => {
+		fetchSinglePropertiesSuccess: (state, action: PayloadAction<IProduct>) => {
 			state.loading = false;
 			state.error = null;
 			state.data = { ...state.data, single: action.payload };
@@ -232,7 +232,7 @@ export const PropertiesSlice = createSlice({
 			state.success = false;
 			state.message = "";
 		},
-		setSinglePropertiesSuccess: (state, action: PayloadAction<IProperty>) => {
+		setSinglePropertiesSuccess: (state, action: PayloadAction<IProduct>) => {
 			state.loading = false;
 			state.error = null;
 			state.data = { ...state.data, single: action.payload };
@@ -303,7 +303,7 @@ export const PropertiesSlice = createSlice({
 			state.success = false;
 			state.message = "";
 		},
-		fetchSimilarsSuccess: (state, action: PayloadAction<IProperty[]>) => {
+		fetchSimilarsSuccess: (state, action: PayloadAction<IProduct[]>) => {
 			state.loading = false;
 			state.error = null;
 			state.data = { ...state.data, similars: action.payload };

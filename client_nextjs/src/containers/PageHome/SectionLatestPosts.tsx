@@ -4,13 +4,13 @@ import { DEMO_POSTS } from "data/posts";
 import { DEMO_CATEGORIES, DEMO_TAGS } from "data/taxonomies";
 import { PostAuthorType, PostDataType, TaxonomyType } from "data/types";
 import { DEMO_AUTHORS } from "data/authors";
-import Card11 from "components/Card/Card11/Card11";
+import Card11 from "components/Cards/Card11/Card11";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { IProperty, PropertyAction } from "app/reducer/products/propertiy";
+import { IProduct, PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
-import { fetchAllProperties } from "app/axios/api.action";
+import { fetchAllProperties } from "app/axios/actions/api.action";
 import ProductFilterSidebar from "components/Widgets/ProductFilterSidebar";
-import CardSkeleton from "components/Card/CardSkeleton/CardSkeleton";
+import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 import Pagination from "../../components/Pagination/Pagination";
 import { IGetSearchPropertiesParams, searchParamsFromRedux, searchParamsFromURL } from "utils/query-builder.utils";
 import { useHistory } from "react-router-dom";
@@ -70,7 +70,7 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 		}
 	};
 
-	const renderCard = (post: IProperty) => {
+	const renderCard = (post: IProduct) => {
 		return <Card11 key={post.id} post={post} />;
 
 		// switch (postCardName) {

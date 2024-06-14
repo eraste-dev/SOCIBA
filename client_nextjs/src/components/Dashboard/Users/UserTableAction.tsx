@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
-import { IUser } from "app/auth/auth";
+import { IUser } from "app/reducer/auth/auth";
 import { VIEW_ADMIN_USER } from "containers/PageDashboard/DashboardUsers";
 
 export interface UserTableActionProps {

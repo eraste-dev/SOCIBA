@@ -1,4 +1,4 @@
-import { IPropertyFilter, SORT_TYPE } from "app/reducer/products/propertiy";
+import { IPropertyFilter, SORT_TYPE } from "app/reducer/products/product";
 import { PROD_URL } from "./utils";
 
 export interface IGetQueryParams {

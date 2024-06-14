@@ -10,7 +10,7 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({ fetchAll }) => {
 	return (
 		<>
 			<WidgetSort handleFetch={fetchAll} />
-			<WidgetLocations handleFetch={fetchAll} />
+			{/* <WidgetLocations handleFetch={fetchAll} /> */}
 			{/* <WidgetCategories handleFetch={fetchAll} /> */}
 			{/* <WidgePrice /> */}
 		</>

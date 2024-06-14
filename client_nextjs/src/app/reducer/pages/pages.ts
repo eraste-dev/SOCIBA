@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "app/store";
+import { RootState } from "app/reducer/store";
 import { LocationStates } from "routers/types";
 
 export interface PageItemType {

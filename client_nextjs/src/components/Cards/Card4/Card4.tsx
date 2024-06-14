@@ -3,7 +3,7 @@ import NcImage from "components/NcImage/NcImage";
 import PostCardSaveAction from "components/PostCardSaveAction/PostCardSaveAction";
 import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
-import CardAuthor2 from "components/Card/CardAuthor2/CardAuthor2";
+import CardAuthor2 from "components/Cards/CardAuthor2/CardAuthor2";
 import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
 
 export interface Card4Props {

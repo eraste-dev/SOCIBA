@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { persistor, store } from "./app/store";
+import { persistor, store } from "./app/reducer/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 // STYLE

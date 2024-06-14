@@ -7,14 +7,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { IProperty, IPropertyImage } from "app/reducer/products/propertiy";
+import { IProduct, IProductImage } from "app/reducer/products/product";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { Link, useHistory } from "react-router-dom";
 import { route } from "routers/route";
 import ProductTableAction from "./ProductTableAction";
 import ConfirmDialog from "components/Dialog/ConfirmDialog";
 import { useDispatch } from "react-redux";
-import { initProductState, postProduct, updateUser } from "app/axios/api.action";
+import { initProductState, postProduct, updateUser } from "app/axios/actions/api.action";
 import ChangeUserType from "./Users/ChangeUserType";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
 import ChangeProductType, { STATUS_LABEL } from "./Products/ChangeProductType";
@@ -30,7 +30,7 @@ export interface ColumnProductTable {
 
 export interface ProductTableProps {
 	// columns: readonly ColumnProductTable[];
-	rows: IProperty[];
+	rows: IProduct[];
 }
 
 // "PUBLISH" | "DRAFT" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED" | null
@@ -61,7 +61,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 		setPage(0);
 	};
 
-	const handleChangeStatus = (row: IProperty, status: STATUS_LABEL) => {
+	const handleChangeStatus = (row: IProduct, status: STATUS_LABEL) => {
 		dispatch(postProduct({ id: row.id, status: status }));
 	};
 
@@ -107,7 +107,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 		}
 	};
 
-	const getFeatureImage = (images: IPropertyImage[]) => {
+	const getFeatureImage = (images: IProductImage[]) => {
 		return images[0]?.image || "https://via.placeholder.com/150";
 	};
 
@@ -171,7 +171,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 										<ChangeProductType
 											lists={LIST_STATUS}
 											selectedIndex={LIST_STATUS.findIndex((item) => item.name === row.status)}
-											handleChange={(row: IProperty, status: STATUS_LABEL) => handleChangeStatus(row, status)}
+											handleChange={(row: IProduct, status: STATUS_LABEL) => handleChangeStatus(row, status)}
 											row={row}
 										/>
 									</TableCell>

@@ -8,9 +8,9 @@ import LogoSvg from "./LogoSvg";
 import NcImage from "components/NcImage/NcImage";
 import { route } from "routers/route";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllProperties, initProductState } from "app/axios/api.action";
+import { fetchAllProperties, initProductState } from "app/axios/actions/api.action";
 import { searchParamsFromRedux } from "utils/query-builder.utils";
-import { PropertyAction } from "app/reducer/products/propertiy";
+import { PropertyAction } from "app/reducer/products/product";
 
 export interface LogoProps {}
 

@@ -6,7 +6,7 @@ import {
   MediaRunningState,
   addNewListPostAudio,
   selectCurrentMediaRunning,
-} from "app/mediaRunning/mediaRunning";
+} from "app/reducer/mediaRunning/mediaRunning";
 import LoadingVideo from "components/LoadingVideo/LoadingVideo";
 import iconPlaying from "images/icon-playing.gif";
 import PostTypeFeaturedIcon from "components/PostTypeFeaturedIcon/PostTypeFeaturedIcon";

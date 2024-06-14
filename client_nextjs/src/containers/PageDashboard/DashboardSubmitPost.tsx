@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import Input from "components/Input/Input";
+import Input from "components/Form/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import Select from "components/Select/Select";
+import Select from "components/Form/Select/Select";
 import Textarea from "components/Textarea/Textarea";
-import Label from "components/Label/Label";
+import Label from "components/Form/Label/Label";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { AuthAction, IUser } from "app/auth/auth";
+import { AuthAction, IUser } from "app/reducer/auth/auth";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 import { useAppSelector } from "app/hooks";
-import { fetchCategories, fetchSingleProperties, initProductState, postProduct } from "app/axios/api.action";
+import { fetchCategories, fetchSingleProperties, initProductState, postProduct } from "app/axios/actions/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
 import { ProductRequest } from "app/axios/api.type";
 import { ILocation, LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import { useSnackbar } from "notistack";
-import { PropertyAction } from "app/reducer/products/propertiy";
+import { PropertyAction } from "app/reducer/products/product";
 import ErrorMessage from "components/Form/ErrorMessage";
 import { useHistory } from "react-router-dom";
 import { route } from "routers/route";
@@ -82,13 +82,42 @@ const DashboardSubmitPost = () => {
 		cat && setValue("category_id", cat?.id);
 	};
 
-	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
+	/* const onSubmit: SubmitHandler<ProductRequest> = (data) => {
 		// console.log(data);
 		if (product && productId) {
 			data.id = parseInt(productId);
 		}
 		dispatch(postProduct(data));
+	};*/
+
+	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
+		const formData = new FormData();
+
+		// Convert data to FormData
+		for (const key in data) {
+			if (data.hasOwnProperty(key) && data[key as keyof ProductRequest] !== undefined) {
+				if (key === 'images' && data.images) {
+					if (data.images instanceof FileList) {
+						for (let i = 0; i < data.images.length; i++) {
+							formData.append('images[]', data.images[i]);
+						}
+					} else if (Array.isArray(data.images)) {
+						data.images.forEach(image => formData.append('images[]', image));
+					}
+				} else {
+					formData.append(key, (data[key as keyof ProductRequest] as any));
+				}
+			}
+		}
+
+		if (product && productId) {
+			formData.append('id', productId);
+		}
+
+		dispatch(postProduct(formData));
 	};
+
+
 
 	const getCategoryByID = (id: number) => {
 		return categories?.filter((_cat) => _cat.id === id)[0] || null;
@@ -229,14 +258,8 @@ const DashboardSubmitPost = () => {
 
 	return (
 		<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6">
-			<h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-200">Rédigez votre annonce</h3>
+			<h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-200 mb-5">Rédigez votre annonce</h3>
 			<form className="grid md:grid-cols-2 gap-6" onSubmit={handleSubmit(onSubmit)}>
-				<label className="block">
-					<span className="cursor-pointer" onClick={() => console.log(watch(), isValid)}>
-						test
-					</span>
-				</label>
-
 				{/* TYPE */}
 				<label className="block">
 					<Label>
@@ -311,12 +334,6 @@ const DashboardSubmitPost = () => {
 										</option>
 									))}
 								</Select>
-
-								{/* <SelectProductCategories
-								options={(categoryParent && categories && categoryParent.children) || []}
-								onChangeOption={handleSelectedCategory}
-								selected={(categorySelected && categorySelected.id) ?? null}
-							/> */}
 							</div>
 						</div>
 					</div>
