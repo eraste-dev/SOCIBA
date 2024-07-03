@@ -1,8 +1,5 @@
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import LayoutPage from "components/LayoutPage/UserLayout";
-import facebookSvg from "images/Facebook.svg";
-import twitterSvg from "images/Twitter.svg";
-import googleSvg from "images/Google.svg";
 import Input from "components/Form/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import NcLink from "components/NcLink/NcLink";
@@ -11,7 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthAction } from "app/reducer/auth/auth";
 import { RegisterRequest } from "app/axios/api.type";
-import { getErrors, initAuth, registerUser } from "app/axios/actions/api.action";
+import { initAuth, registerUser } from "app/axios/actions/api.action";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ErrorMessage from "components/Form/ErrorMessage";

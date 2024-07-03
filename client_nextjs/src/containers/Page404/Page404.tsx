@@ -16,7 +16,7 @@ const Page404: React.FC = () => (
 					LA PAGE RECHERCHÉE N'EXISTE PAS.{" "}
 				</span>
 				<ButtonPrimary href="/" className="mt-4">
-          RETOUR A L'ACCUEIL
+          			RETOUR A L'ACCUEIL
 				</ButtonPrimary>
 			</header>
 		</div>
