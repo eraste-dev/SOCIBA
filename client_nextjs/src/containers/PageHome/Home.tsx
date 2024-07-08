@@ -8,6 +8,7 @@ import SectionGridCategoryBox from "components/SectionGridCategoryBox/SectionGri
 import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import SectionHeroSlider from "components/SectionHero/SectionHeroSlider";
 import SectionGridCitiesBox from "components/SectionGridCitiesBox/SectionGridCitiesBox";
+import SectionSliderCities from "./SectionSliderCities";
 
 // DEMO DATA
 const POSTS = DEMO_POSTS;
@@ -40,11 +41,25 @@ const Home: React.FC = () => {
 				{/* === SECTION HERO === */}
 				{/* className="pt-10 pb-16 md:py-16 lg:py-28" */}
 				<SectionHeroSlider className="pb-16 " />
+				{/* === SECTION HERO === */}
 
-				{/* <SectionGridCategoryBox headingCenter={false} categoryCardType="card2" className="pb-8 lg:pb-10" /> */}
-				<SectionGridCitiesBox headingCenter={false} categoryCardType="card1" className="pb-8 lg:pb-10" />
+				{/* === SECTION CITIES === */}
+				{/* <SectionGridCitiesBox
+					headingCenter={false}
+					categoryCardType="card1"
+					className="pb-8 lg:pb-10"
+				/> */}
 
-				{/* === SECTION 8 === */}
+				<SectionSliderCities
+					className=""
+					categoryCardType="card1"
+					heading=" "
+					subHeading="Ou souhaitez-vous trouver votre logement ?"
+					uniqueSliderClass="slider-top"
+				/>
+				{/* === SECTION CITIES === */}
+
+				{/* === SECTION TOP POSTS === */}
 				<SectionSliderPosts
 					className="py-16 lg:py-28"
 					postCardName="card11"
@@ -52,11 +67,9 @@ const Home: React.FC = () => {
 					subHeading=""
 					uniqueSliderClass="slider-top"
 				/>
+				{/* === SECTION TOP POSTS === */}
 
-				{/* === SECTION 1 === */}
-				{/* <SectionAds className="py-16 lg:py-28" /> */}
-
-				{/* === SECTION 8 === */}
+				{/* === SECTION LATEST POSTS === */}
 				<SectionLatestPosts
 					posts={DEMO_POSTS.filter((_, i) => i > 7 && i < 18)}
 					widgetPosts={DEMO_POSTS.filter((_, i) => i > 2 && i < 7)}
@@ -66,6 +79,7 @@ const Home: React.FC = () => {
 					gridClass="grid-cols-2 sm:grid-cols-2 lg:grid-cols-4"
 					className="pb-16 lg:pb-28"
 				/>
+				{/* === SECTION LATEST POSTS === */}
 			</div>
 		</div>
 	);
