@@ -22,9 +22,14 @@ export const DEPOSIT_PRICE_SORT_LIST: IListBoxSelectFilterWidget[] = [
 export interface WidgetSortProps {
 	className?: string;
 	handleFetch?: () => void;
+	groupFilter?: boolean;
 }
 
-const WidgetSort: FC<WidgetSortProps> = ({ className = "bg-neutral-100 dark:bg-neutral-800", handleFetch }) => {
+const WidgetSort: FC<WidgetSortProps> = ({
+	className = "bg-neutral-100 dark:bg-neutral-800",
+	handleFetch,
+	groupFilter = false,
+}) => {
 	const dispatch = useAppDispatch();
 
 	const handleChangeSortPrice = (item: IListBoxSelectFilterWidget) => {
@@ -40,14 +45,31 @@ const WidgetSort: FC<WidgetSortProps> = ({ className = "bg-neutral-100 dark:bg-n
 	};
 
 	return (
-		<div className={`nc-WidgetSort rounded-3xl overflow-hidden ${className}`} data-nc-id="WidgetSort">
-			<WidgetHeading1 title="Trier" viewAll={{ label: "", href: route("annonces") }} />
-			<div className="flex flex-wrap p-4 xl:p-5">
+		<div
+			className={!groupFilter ? `nc-WidgetSort rounded-3xl overflow-hidden ${className}` : ""}
+			data-nc-id="WidgetSort"
+		>
+			{!groupFilter && (
+				<WidgetHeading1 title="Trier" viewAll={{ label: "", href: route("annonces") }} />
+			)}
+			<div className={!groupFilter ? `flex flex-wrap p-4 xl:p-5` : "flex flex-wrap"}>
 				{/* Option de tri par prix */}
 				{/* <SelectFilterWidget className="w-full" handleChange={handleChangeSortPrice} lists={PRICE_SORT_LIST} /> */}
-				<ListBoxSelectFilter onChange={handleChangeSortPrice} options={PRICE_SORT_LIST} label="Prix" />
+				<ListBoxSelectFilter
+					onChange={handleChangeSortPrice}
+					options={PRICE_SORT_LIST}
+					label="Prix"
+					labelID="prix"
+				/>
 
-				<ListBoxSelectFilter onChange={handleChangeDepositSortPrice} options={DEPOSIT_PRICE_SORT_LIST} label="Loyer" />
+				{false && (
+					<ListBoxSelectFilter
+						onChange={handleChangeDepositSortPrice}
+						options={DEPOSIT_PRICE_SORT_LIST}
+						label="Loyer"
+						labelID="loyer"
+					/>
+				)}
 			</div>
 		</div>
 	);

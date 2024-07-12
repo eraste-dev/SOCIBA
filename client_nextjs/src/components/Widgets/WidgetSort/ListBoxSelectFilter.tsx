@@ -8,11 +8,17 @@ export interface IListBoxSelectFilterWidget {
 
 interface IListBoxSelectFilterProps {
 	label: string;
+	labelID: string;
 	options: IListBoxSelectFilterWidget[];
 	onChange: (item: IListBoxSelectFilterWidget) => void;
 }
 
-const ListBoxSelectFilter: React.FC<IListBoxSelectFilterProps> = ({ options, onChange, label = "" }) => {
+const ListBoxSelectFilter: React.FC<IListBoxSelectFilterProps> = ({
+	options,
+	onChange,
+	label = "",
+	labelID = "select-filter",
+}) => {
 	const handleChange = (event: SelectChangeEvent<string>) => {
 		const selectedValue = event.target.value;
 		const selectedItem = options.find((item) => item.value === selectedValue);
@@ -22,11 +28,20 @@ const ListBoxSelectFilter: React.FC<IListBoxSelectFilterProps> = ({ options, onC
 	};
 
 	return (
-		<FormControl className="w-52 mb-2" sx={{ mb: 1 }}>
+		<FormControl className="mb-2" sx={{ mb: 1, minWidth: "100%", maxWidth: "100%" }}>
 			<InputLabel id="select-filter-label"> {label} </InputLabel>
-			<Select labelId="select-filter-label" id="select-filter" onChange={handleChange}>
+			<Select
+				fullWidth
+				labelId="select-filter-label"
+				id="select-filter"
+				onChange={handleChange}
+			>
 				{options.map((item) => (
-					<MenuItem key={item.value} value={item.value} selected={item.selected && item.selected}>
+					<MenuItem
+						key={`menu-item-${label}-${item.value}`}
+						value={item.value}
+						selected={item.selected && item.selected}
+					>
 						{item.name}
 					</MenuItem>
 				))}

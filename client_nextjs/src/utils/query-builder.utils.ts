@@ -195,16 +195,12 @@ export const searchParamsFromRedux = (filter: IPropertyFilter) => {
 	}
 
 	if (filter && filter.locations) {
-		params.locations = filter.locations.join(',');
+		params.locations = filter.locations.join(",");
 	}
 
 	if (filter && filter.created_by) {
 		params.created_by = filter.created_by;
 	}
-
-	// if (urlParams.has("path")) {
-	// 	params.path = urlParams.get("path") ?? PROD_URL;
-	// }
 
 	return params;
 };

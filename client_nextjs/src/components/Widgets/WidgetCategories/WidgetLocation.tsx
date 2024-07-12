@@ -14,7 +14,10 @@ export interface WidgetLocationsProps {
 	handleFetch?: () => void;
 }
 
-const WidgetLocations: FC<WidgetLocationsProps> = ({ className = "bg-neutral-100 dark:bg-neutral-800", handleFetch }) => {
+const WidgetLocations: FC<WidgetLocationsProps> = ({
+	className = "bg-neutral-100 dark:bg-neutral-800",
+	handleFetch,
+}) => {
 	const dispatch = useAppDispatch();
 
 	const locations = useAppSelector(LocationAction.data);
@@ -47,7 +50,10 @@ const WidgetLocations: FC<WidgetLocationsProps> = ({ className = "bg-neutral-100
 			className="max-h-300px overflow-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200"
 			// style={{ maxHeight: "300px", height: "300px", overflow: "auto" }}
 		>
-			<div className={`nc-WidgetLocations rounded-3xl overflow-hidden ${className}`} data-nc-id="WidgetLocations">
+			<div
+				className={`nc-WidgetLocations rounded-3xl overflow-hidden ${className}`}
+				data-nc-id="WidgetLocations"
+			>
 				<WidgetHeading1 title="Communes" />
 				<div className="flow-root">
 					<div className="flex flex-col divide-y divide-neutral-200 dark:divide-neutral-700 px-1">
@@ -59,7 +65,12 @@ const WidgetLocations: FC<WidgetLocationsProps> = ({ className = "bg-neutral-100
 										name="location"
 										value={`${location.id}`}
 										type="checkbox"
-										icon={<FaPlusCircle size={18} className="mr-2 text-neutral-500" />}
+										icon={
+											<FaPlusCircle
+												size={18}
+												className="mr-2 text-neutral-500"
+											/>
+										}
 										handleChange={() => handleChange(location)}
 									/>
 								</div>
