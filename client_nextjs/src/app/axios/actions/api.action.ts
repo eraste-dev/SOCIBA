@@ -1,10 +1,23 @@
-import { IUser, updateUserFailure, updateUserStart, updateUserSuccess } from "../../reducer/auth/auth";
-import { fetchSlidersFailure, fetchSlidersStart, fetchSlidersSuccess } from "app/reducer/sliders/sliders";
+import {
+	IUser,
+	updateUserFailure,
+	updateUserStart,
+	updateUserSuccess,
+} from "../../reducer/auth/auth";
+import {
+	fetchSlidersFailure,
+	fetchSlidersStart,
+	fetchSlidersSuccess,
+} from "app/reducer/sliders/sliders";
 import { AppDispatch } from "app/reducer/store";
 import { IServerResponse, ProductRequest, RegisterRequest, UpdateUserRequest } from "../api.type";
 import { serverEndpoints } from "../api.route";
 import { axiosRequest } from "../api";
-import { fetchCategoriesFailure, fetchCategoriesStart, fetchCategoriesSuccess } from "app/reducer/products/propertiy-category";
+import {
+	fetchCategoriesFailure,
+	fetchCategoriesStart,
+	fetchCategoriesSuccess,
+} from "app/reducer/products/propertiy-category";
 import {
 	IPropertyFilter,
 	fetchAllPropertiesFailure,
@@ -49,7 +62,9 @@ export const fetchSliders = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchSlidersStart());
 
 	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.sliders.get });
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.sliders.get,
+		});
 		dispatch(fetchSlidersSuccess(response.data));
 	} catch (error: any) {
 		dispatch(fetchSlidersFailure(error.message));
@@ -57,60 +72,103 @@ export const fetchSliders = () => async (dispatch: AppDispatch) => {
 };
 
 // PROPERTIES ----------------------------------
+
+/**
+ * Fetches the categories from the server.
+ *
+ * @param {AppDispatch} dispatch - The dispatch function from the Redux store.
+ * @return {Promise<void>} A promise that resolves when the categories are fetched successfully.
+ */
 export const fetchCategories = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchCategoriesStart());
 
 	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.categories });
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.properties.categories,
+		});
 		dispatch(fetchCategoriesSuccess(response.data));
 	} catch (error: any) {
 		dispatch(fetchCategoriesFailure(error.message));
 	}
 };
 
-export const fetchAllProperties = (query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
+/**
+ * Fetches all properties based on the provided query parameters.
+ *
+ * @param {IGetSearchPropertiesParams} query - The query parameters for fetching properties.
+ * @return {Promise<void>} A promise that resolves once all properties are fetched.
+ */
+export const fetchAllProperties =
+	(query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
+		dispatch(fetchAllPropertiesStart());
+
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.properties.search(query),
+			});
+			dispatch(
+				fetchAllPropertiesSuccess({
+					data: response.data,
+					pagination: response.pagination || undefined,
+				})
+			);
+		} catch (error: any) {
+			dispatch(fetchAllPropertiesFailure(error.message));
+		}
+	};
+
+export const inittializePropertyList = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchAllPropertiesStart());
-
-	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.search(query) });
-		dispatch(fetchAllPropertiesSuccess({ data: response.data, pagination: response.pagination || undefined }));
-	} catch (error: any) {
-		dispatch(fetchAllPropertiesFailure(error.message));
-	}
 };
 
-export const fetchFeatureProperties = (query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
-	dispatch(fetchFeaturePropertiesStart());
+/**
+ * Fetches feature properties based on the provided query parameters.
+ *
+ * @param {IGetSearchPropertiesParams} query - The query parameters for fetching properties.
+ * @param {AppDispatch} dispatch - The Redux dispatch function.
+ * @return {Promise<void>} A promise that resolves once the feature properties are fetched.
+ */
+export const fetchFeatureProperties =
+	(query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
+		dispatch(fetchFeaturePropertiesStart());
 
-	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.search(query) });
-		dispatch(fetchFeaturePropertiesSuccess(response.data));
-	} catch (error: any) {
-		dispatch(fetchFeaturePropertiesFailure(error.message));
-	}
-};
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.properties.search(query),
+			});
+			dispatch(fetchFeaturePropertiesSuccess(response.data));
+		} catch (error: any) {
+			dispatch(fetchFeaturePropertiesFailure(error.message));
+		}
+	};
 
-export const fetchSingleProperties = (query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
-	dispatch(fetchSinglePropertiesStart());
+export const fetchSingleProperties =
+	(query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
+		dispatch(fetchSinglePropertiesStart());
 
-	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.search(query) });
-		dispatch(fetchSinglePropertiesSuccess(response.data));
-	} catch (error: any) {
-		dispatch(fetchSinglePropertiesFailure(error.message));
-	}
-};
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.properties.search(query),
+			});
+			dispatch(fetchSinglePropertiesSuccess(response.data));
+		} catch (error: any) {
+			dispatch(fetchSinglePropertiesFailure(error.message));
+		}
+	};
 
-export const fetchSimilars = (query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
-	dispatch(fetchSimilarsStart());
+export const fetchSimilars =
+	(query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
+		dispatch(fetchSimilarsStart());
 
-	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.search(query) });
-		dispatch(fetchSimilarsSuccess(response.data));
-	} catch (error: any) {
-		dispatch(fetchSimilarsFailure(error.message));
-	}
-};
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.properties.search(query),
+			});
+			dispatch(fetchSimilarsSuccess(response.data));
+		} catch (error: any) {
+			dispatch(fetchSimilarsFailure(error.message));
+		}
+	};
 
 export const setSingleProduct = (product: IProduct) => async (dispatch: AppDispatch) => {
 	dispatch(setSinglePropertiesSuccess(product));
@@ -124,23 +182,29 @@ export const resetFilters = () => async (dispatch: AppDispatch) => {
 	dispatch(resetFiltersSuccess());
 };
 
-export const postProduct = (payload: ProductRequest|FormData) => async (dispatch: AppDispatch) => {
-	dispatch(postProductStart());
+export const postProduct =
+	(payload: ProductRequest | FormData) => async (dispatch: AppDispatch) => {
+		dispatch(postProductStart());
 
-	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.post(payload), data:payload });
-		dispatch(postProductSuccess(response.data));
-	} catch (error: any) {
-		console.log(error);
-		dispatch(postProductFailure({ error: error.message, errors: error.errors }));
-	}
-};
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.properties.post(payload),
+				data: payload,
+			});
+			dispatch(postProductSuccess(response.data));
+		} catch (error: any) {
+			console.log(error);
+			dispatch(postProductFailure({ error: error.message, errors: error.errors }));
+		}
+	};
 
 export const deleteProduct = (payload: number) => async (dispatch: AppDispatch) => {
 	dispatch(deleteProductStart());
 
 	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.delete(payload) });
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.properties.delete(payload),
+		});
 		dispatch(deleteProductSuccess(response.message));
 	} catch (error: any) {
 		console.log(error);
@@ -155,23 +219,28 @@ export const initProductState = () => async (dispatch: AppDispatch) => {
 // ----------------------------------------
 
 // AUTH -----------------------------------
-export const login = (params: { email: string; password: string }) => async (dispatch: AppDispatch) => {
-	dispatch(loginStart());
+export const login =
+	(params: { email: string; password: string }) => async (dispatch: AppDispatch) => {
+		dispatch(loginStart());
 
-	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.auth.login(params) });
-		localStorage.setItem("token", response.data?.token);
-		dispatch(loginSuccess(response.data));
-	} catch (error: any) {
-		dispatch(loginFailure(error.message));
-	}
-};
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.auth.login(params),
+			});
+			localStorage.setItem("token", response.data?.token);
+			dispatch(loginSuccess(response.data));
+		} catch (error: any) {
+			dispatch(loginFailure(error.message));
+		}
+	};
 
 export const logout = (token: string) => async (dispatch: AppDispatch) => {
 	// dispatch(logoutStart());
 
 	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.auth.logout({ token }) });
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.auth.logout({ token }),
+		});
 		localStorage.removeItem("token");
 		dispatch(logoutSuccess());
 	} catch (error: any) {
@@ -183,7 +252,10 @@ export const registerUser = (params: RegisterRequest) => async (dispatch: AppDis
 	dispatch(registerStart());
 
 	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.auth.register, params });
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.auth.register,
+			params,
+		});
 		dispatch(registerSuccess(response.data));
 	} catch (error: any) {
 		dispatch(registerFailure({ error: error.message, errors: error.errors }));
@@ -200,19 +272,20 @@ export const initAuth = () => async (dispatch: AppDispatch) => {
  * @param params { email: string; password: string }
  * @returns
  */
-export const updateUser = (params: FormData|UpdateUserRequest) => async (dispatch: AppDispatch) => {
-	dispatch(updateUserStart());
+export const updateUser =
+	(params: FormData | UpdateUserRequest) => async (dispatch: AppDispatch) => {
+		dispatch(updateUserStart());
 
-	try {
-		const response = await axiosRequest<IServerResponse>({
-			...serverEndpoints.public.auth.updateProfile(params),
-			// headers: { "Content-Type": "multipart/form-data" },
-		});
-		dispatch(updateUserSuccess(response.data));
-	} catch (error: any) {
-		dispatch(updateUserFailure(error.message));
-	}
-};
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.auth.updateProfile(params),
+				// headers: { "Content-Type": "multipart/form-data" },
+			});
+			dispatch(updateUserSuccess(response.data));
+		} catch (error: any) {
+			dispatch(updateUserFailure(error.message));
+		}
+	};
 // ----------------------------------------
 
 export const getErrors = (errorArray: any, key: string) => {

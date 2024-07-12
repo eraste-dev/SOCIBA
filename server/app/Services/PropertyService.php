@@ -34,7 +34,7 @@ class PropertyService
         }
 
         // Filtre par catégorie si spécifiée
-        if ($payload['category']) {
+        if ($payload['category'] && $payload['category'] !== '*') {
             $query->where('category_id', $payload['category']);
         }
 
@@ -43,7 +43,7 @@ class PropertyService
             $query->whereIn('category_id', explode(',', $payload['categories']));
         }
 
-        if ($payload['created_by']) {
+        if ($payload['created_by'] && $payload['created_by'] !== '*') {
             $query->where('created_by', $payload['created_by']);
         }
 
@@ -51,17 +51,13 @@ class PropertyService
             $query->where('location_id', $payload['location_id']);
         }
 
+        if (isset($payload['location']) && $payload['location'] !== '*') {
+            $query->where('location_id', $payload['location']);
+        }
+
         // dd(explode(',', $payload['locations']));
         if (isset($payload['locations']) && count(explode(',', $payload['locations'])) > 0) {
             $query->whereIn('location_id', explode(',', $payload['locations']));
-        }
-
-        if (isset($payload['price_sort']) && $payload['price_sort'] !== '*') {
-            $query->orderBy('price', $payload['price_sort']);
-        }
-
-        if (isset($payload['deposit_price_sort']) && $payload['deposit_price_sort'] !== '*') {
-            $query->orderBy('deposit_price', $payload['deposit_price_sort']);
         }
 
         // Trie par pertinence si demandé
@@ -71,13 +67,24 @@ class PropertyService
             $query->orderBy('created_at', 'desc');
         }
 
+        if (isset($payload['price_sort']) && $payload['price_sort'] !== '*') {
+            $query->orderBy('price', $payload['price_sort']);
+            $query->orderBy('deposit_price', $payload['price_sort']); // pour les biens immóbilières
+        }
+
+        if (isset($payload['deposit_price_sort']) && $payload['deposit_price_sort'] !== '*') {
+            $query->orderBy('deposit_price', $payload['deposit_price_sort']);
+        }
+
         // ? if user is not admin no show deleted properties
         // $admin_condition = Utils::userLogged() && Utils::userLogged()->role == 'ADMIN';
         // $query->whereNotIn('status', $admin_condition ? [Utils::STATE_DELETED()] : []);
         $query->whereNotIn('status', [Utils::STATE_DELETED()]);
 
+        // dd($query->get());
         // Renvoie les données paginées avec une collection
-        $properties = $query->paginate($payload['limit']);
+        // $properties = $query->paginate($payload['limit']);
+        $properties = $query->get();
 
         return PropertyResource::collection($properties);
     }

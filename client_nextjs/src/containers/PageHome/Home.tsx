@@ -9,6 +9,8 @@ import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import SectionHeroSlider from "components/SectionHero/SectionHeroSlider";
 import SectionGridCitiesBox from "components/SectionGridCitiesBox/SectionGridCitiesBox";
 import SectionSliderCities from "./SectionSliderCities";
+import SectionSliderNewCategories from "components/SectionSliderNewCategories/SectionSliderNewCategories";
+import SectionGridCitiesBoxTwo from "components/SectionGridCitiesBox/SectionGridCitiesBoxTwo";
 
 // DEMO DATA
 const POSTS = DEMO_POSTS;
@@ -57,13 +59,21 @@ const Home: React.FC = () => {
 					subHeading="Ou souhaitez-vous trouver votre logement ?"
 					uniqueSliderClass="slider-top"
 				/>
+
+				{/* <SectionGridCitiesBoxTwo
+					className="pb-16 lg:pb-28"
+					categoryCardType="card5"
+					itemPerRow={4}
+					uniqueSliderClass="PageHomeDemo2"
+				/> */}
+
 				{/* === SECTION CITIES === */}
 
 				{/* === SECTION TOP POSTS === */}
 				<SectionSliderPosts
 					className="py-16 lg:py-28"
 					postCardName="card11"
-					heading="Top annonce"
+					heading="Les meilleures publisations actuellement"
 					subHeading=""
 					uniqueSliderClass="slider-top"
 				/>
@@ -76,7 +86,7 @@ const Home: React.FC = () => {
 					categories={DEMO_CATEGORIES.filter((_, i) => i > 2 && i < 8)}
 					tags={DEMO_CATEGORIES}
 					postCardName="card11"
-					gridClass="grid-cols-2 sm:grid-cols-2 lg:grid-cols-4"
+					gridClass="grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
 					className="pb-16 lg:pb-28"
 				/>
 				{/* === SECTION LATEST POSTS === */}

@@ -26,7 +26,7 @@ const SectionSliderCities: FC<SectionSliderCitiesProps> = ({
 	className = "",
 	categoryCardType = "card2",
 	sliderStype = "style1",
-	perView = 6,
+	perView = 5,
 	uniqueSliderClass,
 }) => {
 	const UNIQUE_CLASS = "SectionSliderCities_" + ncNanoId(uniqueSliderClass);

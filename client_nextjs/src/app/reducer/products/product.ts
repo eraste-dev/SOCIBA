@@ -1,5 +1,12 @@
 import { IPropertyCategory } from "app/reducer/products/propertiy-category";
-import { IServerResponse, IStoreAction, IStoreDataState, IStoreDataStateItem, ProductRequest, createStoreDataStateItem } from "../../axios/api.type";
+import {
+	IServerResponse,
+	IStoreAction,
+	IStoreDataState,
+	IStoreDataStateItem,
+	ProductRequest,
+	createStoreDataStateItem,
+} from "../../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "app/reducer/store";
 import { IUser } from "app/reducer/auth/auth";
@@ -57,7 +64,15 @@ export interface IPropertyFilter {
 	offset?: number;
 	limit?: number;
 	order_by?: SORT_TYPE;
-	sort?: "price_asc" | "price_desc" | "price_desc" | "rating_desc" | "rating_asc" | "featured" | "trending" | "latest";
+	sort?:
+		| "price_asc"
+		| "price_desc"
+		| "price_desc"
+		| "rating_desc"
+		| "rating_asc"
+		| "featured"
+		| "trending"
+		| "latest";
 	price_sort?: SORT_TYPE;
 	deposit_price_sort?: SORT_TYPE;
 	posted_by?: number[] | "admin";
@@ -67,6 +82,7 @@ export interface IPropertyFilter {
 	top?: boolean;
 	categories?: number[];
 	locations?: number[];
+	neighborhood?: string;
 	category?: number;
 	date?: "all" | "week" | "month" | "year";
 	page?: number;
@@ -149,19 +165,33 @@ export const PropertiesSlice = createSlice({
 		fetchAllPropertiesStart: (state) => {
 			state.loading = true;
 			state.error = null;
-			state.data = { ...state.data, all: createStoreDataStateItem(undefined, true), single: undefined };
+			state.data = {
+				...state.data,
+				all: createStoreDataStateItem(undefined, true),
+				single: undefined,
+			};
 			state.success = false;
 			state.message = "";
 		},
-		fetchAllPropertiesSuccess: (state, action: PayloadAction<{ data: IProduct[]; pagination: IPagination | undefined }>) => {
+		fetchAllPropertiesSuccess: (
+			state,
+			action: PayloadAction<{ data: IProduct[]; pagination: IPagination | undefined }>
+		) => {
 			state.loading = false;
 			state.error = null;
 			// paginate: action.payload?.pagination
-			state.data = { ...state.data, all: createStoreDataStateItem(action.payload?.data, false, true) };
+			state.data = {
+				...state.data,
+				all: createStoreDataStateItem(action.payload?.data, false, true),
+			};
 		},
 		fetchAllPropertiesFailure: (state, action: PayloadAction<string>) => {
 			state.loading = false;
-			state.data = { ...state.data, all: createStoreDataStateItem(undefined, false, false, action.payload), paginate: undefined };
+			state.data = {
+				...state.data,
+				all: createStoreDataStateItem(undefined, false, false, action.payload),
+				paginate: undefined,
+			};
 			// state.error = action.payload;
 		},
 
@@ -173,17 +203,32 @@ export const PropertiesSlice = createSlice({
 			state.success = false;
 			state.message = "";
 		},
-		fetchUserProductSuccess: (state, action: PayloadAction<{ data: IProduct[]; pagination: IPagination | undefined }>) => {
+		fetchUserProductSuccess: (
+			state,
+			action: PayloadAction<{ data: IProduct[]; pagination: IPagination | undefined }>
+		) => {
 			state.loading = false;
 			state.error = null;
 			state.data = {
 				...state.data,
-				user: createStoreDataStateItem<IProduct[] | undefined>(action.payload.data, false, true),
+				user: createStoreDataStateItem<IProduct[] | undefined>(
+					action.payload.data,
+					false,
+					true
+				),
 			};
 		},
 		fetchUserProductFailure: (state, action: PayloadAction<string>) => {
 			state.loading = false;
-			state.data = { ...state.data, user: createStoreDataStateItem<IProduct[] | undefined>(undefined, false, false, action.payload) };
+			state.data = {
+				...state.data,
+				user: createStoreDataStateItem<IProduct[] | undefined>(
+					undefined,
+					false,
+					false,
+					action.payload
+				),
+			};
 			state.error = action.payload;
 		},
 
@@ -198,11 +243,17 @@ export const PropertiesSlice = createSlice({
 		fetchFeaturePropertiesSuccess: (state, action: PayloadAction<IProduct[]>) => {
 			state.loading = false;
 			state.error = null;
-			state.data = { ...state.data, features: createStoreDataStateItem(action.payload, false, true) };
+			state.data = {
+				...state.data,
+				features: createStoreDataStateItem(action.payload, false, true),
+			};
 		},
 		fetchFeaturePropertiesFailure: (state, action: PayloadAction<string>) => {
 			state.loading = false;
-			state.data = { ...state.data, features: createStoreDataStateItem(undefined, false, false, action.payload) };
+			state.data = {
+				...state.data,
+				features: createStoreDataStateItem(undefined, false, false, action.payload),
+			};
 			// state.error = action.payload;
 		},
 
