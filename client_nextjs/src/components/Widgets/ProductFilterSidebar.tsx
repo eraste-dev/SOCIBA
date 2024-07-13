@@ -30,19 +30,15 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 	return (
 		<>
 			{!setShowFilter && (
-				<>
-					{/* <div className="hidden sm:block xs:block md:hidden flex justify-end  py-3"> */}
-					<p
-						className="text-neutral-700 dark:text-neutral-300 font-medium pb-2"
-						onClick={handleShowFilter}
-					>
-						Filtres
-					</p>
-					{/* </div> */}
-				</>
+				<p
+					className="text-neutral-700 dark:text-neutral-300 font-medium pb-2"
+					onClick={handleShowFilter}
+				>
+					Filtres
+				</p>
 			)}
 
-			<div className={showFilter ? "block sm:p-2" : "hidden"}>
+			<div className={showFilter ? "block sm:p-2 max-w-md" : "hidden"}>
 				<Grid container spacing={2}>
 					<Grid xs={12} lg={12}>
 						<WidgetCategoryBooking handleFetch={fetchAll} groupFilter={groupFilter} />

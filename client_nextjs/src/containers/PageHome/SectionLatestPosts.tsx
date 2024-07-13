@@ -11,6 +11,8 @@ import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 import { IGetSearchPropertiesParams, searchParamsFromRedux } from "utils/query-builder.utils";
 import { useHistory } from "react-router-dom";
 import NoDataMessage from "components/NoDataMessage";
+import { FaArrowAltCircleRight, FaSortAlphaDown, FaSortDown, FaTimesCircle } from "react-icons/fa";
+import FloatFilter from "components/Widgets/FloatFilter";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -43,6 +45,10 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 	const previousFilterRef = useRef(useStateFilter);
 	const loading = useSelector(PropertyAction.data)?.all?.loading;
 	const error = useSelector(PropertyAction.data)?.all?.error;
+
+	const [showFilter, setShowFilter] = useState(false);
+
+	const toggleFilter = () => setShowFilter(!showFilter);
 
 	useEffect(() => {
 		if (!data && !loading && !error && filters) {
@@ -93,17 +99,16 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 				<Heading>{heading}</Heading>
 			</div>
 
-			<div className="flex flex-col lg:flex-row">
-				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
-					<ProductFilterSidebar
-						groupFilter={true}
-						fetchAll={fetchAll}
-						useStateFilter={useStateFilter}
-						setUseStateFilter={setUseStateFilter}
-					/>
-				</div>
+			<FloatFilter
+				useStateFilter={useStateFilter}
+				setUseStateFilter={setUseStateFilter}
+				showFilter={showFilter}
+				toggleFilter={toggleFilter}
+				fetchAll={fetchAll}
+			/>
 
-				<div className="w-full lg:w-3/4 xl:w-4/5 lg:pl-7">
+			<div className="flex flex-col lg:flex-row">
+				<div className="w-full lg:w-4/4 xl:w-5/5 lg:pl-7">
 					{loading && loading ? (
 						<CardSkeleton arrayLength={8} />
 					) : (

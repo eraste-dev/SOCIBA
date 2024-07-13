@@ -27,7 +27,7 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 	className = "",
 	postCardName = "card4",
 	sliderStype = "style1",
-	perView = 4,
+	perView = 3,
 	uniqueSliderClass,
 }) => {
 	const UNIQUE_CLASS = "SectionSliderPosts_" + ncNanoId(uniqueSliderClass);
