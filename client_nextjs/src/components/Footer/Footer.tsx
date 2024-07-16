@@ -15,40 +15,41 @@ export interface WidgetFooterMenu {
 
 const widgetMenus: WidgetFooterMenu[] = [
 	{
-		id: "5",
-		title: "Annonce de location",
-		menus: [
-			{ href: "#", label: "Maison à louer" },
-			{ href: "#", label: "Espace à louer" },
-			{ href: "#", label: "Magasin à louer" },
-			{ href: "#", label: "Entrepôt à louer etc…" },
-		],
-	},
-	{
 		id: "1",
-		title: "Annonce de réservation",
+		title: "A propos",
 		menus: [
-			{ href: "#", label: "Résidence disponible" },
-			{ href: "#", label: "Hôtel disponible etc…" },
+			{ href: "#", label: "Qui nous sommes ?" },
+			{ href: "#", label: "Nous rejoindre" },
+			{ href: "#", label: "Alerte e-mail" },
+			// { href: "#", label: "Entrepôt à louer etc…" },
 		],
 	},
+	// {
+	// 	id: "1",
+	// 	title: "Annonce de réservation",
+	// 	menus: [
+	// 		{ href: "#", label: "Résidence disponible" },
+	// 		{ href: "#", label: "Hôtel disponible etc…" },
+	// 	],
+	// },
 	{
 		id: "2",
-		title: "Annonce de vente",
+		title: "Informations légales",
 		menus: [
-			{ href: "#", label: "Maison" },
-			{ href: "#", label: "Terrain" },
-			{ href: "#", label: "Entrepôt, de meubles etc" },
+			{ href: "#", label: "Condition générale d'utilisation" },
+			{ href: "#", label: "Politique generale de vente" },
+			{ href: "#", label: "Politique de confidentialité" },
+			{ href: "#", label: "Règle de diffusion" },
 		],
 	},
-	{
-		id: "4",
-		title: "Annonce évènementiels",
-		menus: [
-			{ href: "#", label: "Restaurant / maquis/ Point Chaud" },
-			{ href: "#", label: "Concert/ plein air" },
-		],
-	},
+	// {
+	// 	id: "4",
+	// 	title: "Annonce évènementiels",
+	// 	menus: [
+	// 		{ href: "#", label: "Restaurant / maquis/ Point Chaud" },
+	// 		{ href: "#", label: "Concert/ plein air" },
+	// 	],
+	// },
 ];
 
 const Footer: React.FC = () => {
@@ -77,7 +78,7 @@ const Footer: React.FC = () => {
 
 	return (
 		<div className="nc-Footer relative py-16 lg:py-28 border-t border-neutral-200 dark:border-neutral-700">
-			<div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 ">
+			<div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-3 lg:gap-x-10 ">
 				<div className="grid grid-cols-4 gap-5 col-span-2 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
 					<div className="col-span-2 md:col-span-1">
 						<Logo />
