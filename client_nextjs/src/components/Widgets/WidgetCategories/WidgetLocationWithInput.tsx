@@ -46,7 +46,7 @@ const WidgetLocationWithInput: FC<WidgetLocationWithSelectProps> = ({
 			>
 				{!groupFilter && <WidgetHeading1 title="Communes" />}
 				<div
-					className="flex flex-col divide-y divide-neutral-200 dark:divide-neutral-700 px-1"
+					className="flex flex-col divide-y divide-neutral-200 dark:divide-neutral-700 px-1 w-full"
 					style={{ position: "relative", top: "-12px" }}
 				>
 					<InputFilter onChange={handleChange} label="Quartier" value="" />

@@ -40,9 +40,10 @@ class PropertyCategorySeeder extends Seeder
             if ($category->name === 'Maison') {
                 $subCategories = [
                     ['name' => 'Studio', 'slug' => 'studio',],
-                    ['name' => 'Chambre', 'slug' => 'chambre',],
-                    ['name' => 'Chambre salon', 'slug' => 'chambre-salon',],
+                    ['name' => '2 pièces', 'slug' => '2 pièces',],
+                    ['name' => '3 pièces', 'slug' => '3 pièces',],
                     ['name' => '2 Chambres salon', 'slug' => '2-chambre-salon',],
+                    ['name' => '4 Chambres salon', 'slug' => '4-chambre-salon',],
                     ['name' => 'Villa', 'slug' => 'villa',],
                     ['name' => 'Duplex', 'slug' => 'duplex',],
                     ['name' => 'Triplex', 'slug' => 'triplex',],

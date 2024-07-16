@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             "href"           => "user/" . $this->id,
             "email"          => $this->email,
             "phone"          => $this->phone,
+            "fonction"       => $this->fonction,
             "phone_whatsapp" => $this->phone_whatsapp,
             'avatar'         => $this->avatar != null ? ImageService::getImage($this->avatar) : null,
             "type"           => $this->type,

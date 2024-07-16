@@ -18,10 +18,10 @@ const InputFilter: React.FC<IFreeInputProps> = ({ label, value, onChange }) => {
 
 	return (
 		<TextField
+		fullWidth
 			label={label}
 			value={valueInput}
 			onChange={handleChange}
-			fullWidth
 			variant="outlined"
 			margin="normal"
 		/>

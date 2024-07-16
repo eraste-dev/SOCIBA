@@ -26,7 +26,7 @@ const SingleRelatedPosts: FC<SingleRelatedPostsProps> = ({ relatedPosts = demoRe
 						<Heading className="mb-10 text-neutral-900 dark:text-neutral-50" desc="">
 							Annonces similaires
 						</Heading>
-						<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+						<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 md:gap-8">
 							{related.map((post) => (
 								<Card11 key={post.id} post={post} />
 							))}
