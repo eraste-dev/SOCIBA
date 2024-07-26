@@ -1,4 +1,8 @@
-import { IGetQueryParams, IGetSearchPropertiesParams, QueryBuilder } from "utils/query-builder.utils";
+import {
+	IGetQueryParams,
+	IGetSearchPropertiesParams,
+	QueryBuilder,
+} from "utils/query-builder.utils";
 import { ProductRequest, UpdateUserRequest } from "./api.type";
 import { IProduct } from "app/reducer/products/product";
 
@@ -26,7 +30,7 @@ export interface IServerEndpoint {
 		properties: {
 			categories: IAxiosRequestConfig;
 			search: (query: IGetSearchPropertiesParams) => IAxiosRequestConfig;
-			post: (product: FormData|ProductRequest) => IAxiosRequestConfig;
+			post: (product: FormData | ProductRequest) => IAxiosRequestConfig;
 			delete: (id: number) => IAxiosRequestConfig;
 		};
 		auth: {
@@ -37,7 +41,7 @@ export interface IServerEndpoint {
 			resetPassword: IAxiosRequestConfig;
 			refreshToken: IAxiosRequestConfig;
 			profile: IAxiosRequestConfig;
-			updateProfile: (data: FormData|UpdateUserRequest) => IAxiosRequestConfig; // UpdateUserRequest
+			updateProfile: (data: FormData | UpdateUserRequest) => IAxiosRequestConfig; // UpdateUserRequest
 			// updatePassword: (data: UpdateUserRequest) => IAxiosRequestConfig;
 			verifyEmail: IAxiosRequestConfig;
 			resendEmail: IAxiosRequestConfig;
@@ -45,6 +49,9 @@ export interface IServerEndpoint {
 		};
 		users: {
 			getAll: IAxiosRequestConfig;
+		};
+		meta: {
+			search: (key: string) => IAxiosRequestConfig;
 		};
 	};
 	authentificated?: any;
@@ -60,14 +67,33 @@ export const serverEndpoints: IServerEndpoint = {
 		},
 		properties: {
 			categories: { method: "GET", url: `${v100}/categories` },
-			search: (query: IGetSearchPropertiesParams) => ({ method: "GET", url: `${v100}/properties${QueryBuilder.searchProperties(query)}` }),
-			post: (data: FormData|ProductRequest) => ({ method: "POST", url: `${v100}/admin/products`, data }),
-			delete: (id: number) => ({ method: "DELETE", url: `${v100}/admin/products`, data: { id } }),
+			search: (query: IGetSearchPropertiesParams) => ({
+				method: "GET",
+				url: `${v100}/properties${QueryBuilder.searchProperties(query)}`,
+			}),
+			post: (data: FormData | ProductRequest) => ({
+				method: "POST",
+				url: `${v100}/admin/products`,
+				data,
+			}),
+			delete: (id: number) => ({
+				method: "DELETE",
+				url: `${v100}/admin/products`,
+				data: { id },
+			}),
 		},
 		auth: {
-			login: (data: { email: string; password: string }) => ({ method: "POST", url: `${v100}/auth/login`, data }),
+			login: (data: { email: string; password: string }) => ({
+				method: "POST",
+				url: `${v100}/auth/login`,
+				data,
+			}),
 			register: { method: "POST", url: `${v100}/auth/register` },
-			logout: (data: { token: string }) => ({ method: "POST", url: `${v100}/auth/logout`, data }),
+			logout: (data: { token: string }) => ({
+				method: "POST",
+				url: `${v100}/auth/logout`,
+				data,
+			}),
 			forgetPassword: { method: "POST", url: `${v100}/auth/forget-password` },
 			resetPassword: { method: "POST", url: `${v100}/auth/reset-password` },
 			refreshToken: { method: "POST", url: `${v100}/auth/refresh-token` },
@@ -75,11 +101,18 @@ export const serverEndpoints: IServerEndpoint = {
 			verifyEmail: { method: "POST", url: `${v100}/auth/verify-email` },
 			resendEmail: { method: "POST", url: `${v100}/auth/resend-email` },
 			confirmEmail: { method: "POST", url: `${v100}/auth/confirm-email` },
-			updateProfile: (data: FormData|UpdateUserRequest) => ({ method: "PUT", url: `${v100}/user/update-profile`, data }),
+			updateProfile: (data: FormData | UpdateUserRequest) => ({
+				method: "PUT",
+				url: `${v100}/user/update-profile`,
+				data,
+			}),
 			// updatePassword: (data: UpdateUserRequest) => ({ method: "PUT", url: `${v100}/user/update-password` }),
 		},
 		users: {
 			getAll: { method: "GET", url: `${v100}/user/list` },
+		},
+		meta: {
+			search: (key: string) => ({ method: "GET", url: `${v100}/meta/${key}` }),
 		},
 	},
 };

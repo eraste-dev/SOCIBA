@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MetaController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\UserController;
@@ -31,7 +32,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'locations'], function () {
             Route::get('/', [MunicipalityController::class, 'index']);
         });
-        // Route::resource('property-images', PropertyImagesController::class);
+
+        // ? META
+        Route::get('meta/{key}', [MetaController::class, 'getByKey']);
+        // Route::resource('meta', MetaController::class);
     });
 
     // * AUTH ROUTE

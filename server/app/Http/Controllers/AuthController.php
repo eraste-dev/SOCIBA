@@ -53,7 +53,9 @@ class AuthController extends Controller
             'email'          => 'required|string|email|max:255|unique:users',
             'password'       => 'required|string|min:6',
             'status'         => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
-            'type'           => 'nullable|string|inADMIN,USER,GUEST'
+            'type'           => 'nullable|string|inADMIN,USER,GUEST',
+            "function"      => 'nullable|string|max:255',
+            "influence_zone_id" => 'nullable|string|max:255',
         ]);
 
         // Si la validation échoue, renvoyer les erreurs

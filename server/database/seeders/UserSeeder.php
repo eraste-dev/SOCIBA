@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\UserMeta;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +15,9 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // create default user function
+
+
         User::create([
             'name'              => 'Paĉome',
             'last_name'          => 'Djé',

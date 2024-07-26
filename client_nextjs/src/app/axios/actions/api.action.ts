@@ -130,15 +130,26 @@ export const inittializePropertyList = () => async (dispatch: AppDispatch) => {
  */
 export const fetchFeatureProperties =
 	(query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
+		if (!dispatch) {
+			throw new Error("dispatch is null or undefined");
+		}
+
 		dispatch(fetchFeaturePropertiesStart());
 
 		try {
 			const response = await axiosRequest<IServerResponse>({
 				...serverEndpoints.public.properties.search(query),
 			});
+			if (!response || !response.data) {
+				throw new Error("Server response is null or undefined");
+			}
 			dispatch(fetchFeaturePropertiesSuccess(response.data));
 		} catch (error: any) {
-			dispatch(fetchFeaturePropertiesFailure(error.message));
+			if (error.message) {
+				dispatch(fetchFeaturePropertiesFailure(error.message));
+			} else {
+				dispatch(fetchFeaturePropertiesFailure("An unknown error occurred"));
+			}
 		}
 	};
 
