@@ -105,12 +105,12 @@ const MainNav2: FC<MainNav2Props> = () => {
 
 							{!user && (
 								<>
-									<ButtonSecondary href={"/login"} sizeClass="px-4 py-2 sm:px-5">
+									<ButtonSecondary href={"/login"} sizeClass="px-4 py-2 sm:px-5 ml-2">
 										Se connecter
 									</ButtonSecondary>
 
 									<ButtonPrimary href={"/signup"} sizeClass="px-4 py-2 sm:px-5">
-										Créer un compte
+										Déposer une annonce
 									</ButtonPrimary>
 								</>
 							)}

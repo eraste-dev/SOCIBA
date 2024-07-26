@@ -8,6 +8,7 @@ import sliderReducer from "./sliders/sliders";
 import categoryReducer from "./products/propertiy-category";
 import productReducer from "./products/product";
 import usersReducer from "./users/users";
+import metaReducer from "./meta/meta";
 import authReducer from "./auth/auth";
 import locationReducer from "./locations/locations";
 
@@ -24,6 +25,7 @@ const rootReducers = {
 	auth: authReducer,
 	locations: locationReducer,
 	usersManagement: usersReducer,
+	meta: metaReducer,
 };
 
 export default rootReducers;
