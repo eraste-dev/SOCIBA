@@ -21,7 +21,10 @@ const NAV_COLUMN_ONE: NavItemType[] = [
 	createNavItem("Entrepôt à louer etc…", href(1)),
 ];
 
-const NAV_COLUMN_TWO: NavItemType[] = [createNavItem("Résidence disponible", href(1)), createNavItem("Hôtel disponible etc…", href(2))];
+const NAV_COLUMN_TWO: NavItemType[] = [
+	createNavItem("Résidence disponible", href(1)),
+	createNavItem("Hôtel disponible etc…", href(2)),
+];
 
 const NAV_COLUMN_THREE: NavItemType[] = [
 	createNavItem("Maison", href(1)),
@@ -29,7 +32,11 @@ const NAV_COLUMN_THREE: NavItemType[] = [
 	createNavItem("Entrepôt, de meubles etc", href(3)),
 ];
 
-const NAV_COLUMN_FOUR: NavItemType[] = [createNavItem("Restaurant / maquis/ Point Chaud", href(1)), createNavItem("Concert/ plein air", href(2))];
+const NAV_COLUMN_FOUR: NavItemType[] = [
+	// createNavItem("Restaurant / maquis/ Point Chaud", href(1)),
+	// createNavItem("Concert/ plein air", href(2)),
+	createNavItem("A propos de nous", "/about"),
+];
 
 const NAV_COLUMN_FIVE: NavItemType[] = [createNavItem("A propos de nous", "/about")];
 
@@ -78,4 +85,15 @@ const MEGA_MENU5: MegamenuItem[] = [
 	},
 ];
 
-export { NAV_COLUMN_ONE, NAV_COLUMN_TWO, NAV_COLUMN_THREE, NAV_COLUMN_FOUR, NAV_COLUMN_FIVE, MEGA_MENU1, MEGA_MENU2, MEGA_MENU3, MEGA_MENU4, MEGA_MENU5 };
+export {
+	NAV_COLUMN_ONE,
+	NAV_COLUMN_TWO,
+	NAV_COLUMN_THREE,
+	NAV_COLUMN_FOUR,
+	NAV_COLUMN_FIVE,
+	MEGA_MENU1,
+	MEGA_MENU2,
+	MEGA_MENU3,
+	MEGA_MENU4,
+	MEGA_MENU5,
+};

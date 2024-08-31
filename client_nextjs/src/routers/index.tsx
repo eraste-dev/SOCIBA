@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
 import { Page } from "./types";
 import ScrollToTop from "./ScrollToTop";
 import Footer from "components/Footer/Footer";
@@ -41,6 +41,7 @@ import PageSingleTemp4Sidebar from "containers/PageSingle/PageSingleTemp4Sidebar
 import Home from "containers/PageHome/Home";
 import Single from "containers/Product/Single/Single";
 import ListProduct from "containers/Product/List";
+import FooterLoggedIn from "components/Footer/FooterLoggedIn";
 // import { isAdminPage } from "utils/utils";
 
 export const pages: Page[] = [
@@ -97,6 +98,14 @@ export const pages: Page[] = [
 
 const Routes = () => {
 	const win = window.location.href;
+	const history = useHistory();
+	const [isDashboard, setIsDashboard] = React.useState(false);
+
+	setInterval(function () {
+		setIsDashboard(window.location.href.includes("dashboard"));
+		// console.log(">>> footer : ", isDashboard);
+	}, 1000); // 1000 milliseconds = 1 second
+
 	return (
 		<BrowserRouter basename={import.meta.env.VITE_LRT_OR_RTL === "rtl" ? "/rtl" : "/"}>
 			<ScrollToTop />
@@ -109,8 +118,9 @@ const Routes = () => {
 				})}
 				<Route component={Page404} />
 			</Switch>
+
 			{/* </div> */}
-			<Footer />
+			{isDashboard ? <FooterLoggedIn /> : <Footer />}
 			{/* MEDIA */}
 
 			{/* //is Safari on an apple touch-screen device */}

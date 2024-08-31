@@ -49,6 +49,7 @@ export interface IServerEndpoint {
 		};
 		users: {
 			getAll: IAxiosRequestConfig;
+			delete: (id: number) => IAxiosRequestConfig;
 		};
 		meta: {
 			search: (key: string) => IAxiosRequestConfig;
@@ -110,6 +111,11 @@ export const serverEndpoints: IServerEndpoint = {
 		},
 		users: {
 			getAll: { method: "GET", url: `${v100}/user/list` },
+			delete: (id: number) => ({
+				method: "DELETE",
+				url: `${v100}/user/delete`,
+				data: { id },
+			}),
 		},
 		meta: {
 			search: (key: string) => ({ method: "GET", url: `${v100}/meta/${key}` }),

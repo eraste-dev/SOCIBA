@@ -195,11 +195,16 @@ export const resetFilters = () => async (dispatch: AppDispatch) => {
 
 export const postProduct =
 	(payload: ProductRequest | FormData) => async (dispatch: AppDispatch) => {
+		console.log(">>> payload >postProduct ", payload);
+
 		dispatch(postProductStart());
 
 		try {
 			const response = await axiosRequest<IServerResponse>({
 				...serverEndpoints.public.properties.post(payload),
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
 				data: payload,
 			});
 			dispatch(postProductSuccess(response.data));

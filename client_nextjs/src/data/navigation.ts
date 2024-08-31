@@ -421,8 +421,8 @@ export const NAVIGATION_SHORT_DEMO: NavItemType[] = [
 	{
 		id: ncNanoId(),
 		href: "#",
-		name: "Évènementiels",
-		type: "megaMenu",
+		name: "Démenagement",
+		type: "none",
 		megaMenu: MEGA_MENU4,
 	},
 	{

@@ -3,9 +3,10 @@ import { isAdmin } from "app/axios/actions/api.action";
 import Logo from "components/Logo/Logo";
 import SocialsList1 from "components/SocialsList1/SocialsList1";
 import { CustomLink } from "data/types";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import FooterLoggedIn from "./FooterLoggedIn";
+import { useHistory } from "react-router-dom";
 
 export interface WidgetFooterMenu {
 	id: string;
@@ -53,20 +54,27 @@ const widgetMenus: WidgetFooterMenu[] = [
 ];
 
 const Footer: React.FC = () => {
-	const user = useSelector(AuthAction.data)?.user;
+	// const user = useSelector(AuthAction.data)?.user;
+	// const history = useHistory();
 
-	if (user && isAdmin(user)) {
-		return <FooterLoggedIn />;
-	}
+	// if (!isFrontView) {
+	// 	return <FooterLoggedIn />;
+	// }
 
 	const renderWidgetMenuItem = (menu: WidgetFooterMenu, index: number) => {
 		return (
 			<div key={index} className="text-sm">
-				<h2 className="font-semibold text-neutral-700 dark:text-neutral-200">{menu.title}</h2>
+				<h2 className="font-semibold text-neutral-700 dark:text-neutral-200">
+					{menu.title}
+				</h2>
 				<ul className="mt-5 space-y-4">
 					{menu.menus.map((item, index) => (
 						<li key={index}>
-							<a key={index} className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white" href={item.href}>
+							<a
+								key={index}
+								className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white"
+								href={item.href}
+							>
 								{item.label}
 							</a>
 						</li>

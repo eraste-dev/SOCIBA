@@ -62,7 +62,7 @@ class PropertyController extends Controller
         // Enregistrer les données dans la base de données
         $validatedData = $validator->validated();
 
-        if ($validatedData['id']) {
+        if (isset($validatedData['id'])) {
             // ? UPDATE
             $product = Property::find($validatedData['id']);
             $product->status = $validatedData['status'] ?? $product->status;
@@ -87,6 +87,18 @@ class PropertyController extends Controller
             $product->deposit_price        = $validatedData['deposit_price'];
 
             $product->save();
+        }
+
+        if (isset($validatedData['images']) && isset($request->images)) {
+            // $product->images()->delete();
+            $images = $validatedData['images'] ?? $request->images;
+            foreach ($images as $key => $image) {
+                $filetomove = $image->getClientOriginalName() . "-" . time() . "." . $image->getClientOriginalExtension();
+                PropertyImages::create([
+                    'property_id' => $product->id,
+                    'image' => "/images/products/" . $filetomove
+                ]);
+            }
         }
 
 

@@ -55,11 +55,14 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 	} = useForm<RegisterRequest>();
 
 	const onSubmit: SubmitHandler<RegisterRequest> = (data) => {
+		console.log("data SubmitHandler<RegisterRequest>  ", data);
+
 		if (samePhone) {
 			data.phone_whatsapp = data.phone;
+			// data.function
 		}
 		if (!loading && CGI) {
-			dispatch(registerUser(data));
+			// dispatch(registerUser(data));
 		}
 	};
 
@@ -166,7 +169,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 							{/* <Input type="text" placeholder="Fonction" className="mt-1" {...register("function")} /> */}
 							<Select
 								className="mt-1"
-								{...register("function")}
+								{...register("function", { required: true })}
 								disabled={!functions?.data || functions?.data?.length === 0}
 							>
 								<option value="" selected>

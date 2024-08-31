@@ -62,6 +62,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => '/user'], function () {
             Route::put('update-profile',   [AuthController::class, 'updateUser'])->name('user.update-profile');
             Route::get('list',             [UserController::class, 'listUsers'])->name('user.list');
+            Route::delete('delete',             [UserController::class, 'delete'])->name('user.delete');
+
             // NOTIFICATION USER
             Route::get('notifications',                     [NotificationController::class, 'index'])->name('user.notifications');
             Route::get('/notifications/unread',             [NotificationController::class, 'unread']);

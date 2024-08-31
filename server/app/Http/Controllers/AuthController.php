@@ -72,6 +72,7 @@ class AuthController extends Controller
             'password'   => Hash::make($request->password),
             'type'       => $request->type ? $request->type : 'USER',
             'status'     => $request->status ? $request->status : 'ACTIVE',
+            'function'   => $request->function ? $request->function : null,
         ]);
 
 

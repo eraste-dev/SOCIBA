@@ -90,22 +90,23 @@ const MainNav2: FC<MainNav2Props> = () => {
 
 						<div className="hidden sm:block h-10 border-l border-neutral-300 dark:border-neutral-6000">
 							{user && (
-								<>
+								<div className="flex items-center" >
 									<ButtonPrimary
 										href={route("add_post")}
 										sizeClass="px-4 py-2 sm:px-5"
+										className="mx-2"
 									>
 										{__(t.rs_publish)}
 									</ButtonPrimary>
 
-									<NotifyDropdown />
+									{/* <NotifyDropdown />	 */}
 									<AvatarDropdown />
-								</>
+								</div>
 							)}
 
 							{!user && (
 								<>
-									<ButtonSecondary href={"/login"} sizeClass="px-4 py-2 sm:px-5 ml-2">
+									<ButtonSecondary href={"/login"} sizeClass="px-4 py-2 sm:px-5 mx-2">
 										Se connecter
 									</ButtonSecondary>
 
@@ -115,6 +116,7 @@ const MainNav2: FC<MainNav2Props> = () => {
 								</>
 							)}
 						</div>
+						
 						<DarkModeContainer />
 					</div>
 

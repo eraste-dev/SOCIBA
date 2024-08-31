@@ -9,7 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { AuthAction, IUser } from "app/reducer/auth/auth";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 import { useAppSelector } from "app/hooks";
-import { fetchCategories, fetchSingleProperties, initProductState, postProduct } from "app/axios/actions/api.action";
+import {
+	fetchCategories,
+	fetchSingleProperties,
+	initProductState,
+	postProduct,
+} from "app/axios/actions/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
 import { ProductRequest } from "app/axios/api.type";
@@ -96,28 +101,54 @@ const DashboardSubmitPost = () => {
 		// Convert data to FormData
 		for (const key in data) {
 			if (data.hasOwnProperty(key) && data[key as keyof ProductRequest] !== undefined) {
-				if (key === 'images' && data.images) {
+				if (key === "images" && data.images) {
 					if (data.images instanceof FileList) {
 						for (let i = 0; i < data.images.length; i++) {
-							formData.append('images[]', data.images[i]);
+							const image = data.images[i];
+							if (image instanceof File) {
+								formData.append("images[]", image);
+							} else if (typeof image === "string") {
+								// Assuming 'image' is a base64 encoded string representing an image
+								const blob = dataURItoBlob(image);
+								formData.append("images[]", blob);
+							}
 						}
 					} else if (Array.isArray(data.images)) {
-						data.images.forEach(image => formData.append('images[]', image));
+						data.images.forEach((image) => formData.append("images[]", image));
 					}
 				} else {
-					formData.append(key, (data[key as keyof ProductRequest] as any));
+					formData.append(key, data[key as keyof ProductRequest] as any);
 				}
 			}
 		}
 
 		if (product && productId) {
-			formData.append('id', productId);
+			formData.append("id", productId);
 		}
+
+		console.log(formData);
 
 		dispatch(postProduct(formData));
 	};
 
+	/**
+	 * Converts a data URI to a Blob object.
+	 *
+	 * @param {string} dataURI - The data URI to convert.
+	 * @return {Blob} The converted Blob object.
+	 */
+	function dataURItoBlob(dataURI: string) {
+		const byteString = atob(dataURI.split(",")[1]);
+		const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+		const ab = new ArrayBuffer(byteString.length);
+		const ia = new Uint8Array(ab);
 
+		for (let i = 0; i < byteString.length; i++) {
+			ia[i] = byteString.charCodeAt(i);
+		}
+
+		return new Blob([ab], { type: mimeString });
+	}
 
 	const getCategoryByID = (id: number) => {
 		return categories?.filter((_cat) => _cat.id === id)[0] || null;
@@ -197,11 +228,21 @@ const DashboardSubmitPost = () => {
 			initForm(value);
 
 			if (categories && categories.length > 0) {
-				if (product.category && product.category && product.category.parent && product.category.parent.id) {
-					setCategoryParent(categories?.filter((_cat) => _cat.id === product.category?.parent?.id)[0] || null);
+				if (
+					product.category &&
+					product.category &&
+					product.category.parent &&
+					product.category.parent.id
+				) {
+					setCategoryParent(
+						categories?.filter((_cat) => _cat.id === product.category?.parent?.id)[0] ||
+							null
+					);
 				}
 
-				setCategorySelected(categories?.filter((_cat) => _cat.id === product.category?.id)[0] || null);
+				setCategorySelected(
+					categories?.filter((_cat) => _cat.id === product.category?.id)[0] || null
+				);
 			}
 		}
 	}, [product, productId, defaultValue, setDefaultValue, categories, initForm]);
@@ -244,21 +285,32 @@ const DashboardSubmitPost = () => {
 	// SUBMIT_SUCCESS
 	useEffect(() => {
 		if (success && !loading) {
-			snackbar.enqueueSnackbar("Annonce publiee avec succes", { variant: "success", autoHideDuration: 3000 });
+			snackbar.enqueueSnackbar("Annonce publiee avec succes", {
+				variant: "success",
+				autoHideDuration: 3000,
+			});
 			history.push(route("dashboard"));
 		}
 	}, [snackbar, success, loading, history]);
 
 	// GET_CATEGORIES_BY_PARENT
 	useEffect(() => {
-		if (!categoryParent && categories && categories.filter((cat) => cat.parent_id === null).length > 0 && initialize && !productId) {
+		if (
+			!categoryParent &&
+			categories &&
+			categories.filter((cat) => cat.parent_id === null).length > 0 &&
+			initialize &&
+			!productId
+		) {
 			setCategoryParent(categories.filter((cat) => cat.parent_id === null)[0]);
 		}
 	}, [categories, categoryParent, initialize, productId, setCategoryParent]);
 
 	return (
 		<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6">
-			<h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-200 mb-5">Rédigez votre annonce</h3>
+			<h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-200 mb-5">
+				Rédigez votre annonce
+			</h3>
 			<form className="grid md:grid-cols-2 gap-6" onSubmit={handleSubmit(onSubmit)}>
 				{/* TYPE */}
 				<label className="block">
@@ -271,7 +323,11 @@ const DashboardSubmitPost = () => {
 						onChangeOption={(value) => setValue("type", value)}
 						selected={watch("type") ?? ""}
 					/>
-					<ErrorMessage errors={errorArray} error="type" customMessage="Veuillez choisir un type d'offre" />
+					<ErrorMessage
+						errors={errorArray}
+						error="type"
+						customMessage="Veuillez choisir un type d'offre"
+					/>
 				</label>
 
 				{/* TITLE */}
@@ -279,8 +335,17 @@ const DashboardSubmitPost = () => {
 					<Label>
 						Titre <span className="text-red-500">*</span>
 					</Label>
-					<Input type="text" className="mt-1" {...register("title", { required: true })} defaultValue={(defaultValue && defaultValue.title) ?? ""} />
-					<ErrorMessage errors={errorArray} error="title" customMessage="Veuillez choisir un titre" />
+					<Input
+						type="text"
+						className="mt-1"
+						{...register("title", { required: true })}
+						defaultValue={(defaultValue && defaultValue.title) ?? ""}
+					/>
+					<ErrorMessage
+						errors={errorArray}
+						error="title"
+						customMessage="Veuillez choisir un titre"
+					/>
 				</label>
 
 				{/* CATEGORY */}
@@ -296,15 +361,27 @@ const DashboardSubmitPost = () => {
 								<Select
 									name="category_id"
 									onChange={(event) => {
-										setCategoryParent(categories?.filter((_cat) => _cat.id.toString() === event.target.value)[0] || null);
+										setCategoryParent(
+											categories?.filter(
+												(_cat) => _cat.id.toString() === event.target.value
+											)[0] || null
+										);
 										setCategorySelected(null);
 									}}
 								>
 									{categories &&
 										categories
-											.filter((category) => category.parent_id === null && category.children.length != 0)
+											.filter(
+												(category) =>
+													category.parent_id === null &&
+													category.children.length != 0
+											)
 											.map((category) => (
-												<option key={category.id} value={category.id} selected={isCategoryParentSelected(category)}>
+												<option
+													key={category.id}
+													value={category.id}
+													selected={isCategoryParentSelected(category)}
+												>
 													{category.name}
 												</option>
 											))}
@@ -323,13 +400,24 @@ const DashboardSubmitPost = () => {
 									name="category_id"
 									onChange={(event) => {
 										handleSelectedCategory(
-											((categoryParent && categoryParent?.children) || []).find((c) => c.id.toString() === event.target.value) || null
+											(
+												(categoryParent && categoryParent?.children) ||
+												[]
+											).find((c) => c.id.toString() === event.target.value) ||
+												null
 										);
 									}}
 								>
 									<option value="">Choisir une sous catégorie</option>
-									{((categoryParent && categories && categoryParent.children) || []).map((category) => (
-										<option key={category.id} value={category.id} selected={isCategorySelected(category)}>
+									{(
+										(categoryParent && categories && categoryParent.children) ||
+										[]
+									).map((category) => (
+										<option
+											key={category.id}
+											value={category.id}
+											selected={isCategorySelected(category)}
+										>
 											{category.name}
 										</option>
 									))}
@@ -338,7 +426,11 @@ const DashboardSubmitPost = () => {
 						</div>
 					</div>
 					<div>
-						<ErrorMessage errors={errorArray} error="category_id" customMessage="Veuillez choisir un type de bien" />
+						<ErrorMessage
+							errors={errorArray}
+							error="category_id"
+							customMessage="Veuillez choisir un type de bien"
+						/>
 					</div>
 				</label>
 
@@ -351,15 +443,29 @@ const DashboardSubmitPost = () => {
 							</Label>
 
 							<div className="block md:col-span-2 p-2">
-								<Select name="location_id" required onChange={(event) => setValue("location_id", event.target.value)}>
+								<Select
+									name="location_id"
+									required
+									onChange={(event) =>
+										setValue("location_id", event.target.value)
+									}
+								>
 									{locations &&
 										locations.map((location) => (
-											<option key={location.id} value={location.id} selected={isLocationSelected(location)}>
+											<option
+												key={location.id}
+												value={location.id}
+												selected={isLocationSelected(location)}
+											>
 												{location.name}
 											</option>
 										))}
 								</Select>
-								<ErrorMessage errors={errorArray} error="location_id" customMessage="Veuillez choisir une ville" />
+								<ErrorMessage
+									errors={errorArray}
+									error="location_id"
+									customMessage="Veuillez choisir une ville"
+								/>
 							</div>
 						</div>
 
@@ -374,7 +480,11 @@ const DashboardSubmitPost = () => {
 									defaultValue={product && product.location_description}
 									{...register("location_description", { required: true })}
 								/>
-								<ErrorMessage errors={errorArray} error="location_description" customMessage="Veuillez saisir un quartier" />
+								<ErrorMessage
+									errors={errorArray}
+									error="location_description"
+									customMessage="Veuillez saisir un quartier"
+								/>
 							</label>
 						</div>
 					</div>
@@ -389,11 +499,23 @@ const DashboardSubmitPost = () => {
 							<Label>
 								Prix <span className="text-red-500">*</span>
 								<div className="flex items-center">
-									<Input type="number" className="mt-1" defaultValue={product && product.price} {...register("price", { required: true })} />
-									<span className="text-lg ml-2 text-neutral-300"> {CURRENCY} </span>
+									<Input
+										type="number"
+										className="mt-1"
+										defaultValue={product && product.price}
+										{...register("price", { required: true })}
+									/>
+									<span className="text-lg ml-2 text-neutral-300">
+										{" "}
+										{CURRENCY}{" "}
+									</span>
 								</div>
 							</Label>
-							<ErrorMessage errors={errorArray} error="price" customMessage="Veuillez saisir un prix" />
+							<ErrorMessage
+								errors={errorArray}
+								error="price"
+								customMessage="Veuillez saisir un prix"
+							/>
 						</div>
 
 						<div>
@@ -406,43 +528,80 @@ const DashboardSubmitPost = () => {
 										className="mt-1"
 										{...register("deposit_price", { required: true })}
 									/>
-									<span className="text-lg ml-2 text-neutral-300"> {CURRENCY} </span>
+									<span className="text-lg ml-2 text-neutral-300">
+										{" "}
+										{CURRENCY}{" "}
+									</span>
 								</div>
 							</label>
-							<ErrorMessage errors={errorArray} error="deposit_price" customMessage="Veuillez saisir une caution" />
+							<ErrorMessage
+								errors={errorArray}
+								error="deposit_price"
+								customMessage="Veuillez saisir une caution"
+							/>
 						</div>
 					</div>
 				</label>
 
 				{/* IMAGE */}
 				<div className="block md:col-span-2">
-					<ImageUploader initialImages={images} maxImages={5} images={images} setImages={setImages} />
+					<ImageUploader
+						initialImages={images}
+						maxImages={5}
+						images={images}
+						setImages={setImages}
+					/>
 				</div>
 
 				{/* EXCERPT */}
 				<label className="block md:col-span-2">
 					<Label>Description</Label>
-					<Textarea className="mt-1" rows={4} maxLength={250} defaultValue={product && product.excerpt} {...register("excerpt")} />
+					<Textarea
+						className="mt-1"
+						rows={4}
+						maxLength={250}
+						defaultValue={product && product.excerpt}
+						{...register("excerpt")}
+					/>
 					<p className="mt-1 text-sm text-neutral-500">
-						Donnez une description détaillée de votre article. N’indiquez pas vos coordonnées (e-mail, téléphones, …) dans la description.
+						Donnez une description détaillée de votre article. N’indiquez pas vos
+						coordonnées (e-mail, téléphones, …) dans la description.
 					</p>
 					{watch("excerpt") && (
-						<span className={((watch("excerpt") && watch("excerpt")!.length) ?? 0) == 250 ? "text-red-500" : "text-neutral-500"}>
+						<span
+							className={
+								((watch("excerpt") && watch("excerpt")!.length) ?? 0) == 250
+									? "text-red-500"
+									: "text-neutral-500"
+							}
+						>
 							{watch("excerpt") && watch("excerpt")!.length} / 250
 						</span>
 					)}
-					<ErrorMessage errors={errorArray} error="excerpt" customMessage="Veuillez ajouter une description" />
+					<ErrorMessage
+						errors={errorArray}
+						error="excerpt"
+						customMessage="Veuillez ajouter une description"
+					/>
 				</label>
 
 				{/* CONTENT */}
 				<label className="block md:col-span-2">
 					<Label> Post Content</Label>
-					<EditorText onEditorChange={(content: string) => setValue("content", content)} initialValue={product && product.content} />
-					<ErrorMessage errors={errorArray} error="content" customMessage="Veuillez ajouter du contenu" />
+					<EditorText
+						onEditorChange={(content: string) => setValue("content", content)}
+						initialValue={product && product.content}
+					/>
+					<ErrorMessage
+						errors={errorArray}
+						error="content"
+						customMessage="Veuillez ajouter du contenu"
+					/>
 				</label>
 
 				{/* SUBMIT */}
-				<ButtonPrimary className="md:col-span-2" type="submit" disabled={!isValid}>
+				{/* disabled={!isValid} */}
+				<ButtonPrimary className="md:col-span-2" type="submit">
 					Publier Maintenant
 				</ButtonPrimary>
 			</form>
