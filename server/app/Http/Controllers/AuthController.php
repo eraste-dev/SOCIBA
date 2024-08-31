@@ -46,16 +46,16 @@ class AuthController extends Controller
     {
         // Validation des données saisies
         $validator = Validator::make($request->all(), [
-            'name'           => 'required|string|max:255',
-            'last_name'      => 'required|string|max:255',
-            'phone'          => 'required|string|max:255',
-            'phone_whatsapp' => 'required|string|max:255',
-            'email'          => 'required|string|email|max:255|unique:users',
-            'password'       => 'required|string|min:6',
-            'status'         => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
-            'type'           => 'nullable|string|inADMIN,USER,GUEST',
-            "function"      => 'nullable|string|max:255',
-            "influence_zone_id" => 'nullable|string|max:255',
+            'name'              => 'required|string|max:255',
+            'last_name'         => 'required|string|max:255',
+            'phone'             => 'required|string|max:255',
+            'phone_whatsapp'    => 'required|string|max:255',
+            'email'             => 'required|string|email|max:255|unique:users',
+            'password'          => 'required|string|min:6',
+            'status'            => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
+            'type'              => 'nullable|string|inADMIN,USER,GUEST',
+            "fonction"          => 'nullable|string|max:255',
+            "influence_zone_id" => 'nullable|max:255',
         ]);
 
         // Si la validation échoue, renvoyer les erreurs
@@ -65,14 +65,17 @@ class AuthController extends Controller
 
         // Création d'un nouvel utilisateur
         $user = User::create([
-            'name'       => $request->name,
-            'last_name'  => $request->last_name,
-            'phone'      => $request->phone,
-            'email'      => $request->email,
-            'password'   => Hash::make($request->password),
-            'type'       => $request->type ? $request->type : 'USER',
-            'status'     => $request->status ? $request->status : 'ACTIVE',
-            'function'   => $request->function ? $request->function : null,
+            'name'              => $request->name,
+            'last_name'         => $request->last_name,
+            'phone'             => $request->phone,
+            'phone_whatsapp'    => $request->phone_whatsapp,
+            'email'             => $request->email,
+            'password'          => Hash::make($request->password),
+            'type'              => $request->type ? $request->type : 'USER',
+            'status'            => $request->status ? $request->status : 'ACTIVE',
+            'fonction'          => $request->fonction ? $request->fonction : null,
+            'influence_zone_id' => $request->influence_zone_id ? $request->influence_zone_id : null,
+            'email_verified_at' => now(),
         ]);
 
 
@@ -83,7 +86,7 @@ class AuthController extends Controller
                 'Merci de vous être inscrit',
                 'Merci de faire confiance à SOCIBA, vous pouvez publier votre première annonce',
                 [
-                    'title' => 'Nouvel utilisateur',
+                    'title'   => 'Nouvel utilisateur',
                     'message' => 'Nouvel utilisateur enregisté : ' . $user->name . ' ' . $user->last_name
                 ]
             );
@@ -138,7 +141,12 @@ class AuthController extends Controller
             $user = User::findOrFail($request->id);
 
             $user->fill($request->only([
-                'name', 'last_name', 'phone', 'phone_whatsapp', 'type', 'status'
+                'name',
+                'last_name',
+                'phone',
+                'phone_whatsapp',
+                'type',
+                'status'
             ]));
 
             if ($request->filled('password')) {

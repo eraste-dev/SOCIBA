@@ -51,21 +51,31 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 		register,
 		handleSubmit,
 		watch,
-		formState: { errors },
+		setValue,
+		formState: { errors, isLoading, isSubmitting, isSubmitted, isValid },
 	} = useForm<RegisterRequest>();
 
+	/**
+	 * Handles the submission of the registration form.
+	 *
+	 * @param {RegisterRequest} data - The registration data submitted by the user.
+	 * @return {void}
+	 */
 	const onSubmit: SubmitHandler<RegisterRequest> = (data) => {
 		console.log("data SubmitHandler<RegisterRequest>  ", data);
+		// data.function = functionSelected;
+		// data.influence_zone_id = locationSelected;
 
 		if (samePhone) {
 			data.phone_whatsapp = data.phone;
-			// data.function
 		}
-		if (!loading && CGI) {
-			// dispatch(registerUser(data));
+
+		if (!loading && CGI && isValid) {
+			dispatch(registerUser(data));
 		}
 	};
 
+	// * fetch functions
 	useEffect(() => {
 		console.log(functions);
 
@@ -78,6 +88,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 		}
 	}, [dispatch, functions, functions?.data, functions?.loading, initialize, user]);
 
+	// * fetch locations
 	useEffect(() => {
 		if (locationLoading) return;
 
@@ -90,10 +101,26 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 		}
 	}, [dispatch, locations, locationLoading, locationError]);
 
+	// * initialize
 	useEffect(() => {
 		if (!initialize && !user) {
 			setInitialize(true);
 			dispatch(initAuth());
+			if (
+				functions &&
+				functions.data &&
+				functions?.data?.length > 0 &&
+				functions?.data[0] &&
+				functions?.data[0].value != null
+			) {
+				setValue("fonction", functions.data[0].value);
+			} else {
+				setValue("fonction", "");
+			}
+
+			if (locations && locations?.length > 0 && locations[0] && locations[0].id != null) {
+				setValue("influence_zone_id", locations[0].id.toString());
+			}
 		}
 	}, [initialize, dispatch, initAuth, user]);
 
@@ -161,52 +188,6 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 									<p className="text-sm">Aucune fonction n'est disponible.</p>
 								</div>
 							))}
-
-						<label className="block">
-							<span className="text-neutral-800 dark:text-neutral-200">
-								Vous êtres ? <span className="text-red-500">*</span>{" "}
-							</span>
-							{/* <Input type="text" placeholder="Fonction" className="mt-1" {...register("function")} /> */}
-							<Select
-								className="mt-1"
-								{...register("function", { required: true })}
-								disabled={!functions?.data || functions?.data?.length === 0}
-							>
-								<option value="" selected>
-									Aucun
-								</option>
-								{functions &&
-									functions.data &&
-									functions.data?.length > 0 &&
-									functions.data.map((func) => (
-										<option key={func.id} value={func.value}>
-											{func.value}
-										</option>
-									))}
-							</Select>
-							<ErrorMessage errors={errorArray} error="function" />
-						</label>
-
-						<label className="block">
-							<span className="text-neutral-800 dark:text-neutral-200">
-								Zone D'influence <span className="text-red-500">*</span>{" "}
-							</span>
-							<SelectWithInput
-								className="mt-1"
-								{...register("influence_zone_id")}
-								disabled={!locations || locations.length === 0}
-							>
-								{locations &&
-									locations &&
-									locations.length > 0 &&
-									locations.map((location) => (
-										<option key={location.id} value={location.id}>
-											{location.name}
-										</option>
-									))}
-							</SelectWithInput>
-							<ErrorMessage errors={errorArray} error="function" />
-						</label>
 
 						{/* ? PASSWORD */}
 						<label className="block">
@@ -279,6 +260,70 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 							</label>
 						)}
 
+						<label className="block">
+							<span className="text-neutral-800 dark:text-neutral-200">
+								Vous êtres ? <span className="text-red-500">*</span>{" "}
+							</span>
+							{/* <Input type="text" placeholder="Fonction" className="mt-1" {...register("fonction")} /> */}
+							<Select
+								className="mt-1"
+								{...register("fonction", { required: true })}
+								disabled={!functions?.data || functions?.data?.length === 0}
+								onChange={(e) => setValue("fonction", e.target.value)}
+							>
+								<option value="" selected>
+									Aucun
+								</option>
+								{functions &&
+									functions.data &&
+									functions.data?.length > 0 &&
+									functions.data.map((func) => (
+										<option
+											key={func.id}
+											value={func.value}
+											onClick={() => {
+												console.log("fonction", func.value);
+												setValue("fonction", func.value ?? "");
+											}}
+										>
+											{func.value}
+										</option>
+									))}
+							</Select>
+							<ErrorMessage errors={errorArray} error="fonction" />
+						</label>
+
+						<label className="block">
+							<span className="text-neutral-800 dark:text-neutral-200">
+								Zone D'influence <span className="text-red-500">*</span>{" "}
+							</span>
+							<SelectWithInput
+								className="mt-1"
+								{...(register("influence_zone_id"), { required: true })}
+								disabled={!locations || locations.length <= 0}
+							>
+								{locations &&
+									locations &&
+									locations.length > 0 &&
+									locations.map((location) => (
+										<option
+											key={location.id}
+											value={location.id}
+											onClick={() => {
+												console.log("influence_zone_id", location.id);
+												setValue(
+													"influence_zone_id",
+													location.id.toString()
+												);
+											}}
+										>
+											{location.name}
+										</option>
+									))}
+							</SelectWithInput>
+							<ErrorMessage errors={errorArray} error="fonction" />
+						</label>
+
 						<div className="flex mt-3 cursor-pointer">
 							{/* LEGAL CHECKBOX */}
 							<input
@@ -300,7 +345,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 						</div>
 
 						{!loading ? (
-							<ButtonPrimary type="submit" disabled={!CGI}>
+							<ButtonPrimary type="submit" disabled={!CGI || !isValid}>
 								S'inscrire
 							</ButtonPrimary>
 						) : (

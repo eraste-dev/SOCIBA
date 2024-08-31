@@ -71,7 +71,7 @@ export interface RegisterRequest {
 	phone: string;
 	phone_whatsapp?: string;
 	avatar?: FileList | null;
-	function: string;
+	fonction: string;
 	influence_zone_id: string;
 }
 

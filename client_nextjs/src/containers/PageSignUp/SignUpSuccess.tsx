@@ -17,13 +17,30 @@ const SignUpSuccess: FC<SignUpSuccessProps> = ({ className = "" }) => {
 				</div>
 
 				<div className="mt-5 flex justify-center items-center pb-28 ">
-					<Link to={route("dashboard")} className="mr-5 rounded-full p-2 hover:underline">
-						Aller dans votre profil
-					</Link>
-					<Link to={route("add_post")} className="bg-primary-6000 text-white rounded-full p-2 hover:bg-secondary-6000">
-						Publier une annonce
+					<Link
+						to={route("login")}
+						className="bg-primary-6000 text-white rounded-full p-2 hover:bg-secondary-6000"
+					>
+						Connectez-vous
 					</Link>
 				</div>
+
+				{false && (
+					<div className="mt-5 flex justify-center items-center pb-28 ">
+						<Link
+							to={route("dashboard")}
+							className="mr-5 rounded-full p-2 hover:underline"
+						>
+							Aller dans votre profil
+						</Link>
+						<Link
+							to={route("add_post")}
+							className="bg-primary-6000 text-white rounded-full p-2 hover:bg-secondary-6000"
+						>
+							Publier une annonce
+						</Link>
+					</div>
+				)}
 			</div>
 		</div>
 	);

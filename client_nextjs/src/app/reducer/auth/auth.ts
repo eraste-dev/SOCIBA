@@ -105,10 +105,14 @@ export const AuthSlice = createSlice({
 			state.success = false;
 			state.message = "";
 		},
-		registerSuccess: (state, action: PayloadAction<{ user: IUser; token: string; exprire: number }>) => {
+		registerSuccess: (
+			state,
+			action: PayloadAction<{ user: IUser; token: string; exprire: number }>
+		) => {
 			state.loading = false;
 			state.error = null;
-			state.data = { ...state.data, registrationSuccess: true, token: action.payload.token, expire: action.payload.exprire, user: action.payload.user };
+			state.data = { ...state.data, registrationSuccess: true };
+			// state.data = { ...state.data, registrationSuccess: true, token: action.payload.token, expire: action.payload.exprire, user: action.payload.user };
 		},
 		registerFailure: (state, action: PayloadAction<{ error: string; errors: any }>) => {
 			state.loading = false;

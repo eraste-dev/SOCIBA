@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->string('fonction')->nullable();
+            $table->integer('influence_zone_id')->nullable();
             $table->enum('type', ['ADMIN', 'USER', 'GUEST'])->default('USER');
             $table->enum('status', ['ACTIVE', 'INACTIVE', 'DELETED', 'REJECTED', 'PENDING', 'BLOCKED'])->default('ACTIVE');
             $table->rememberToken();
