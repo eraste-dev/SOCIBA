@@ -27,6 +27,14 @@ import { useHistory } from "react-router-dom";
 import { route } from "routers/route";
 import { useBoolean } from "react-use";
 import ImageUploader from "components/Dashboard/Products/ImageUploader";
+import { formatPrice } from "utils/utils";
+
+export const PRODUCT_TYPE = ["LOCATION", "ACHAT", "VENTE", "AUTRE"];
+
+export const PERIODICITY_LIST: { id: string; name: string }[] = [
+	{ id: "MONTH", name: "Mois" },
+	{ id: "WEEK", name: "Semaine" },
+];
 
 const DashboardSubmitPost = () => {
 	const CURRENCY: string = "FCFA";
@@ -51,13 +59,13 @@ const DashboardSubmitPost = () => {
 	const locationLoading = useAppSelector(CategoryAction.loading);
 
 	const [initialize, setInitialize] = useState(false);
-	const [categoryParent, setCategoryParent] = useState(null as IPropertyCategory | null);
 	const [categorySelected, setCategorySelected] = useState(null as IPropertyCategory | null);
 	const [defaultValue, setDefaultValue] = useState(null as ProductRequest | null);
 	const [previewUrls, setPreviewUrls]: any = useState([]);
 	const [openLightbox, setOpenLightbox] = useBoolean(false);
 	const [currentImage, setCurrentImage] = useState<string | null>(null);
 	const [images, setImages] = useState<string[]>([]);
+	const [imageFiles, setImageFiles] = useState<File[]>([]);
 
 	const {
 		register,
@@ -67,6 +75,7 @@ const DashboardSubmitPost = () => {
 		reset,
 		setValue,
 		resetField,
+		getValues,
 	} = useForm<ProductRequest>();
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,39 +91,19 @@ const DashboardSubmitPost = () => {
 		setPreviewUrls(urls);
 	};
 
-	const handleSelectedCategory = (cat: IPropertyCategory | null) => {
-		setCategorySelected(cat);
-		cat && setValue("category_id", cat?.id);
-	};
-
-	/* const onSubmit: SubmitHandler<ProductRequest> = (data) => {
-		// console.log(data);
-		if (product && productId) {
-			data.id = parseInt(productId);
-		}
-		dispatch(postProduct(data));
-	};*/
-
 	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
+		console.log("SubmitHandler", data);
+		console.log("SubmitHandler imageFiles", imageFiles);
 		const formData = new FormData();
+		data.images = images;
 
 		// Convert data to FormData
 		for (const key in data) {
 			if (data.hasOwnProperty(key) && data[key as keyof ProductRequest] !== undefined) {
+				console.log("check images", key === "images" && data.images);
 				if (key === "images" && data.images) {
-					if (data.images instanceof FileList) {
-						for (let i = 0; i < data.images.length; i++) {
-							const image = data.images[i];
-							if (image instanceof File) {
-								formData.append("images[]", image);
-							} else if (typeof image === "string") {
-								// Assuming 'image' is a base64 encoded string representing an image
-								const blob = dataURItoBlob(image);
-								formData.append("images[]", blob);
-							}
-						}
-					} else if (Array.isArray(data.images)) {
-						data.images.forEach((image) => formData.append("images[]", image));
+					if (Array.isArray(imageFiles)) {
+						imageFiles.forEach((image) => formData.append("images[]", image));
 					}
 				} else {
 					formData.append(key, data[key as keyof ProductRequest] as any);
@@ -131,31 +120,8 @@ const DashboardSubmitPost = () => {
 		dispatch(postProduct(formData));
 	};
 
-	/**
-	 * Converts a data URI to a Blob object.
-	 *
-	 * @param {string} dataURI - The data URI to convert.
-	 * @return {Blob} The converted Blob object.
-	 */
-	function dataURItoBlob(dataURI: string) {
-		const byteString = atob(dataURI.split(",")[1]);
-		const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-		const ab = new ArrayBuffer(byteString.length);
-		const ia = new Uint8Array(ab);
-
-		for (let i = 0; i < byteString.length; i++) {
-			ia[i] = byteString.charCodeAt(i);
-		}
-
-		return new Blob([ab], { type: mimeString });
-	}
-
 	const getCategoryByID = (id: number) => {
 		return categories?.filter((_cat) => _cat.id === id)[0] || null;
-	};
-
-	const isCategoryParentSelected = (category: IPropertyCategory) => {
-		return !!(defaultValue && categoryParent && category.id === categoryParent.id);
 	};
 
 	const isCategorySelected = (category: IPropertyCategory) => {
@@ -190,11 +156,13 @@ const DashboardSubmitPost = () => {
 		setValue("title", value.title);
 		setValue("excerpt", value.excerpt);
 		setValue("content", value.content);
-		setValue("type", value.type);
+		// setValue("type", value.type);
+		setValue("type", PRODUCT_TYPE[0]);
 		setValue("location_description", value.location_description);
 		setValue("price", value.price);
 		setValue("deposit_price", value.deposit_price);
-		setValue("images", value.images);
+		setValue("periodicity", value.periodicity);
+		// setValue("images", value.images);
 		// setDefaultValue(value);
 		// setPreviewUrls(value.images ? value.images.map((item: any) => URL.createObjectURL(item)) : []);
 	};
@@ -221,24 +189,25 @@ const DashboardSubmitPost = () => {
 				location_description: product.location_description,
 				price: product.price,
 				deposit_price: product.deposit_price,
-				images: null,
+				// images: null,
 			};
 			setDefaultValue(value);
 			setImages(product.images.map((image) => image.image));
+			setImageFiles([]);
 			initForm(value);
 
 			if (categories && categories.length > 0) {
-				if (
-					product.category &&
-					product.category &&
-					product.category.parent &&
-					product.category.parent.id
-				) {
-					setCategoryParent(
-						categories?.filter((_cat) => _cat.id === product.category?.parent?.id)[0] ||
-							null
-					);
-				}
+				// if (
+				// 	product.category &&
+				// 	product.category &&
+				// 	product.category.parent &&
+				// 	product.category.parent.id
+				// ) {
+				// 	setCategoryParent(
+				// 		categories?.filter((_cat) => _cat.id === product.category?.parent?.id)[0] ||
+				// 			null
+				// 	);
+				// }
 
 				setCategorySelected(
 					categories?.filter((_cat) => _cat.id === product.category?.id)[0] || null
@@ -293,311 +262,343 @@ const DashboardSubmitPost = () => {
 		}
 	}, [snackbar, success, loading, history]);
 
-	// GET_CATEGORIES_BY_PARENT
-	useEffect(() => {
-		if (
-			!categoryParent &&
-			categories &&
-			categories.filter((cat) => cat.parent_id === null).length > 0 &&
-			initialize &&
-			!productId
-		) {
-			setCategoryParent(categories.filter((cat) => cat.parent_id === null)[0]);
-		}
-	}, [categories, categoryParent, initialize, productId, setCategoryParent]);
-
 	return (
-		<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6">
+		<div className="md:p-6">
 			<h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-200 mb-5">
 				Rédigez votre annonce
 			</h3>
-			<form className="grid md:grid-cols-2 gap-6" onSubmit={handleSubmit(onSubmit)}>
-				{/* TYPE */}
-				<label className="block">
-					<Label>
-						Type d'offre <span className="text-red-500">*</span>
-					</Label>
-
-					<SelectProductType
-						options={["VENTE", "LOCATION", "ACHAT", "AUTRE"]}
-						onChangeOption={(value) => setValue("type", value)}
-						selected={watch("type") ?? ""}
-					/>
-					<ErrorMessage
-						errors={errorArray}
-						error="type"
-						customMessage="Veuillez choisir un type d'offre"
-					/>
-				</label>
-
-				{/* TITLE */}
-				<label className="block md:col-span-2">
-					<Label>
-						Titre <span className="text-red-500">*</span>
-					</Label>
-					<Input
-						type="text"
-						className="mt-1"
-						{...register("title", { required: true })}
-						defaultValue={(defaultValue && defaultValue.title) ?? ""}
-					/>
-					<ErrorMessage
-						errors={errorArray}
-						error="title"
-						customMessage="Veuillez choisir un titre"
-					/>
-				</label>
-
-				{/* CATEGORY */}
-				<label className="block md:col-span-2">
-					<div className="grid grid-cols-2 gap-6">
-						<div>
+			{/* grid md:grid-cols-2 gap-6 */}
+			<form className="" onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+				{/* SECTION 01 */}
+				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6  mb-5">
+					<div className="grid md:grid-cols-2 gap-6">
+						{/* TITLE */}
+						<label className="block md:col-span-2">
 							<Label>
-								Type de bien <span className="text-red-500">*</span>
-								{defaultValue?.category_id}
+								Titre <span className="text-red-500">*</span>
 							</Label>
+							<Input
+								type="text"
+								className="mt-1"
+								{...register("title", { required: true })}
+								defaultValue={(defaultValue && defaultValue.title) ?? ""}
+							/>
+							<ErrorMessage
+								errors={errorArray}
+								error="title"
+								customMessage="Veuillez choisir un titre"
+							/>
+						</label>
 
-							<div className="block md:col-span-2 p-2">
-								<Select
-									name="category_id"
-									onChange={(event) => {
-										setCategoryParent(
-											categories?.filter(
-												(_cat) => _cat.id.toString() === event.target.value
-											)[0] || null
-										);
-										setCategorySelected(null);
-									}}
-								>
-									{categories &&
-										categories
-											.filter(
-												(category) =>
-													category.parent_id === null &&
-													category.children.length != 0
-											)
-											.map((category) => (
+						{/* PRICE - DEPOSIT PRICE */}
+						<label className="block md:col-span-2">
+							<div className="grid grid-cols-3 gap-6">
+								<div className="col-span-2">
+									<Label>
+										Prix / Caution <span className="text-red-500">*</span>
+										<div className="flex items-center">
+											<Input
+												type="number"
+												className="mt-1"
+												defaultValue={product && product.price}
+												{...register("price", { required: true })}
+											/>
+
+											<span className="text-lg ml-2 text-neutral-300">
+												{formatPrice(product && product.price)} {CURRENCY}
+											</span>
+											<span className="text-lg ml-2 text-neutral-300">
+												{" "}
+												{CURRENCY}{" "}
+											</span>
+										</div>
+									</Label>
+									<ErrorMessage
+										errors={errorArray}
+										error="price"
+										customMessage="Veuillez saisir un prix"
+									/>
+								</div>
+
+								<div>
+									<div className="block md:col-span-2 p-2">
+										<Select
+											name="periodicity"
+											className="mt-4"
+											onChange={(event) =>
+												setValue(
+													"periodicity",
+													event.target.value as
+														| "DAY"
+														| "WEEK"
+														| "MONTH"
+														| "YEAR"
+												)
+											}
+										>
+											<option value="">Choisir une périodicité</option>
+											{PERIODICITY_LIST.map((p) => (
 												<option
-													key={category.id}
-													value={category.id}
-													selected={isCategoryParentSelected(category)}
+													key={p.id}
+													value={p.id}
+													// selected={isCategorySelected(category)}
+													selected={product && product.periodicity === p.id	}
 												>
-													{category.name}
+													{p.name}
 												</option>
 											))}
-								</Select>
-							</div>
-						</div>
+										</Select>
+									</div>
 
-						<div>
-							<div className="block md:col-span-2 p-2">
-								<Label>
-									{/* Type de bien  */}
-									<span className="text-red-500">*</span>
-								</Label>
-
-								<Select
-									name="category_id"
-									onChange={(event) => {
-										handleSelectedCategory(
-											(
-												(categoryParent && categoryParent?.children) ||
-												[]
-											).find((c) => c.id.toString() === event.target.value) ||
-												null
-										);
-									}}
-								>
-									<option value="">Choisir une sous catégorie</option>
-									{(
-										(categoryParent && categories && categoryParent.children) ||
-										[]
-									).map((category) => (
-										<option
-											key={category.id}
-											value={category.id}
-											selected={isCategorySelected(category)}
-										>
-											{category.name}
-										</option>
-									))}
-								</Select>
-							</div>
-						</div>
-					</div>
-					<div>
-						<ErrorMessage
-							errors={errorArray}
-							error="category_id"
-							customMessage="Veuillez choisir un type de bien"
-						/>
-					</div>
-				</label>
-
-				{/* VILLE - COUNTRY - STATE */}
-				<label className="block md:col-span-2">
-					<div className="grid grid-cols-2 gap-6">
-						<div>
-							<Label>
-								Commune <span className="text-red-500">*</span>
-							</Label>
-
-							<div className="block md:col-span-2 p-2">
-								<Select
-									name="location_id"
-									required
-									onChange={(event) =>
-										setValue("location_id", event.target.value)
-									}
-								>
-									{locations &&
-										locations.map((location) => (
-											<option
-												key={location.id}
-												value={location.id}
-												selected={isLocationSelected(location)}
-											>
-												{location.name}
-											</option>
-										))}
-								</Select>
-								<ErrorMessage
-									errors={errorArray}
-									error="location_id"
-									customMessage="Veuillez choisir une ville"
-								/>
-							</div>
-						</div>
-
-						<div>
-							<label className="block md:col-span-2">
-								<Label>
-									Quartier <span className="text-red-500">*</span>
-								</Label>
-								<Input
-									type="text"
-									className="mt-1"
-									defaultValue={product && product.location_description}
-									{...register("location_description", { required: true })}
-								/>
-								<ErrorMessage
-									errors={errorArray}
-									error="location_description"
-									customMessage="Veuillez saisir un quartier"
-								/>
-							</label>
-						</div>
-					</div>
-				</label>
-
-				{/* PRICE - DEPOSIT PRICE */}
-
-				{/* VILLE - COUNTRY - STATE */}
-				<label className="block md:col-span-2">
-					<div className="grid grid-cols-2 gap-6">
-						<div>
-							<Label>
-								Prix <span className="text-red-500">*</span>
-								<div className="flex items-center">
-									<Input
-										type="number"
-										className="mt-1"
-										defaultValue={product && product.price}
-										{...register("price", { required: true })}
-									/>
-									<span className="text-lg ml-2 text-neutral-300">
-										{" "}
-										{CURRENCY}{" "}
-									</span>
+									{false && (
+										<>
+											<label className="block md:col-span-2">
+												Caution <span className="text-red-500">*</span>
+												<div className="flex items-center">
+													<Input
+														type="number"
+														// defaultValue={
+														// 	product && product.deposit_price
+														// }
+														className="mt-1"
+														{...register("deposit_price", {
+															required: true,
+														})}
+													/>
+													<span className="text-lg ml-2 text-neutral-300">
+														{" "}
+														{CURRENCY}{" "}
+													</span>
+												</div>
+											</label>
+											<ErrorMessage
+												errors={errorArray}
+												error="deposit_price"
+												customMessage="Veuillez saisir une caution"
+											/>
+										</>
+									)}
 								</div>
-							</Label>
-							<ErrorMessage
-								errors={errorArray}
-								error="price"
-								customMessage="Veuillez saisir un prix"
-							/>
-						</div>
-
-						<div>
-							<label className="block md:col-span-2">
-								Caution <span className="text-red-500">*</span>
-								<div className="flex items-center">
-									<Input
-										type="number"
-										defaultValue={product && product.deposit_price}
-										className="mt-1"
-										{...register("deposit_price", { required: true })}
-									/>
-									<span className="text-lg ml-2 text-neutral-300">
-										{" "}
-										{CURRENCY}{" "}
-									</span>
-								</div>
-							</label>
-							<ErrorMessage
-								errors={errorArray}
-								error="deposit_price"
-								customMessage="Veuillez saisir une caution"
-							/>
-						</div>
+							</div>
+						</label>
 					</div>
-				</label>
-
-				{/* IMAGE */}
-				<div className="block md:col-span-2">
-					<ImageUploader
-						initialImages={images}
-						maxImages={5}
-						images={images}
-						setImages={setImages}
-					/>
 				</div>
 
-				{/* EXCERPT */}
-				<label className="block md:col-span-2">
-					<Label>Description</Label>
-					<Textarea
-						className="mt-1"
-						rows={4}
-						maxLength={250}
-						defaultValue={product && product.excerpt}
-						{...register("excerpt")}
-					/>
-					<p className="mt-1 text-sm text-neutral-500">
-						Donnez une description détaillée de votre article. N’indiquez pas vos
-						coordonnées (e-mail, téléphones, …) dans la description.
-					</p>
-					{watch("excerpt") && (
-						<span
-							className={
-								((watch("excerpt") && watch("excerpt")!.length) ?? 0) == 250
-									? "text-red-500"
-									: "text-neutral-500"
-							}
-						>
-							{watch("excerpt") && watch("excerpt")!.length} / 250
-						</span>
-					)}
-					<ErrorMessage
-						errors={errorArray}
-						error="excerpt"
-						customMessage="Veuillez ajouter une description"
-					/>
-				</label>
+				{/* SECTION 02 */}
+				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
+					<div className="grid md:grid-cols-2 gap-6 mb-5">
+						{/* TYPE */}
+						<label className="block">
+							<Label>
+								Type d'offre <span className="text-red-500">*</span>
+							</Label>
 
-				{/* CONTENT */}
-				<label className="block md:col-span-2">
-					<Label> Post Content</Label>
-					<EditorText
-						onEditorChange={(content: string) => setValue("content", content)}
-						initialValue={product && product.content}
-					/>
-					<ErrorMessage
-						errors={errorArray}
-						error="content"
-						customMessage="Veuillez ajouter du contenu"
-					/>
-				</label>
+							<SelectProductType
+								options={PRODUCT_TYPE}
+								onChangeOption={(value) => setValue("type", value)}
+								selected={watch("type") ?? PRODUCT_TYPE[0]}
+							/>
+							<ErrorMessage
+								errors={errorArray}
+								error="type"
+								customMessage="Veuillez choisir un type d'offre"
+							/>
+						</label>
+
+						{/* CATEGORY */}
+						<label className="block md:col-span-2">
+							<div className="grid grid-cols-1 gap-6">
+								<div>
+									<Label>
+										Type de bien <span className="text-red-500">*</span>
+										{defaultValue?.category_id}
+									</Label>
+
+									<div className="block md:col-span-2 p-2">
+										<Select
+											name="category_id"
+											onChange={(event) => {
+												event.target.value &&
+													setValue(
+														"category_id",
+														parseInt(event.target.value)
+													);
+												console.log(
+													"category_id",
+													event.target.value,
+													getValues("category_id")
+												);
+											}}
+										>
+											{categories &&
+												categories
+													.filter(
+														(category) =>
+															category.parent_id === null &&
+															category.children.length != 0
+													)
+													.map((category) => (
+														<optgroup
+															label={category.name}
+															key={category.id}
+														>
+															{(category.children || []).map(
+																(category) => (
+																	<option
+																		key={category.id}
+																		value={category.id}
+																		selected={isCategorySelected(
+																			category
+																		)}
+																	>
+																		{category.name}
+																	</option>
+																)
+															)}
+														</optgroup>
+													))}
+										</Select>
+									</div>
+								</div>
+							</div>
+							<div>
+								<ErrorMessage
+									errors={errorArray}
+									error="category_id"
+									customMessage="Veuillez choisir un type de bien"
+								/>
+							</div>
+						</label>
+
+						{/* VILLE - COUNTRY - STATE */}
+						<label className="block md:col-span-2">
+							<div className="grid grid-cols-2 gap-6">
+								<div>
+									<Label>
+										Commune <span className="text-red-500">*</span>
+									</Label>
+
+									<div className="block md:col-span-2 p-2">
+										<Select
+											name="location_id"
+											required
+											onChange={(event) =>
+												setValue("location_id", event.target.value)
+											}
+										>
+											{locations &&
+												locations.map((location) => (
+													<option
+														key={location.id}
+														value={location.id}
+														selected={isLocationSelected(location)}
+													>
+														{location.name}
+													</option>
+												))}
+										</Select>
+										<ErrorMessage
+											errors={errorArray}
+											error="location_id"
+											customMessage="Veuillez choisir une ville"
+										/>
+									</div>
+								</div>
+
+								<div>
+									<label className="block md:col-span-2">
+										<Label>
+											Quartier <span className="text-red-500">*</span>
+										</Label>
+										<Input
+											type="text"
+											className="mt-1"
+											defaultValue={product && product.location_description}
+											{...register("location_description", {
+												required: true,
+											})}
+										/>
+										<ErrorMessage
+											errors={errorArray}
+											error="location_description"
+											customMessage="Veuillez saisir un quartier"
+										/>
+									</label>
+								</div>
+							</div>
+						</label>
+					</div>
+				</div>
+
+				{/* SECTION 03 */}
+				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
+					<div className="grid md:grid-cols-2 gap-6 ">
+						{/* IMAGE */}
+						<div className="block md:col-span-2">
+							<ImageUploader
+								initialImages={images}
+								maxImages={5}
+								images={images}
+								setImages={setImages}
+								imageFiles={imageFiles}
+								setImageFiles={setImageFiles}
+							/>
+						</div>
+					</div>
+				</div>
+
+				{/* SECTION 04 */}
+				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
+					<div className="grid md:grid-cols-2 gap-6 ">
+						{/* EXCERPT */}
+						<label className="block md:col-span-2">
+							<Label>Description</Label>
+							<Textarea
+								className="mt-1"
+								rows={4}
+								maxLength={250}
+								defaultValue={product && product.excerpt}
+								{...register("excerpt")}
+							/>
+							<p className="mt-1 text-sm text-neutral-500">
+								Donnez une description détaillée de votre article. N’indiquez pas
+								vos coordonnées (e-mail, téléphones, …) dans la description.
+							</p>
+							{watch("excerpt") && (
+								<span
+									className={
+										((watch("excerpt") && watch("excerpt")!.length) ?? 0) == 250
+											? "text-red-500"
+											: "text-neutral-500"
+									}
+								>
+									{watch("excerpt") && watch("excerpt")!.length} / 250
+								</span>
+							)}
+							<ErrorMessage
+								errors={errorArray}
+								error="excerpt"
+								customMessage="Veuillez ajouter une description"
+							/>
+						</label>
+
+						{/* CONTENT */}
+						<label className="block md:col-span-2">
+							<Label> Post Content</Label>
+							<EditorText
+								onEditorChange={(content: string) => setValue("content", content)}
+								initialValue={product && product.content}
+							/>
+							<ErrorMessage
+								errors={errorArray}
+								error="content"
+								customMessage="Veuillez ajouter du contenu"
+							/>
+						</label>
+					</div>
+				</div>
+
+				{/* VILLE - COUNTRY - STATE */}
 
 				{/* SUBMIT */}
 				{/* disabled={!isValid} */}

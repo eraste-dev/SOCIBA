@@ -8,6 +8,9 @@ import {
 	fetchSlidersFailure,
 	fetchSlidersStart,
 	fetchSlidersSuccess,
+	postSlidersFailure,
+	postSlidersStart,
+	postSlidersSuccess,
 } from "app/reducer/sliders/sliders";
 import { AppDispatch } from "app/reducer/store";
 import { IServerResponse, ProductRequest, RegisterRequest, UpdateUserRequest } from "../api.type";
@@ -57,6 +60,7 @@ import {
 	registerStart,
 	registerSuccess,
 } from "app/reducer/auth/auth";
+import { InputsEditSlider } from "containers/PageDashboard/Sliders/EditSlider";
 
 export const fetchSliders = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchSlidersStart());
@@ -68,6 +72,44 @@ export const fetchSliders = () => async (dispatch: AppDispatch) => {
 		dispatch(fetchSlidersSuccess(response.data));
 	} catch (error: any) {
 		dispatch(fetchSlidersFailure(error.message));
+	}
+};
+
+export const initEditSliders = () => async (dispatch: AppDispatch) => {
+	dispatch(postSlidersStart());
+};
+
+export const editSliders =
+	(payload: InputsEditSlider | FormData) => async (dispatch: AppDispatch) => {
+		dispatch(postSlidersStart());
+
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.sliders.post(payload),
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+				data: payload,
+			});
+			dispatch(postSlidersSuccess(response.data));
+		} catch (error: any) {
+			console.log(error);
+			dispatch(postSlidersFailure({ error: error.message, errors: error.errors }));
+		}
+	};
+
+export const deleteSliders = (payload: { id: number }) => async (dispatch: AppDispatch) => {
+	dispatch(postSlidersStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.sliders.delete(payload),
+			data: payload,
+		});
+		dispatch(postSlidersSuccess(response.data));
+	} catch (error: any) {
+		console.log(error);
+		dispatch(postSlidersFailure({ error: error.message, errors: error.errors }));
 	}
 };
 
@@ -195,7 +237,7 @@ export const resetFilters = () => async (dispatch: AppDispatch) => {
 
 export const postProduct =
 	(payload: ProductRequest | FormData) => async (dispatch: AppDispatch) => {
-		console.log(">>> payload >postProduct ", payload);
+		console.log(">>> payload >> postProduct ", payload);
 
 		dispatch(postProductStart());
 

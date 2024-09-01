@@ -11,12 +11,11 @@ class PropertyResource extends JsonResource
     {
         // dd($this->getAuthor());
         return [
-            'id'             => $this->id,
-            'href'           => "/annonce/{$this->slug}&?id=" . $this->id,
-            'category'       => $this->category(),
-            'title'          => $this->title,
+            'id'                   => $this->id,
+            'href'                 => "/annonce/{$this->slug}&?id=" . $this->id,
+            'category'             => $this->category(),
+            'title'                => $this->title,
             'excerpt'              => $this->excerpt,
-            // 'description'    => $this->description,
             'content'              => $this->content,
             'address'              => $this->address,
             'client_address'       => $this->client_address,
@@ -35,15 +34,17 @@ class PropertyResource extends JsonResource
             'video_link'           => $this->video_link,
             'images'               => $this->get_images() ?? [],
             'featured_image'       => "{$this->featured_image}",
-            // 'post_type'      => $this->post_type,
-            // 'created_by'           => $this->created_by,
             'created_at'           => Carbon::parse($this->created_at)->diffForHumans(),
             'updated_at'           => Carbon::parse($this->updated_at)->diffForHumans(),
             'updated_by'           => $this->updated_by,
+            "isLiked"              => false,
+            'author'               => $this->getAuthor(),
+            'periodicity'          => $this->periodicity,
             "like"                 => 5, //$this->commentCount()
             "commentCount"         => 15, // $this->commentCount()
-            "isLiked"              => false,
-            'author'               => $this->getAuthor()
+            // 'post_type'      => $this->post_type,
+            // 'created_by'           => $this->created_by,
+            // 'description'    => $this->description,
         ];
     }
 }

@@ -1,11 +1,14 @@
 import { IUser } from "app/reducer/auth/auth";
 import DashboardBillingAddress from "containers/PageDashboard/DashboardBillingAddress";
 import DashboardEditProfile from "containers/PageDashboard/DashboardEditProfile";
+import DashboardPostCategories from "containers/PageDashboard/DashboardPostCategories";
 import DashboardPosts from "containers/PageDashboard/DashboardPosts";
 import DashboardRoot from "containers/PageDashboard/DashboardRoot";
 import DashboardSubcription from "containers/PageDashboard/DashboardSubcription";
 import DashboardSubmitPost from "containers/PageDashboard/DashboardSubmitPost";
 import DashboardUsers from "containers/PageDashboard/DashboardUsers";
+import DashboardSetting from "containers/PageDashboard/settings/DashboardSetting";
+import DashboardSliders from "containers/PageDashboard/Sliders/DashboardSliders";
 import { ComponentType } from "react";
 
 export interface DashboardLocationState {
@@ -17,6 +20,9 @@ export interface DashboardLocationState {
 	// "/billing-address"?: {};
 	"/submit-post"?: {};
 	"/account"?: {};
+	"/post-categories"?: {};
+	"/sliders"?: {};
+	"/settings"?: {};
 }
 
 export interface DashboardPage {
@@ -31,9 +37,19 @@ export interface DashboardPage {
 export const USER_SUB_PAGES: DashboardPage[] = [
 	// { sPath: "/root", exact: true, component: DashboardRoot, emoij: "🕹", pageName: "Dash board" },
 	{ pageName: "Annonces" },
-	{ sPath: "/submit-post", component: DashboardSubmitPost, emoij: "✍", pageName: "Publier une annonce" },
+	{
+		sPath: "/submit-post",
+		component: DashboardSubmitPost,
+		emoij: "✍",
+		pageName: "Publier une annonce",
+	},
 	{ sPath: "/posts", component: DashboardPosts, emoij: "📕", pageName: "Mes annonces" },
-	{ sPath: "/edit-profile", component: DashboardEditProfile, emoij: "🛠", pageName: "Modifier Profile" },
+	{
+		sPath: "/edit-profile",
+		component: DashboardEditProfile,
+		emoij: "🛠",
+		pageName: "Modifier Profile",
+	},
 	{ pageName: "Autres" },
 	// {
 	// 	sPath: "/subscription",
@@ -49,4 +65,25 @@ export const USER_SUB_PAGES: DashboardPage[] = [
 	// },
 ];
 
-export const ADMIN_SUB_PAGES: DashboardPage[] = [{ pageName: "ADMIN" }, { sPath: "/users", component: DashboardUsers, emoij: "👤", pageName: "Utilisateurs" }];
+export const ADMIN_SUB_PAGES: DashboardPage[] = [
+	{ pageName: "ADMIN" },
+	{ sPath: "/users", component: DashboardUsers, emoij: "👤", pageName: "Utilisateurs" },
+	{
+		sPath: "/post-categories",
+		component: DashboardPostCategories,
+		emoij: "  ",
+		pageName: "Type de biens",
+	},
+	{
+		sPath: "/sliders",
+		component: DashboardSliders,
+		emoij: "  ",
+		pageName: "Banniers",
+	},
+	// {
+	// 	sPath: "/settings",
+	// 	component: DashboardSetting,
+	// 	emoij: "  ",
+	// 	pageName: "Paramètres",
+	// },
+];

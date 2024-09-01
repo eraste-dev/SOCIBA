@@ -25,18 +25,25 @@ class PropertyCategoryController extends Controller
     {
         // Valider les données de la requête
         $request->validate([
-            'name'      => 'required|string',
-            'parent_id' => 'nullable|exists:property_categories,id',
-            'slug'      => 'required|string|unique:property_categories,slug',
-            'icon' => 'nullable|string',
-            'description'  => 'nullable|string',
+            'id'          => 'nullable|integer|exists:property_categories,id',
+            'name'        => 'required|string',
+            'parent_id'   => 'nullable|exists:property_categories,id',
+            'slug'        => 'nullable|string|unique:property_categories,slug',
+            'icon'        => 'nullable|string',
+            'description' => 'nullable|string',
             // Ajoutez d'autres règles de validation si nécessaire
         ]);
 
         // Créer une nouvelle catégorie
         try {
-            $category = PropertyCategory::create($request->all());
-            return ResponseService::success($category, 'Successfully created category');
+            if (isset($request->id)) {
+                $category = PropertyCategory::find($request->id);
+                $category->update($request->all());
+                return ResponseService::success($category, 'Successfully updated category');
+            } else {
+                $category = PropertyCategory::create($request->all());
+                return ResponseService::success($category, 'Successfully created category');
+            }
         } catch (\Throwable $th) {
             return ResponseService::error('Failed to create category');
         }
@@ -53,7 +60,5 @@ class PropertyCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
-    {
-    }
+    public function destroy(Request $request) {}
 }

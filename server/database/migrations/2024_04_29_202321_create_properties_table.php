@@ -32,6 +32,7 @@ return new class extends Migration
             $table->double('longitude')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('periodicity')->nullable();
             $table->enum('status', ['PUBLISH', 'DRAFT', 'DELETED', 'REJECTED', 'PENDING', 'BLOCKED'])->default('PENDING');
             $table->bigInteger('total_click')->default(0)->nullable();
             $table->timestamps();

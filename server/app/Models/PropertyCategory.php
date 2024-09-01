@@ -25,6 +25,8 @@ class PropertyCategory extends Model
     public function getChildren()
     {
         $children = PropertyCategory::where('parent_id', $this->id)->get();
+        // $cat = PropertyCategory::find($this->id);
+        // $children = Property::whereIn('category_id', [$this->id, $cat->parent_id])->get();
         return PropertyCategoryResource::collection($children);
     }
 

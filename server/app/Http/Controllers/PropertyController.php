@@ -6,6 +6,7 @@ use App\Http\Resources\Collection;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImages;
+use App\Services\NotificationService;
 use App\Services\ProudctPaginationService;
 use App\Services\PropertyService;
 use App\Services\ResponseService;
@@ -14,6 +15,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class PropertyController extends Controller
 {
@@ -40,19 +42,22 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
+        @ini_set('memory_limit', '128M');
+        @ini_set('post_max_size', '100M');
+        @ini_set('upload_max_filesize', '200M');
         $validator = Validator::make($request->all(), [
-            'id'                  => 'nullable|integer|exists:properties,id',
+            'id'                   => 'nullable|integer|exists:properties,id',
             'title'                => 'nullable|string',
             'category_id'          => 'nullable|integer|exists:property_categories,id',
-            'excerpt'              => 'nullable|string',
+            // 'excerpt'              => 'nullable|string',
             'content'              => 'nullable|string',
             'type'                 => 'nullable|string|in:ACHAT,VENTE,LOCATION,AUTRE',
-            'status'              => 'nullable|string', // TODO : definie in : xxx, xxx, xx
+            'status'               => 'nullable|string',
             'location_id'          => 'nullable|string|exists:municipalities,id',
             'location_description' => 'nullable|string',
             'price'                => 'nullable|numeric',
-            'deposit_price'        => 'nullable|numeric',
-            'images.*'             => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validation pour les images
+            'periodicity'          => 'nullable|string',
+            'images.*'             => 'required|file|max:10048',
         ]);
 
         if ($validator->fails()) {
@@ -69,6 +74,24 @@ class PropertyController extends Controller
             $product->updated_by = auth()->user()->id;
             if (isset($validatedData['title'])) $product->slug = Str::slug($validatedData['title']);
 
+            if (auth()->user()->type === "USER") {
+                NotificationService::notify(
+                    auth()->user(),
+                    'L\'annonce <<' . $product->title . '>> a été mise à jour',
+                    'L\'annonce <<' . $product->title . '>> a été mise à jour',
+                    [
+                        'title'   => 'L\'annonce <<' . $product->title . '>> a été mise à jour',
+                        'message' => 'L\'annonce <<' . $product->title . '>> a été mise à jour, par ' . auth()->user()->name . ' ' . auth()->user()->last_name,
+                    ]
+                );
+            } else {
+                NotificationService::notify(
+                    auth()->user(),
+                    'L\'annonce <<' . $product->title . '>> a été mise à jour',
+                    'L\'annonce <<' . $product->title . '>> a été mise à jour',
+                );
+            }
+
             $product->update($validatedData);
         } else {
             // ? CREATION
@@ -78,27 +101,54 @@ class PropertyController extends Controller
             $product->created_by           = auth()->user()->id;
             $product->title                = $validatedData['title'];
             $product->category_id          = $validatedData['category_id'];
-            $product->excerpt              = $validatedData['excerpt'];
+            // $product->excerpt              = $validatedData['excerpt'];
             $product->content              = $validatedData['content'];
             $product->type                 = $validatedData['type'];
             $product->location_id          = $validatedData['location_id'];
             $product->location_description = $validatedData['location_description'];
             $product->price                = $validatedData['price'];
-            $product->deposit_price        = $validatedData['deposit_price'];
+            // $product->deposit_price        = $validatedData['deposit_price'];
+            $product->periodicity          = $validatedData['periodicity'];
 
             $product->save();
+            if (auth()->user()->type === "USER") {
+                NotificationService::notify(
+                    auth()->user(),
+                    'Une nouvelle annonce a été ajoute',
+                    'Une nouvelle annonce a été ajoute',
+                    [
+                        'title'   => 'Une nouvelle annonce a été ajoute',
+                        'message' => 'Une nouvelle annonce a été ajoute,  veuillez valider l\'annonce',
+                    ]
+                );
+            } else {
+                NotificationService::notify(
+                    auth()->user(),
+                    'Une nouvelle annonce a été ajoute',
+                    'Une nouvelle annonce a été ajoute',
+                );
+            }
         }
 
-        if (isset($validatedData['images']) && isset($request->images)) {
-            // $product->images()->delete();
-            $images = $validatedData['images'] ?? $request->images;
-            foreach ($images as $key => $image) {
-                $filetomove = $image->getClientOriginalName() . "-" . time() . "." . $image->getClientOriginalExtension();
-                PropertyImages::create([
-                    'property_id' => $product->id,
-                    'image' => "/images/products/" . $filetomove
-                ]);
+        try {
+            if (isset($request->images)) {
+                PropertyImages::clearImage($product->id);
+                $images = $request->images;
+                foreach ($images as $key => $image) {
+                    // $filetomove = $image->getClientOriginalName() . "-" . time() . "." . $image->getClientOriginalExtension();
+                    $filetomove = $product->id . "__" . time() . "__image"  . "." . $image->getClientOriginalExtension();
+
+                    $destinationPath = public_path('assets/images/products');
+                    $image->move($destinationPath, $filetomove);
+
+                    PropertyImages::create([
+                        'property_id' => $product->id,
+                        'image'       => "/images/products/" . $filetomove
+                    ]);
+                }
             }
+        } catch (\Throwable $th) {
+            return ResponseService::error("Product created successfully", 500,);
         }
 
 

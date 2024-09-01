@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from "app/reducer/store";
 import axios from "axios";
 import { Debug } from "utils/debug.utils";
 
-interface Slider {
+export interface Slider {
 	id: string;
 	image: string;
 	title: string;
@@ -42,10 +42,64 @@ export const SliderSlice = createSlice({
 			state.loading = false;
 			state.error = action.payload;
 		},
+
+		postSlidersStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.success = false;
+			state.message = "";
+		},
+
+		postSlidersSuccess: (state, action: PayloadAction<IServerResponse>) => {
+			state.loading = false;
+			state.success = true;
+			state.message = action.payload.message;
+			state.data = undefined;
+		},
+
+		postSlidersFailure: (state, action: PayloadAction<{ error: string; errors: any }>) => {
+			state.loading = false;
+			state.success = false;
+			state.message = "";
+			state.error = action.payload.error;
+		},
+
+		deleteSlidersStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.success = false;
+			state.message = "";
+		},
+
+		deleteSlidersSuccess: (state, action: PayloadAction<IServerResponse>) => {
+			state.loading = false;
+			state.success = true;
+			state.message = action.payload.message;
+			state.data = undefined;
+		},
+
+		deleteSlidersFailure: (state, action: PayloadAction<{ error: string; errors: any }>) => {
+			state.loading = false;
+			state.success = false;
+			state.message = "";
+			state.error = action.payload.error;
+		},
 	},
 });
 
-export const { fetchSlidersStart, fetchSlidersSuccess, fetchSlidersFailure } = SliderSlice.actions;
+export const {
+	fetchSlidersStart,
+	fetchSlidersSuccess,
+	fetchSlidersFailure,
+
+	postSlidersStart,
+	postSlidersSuccess,
+	postSlidersFailure,
+
+	deleteSlidersStart,
+	deleteSlidersSuccess,
+	deleteSlidersFailure,
+} = SliderSlice.actions;
 
 export const sliderAction: IStoreAction<Slider[]> = {
 	data: (state: RootState) => state.sliders.data,

@@ -19,7 +19,12 @@ const ImageModal: React.FC<ImageModalProps> = ({ image, onClose }) => {
 					transform: "translate(-50%, -50%)",
 					bgcolor: "background.paper",
 					boxShadow: 24,
-					p: 4,
+					p: 0,
+					width: "auto",
+					height: "auto",
+					display: "flex",
+					justifyContent: "center",
+					alignContent: "center",
 				}}
 			>
 				<img src={image} alt="modal-img" className="w-full h-auto" />

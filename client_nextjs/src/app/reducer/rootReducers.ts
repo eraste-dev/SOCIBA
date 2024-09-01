@@ -10,6 +10,7 @@ import productReducer from "./products/product";
 import usersReducer from "./users/users";
 import metaReducer from "./meta/meta";
 import authReducer from "./auth/auth";
+import userRequests from "./users-request/users-request";
 import locationReducer from "./locations/locations";
 
 const rootReducers = {
@@ -26,6 +27,7 @@ const rootReducers = {
 	locations: locationReducer,
 	usersManagement: usersReducer,
 	meta: metaReducer,
+	UserRequests: userRequests,
 };
 
 export default rootReducers;

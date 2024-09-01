@@ -91,6 +91,7 @@ export interface ProductRequest {
 	id?: number;
 	title?: string;
 	category_id?: number;
+	periodicity?: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
 	excerpt?: string;
 	content?: string;
 	type?: string;

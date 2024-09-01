@@ -20,4 +20,9 @@ class PropertyImages extends Model
         'updated_at',
         'deleted_at'
     ];
+
+    public static function clearImage(string $property_id)
+    {
+        PropertyImages::where('property_id', $property_id)->delete();
+    }
 }

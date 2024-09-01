@@ -26,6 +26,7 @@ class Property extends Model
         'client_address',
         'price',
         'deposit_price',
+        'periodicity',
         'location_id',
         'location_description', // communes
         'status',

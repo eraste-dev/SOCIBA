@@ -5,6 +5,10 @@ import {
 } from "utils/query-builder.utils";
 import { ProductRequest, UpdateUserRequest } from "./api.type";
 import { IProduct } from "app/reducer/products/product";
+import { InputsEditCategory } from "components/Dashboard/Products/Categories/EditCategory";
+import { InputsEditSlider } from "containers/PageDashboard/Sliders/EditSlider";
+import { UserRequest } from "app/reducer/users-request/users-request";
+import { MovingRequestInputs } from "containers/PageMovingRequest/SectionContact";
 
 export const apiBase: string = "http://localhost:8000";
 
@@ -23,12 +27,15 @@ export interface IServerEndpoint {
 	public: {
 		sliders: {
 			get: IAxiosRequestConfig;
+			post: (product: FormData | InputsEditSlider) => IAxiosRequestConfig;
+			delete: (payload: { id: number }) => IAxiosRequestConfig;
 		};
 		locations: {
 			get: IAxiosRequestConfig;
 		};
 		properties: {
 			categories: IAxiosRequestConfig;
+			editCategory: (params: InputsEditCategory) => IAxiosRequestConfig;
 			search: (query: IGetSearchPropertiesParams) => IAxiosRequestConfig;
 			post: (product: FormData | ProductRequest) => IAxiosRequestConfig;
 			delete: (id: number) => IAxiosRequestConfig;
@@ -50,6 +57,7 @@ export interface IServerEndpoint {
 		users: {
 			getAll: IAxiosRequestConfig;
 			delete: (id: number) => IAxiosRequestConfig;
+			sendUserRequest: (payload: MovingRequestInputs) => IAxiosRequestConfig;
 		};
 		meta: {
 			search: (key: string) => IAxiosRequestConfig;
@@ -62,12 +70,26 @@ export const serverEndpoints: IServerEndpoint = {
 	public: {
 		sliders: {
 			get: { method: "GET", url: `${v100}/sliders` },
+			post: (data: FormData | InputsEditSlider) => ({
+				method: "POST",
+				url: `${v100}/admin/sliders`,
+				data,
+			}),
+			delete: (data: { id: number }) => ({
+				method: "DELETE",
+				url: `${v100}/admin/sliders`,
+				data,
+			}),
 		},
 		locations: {
 			get: { method: "GET", url: `${v100}/locations` },
 		},
 		properties: {
 			categories: { method: "GET", url: `${v100}/categories` },
+			editCategory: (params: InputsEditCategory) => ({
+				method: "PUT",
+				url: `${v100}/admin/categories`,
+			}),
 			search: (query: IGetSearchPropertiesParams) => ({
 				method: "GET",
 				url: `${v100}/properties${QueryBuilder.searchProperties(query)}`,
@@ -115,6 +137,11 @@ export const serverEndpoints: IServerEndpoint = {
 				method: "DELETE",
 				url: `${v100}/user/delete`,
 				data: { id },
+			}),
+			sendUserRequest: (payload: MovingRequestInputs) => ({
+				method: "POST",
+				url: `${v100}/user/send-request`,
+				data: payload,
 			}),
 		},
 		meta: {

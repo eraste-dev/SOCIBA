@@ -86,7 +86,7 @@ const Home: React.FC = () => {
 					categories={DEMO_CATEGORIES.filter((_, i) => i > 2 && i < 8)}
 					tags={DEMO_CATEGORIES}
 					postCardName="card11"
-					gridClass="grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+					gridClass="grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
 					className="pb-16 lg:pb-28"
 				/>
 				{/* === SECTION LATEST POSTS === */}

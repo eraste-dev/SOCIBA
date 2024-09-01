@@ -32,23 +32,42 @@ class SliderController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title'      => 'required|string',
-            'description' => 'required|string',
-            'image'      => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'id'          => 'nullable|integer|exists:sliders,id',
+            'title'       => 'nullable|string',
+            'description' => 'nullable|string',
+            'image'       => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
             return ResponseService::error($validator->errors(), 400);
         }
 
-        $imagePath = $request->file('image')->store('sliders'); // Stocke l'image dans le dossier "sliders"
+        $slider = Slider::updateOrCreate(['id' => $request->id], $request->all());
 
-        $slider = new Slider();
-        $slider->title = $request->title;
-        $slider->description = $request->description;
-        $slider->imageUrl = $imagePath; // Enregistre le chemin de l'image dans la base de données
+        try {
+            if (isset($request->image)) {
+                $image = $request->image;
 
-        $slider->save();
+                $filetomove = $slider->id . "__" . time() . "__image"  . "." . $image->getClientOriginalExtension();
+
+                $destinationPath = public_path('assets/images/sliders');
+                $image->move($destinationPath, $filetomove);
+
+                $slider->image = "/images/sliders/" . $filetomove;
+                $slider->update();
+            }
+        } catch (\Throwable $th) {
+            return ResponseService::error("Product created successfully", 500,);
+        }
+
+        // $imagePath = $request->file('image')->store('sliders'); // Stocke l'image dans le dossier "sliders"
+
+        // $slider = new Slider();
+        // $slider->title = $request->title;
+        // $slider->description = $request->description;
+        // $slider->imageUrl = $imagePath;
+
+        // $slider->save();
 
         return ResponseService::success($slider, 'Slider created successfully');
     }
@@ -79,11 +98,23 @@ class SliderController extends Controller
         return response()->json(['data' => $slider]);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:sliders,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
         // Supprimer un slider par son ID
-        $slider = Slider::findOrFail($id);
-        $slider->delete();
-        return ResponseService::success($slider, 'Slider deleted successfully');
+        $slider = Slider::findOrFail($request->id);
+        if ($slider) {
+            $slider->delete();
+            return ResponseService::success($slider, 'Slider deleted successfully');
+        }
+
+        return ResponseService::error('Slider not found', 404);
     }
 }

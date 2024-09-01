@@ -53,6 +53,7 @@ export interface IProduct {
 	isLiked: boolean;
 	like: number;
 	commentCount: number;
+	periodicity: string;
 }
 
 export type SORT_TYPE = "asc" | "desc" | "*";
@@ -414,6 +415,7 @@ export const {
 	fetchUserProductStart,
 	fetchUserProductSuccess,
 	fetchUserProductFailure,
+
 } = PropertiesSlice.actions;
 
 export const PropertyAction: IStoreAction<IStorePropertyData> = {

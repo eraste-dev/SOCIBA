@@ -6,9 +6,18 @@ interface ImageUploaderProps {
 	maxImages?: number;
 	images: string[];
 	setImages: (images: string[]) => void;
+	imageFiles: File[];
+	setImageFiles: (imageFiles: File[]) => void;
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ initialImages, maxImages = 5, images, setImages }) => {
+const ImageUploader: React.FC<ImageUploaderProps> = ({
+	initialImages,
+	maxImages = 5,
+	images,
+	setImages,
+	imageFiles,
+	setImageFiles,
+}) => {
 	const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
 	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -17,6 +26,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ initialImages, maxImages 
 		const fileArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
 		const newImages = [...images, ...fileArray].slice(0, maxImages);
 
+		setImageFiles([...imageFiles, ...Array.from(e.target.files)]);
 		setImages(newImages);
 	};
 
@@ -25,6 +35,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ initialImages, maxImages 
 		URL.revokeObjectURL(imageToDelete); // Free memory
 		const newImages = images.filter((_, i) => i !== index);
 		setImages(newImages);
+		setImageFiles(imageFiles.filter((_, i) => i !== index));
 	};
 
 	const handleImageClick = (image: string) => {
@@ -34,10 +45,12 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ initialImages, maxImages 
 	return (
 		<div className="p-4 bg-white rounded-lg shadow-md">
 			<label className="block text-sm font-medium text-gray-700">Ajoutez des photos*</label>
-			<p className="text-xs text-gray-500">Ajoutez plusieurs photos pour augmenter vos chances d'être contacté</p>
+			<p className="text-xs text-gray-500">
+				Ajoutez plusieurs photos pour augmenter vos chances d'être contacté
+			</p>
 			<div className="mt-4 flex flex-wrap gap-4">
 				{images.map((image, index) => (
-					<div key={index} className="relative w-24 h-24 border rounded overflow-hidden">
+					<div key={index} className="relative w-64 h-64 border rounded overflow-hidden">
 						<img
 							src={image}
 							alt={`upload-${index}`}
@@ -54,15 +67,23 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ initialImages, maxImages 
 					</div>
 				))}
 				{images.length < maxImages && (
-					<div className="w-24 h-24 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-						<label className="flex flex-col items-center cursor-pointer">
+					<div className="w-64 h-64 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
+						<label className="flex flex-col items-center cursor-pointer justify-center text-center">
 							<span className="text-gray-500">Ajouter une photo</span>
-							<input type="file" accept="image/*" multiple onChange={handleImageChange} className="hidden" />
+							<input
+								type="file"
+								accept="image/*"
+								multiple
+								onChange={handleImageChange}
+								className="hidden"
+							/>
 						</label>
 					</div>
 				)}
 			</div>
-			{selectedImage && <ImageModal image={selectedImage} onClose={() => setSelectedImage(null)} />}
+			{selectedImage && (
+				<ImageModal image={selectedImage} onClose={() => setSelectedImage(null)} />
+			)}
 		</div>
 	);
 };
