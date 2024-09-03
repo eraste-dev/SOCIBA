@@ -39,6 +39,16 @@ class Property extends Model
         'facebook_link',
         'video_link',
         // 'post_type',
+
+        'bathrooms',
+        'bedrooms',
+        'garages',
+        'kitchens',
+        'rooms',
+        'area',
+        'count_advance',
+        'count_monthly',
+
         'created_by',
         'updated_by',
     ];

@@ -42,14 +42,10 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        @ini_set('memory_limit', '128M');
-        @ini_set('post_max_size', '100M');
-        @ini_set('upload_max_filesize', '200M');
         $validator = Validator::make($request->all(), [
             'id'                   => 'nullable|integer|exists:properties,id',
             'title'                => 'nullable|string',
             'category_id'          => 'nullable|integer|exists:property_categories,id',
-            // 'excerpt'              => 'nullable|string',
             'content'              => 'nullable|string',
             'type'                 => 'nullable|string|in:ACHAT,VENTE,LOCATION,AUTRE',
             'status'               => 'nullable|string',
@@ -57,7 +53,16 @@ class PropertyController extends Controller
             'location_description' => 'nullable|string',
             'price'                => 'nullable|numeric',
             'periodicity'          => 'nullable|string',
+            'bathrooms'            => 'nullable|numeric',
+            'bedrooms'             => 'nullable|numeric',
+            'garages'              => 'nullable|numeric',
+            'kitchens'             => 'nullable|numeric',
+            'rooms'                => 'nullable|numeric',
+            'area'                 => 'nullable|numeric',
+            'count_advance'          => 'nullable|numeric',
+            'count_monthly' => 'nullable|numeric',
             'images.*'             => 'required|file|max:10048',
+            // 'excerpt'           => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -72,62 +77,47 @@ class PropertyController extends Controller
             $product = Property::find($validatedData['id']);
             $product->status = $validatedData['status'] ?? $product->status;
             $product->updated_by = auth()->user()->id;
-            if (isset($validatedData['title'])) $product->slug = Str::slug($validatedData['title']);
 
-            if (auth()->user()->type === "USER") {
-                NotificationService::notify(
-                    auth()->user(),
-                    'L\'annonce <<' . $product->title . '>> a été mise à jour',
-                    'L\'annonce <<' . $product->title . '>> a été mise à jour',
-                    [
-                        'title'   => 'L\'annonce <<' . $product->title . '>> a été mise à jour',
-                        'message' => 'L\'annonce <<' . $product->title . '>> a été mise à jour, par ' . auth()->user()->name . ' ' . auth()->user()->last_name,
-                    ]
-                );
-            } else {
-                NotificationService::notify(
-                    auth()->user(),
-                    'L\'annonce <<' . $product->title . '>> a été mise à jour',
-                    'L\'annonce <<' . $product->title . '>> a été mise à jour',
-                );
+            if (isset($validatedData['title'])) {
+                $product->slug = Str::slug($validatedData['title']);
             }
 
             $product->update($validatedData);
+            NotificationService::afterUpdatePost($product);
         } else {
             // ? CREATION
-            $product = new Property();
-            $product->status = 'PENDING';
+            $product                       = new Property();
+
+            // 
+            $product->status               = 'PENDING';
             $product->slug                 = Str::slug($validatedData['title']);
             $product->created_by           = auth()->user()->id;
+
             $product->title                = $validatedData['title'];
             $product->category_id          = $validatedData['category_id'];
-            // $product->excerpt              = $validatedData['excerpt'];
             $product->content              = $validatedData['content'];
             $product->type                 = $validatedData['type'];
             $product->location_id          = $validatedData['location_id'];
             $product->location_description = $validatedData['location_description'];
             $product->price                = $validatedData['price'];
-            // $product->deposit_price        = $validatedData['deposit_price'];
             $product->periodicity          = $validatedData['periodicity'];
 
+            // details
+            $product->bathrooms            = isset($validatedData['bathrooms']) ? $validatedData['bathrooms'] : null;
+            $product->bedrooms             = isset($validatedData['bedrooms']) ? $validatedData['bedrooms'] : null;
+            $product->garages              = isset($validatedData['garages']) ? $validatedData['garages'] : null;
+            $product->kitchens             = isset($validatedData['kitchens']) ? $validatedData['kitchens'] : null;
+            $product->rooms                = isset($validatedData['rooms']) ? $validatedData['rooms'] : null;
+            $product->area                 = isset($validatedData['area']) ? $validatedData['area'] : null;
+            $product->count_advance                 = isset($validatedData['count_advance']) ? $validatedData['count_advance'] : null;
+            $product->count_monthly                 = isset($validatedData['count_monthly']) ? $validatedData['count_monthly'] : null;
+ 
+
+            // $product->deposit_price        = $validatedData['deposit_price'];
+            // $product->excerpt              = $validatedData['excerpt'];
+
             $product->save();
-            if (auth()->user()->type === "USER") {
-                NotificationService::notify(
-                    auth()->user(),
-                    'Une nouvelle annonce a été ajoute',
-                    'Une nouvelle annonce a été ajoute',
-                    [
-                        'title'   => 'Une nouvelle annonce a été ajoute',
-                        'message' => 'Une nouvelle annonce a été ajoute,  veuillez valider l\'annonce',
-                    ]
-                );
-            } else {
-                NotificationService::notify(
-                    auth()->user(),
-                    'Une nouvelle annonce a été ajoute',
-                    'Une nouvelle annonce a été ajoute',
-                );
-            }
+            NotificationService::afterInsertPost();
         }
 
         try {

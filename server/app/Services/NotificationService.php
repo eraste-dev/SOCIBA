@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Property;
 use App\Models\User;
 use App\Notifications\Notifications;
 
@@ -37,6 +38,48 @@ class NotificationService
 
         foreach (User::where('type', 'USER')->get() as $user) {
             static::notify($user, $title, $message);
+        }
+    }
+
+    public static function afterUpdatePost(Property $product)
+    {
+        if (auth()->user()->type === "USER") {
+            NotificationService::notify(
+                auth()->user(),
+                'L\'annonce <<' . $product->title . '>> a été mise à jour',
+                'L\'annonce <<' . $product->title . '>> a été mise à jour',
+                [
+                    'title'   => 'L\'annonce <<' . $product->title . '>> a été mise à jour',
+                    'message' => 'L\'annonce <<' . $product->title . '>> a été mise à jour, par ' . auth()->user()->name . ' ' . auth()->user()->last_name,
+                ]
+            );
+        } else {
+            NotificationService::notify(
+                auth()->user(),
+                'L\'annonce <<' . $product->title . '>> a été mise à jour',
+                'L\'annonce <<' . $product->title . '>> a été mise à jour',
+            );
+        }
+    }
+
+    public static function  afterInsertPost()
+    {
+        if (auth()->user()->type === "USER") {
+            NotificationService::notify(
+                auth()->user(),
+                'Une nouvelle annonce a été ajoute',
+                'Une nouvelle annonce a été ajoute',
+                [
+                    'title'   => 'Une nouvelle annonce a été ajoute',
+                    'message' => 'Une nouvelle annonce a été ajoute,  veuillez valider l\'annonce',
+                ]
+            );
+        } else {
+            NotificationService::notify(
+                auth()->user(),
+                'Une nouvelle annonce a été ajoute',
+                'Une nouvelle annonce a été ajoute',
+            );
         }
     }
 }

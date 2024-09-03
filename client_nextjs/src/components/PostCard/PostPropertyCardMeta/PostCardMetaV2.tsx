@@ -33,7 +33,8 @@ const PostPropertyCardMetaV2: FC<PostPropertyCardMetaV2Props> = ({
 			>
 				{/* author.href */}
 				<Link to={""} className="relative flex items-center space-x-2">
-					{!hiddenAvatar && (
+					{/* ! DEAD CODE **************************************************** */}
+					{!hiddenAvatar && false && (
 						<Avatar
 							radius="rounded-full"
 							sizeClass={
@@ -43,11 +44,12 @@ const PostPropertyCardMetaV2: FC<PostPropertyCardMetaV2Props> = ({
 							userName={author.name}
 						/>
 					)}
+					{/* ! DEAD CODE **************************************************** */}
 
-					<div className="lg:flex flex-col text-xs md:text-md" >
+					<div className="lg:flex flex-col text-xs md:text-md">
 						<div className="lg:flex block items-center align-middle text-xs md:text-md">
 							{"Annonceur : "}
-							<strong className="ml-1" >
+							<strong className="ml-1">
 								<span className="line-clamp-1 text-xs md:text-md">{` ${author.name} ${author.last_name}`}</span>{" "}
 							</strong>
 						</div>

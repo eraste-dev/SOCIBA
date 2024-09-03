@@ -43,10 +43,9 @@ class PropertySeeder extends Seeder
                 ",
                 'address' => 'Cocody',
                 'client_address' => 'Cocody',
-                'type' => $faker->randomElement(['ACHAT', 'VENTE', 'LOCATION', 'AUTRE']),
-                'price' => $faker->numberBetween(500000, 90000000),
+                'type' => 'LOCATION',
+                'price' => $faker->numberBetween(50000, 200000),
                 // 'deposit_price' => $faker->numberBetween(70000, 2000000),
-                // 'post_type' => $faker->randomElement(POST_TYPE),
                 'location_id' => $faker->numberBetween(1, 10),
                 'location_description' => 'Cocody Riviera Attoban',
                 'video_link' =>  null,
@@ -54,7 +53,7 @@ class PropertySeeder extends Seeder
                 'longitude' => $faker->longitude,
                 'created_by' => $faker->numberBetween(1, 2),
                 'updated_by' => $faker->numberBetween(1, 2),
-                'status' => Utils::STATE_PUBLISH(), // Assuming PROPERTY_STATUS contains these values
+                'status' => Utils::STATE_PUBLISH(),
                 'total_click' => $faker->numberBetween(500, 5000),
             ],
         ];
@@ -96,7 +95,6 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Yopougon',
                 'type' => 'LOCATION',
                 'price' => 1500000,
-                // 'deposit_price' => 1000000,
                 'location_id' => 5,
                 'location_description' => 'Yopougon',
                 'video_link' => null,
@@ -107,6 +105,7 @@ class PropertySeeder extends Seeder
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 800,
                 'periodicity' => 'MONTH'
+                // 'deposit_price' => 1000000,
             ],
             [
                 'category_id' => 1,
@@ -619,7 +618,7 @@ class PropertySeeder extends Seeder
         ];
 
         foreach ($data as $key => $value) {
-            Property::create($value);
+            // Property::create($value);
         }
     }
 }

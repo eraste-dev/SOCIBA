@@ -87,11 +87,12 @@ export type UpdateUserRequest = {
 	avatar?: File | null;
 };
 
+export type PeriodicityType = "DAY" | "WEEK" | "MONTH" | "YEAR";
 export interface ProductRequest {
 	id?: number;
 	title?: string;
 	category_id?: number;
-	periodicity?: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
+	periodicity?: PeriodicityType;
 	excerpt?: string;
 	content?: string;
 	type?: string;
@@ -101,4 +102,13 @@ export interface ProductRequest {
 	price?: number;
 	deposit_price?: number;
 	images?: FileList | string[] | null;
+	// details
+	bathrooms: number | null;
+	bedrooms: number | null;
+	garages: number | null;
+	kitchens: number | null;
+	rooms: number | null;
+	area: number | null;
+	count_advance: number | null;
+	count_monthly: number | null;
 }

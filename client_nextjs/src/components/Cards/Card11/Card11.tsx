@@ -12,7 +12,7 @@ import CategoryPropertyBadgeOne from "components/CategoryPropertyBadgeList/Categ
 import PostCardLikeAndComment from "components/PostCard/PostCardLikeAndComment/PostCardLikeAndComment";
 import PostCardSaveAction from "components/PostCard/PostCardSaveAction/PostCardSaveAction";
 import CategoryPropertyBadgeTwo from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeTwo";
-import { PERIODICITY_LIST } from "containers/PageDashboard/DashboardSubmitPost";
+import { PERIODICITY_LIST, PRODUCT_TYPE } from "containers/PageDashboard/DashboardSubmitPost";
 
 export interface Card11Props {
 	className?: string;
@@ -37,6 +37,9 @@ const Card11: FC<Card11Props> = ({
 		location,
 		location_description,
 		periodicity,
+		count_advance,
+		count_monthly,
+		type,
 	} = post;
 	const [isHover, setIsHover] = useState(false);
 	const dispatch = useAppDispatch();
@@ -92,20 +95,24 @@ const Card11: FC<Card11Props> = ({
 					</div>
 
 					<div className=" grid grid-cols-subgrid lg:col-span-4 text-justify col-span-6">
+						{/* SHOW PRICE *********************************************************************** */}
 						<div className="w-full flex lg:justify-end justify-start mt-2 lg:mt-0 ">
 							<span className="nc-card-title block font-bold text-primary-800 dark:text-neutral-100 md:text-base text-xs ">
 								{_f(price)}
 
-								{PERIODICITY_LIST.find(
-									(_periodicity) => _periodicity.name === periodicity
-								)?.name &&
-									" / " +
-										PERIODICITY_LIST.find(
-											(_periodicity) => _periodicity.name === periodicity
-										)?.name}
+								{periodicity &&
+									PERIODICITY_LIST.find((p) => p.id === periodicity) && (
+										<>
+											{` / ` +
+												PERIODICITY_LIST.find((p) => p.id === periodicity)
+													?.name}
+										</>
+									)}
 							</span>
 						</div>
+						{/* SHOW PRICE *********************************************************************** */}
 
+						{/* ! DEAD CODE *************************************************** */}
 						<div className="w-full flex lg:justify-end justify-start ">
 							{deposit_price && false && (
 								<p className="nc-card-title block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs ">
@@ -113,6 +120,31 @@ const Card11: FC<Card11Props> = ({
 								</p>
 							)}
 						</div>
+						{/* ! DEAD CODE *************************************************** */}
+
+						{type && type === PRODUCT_TYPE[0] && (
+							<>
+								{/* MOIS DE LOYER *************************************************** */}
+								{count_monthly && (
+									<div className="w-full flex lg:justify-end justify-start ">
+										<p className="block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs ">
+											{`${count_monthly} mois de loyer`}
+										</p>
+									</div>
+								)}
+								{/* MOIS DE LOYER *************************************************** */}
+
+								{/* MOIS D'AVANCE *************************************************** */}
+								{count_advance && (
+									<div className="w-full flex lg:justify-end justify-start ">
+										<p className="block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs ">
+											{`${count_advance} mois d'avance`}
+										</p>
+									</div>
+								)}
+								{/* MOIS D'AVANCE *************************************************** */}
+							</>
+						)}
 					</div>
 				</div>
 

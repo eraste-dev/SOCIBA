@@ -33,6 +33,16 @@ return new class extends Migration
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('periodicity')->nullable();
+            // details
+            $table->integer('bathrooms')->nullable();
+            $table->integer('bedrooms')->nullable();
+            $table->integer('garages')->nullable();
+            $table->integer('kitchens')->nullable();
+            $table->integer('rooms')->nullable();
+            $table->string('area')->nullable();
+            $table->integer('count_advance')->nullable(); // mois d'avance
+            $table->double('count_monthly')->nullable(); // mois de loyer
+
             $table->enum('status', ['PUBLISH', 'DRAFT', 'DELETED', 'REJECTED', 'PENDING', 'BLOCKED'])->default('PENDING');
             $table->bigInteger('total_click')->default(0)->nullable();
             $table->timestamps();

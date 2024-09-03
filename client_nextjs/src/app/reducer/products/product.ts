@@ -54,6 +54,15 @@ export interface IProduct {
 	like: number;
 	commentCount: number;
 	periodicity: string;
+	//details
+	bathrooms: number | null;
+	bedrooms: number | null;
+	garages: number | null;
+	kitchens: number | null;
+	rooms: number | null;
+	area: number | null;
+	count_advance: number;
+	count_monthly: number;
 }
 
 export type SORT_TYPE = "asc" | "desc" | "*";
@@ -426,7 +435,6 @@ export const {
 	fetchAllPropertiesStart,
 	fetchAllPropertiesSuccess,
 	fetchAllPropertiesFailure,
-
 
 	searchPropertiesStart,
 	searchPropertiesSuccess,

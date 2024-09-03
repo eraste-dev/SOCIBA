@@ -17,7 +17,7 @@ import {
 } from "app/axios/actions/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
-import { ProductRequest } from "app/axios/api.type";
+import { PeriodicityType, ProductRequest } from "app/axios/api.type";
 import { ILocation, LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import { useSnackbar } from "notistack";
@@ -28,8 +28,11 @@ import { route } from "routers/route";
 import { useBoolean } from "react-use";
 import ImageUploader from "components/Dashboard/Products/ImageUploader";
 import { formatPrice } from "utils/utils";
+import DetailBien from "./FormPart/DetailBien";
 
-export const PRODUCT_TYPE = ["LOCATION", "ACHAT", "VENTE", "AUTRE"];
+export type IProductType = "LOCATION" | "ACHAT" | "VENTE" | "AUTRE";
+
+export const PRODUCT_TYPE: IProductType[] = ["LOCATION", "ACHAT", "VENTE", "AUTRE"];
 
 export const PERIODICITY_LIST: { id: string; name: string }[] = [
 	{ id: "MONTH", name: "Mois" },
@@ -78,19 +81,6 @@ const DashboardSubmitPost = () => {
 		getValues,
 	} = useForm<ProductRequest>();
 
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const files = e.target.files;
-		const urls = [];
-		if (files) {
-			for (let i = 0; i < files.length; i++) {
-				const url = URL.createObjectURL(files[i]);
-				urls.push(url);
-			}
-		}
-		setValue("images", files);
-		setPreviewUrls(urls);
-	};
-
 	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
 		console.log("SubmitHandler", data);
 		console.log("SubmitHandler imageFiles", imageFiles);
@@ -120,10 +110,6 @@ const DashboardSubmitPost = () => {
 		dispatch(postProduct(formData));
 	};
 
-	const getCategoryByID = (id: number) => {
-		return categories?.filter((_cat) => _cat.id === id)[0] || null;
-	};
-
 	const isCategorySelected = (category: IPropertyCategory) => {
 		const checked = !!(defaultValue && category.id === defaultValue.category_id);
 		return checked;
@@ -132,21 +118,6 @@ const DashboardSubmitPost = () => {
 	const isLocationSelected = (location: ILocation) => {
 		const checked = !!(defaultValue && location.id.toString() === defaultValue.location_id);
 		return checked;
-	};
-
-	const handleOpenLightbox = (url: string) => {
-		setCurrentImage(url);
-		setOpenLightbox(true);
-	};
-
-	const handleCloseLightbox = () => {
-		setCurrentImage(null);
-		setOpenLightbox(false);
-	};
-
-	const handleOnDeleteLightbox = (index: number) => {
-		setCurrentImage(null);
-		setPreviewUrls(previewUrls.filter((item: any, i: number) => i !== index));
 	};
 
 	const initForm = (value: ProductRequest) => {
@@ -190,6 +161,15 @@ const DashboardSubmitPost = () => {
 				price: product.price,
 				deposit_price: product.deposit_price,
 				// images: null,
+				area: product.area,
+				bathrooms: product.bathrooms,
+				bedrooms: product.bedrooms,
+				garages: product.garages,
+				kitchens: product.kitchens,
+				rooms: product.rooms,
+				periodicity: product.periodicity as PeriodicityType,
+				count_advance: product.count_advance,
+				count_monthly: product.count_monthly,
 			};
 			setDefaultValue(value);
 			setImages(product.images.map((image) => image.image));
@@ -269,121 +249,6 @@ const DashboardSubmitPost = () => {
 			</h3>
 			{/* grid md:grid-cols-2 gap-6 */}
 			<form className="" onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-				{/* SECTION 01 */}
-				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6  mb-5">
-					<div className="grid md:grid-cols-2 gap-6">
-						{/* TITLE */}
-						<label className="block md:col-span-2">
-							<Label>
-								Titre <span className="text-red-500">*</span>
-							</Label>
-							<Input
-								type="text"
-								className="mt-1"
-								{...register("title", { required: true })}
-								defaultValue={(defaultValue && defaultValue.title) ?? ""}
-							/>
-							<ErrorMessage
-								errors={errorArray}
-								error="title"
-								customMessage="Veuillez choisir un titre"
-							/>
-						</label>
-
-						{/* PRICE - DEPOSIT PRICE */}
-						<label className="block md:col-span-2">
-							<div className="grid grid-cols-3 gap-6">
-								<div className="col-span-2">
-									<Label>
-										Prix / Caution <span className="text-red-500">*</span>
-										<div className="flex items-center">
-											<Input
-												type="number"
-												className="mt-1"
-												defaultValue={product && product.price}
-												{...register("price", { required: true })}
-											/>
-
-											<span className="text-lg ml-2 text-neutral-300">
-												{formatPrice(product && product.price)} {CURRENCY}
-											</span>
-											<span className="text-lg ml-2 text-neutral-300">
-												{" "}
-												{CURRENCY}{" "}
-											</span>
-										</div>
-									</Label>
-									<ErrorMessage
-										errors={errorArray}
-										error="price"
-										customMessage="Veuillez saisir un prix"
-									/>
-								</div>
-
-								<div>
-									<div className="block md:col-span-2 p-2">
-										<Select
-											name="periodicity"
-											className="mt-4"
-											onChange={(event) =>
-												setValue(
-													"periodicity",
-													event.target.value as
-														| "DAY"
-														| "WEEK"
-														| "MONTH"
-														| "YEAR"
-												)
-											}
-										>
-											<option value="">Choisir une périodicité</option>
-											{PERIODICITY_LIST.map((p) => (
-												<option
-													key={p.id}
-													value={p.id}
-													// selected={isCategorySelected(category)}
-													selected={product && product.periodicity === p.id	}
-												>
-													{p.name}
-												</option>
-											))}
-										</Select>
-									</div>
-
-									{false && (
-										<>
-											<label className="block md:col-span-2">
-												Caution <span className="text-red-500">*</span>
-												<div className="flex items-center">
-													<Input
-														type="number"
-														// defaultValue={
-														// 	product && product.deposit_price
-														// }
-														className="mt-1"
-														{...register("deposit_price", {
-															required: true,
-														})}
-													/>
-													<span className="text-lg ml-2 text-neutral-300">
-														{" "}
-														{CURRENCY}{" "}
-													</span>
-												</div>
-											</label>
-											<ErrorMessage
-												errors={errorArray}
-												error="deposit_price"
-												customMessage="Veuillez saisir une caution"
-											/>
-										</>
-									)}
-								</div>
-							</div>
-						</label>
-					</div>
-				</div>
-
 				{/* SECTION 02 */}
 				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
 					<div className="grid md:grid-cols-2 gap-6 mb-5">
@@ -528,6 +393,177 @@ const DashboardSubmitPost = () => {
 							</div>
 						</label>
 					</div>
+
+					<DetailBien
+						errorArray={errorArray}
+						register={register}
+						product={product}
+						setValue={setValue}
+						typeDeBien={
+							(getValues("type") as IProductType) ?? (PRODUCT_TYPE[0] as IProductType)
+						}
+					/>
+				</div>
+
+				{/* SECTION 01 */}
+				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6  mb-5">
+					<div className="grid md:grid-cols-2 gap-6">
+						{/* TITLE */}
+						<label className="block md:col-span-2">
+							<Label>
+								Titre <span className="text-red-500">*</span>
+							</Label>
+							<Input
+								type="text"
+								className="mt-1"
+								{...register("title", { required: true })}
+								defaultValue={(defaultValue && defaultValue.title) ?? ""}
+							/>
+							<ErrorMessage
+								errors={errorArray}
+								error="title"
+								customMessage="Veuillez choisir un titre"
+							/>
+						</label>
+
+						{/* PRICE - DEPOSIT PRICE */}
+						<label className="block md:col-span-2">
+							<div className="grid grid-cols-4 gap-6">
+								<div className="col-span-2">
+									<Label>
+										Prix <span className="text-red-500">*</span>
+										<div className="flex items-center">
+											<Input
+												type="number"
+												className="mt-1"
+												defaultValue={product && product.price}
+												{...register("price", { required: true })}
+											/>
+
+											{/* <span className="text-lg ml-2 text-neutral-300">
+												{formatPrice(product && product.price)} {CURRENCY}
+											</span> */}
+											<span className="text-lg ml-2 text-neutral-300">
+												{CURRENCY}{" "}
+											</span>
+										</div>
+									</Label>
+									<ErrorMessage
+										errors={errorArray}
+										error="price"
+										customMessage="Veuillez saisir un prix"
+									/>
+								</div>
+
+								<div>
+									<div className="block md:col-span-2 p-2">
+										<Select
+											name="periodicity"
+											className="mt-4"
+											onChange={(event) =>
+												setValue(
+													"periodicity",
+													event.target.value as
+														| "DAY"
+														| "WEEK"
+														| "MONTH"
+														| "YEAR"
+												)
+											}
+										>
+											<option value="">Choisir une périodicité</option>
+											{PERIODICITY_LIST.map((p) => (
+												<option
+													key={p.id}
+													value={p.id}
+													// selected={isCategorySelected(category)}
+													selected={
+														product && product.periodicity === p.id
+													}
+												>
+													{p.name}
+												</option>
+											))}
+										</Select>
+									</div>
+
+									{false && (
+										<>
+											<label className="block md:col-span-2">
+												Caution <span className="text-red-500">*</span>
+												<div className="flex items-center">
+													<Input
+														type="number"
+														// defaultValue={
+														// 	product && product.deposit_price
+														// }
+														className="mt-1"
+														{...register("deposit_price", {
+															required: true,
+														})}
+													/>
+													<span className="text-lg ml-2 text-neutral-300">
+														{" "}
+														{CURRENCY}{" "}
+													</span>
+												</div>
+											</label>
+											<ErrorMessage
+												errors={errorArray}
+												error="deposit_price"
+												customMessage="Veuillez saisir une caution"
+											/>
+										</>
+									)}
+								</div>
+							</div>
+
+							{(getValues("type") === PRODUCT_TYPE[0] ||
+								PRODUCT_TYPE[0] == "LOCATION") && (
+								<div className="grid grid-cols-4 gap-6 mt-3">
+									<div className="col-span-2">
+										<Label>
+											Mois de loyer
+											<div className="flex items-center">
+												<Input
+													type="number"
+													className="mt-1"
+													min={0}
+													defaultValue={product && product.count_monthly}
+													{...register("count_monthly")}
+												/>
+											</div>
+										</Label>
+										<ErrorMessage
+											errors={errorArray}
+											error="price"
+											customMessage="Veuillez saisir un prix"
+										/>
+									</div>
+
+									<div className="col-span-2">
+										<Label>
+											Mois d'avance
+											<div className="flex items-center">
+												<Input
+													type="number"
+													className="mt-1"
+													min={0}
+													defaultValue={product && product.count_advance}
+													{...register("count_advance")}
+												/>
+											</div>
+										</Label>
+										<ErrorMessage
+											errors={errorArray}
+											error="price"
+											customMessage="Veuillez saisir un prix"
+										/>
+									</div>
+								</div>
+							)}
+						</label>
+					</div>
 				</div>
 
 				{/* SECTION 03 */}
@@ -550,37 +586,44 @@ const DashboardSubmitPost = () => {
 				{/* SECTION 04 */}
 				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
 					<div className="grid md:grid-cols-2 gap-6 ">
-						{/* EXCERPT */}
-						<label className="block md:col-span-2">
-							<Label>Description</Label>
-							<Textarea
-								className="mt-1"
-								rows={4}
-								maxLength={250}
-								defaultValue={product && product.excerpt}
-								{...register("excerpt")}
-							/>
-							<p className="mt-1 text-sm text-neutral-500">
-								Donnez une description détaillée de votre article. N’indiquez pas
-								vos coordonnées (e-mail, téléphones, …) dans la description.
-							</p>
-							{watch("excerpt") && (
-								<span
-									className={
-										((watch("excerpt") && watch("excerpt")!.length) ?? 0) == 250
-											? "text-red-500"
-											: "text-neutral-500"
-									}
-								>
-									{watch("excerpt") && watch("excerpt")!.length} / 250
-								</span>
-							)}
-							<ErrorMessage
-								errors={errorArray}
-								error="excerpt"
-								customMessage="Veuillez ajouter une description"
-							/>
-						</label>
+						{/* ! NOT USED */}
+						{false && (
+							<>
+								{/* EXCERPT */}
+								<label className="block md:col-span-2">
+									<Label>Description</Label>
+									<Textarea
+										className="mt-1"
+										rows={4}
+										maxLength={250}
+										// defaultValue={product && product.excerpt}
+										{...register("excerpt")}
+									/>
+									<p className="mt-1 text-sm text-neutral-500">
+										Donnez une description détaillée de votre article.
+										N’indiquez pas vos coordonnées (e-mail, téléphones, …) dans
+										la description.
+									</p>
+									{watch("excerpt") && (
+										<span
+											className={
+												((watch("excerpt") && watch("excerpt")!.length) ??
+													0) == 250
+													? "text-red-500"
+													: "text-neutral-500"
+											}
+										>
+											{watch("excerpt") && watch("excerpt")!.length} / 250
+										</span>
+									)}
+									<ErrorMessage
+										errors={errorArray}
+										error="excerpt"
+										customMessage="Veuillez ajouter une description"
+									/>
+								</label>
+							</>
+						)}
 
 						{/* CONTENT */}
 						<label className="block md:col-span-2">
