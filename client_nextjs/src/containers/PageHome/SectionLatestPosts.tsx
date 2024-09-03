@@ -31,7 +31,7 @@ export interface SectionLatestPostsProps {
 }
 
 const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
-	heading = "Dernières Annonces",
+	heading = "Publiées récements",
 	gridClass = "",
 	className = "",
 }) => {
@@ -81,8 +81,10 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 			// Function cleanup or unsubscribe logic here
 		};
 	}, [dispatch, data, useStateFilter, previousFilterRef, searchParamsFromRedux]);
+
 	const fetchAll = () => {
 		if (useStateFilter) {
+			// const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
 			const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
 			console.log(params, "searchParamsFromURL()");
 			return dispatch(fetchAllProperties(params));
@@ -99,16 +101,26 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 				<Heading>{heading}</Heading>
 			</div>
 
-			<FloatFilter
+			{/* <FloatFilter
 				useStateFilter={useStateFilter}
 				setUseStateFilter={setUseStateFilter}
 				showFilter={showFilter}
 				toggleFilter={toggleFilter}
 				fetchAll={fetchAll}
-			/>
+			/> */}
 
 			<div className="flex flex-col lg:flex-row">
-				<div className="w-full lg:w-4/4 xl:w-5/5 lg:pl-7">
+				<div className="w-full lg:w-1/4 xl:w-1/5">
+					<FloatFilter
+						useStateFilter={useStateFilter}
+						setUseStateFilter={setUseStateFilter}
+						showFilter={showFilter}
+						toggleFilter={toggleFilter}
+						fetchAll={fetchAll}
+						noFloating={true}
+					/>
+				</div>
+				<div className="w-full lg:w-3/4 xl:w-4/5 lg:pl-7">
 					{loading && loading ? (
 						<CardSkeleton arrayLength={8} />
 					) : (

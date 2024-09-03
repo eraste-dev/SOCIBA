@@ -132,18 +132,20 @@ class Property extends Model
     public static function requestSearch(): array
     {
         $payload = [
-            'id'         => request()->id ?? null,
-            'slug'       => request()->slug ?? null,
-            'category'   => request()->category ?? null,
-            'categories' => request()->categories ?? null,
-            'location_id' => request()->location_id ?? null,
-            'locations' => request()->locations ?? null,
-            'location' => request()->location ?? null,
-            'top_seed'   => request()->top ?? false,
-            'limit'      => request()->limit ?? 84,
-            'created_by' => request()->created_by ?? null,
-            'page'       => request()->page ?? 1,
-            'price_sort' => request()->price_sort ?? null,
+            'searchText'         => request()->searchText ?? null,
+            'id'                 => request()->id ?? null,
+            'slug'               => request()->slug ?? null,
+            'category'           => request()->category ?? null,
+            'category_slug'      => request()->category_slug ?? null,
+            'categories'         => request()->categories ?? null,
+            'location_id'        => request()->location_id ?? null,
+            'locations'          => request()->locations ?? null,
+            'location'           => request()->location ?? null,
+            'top_seed'           => request()->top ?? false,
+            'limit'              => request()->limit ?? 84,
+            'created_by'         => request()->created_by ?? null,
+            'page'               => request()->page ?? 1,
+            'price_sort'         => request()->price_sort ?? null,
             'deposit_price_sort' => request()->deposit_price_sort ?? null
         ];
 

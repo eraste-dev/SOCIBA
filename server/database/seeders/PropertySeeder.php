@@ -82,6 +82,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 2,
@@ -105,6 +106,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 800,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 1,
@@ -128,6 +130,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1500,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 4,
@@ -151,6 +154,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 2000,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 5,
@@ -174,6 +178,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1000,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 3,
@@ -197,6 +202,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1800,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 2,
@@ -220,6 +226,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 1,
@@ -243,6 +250,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1500,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 4,
@@ -266,6 +274,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 2200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 5,
@@ -289,6 +298,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1000,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 3,
@@ -312,6 +322,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 2,
@@ -335,6 +346,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 800,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 1,
@@ -358,6 +370,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1500,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 4,
@@ -381,6 +394,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 2000,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 5,
@@ -404,6 +418,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1000,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 3,
@@ -427,6 +442,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1800,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 2,
@@ -450,6 +466,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 1,
@@ -473,6 +490,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1500,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 4,
@@ -496,6 +514,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 2200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 5,
@@ -519,6 +538,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1000,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 3,
@@ -556,6 +576,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 4,
@@ -593,6 +614,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 2,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 2000,
+                'periodicity' => 'MONTH'
             ],
         ];
 

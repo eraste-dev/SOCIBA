@@ -17,16 +17,31 @@ class PropertyCategorySeeder extends Seeder
         // Catégories principales
         $categories = [
             [
-                'name' => 'Maison', 'slug' => 'maison', 'icon' => '', 'description' => ''
+                'name' => 'Maison',
+                'slug' => 'maison',
+                'icon' => '',
+                'description' => ''
             ],
             [
-                'name' => 'Magasin', 'slug' => 'magasin', 'icon' => '', 'description' => ''
+                'name' => 'Magasin',
+                'slug' => 'magasin',
+                'icon' => '',
+                'description' => ''
             ],
             [
-                'name' => 'Entrepot', 'slug' => 'entrepot', 'icon' => '', 'description' => ''
+                'name' => 'Entrepot',
+                'slug' => 'entrepot',
+                'icon' => '',
+                'description' => ''
             ],
-            ['name' => 'Location', 'slug' => 'location', 'icon' => '', 'description' => ''],
+            // ['name' => 'Location', 'slug' => 'location', 'icon' => '', 'description' => ''],
             ['name' => '', 'slug' => '', 'icon' => '', 'description' => ''],
+            [
+                'name' => 'Achat',
+                'slug' => 'achat',
+                'icon' => '',
+                'description' => ''
+            ],
         ];
 
         // Insérer les catégories principales
@@ -39,11 +54,12 @@ class PropertyCategorySeeder extends Seeder
             // Sous-catégories pour la catégorie principale "Maison"
             if ($category->name === 'Maison') {
                 $subCategories = [
+                    ['name' => 'Appartement', 'slug' => 'appartement',],
+                    ['name' => 'Bureau', 'slug' => 'bureau',],
                     ['name' => 'Studio', 'slug' => 'studio',],
-                    ['name' => '2 pièces', 'slug' => '2 pièces',],
-                    ['name' => '3 pièces', 'slug' => '3 pièces',],
-                    ['name' => '2 Chambres salon', 'slug' => '2-chambre-salon',],
-                    ['name' => '4 Chambres salon', 'slug' => '4-chambre-salon',],
+                    ['name' => '2 pièces', 'slug' => '2-pièces',],
+                    ['name' => '3 pièces', 'slug' => '3-pièces',],
+                    ['name' => '4 pièces', 'slug' => '4-pièces',],
                     ['name' => 'Villa', 'slug' => 'villa',],
                     ['name' => 'Duplex', 'slug' => 'duplex',],
                     ['name' => 'Triplex', 'slug' => 'triplex',],
@@ -61,6 +77,37 @@ class PropertyCategorySeeder extends Seeder
                 $subCategories = [
                     ['name' => 'Espace à louer', 'slug' => 'espace-a-louer',],
                     ['name' => 'Autres', 'slug' => 'autres',],
+                ];
+
+                foreach ($subCategories as $subCategoryData) {
+                    $category->children()->create([
+                        'name' => $subCategoryData['name'],
+                        'slug' => $subCategoryData['slug'],
+                    ]);
+                }
+            }
+
+            if ($category->name === 'Reservation') {
+                $subCategories = [
+                    ['name' => 'Résidence ', 'slug' => 'residence',],
+                    ['name' => 'Hôtel', 'slug' => 'hotel',],
+                ];
+
+                foreach ($subCategories as $subCategoryData) {
+                    $category->children()->create([
+                        'name' => $subCategoryData['name'],
+                        'slug' => $subCategoryData['slug'],
+                    ]);
+                }
+            }
+
+
+            if ($category->name === 'Achat') {
+                $subCategories = [
+                    ['name' => 'Maison ', 'slug' => 'achat-maison',],
+                    ['name' => 'Terrain', 'slug' => 'terrain',],
+                    ['name' => 'Entrepôt', 'slug' => 'entrepôt',],
+                    ['name' => 'Magasin', 'slug' => 'achat-magasin',],
                 ];
 
                 foreach ($subCategories as $subCategoryData) {

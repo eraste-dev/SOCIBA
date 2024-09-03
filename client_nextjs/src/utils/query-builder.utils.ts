@@ -6,6 +6,7 @@ export interface IGetQueryParams {
 }
 
 export interface IGetSearchPropertiesParams {
+	searchText?: string;
 	id?: number | string;
 	slug?: string;
 	category?: number;
@@ -91,6 +92,10 @@ export const searchParamsFromURL = () => {
 
 	if (urlParams.has("slug")) {
 		params.slug = urlParams.get("slug") ?? "*";
+	}
+
+	if (urlParams.has("category_slug")) {
+		params.slug = urlParams.get("category_slug") ?? "*";
 	}
 
 	if (urlParams.has("category")) {

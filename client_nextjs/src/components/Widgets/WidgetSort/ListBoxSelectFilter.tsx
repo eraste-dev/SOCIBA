@@ -22,7 +22,8 @@ const ListBoxSelectFilter: React.FC<IListBoxSelectFilterProps> = ({
 	const handleChange = (event: SelectChangeEvent<string>) => {
 		const selectedValue = event.target.value;
 		const selectedItem = options.find((item) => item.value === selectedValue);
-		if (selectedItem) {
+		console.log("selectedItem :: ", selectedItem);
+		if (selectedItem && selectedItem.value) {
 			onChange(selectedItem);
 		}
 	};
@@ -34,7 +35,10 @@ const ListBoxSelectFilter: React.FC<IListBoxSelectFilterProps> = ({
 				fullWidth
 				labelId="select-filter-label"
 				id="select-filter"
-				onChange={handleChange}
+				onChange={(e) => {
+					console.log("LixBox :: ", e.target.value);
+					handleChange(e as any);
+				}}
 			>
 				{options.map((item) => (
 					<MenuItem

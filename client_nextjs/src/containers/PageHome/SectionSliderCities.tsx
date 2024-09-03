@@ -26,7 +26,7 @@ const SectionSliderCities: FC<SectionSliderCitiesProps> = ({
 	className = "",
 	categoryCardType = "card2",
 	sliderStype = "style1",
-	perView = 5,
+	perView = 8,
 	uniqueSliderClass,
 }) => {
 	const UNIQUE_CLASS = "SectionSliderCities_" + ncNanoId(uniqueSliderClass);
@@ -52,6 +52,7 @@ const SectionSliderCities: FC<SectionSliderCitiesProps> = ({
 		breakpoints: {
 			1280: { perView: perView - 1 },
 			1023: { perView: perView - 2 || 1.2, gap: 20 },
+			576: { perView: 3.2, gap: 20 },
 		},
 	});
 

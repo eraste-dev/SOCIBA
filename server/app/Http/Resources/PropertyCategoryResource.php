@@ -13,6 +13,7 @@ class PropertyCategoryResource extends JsonResource
         return [
             'id'           => $this->id,
             'name'         => $this->name,
+            'slug'         => $this->slug,
             'href'         => "/annonces/" . $this->slug,
             'description'  => $this->description,
             'thumbnail'    => $this->icon,

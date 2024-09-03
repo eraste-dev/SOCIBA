@@ -47,6 +47,9 @@ import {
 	fetchSimilarsSuccess,
 	fetchSimilarsFailure,
 	fetchSimilarsStart,
+	searchPropertiesStart,
+	searchPropertiesFailure,
+	searchPropertiesSuccess,
 } from "app/reducer/products/product";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import {
@@ -156,6 +159,25 @@ export const fetchAllProperties =
 			);
 		} catch (error: any) {
 			dispatch(fetchAllPropertiesFailure(error.message));
+		}
+	};
+
+export const searchProperties =
+	(query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
+		dispatch(searchPropertiesStart());
+
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.properties.search(query),
+			});
+			dispatch(
+				searchPropertiesSuccess({
+					data: response.data,
+					pagination: response.pagination || undefined,
+				})
+			);
+		} catch (error: any) {
+			dispatch(searchPropertiesFailure(error.message));
 		}
 	};
 

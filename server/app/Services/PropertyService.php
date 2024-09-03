@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Http\Resources\Collection;
 use App\Http\Resources\PropertyResource;
+use App\Models\Municipality;
 use App\Models\Property;
+use App\Models\PropertyCategory;
 use App\Models\Slider;
 use App\Utils\Utils;
 
@@ -19,6 +21,73 @@ class PropertyService
     public static function search(array $payload)
     {
         $query = Property::query();
+        $queryCategory = PropertyCategory::query();
+        $queryLocation = Municipality::query();
+
+        $all_locations = Municipality::all();
+        $categories = PropertyCategory::all();
+        $categoriesSearch = [];
+
+        if ($payload['searchText'] && $payload['searchText'] !== '*') {
+            $query->where(
+                'title',
+                'like',
+                '%' . $payload['searchText'] . '%'
+            );
+
+            $query->orWhere(
+                'content',
+                'like',
+                '%' . $payload['searchText'] . '%'
+            );
+
+            $query->orWhere(
+                'excerpt',
+                'like',
+                '%' . $payload['searchText'] . '%'
+            );
+
+            $query->orWhere(
+                'price',
+                'like',
+                '%' . $payload['searchText'] . '%'
+            );
+
+            $queryCategory->where(
+                'name',
+                'like',
+                '%' . $payload['searchText'] . '%'
+            );
+
+            $queryLocation->where(
+                'name',
+                'like',
+                '%' . $payload['searchText'] . '%'
+            );
+            $categories = $queryCategory->get();
+
+            foreach ($categories as $category) {
+                $query->orWhere(
+                    'category_id',
+                    $category->id
+                );
+            }
+
+            $all_locations = $queryLocation->get();
+            foreach ($all_locations as $location) {
+                $query->orWhere(
+                    'location_id',
+                    $location->id
+                );
+            }
+
+            // * SEARCH BY LOCATION DESCRIPTION
+            $query->orWhere(
+                'location_description',
+                'like',
+                '%' . $payload['searchText'] . '%'
+            );
+        }
 
         // Filtre par ID si spécifié
         if ($payload['id']) {
@@ -36,6 +105,11 @@ class PropertyService
         // Filtre par catégorie si spécifiée
         if ($payload['category'] && $payload['category'] !== '*') {
             $query->where('category_id', $payload['category']);
+        }
+
+        if ($payload['category_slug'] && $payload['category_slug'] !== '*') {
+            $cat = PropertyCategory::where('slug', $payload['category_slug'])->first();
+            $query->where('category_id', $cat->id);
         }
 
         // Filtre par plusieurs catégories si spécifiées

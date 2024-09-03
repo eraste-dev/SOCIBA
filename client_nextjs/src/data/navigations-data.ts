@@ -16,20 +16,23 @@ const href = (id: string | number) => {
 
 const NAV_COLUMN_ONE: NavItemType[] = [
 	createNavItem("Maison à louer", href(1)),
+	createNavItem("Appartement", href(1)),
 	createNavItem("Espace à louer", href(1)),
 	createNavItem("Magasin à louer", href(1)),
-	createNavItem("Entrepôt à louer etc…", href(1)),
+	createNavItem("Entrepôt à louer", href(1)),
+	createNavItem("Autres", href(1)),
 ];
 
 const NAV_COLUMN_TWO: NavItemType[] = [
-	createNavItem("Résidence disponible", href(1)),
-	createNavItem("Hôtel disponible etc…", href(2)),
+	createNavItem("Résidence", href(1)),
+	createNavItem("Hôtel", href(2)),
 ];
 
 const NAV_COLUMN_THREE: NavItemType[] = [
 	createNavItem("Maison", href(1)),
 	createNavItem("Terrain", href(2)),
-	createNavItem("Entrepôt, de meubles etc", href(3)),
+	createNavItem("Entrepôt", href(3)),
+	createNavItem("Magasin", href(3)),
 ];
 
 const NAV_COLUMN_FOUR: NavItemType[] = [
@@ -44,7 +47,7 @@ const MEGA_MENU1: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
 		image: "../images/default/p-474x232.png",
-		title: "location",
+		title: "Location",
 		items: NAV_COLUMN_ONE.map((i) => i),
 	},
 ];
@@ -62,7 +65,7 @@ const MEGA_MENU3: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
 		image: "../images/default/p-474x232.png",
-		title: "vente",
+		title: "Achats",
 		items: NAV_COLUMN_THREE.map((i) => i),
 	},
 ];

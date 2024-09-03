@@ -6,11 +6,16 @@ import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/
 import { useSelector } from "react-redux";
 import { fetchAllProperties } from "app/axios/actions/api.action";
 import { useHistory, useLocation } from "react-router-dom";
-import { IGetSearchPropertiesParams, searchParamsFromRedux } from "utils/query-builder.utils";
+import {
+	IGetSearchPropertiesParams,
+	searchParamsFromRedux,
+	searchParamsFromURL,
+} from "utils/query-builder.utils";
 import Loading from "components/UI/Loading";
 import ProductFilterSidebar from "components/Widgets/ProductFilterSidebar";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 import FloatFilter from "components/Widgets/FloatFilter";
+import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -32,6 +37,7 @@ const ListProducts: FC<ListProductsProps> = ({
 	const history = useHistory();
 
 	const products = useAppSelector(PropertyAction.data)?.all?.get;
+	const categories = useAppSelector(CategoryAction.data);
 	const filters = useAppSelector(PropertyAction.data)?.filters;
 	const loading = useSelector(PropertyAction.data)?.all?.loading;
 
@@ -43,6 +49,21 @@ const ListProducts: FC<ListProductsProps> = ({
 	const [isFetched, setIsFetched] = useState<IPropertyFilter>({});
 	const [showFilter, setShowFilter] = useState(false);
 	const toggleFilter = () => setShowFilter(!showFilter);
+
+	const FLAT_CATEGORIES = () => {
+		let data: IPropertyCategory[] = [];
+
+		categories?.forEach((category) => {
+			data.push(category);
+			if (category.children) {
+				category.children.forEach((child) => {
+					data.push(child);
+				});
+			}
+		});
+
+		return data;
+	};
 
 	useEffect(() => {
 		if (!products && !loading) {
@@ -65,9 +86,20 @@ const ListProducts: FC<ListProductsProps> = ({
 
 	const fetchAll = () => {
 		if (useStateFilter) {
-			const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
-			console.log(params, "searchParamsFromURL()");
-			return dispatch(fetchAllProperties(params));
+			// const params: IGetSearchPropertiesParams = searchParamsFromURL(useStateFilter);
+
+			const params: IGetSearchPropertiesParams = {};
+			const urlParams = new URLSearchParams(window.location.search);
+
+			console.log(params, urlParams, "searchParamsFromURL()");
+			const cat = FLAT_CATEGORIES().find(
+				(cat) => cat.slug === urlParams.get("category_slug")
+			);
+			
+			if (cat) {
+				params.category = cat.id;
+			}
+			return dispatch(fetchAllProperties({ category: 2 }));
 		}
 	};
 
@@ -85,20 +117,26 @@ const ListProducts: FC<ListProductsProps> = ({
 				<Heading>{heading}</Heading>
 			</div>
 
-			<FloatFilter
+			{/* <FloatFilter
 				useStateFilter={useStateFilter}
 				setUseStateFilter={setUseStateFilter}
 				showFilter={showFilter}
 				toggleFilter={toggleFilter}
 				fetchAll={fetchAll}
-			/>
+			/> */}
 
 			<div className="flex flex-col lg:flex-row">
-				{false && (
-					<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
-						{/* <ProductFilterSidebar fetchAll={fetchAll} /> */}
-					</div>
-				)}
+				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
+					{/* <ProductFilterSidebar fetchAll={fetchAll} /> */}
+					<FloatFilter
+						useStateFilter={useStateFilter}
+						setUseStateFilter={setUseStateFilter}
+						showFilter={showFilter}
+						toggleFilter={toggleFilter}
+						fetchAll={fetchAll}
+						noFloating={true}
+					/>
+				</div>
 
 				{/*  xl:pl-14 lg:pl-7 */}
 				<div className="w-full lg:w-4/4 xl:w-6/6 ">

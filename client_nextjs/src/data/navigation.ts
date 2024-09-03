@@ -83,7 +83,7 @@ const megaMenu3ItemDemo: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
 		image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
-		title: "vente",
+		title: "Achat",
 		items: NAV_COLUMN_THREE.map((i) => i),
 	},
 	{
@@ -414,7 +414,7 @@ export const NAVIGATION_SHORT_DEMO: NavItemType[] = [
 	{
 		id: ncNanoId(),
 		href: "#",
-		name: "Vente",
+		name: "Achat",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU3,
 	},

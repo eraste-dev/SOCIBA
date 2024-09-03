@@ -42,7 +42,7 @@ const Home: React.FC = () => {
 			<div className="container relative">
 				{/* === SECTION HERO === */}
 				{/* className="pt-10 pb-16 md:py-16 lg:py-28" */}
-				<SectionHeroSlider className="pb-16 " />
+				<SectionHeroSlider className="pb-0" />
 				{/* === SECTION HERO === */}
 
 				{/* === SECTION CITIES === */}
@@ -53,7 +53,7 @@ const Home: React.FC = () => {
 				/> */}
 
 				<SectionSliderCities
-					className=""
+					className="mb-2"
 					categoryCardType="card1"
 					heading=" "
 					subHeading="Ou souhaitez-vous trouver votre logement ?"
@@ -71,9 +71,9 @@ const Home: React.FC = () => {
 
 				{/* === SECTION TOP POSTS === */}
 				<SectionSliderPosts
-					className="py-16 lg:py-28"
+					className="pt-8 pb-5"
 					postCardName="card11"
-					heading="Les meilleures publisations actuellement"
+					heading="Les meilleures publications actuellement"
 					subHeading=""
 					uniqueSliderClass="slider-top"
 				/>
@@ -86,7 +86,7 @@ const Home: React.FC = () => {
 					categories={DEMO_CATEGORIES.filter((_, i) => i > 2 && i < 8)}
 					tags={DEMO_CATEGORIES}
 					postCardName="card11"
-					gridClass="grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+					gridClass="grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3	"
 					className="pb-16 lg:pb-28"
 				/>
 				{/* === SECTION LATEST POSTS === */}

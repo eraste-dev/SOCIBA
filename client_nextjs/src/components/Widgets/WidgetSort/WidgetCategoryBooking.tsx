@@ -7,7 +7,7 @@ import { route } from "routers/route";
 import { updateParamsUrl } from "utils/utils";
 import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "./ListBoxSelectFilter";
 import { useSelector } from "react-redux";
-import { CategoryAction } from "app/reducer/products/propertiy-category";
+import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 
 export interface WidgetCategoryBookingProps {
 	className?: string;
@@ -25,6 +25,21 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 	const categories = useAppSelector(CategoryAction.data);
 	const categoriesLoading = useAppSelector(CategoryAction.loading);
 
+	const flatCategories = () => {
+		let data: IPropertyCategory[] = [];
+
+		categories?.forEach((category) => {
+			data.push(category);
+			if (category.children) {
+				category.children.forEach((child) => {
+					data.push(child);
+				});
+			}
+		});
+
+		return data;
+	};
+
 	/**
 	 * A function to handle the change of category.
 	 *
@@ -32,9 +47,12 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 	 * @return {void} No return value.
 	 */
 	const handleChangeCategory = (item: IListBoxSelectFilterWidget): void => {
-		const category = categories?.find((category) => category.id.toString() === item.value);
+		const category = flatCategories()?.find((category) => category.slug === item.value);
+		console.log("handleChangeCategory", flatCategories());
+		console.log("handleChangeCategory", item, category);
 		if (!category) return;
-		updateParamsUrl("category", item.value);
+		updateParamsUrl("category_slug", item.value);
+		// updateParamsUrl("category", item.value);
 		dispatch(setFilters({ category: category.id }));
 		handleFetch && handleFetch();
 	};
@@ -45,22 +63,31 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 	 * @return {IListBoxSelectFilterWidget[]} The list of IListBoxSelectFilterWidget items
 	 */
 	function CATEGORIES(): IListBoxSelectFilterWidget[] {
-		let data: IListBoxSelectFilterWidget[] = [{ name: "Tous(*)", value: "*" }];
+		let data: IListBoxSelectFilterWidget[] = [
+			{ name: "Tous(*)", value: "*" },
+			{ name: "Residence", value: "residence" },
+			{ name: "Hôtel", value: "hotel" },
+			{ name: "Maison", value: "maison" },
+			{ name: "Bureau", value: "bureau" },
+			{ name: "Magasin", value: "magasin" },
+			{ name: "Enrepôt", value: "entrepot" },
+			{ name: "Terrain", value: "terrain" },
+		];
 
-		if (categories && categories.length > 0) {
-			categories.forEach((category) => {
-				data.push({ name: category.name, value: category.id.toString(), selected: false });
-				// if (category && category.children && category.children.length > 0) {
-				// 	category.children.forEach((child) => {
-				// 		data.push({
-				// 			name: child.name,
-				// 			value: child.id.toString(),
-				// 			selected: false,
-				// 		});
-				// 	});
-				// }
-			});
-		}
+		// if (categories && categories.length > 0) {
+		// 	categories.forEach((category) => {
+		// 		data.push({ name: category.name, value: category.id.toString(), selected: false });
+		// 		if (category && category.children && category.children.length > 0) {
+		// 			category.children.forEach((child) => {
+		// 				data.push({
+		// 					name: ">>>>>" + child.name,
+		// 					value: child.id.toString(),
+		// 					selected: false,
+		// 				});
+		// 			});
+		// 		}
+		// 	});
+		// }
 
 		return data;
 	}
@@ -88,7 +115,7 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 				<ListBoxSelectFilter
 					onChange={handleChangeCategory}
 					options={CATEGORIES()}
-					label="Reservation des biens"
+					label="Vous recherchez ?"
 					labelID="category-booking"
 				/>
 			</div>

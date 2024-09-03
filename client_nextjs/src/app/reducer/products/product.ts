@@ -84,6 +84,7 @@ export interface IPropertyFilter {
 	categories?: number[];
 	locations?: number[];
 	neighborhood?: string;
+	textSearch?: string;
 	category?: number;
 	date?: "all" | "week" | "month" | "year";
 	page?: number;
@@ -123,6 +124,7 @@ const failProductDataAction = (message: string = "") => {
 
 export interface IStorePropertyData {
 	all?: IStoreDataStateItem<IProduct[] | undefined>;
+	search?: IStoreDataStateItem<IProduct[] | undefined>;
 	user?: IStoreDataStateItem<IProduct[] | undefined>;
 	paginate?: IPagination;
 	features?: IStoreDataStateItem<IProduct[] | undefined>;
@@ -191,6 +193,39 @@ export const PropertiesSlice = createSlice({
 			state.data = {
 				...state.data,
 				all: createStoreDataStateItem(undefined, false, false, action.payload),
+				paginate: undefined,
+			};
+			// state.error = action.payload;
+		},
+
+		searchPropertiesStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.data = {
+				...state.data,
+				search: createStoreDataStateItem(undefined, true),
+				single: undefined,
+			};
+			state.success = false;
+			state.message = "";
+		},
+		searchPropertiesSuccess: (
+			state,
+			action: PayloadAction<{ data: IProduct[]; pagination: IPagination | undefined }>
+		) => {
+			state.loading = false;
+			state.error = null;
+			// paginate: action.payload?.pagination
+			state.data = {
+				...state.data,
+				search: createStoreDataStateItem(action.payload?.data, false, true),
+			};
+		},
+		searchPropertiesFailure: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.data = {
+				...state.data,
+				search: createStoreDataStateItem(undefined, false, false, action.payload),
 				paginate: undefined,
 			};
 			// state.error = action.payload;
@@ -391,6 +426,12 @@ export const {
 	fetchAllPropertiesStart,
 	fetchAllPropertiesSuccess,
 	fetchAllPropertiesFailure,
+
+
+	searchPropertiesStart,
+	searchPropertiesSuccess,
+	searchPropertiesFailure,
+
 	fetchSinglePropertiesStart,
 	fetchSinglePropertiesSuccess,
 	fetchSinglePropertiesFailure,
@@ -415,7 +456,6 @@ export const {
 	fetchUserProductStart,
 	fetchUserProductSuccess,
 	fetchUserProductFailure,
-
 } = PropertiesSlice.actions;
 
 export const PropertyAction: IStoreAction<IStorePropertyData> = {
