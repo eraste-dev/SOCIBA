@@ -30,9 +30,14 @@ import ImageUploader from "components/Dashboard/Products/ImageUploader";
 import { formatPrice } from "utils/utils";
 import DetailBien from "./FormPart/DetailBien";
 
-export type IProductType = "LOCATION" | "ACHAT" | "VENTE" | "AUTRE";
+export type IProductType = "LOCATION" | "BIEN EN VENTE" | "RESERVATION" | "AUTRE";
 
-export const PRODUCT_TYPE: IProductType[] = ["LOCATION", "ACHAT", "VENTE", "AUTRE"];
+export const TYPE_LOCATION_KEY: number = 0;
+export const TYPE_BIEN_EN_VENTE_KEY: number = 1;
+export const TYPE_RESERVATION_KEY: number = 2;
+export const TYPE_AUTRE_KEY: number = 3;
+
+export const PRODUCT_TYPE: IProductType[] = ["LOCATION", "BIEN EN VENTE", "RESERVATION", "AUTRE"];
 
 export const PERIODICITY_LIST: { id: string; name: string }[] = [
 	{ id: "MONTH", name: "Mois" },
@@ -276,7 +281,7 @@ const DashboardSubmitPost = () => {
 								<div>
 									<Label>
 										Type de bien <span className="text-red-500">*</span>
-										{defaultValue?.category_id}
+										{/* {defaultValue?.category_id} */}
 									</Label>
 
 									<div className="block md:col-span-2 p-2">

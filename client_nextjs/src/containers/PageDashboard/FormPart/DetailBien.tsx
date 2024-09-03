@@ -9,6 +9,7 @@ import React, { FC } from "react";
 import { UseFormRegister } from "react-hook-form";
 import { FaAdjust, FaBath, FaRecycle } from "react-icons/fa";
 import { IProductType } from "../DashboardSubmitPost";
+import { Fastfood, Kitchen, PhotoSizeSelectSmallTwoTone } from "@mui/icons-material";
 
 export interface DetailBienProps {
 	register: UseFormRegister<ProductRequest>;
@@ -29,14 +30,13 @@ const DetailBien: FC<DetailBienProps> = ({
 	const Detaillocation = () => {
 		return (
 			<>
-				<div className="grid grid-cols-4 gap-6">
+				<div className="grid grid-cols-3 gap-6">
 					{/* SUPERFICIE */}
 					<div>
 						<Label>Superficie</Label>
-
 						<div className="block md:col-span-2 p-2">
 							<div className="flex  " style={{ alignItems: "center" }}>
-								<FaAdjust size={iconSize} className="mr-2" />
+								<PhotoSizeSelectSmallTwoTone className="mr-2" />
 								<Input
 									type="number"
 									className="mt-1"
@@ -54,7 +54,7 @@ const DetailBien: FC<DetailBienProps> = ({
 
 					{/* SALE DE BAIN */}
 					<div>
-						<Label>Salle(s) de bain</Label>
+						<Label>Nombre de salle(s) de bain</Label>
 						<div className="block md:col-span-2 p-2">
 							<div className="flex  " style={{ alignItems: "center" }}>
 								<FaBath size={iconSize} className="mr-2" />
@@ -63,6 +63,27 @@ const DetailBien: FC<DetailBienProps> = ({
 									className="mt-1"
 									defaultValue={(product && product.bathrooms) ?? 0}
 									{...register("bathrooms")}
+								/>
+							</div>
+							<ErrorMessage
+								errors={errorArray}
+								error="location_description"
+								customMessage="Veuillez saisir un quartier"
+							/>
+						</div>
+					</div>
+
+					{/* CUISINE */}
+					<div>
+						<Label>Nombre de cuisine</Label>
+						<div className="block md:col-span-2 p-2">
+							<div className="flex  " style={{ alignItems: "center" }}>
+								<Kitchen className="mr-2" />
+								<Input
+									type="number"
+									className="mt-1"
+									defaultValue={(product && product.kitchens) ?? 0}
+									{...register("kitchens")}
 								/>
 							</div>
 							<ErrorMessage

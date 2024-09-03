@@ -13,6 +13,7 @@ import PostCardLikeAndComment from "components/PostCard/PostCardLikeAndComment/P
 import PostCardSaveAction from "components/PostCard/PostCardSaveAction/PostCardSaveAction";
 import CategoryPropertyBadgeTwo from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeTwo";
 import { PERIODICITY_LIST, PRODUCT_TYPE } from "containers/PageDashboard/DashboardSubmitPost";
+import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
 
 export interface Card11Props {
 	className?: string;
@@ -167,6 +168,8 @@ const Card11: FC<Card11Props> = ({
 						{/* <PostCardSaveAction className="relative" postData={post} /> */}
 					</div>
 				)}
+
+				{post && <PostCardDetailMeta meta={post} />}
 
 				{post && post.author && post.author.href && <PostPropertyCardMetaV2 meta={post} />}
 			</div>
