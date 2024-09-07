@@ -267,7 +267,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }
 				{item.type && (
 					<ChevronDownIcon className="ml-2 h-4 w-4 text-neutral-500" aria-hidden="true" />
 				)}
-				{item.isNew && (
+				{true && (
 					<span className="bg-red-500 text-white text-[10px] px-1.5 py-1 leading-none rounded-md ml-2">
 						New!
 					</span>
@@ -299,6 +299,11 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }
 
 	// ===================== MENU MAIN MENU =====================
 	const renderMainItem = (item: NavItemType) => {
+		const dispatch = useAppDispatch();
+		const onClickItem = () => {
+			dispatch(inittPropertyList());
+		};
+
 		return item.targetBlank ? (
 			<a
 				target="_blank"
@@ -323,6 +328,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }
 				to={{
 					pathname: item.href || undefined,
 				}}
+				onClick={() => onClickItem()}
 				activeClassName="!font-semibold !text-neutral-900 bg-neutral-100 dark:bg-neutral-800 dark:!text-neutral-100"
 			>
 				{item.name}

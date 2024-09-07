@@ -21,6 +21,7 @@ export interface IGetSearchPropertiesParams {
 	category?: number | "*";
 	category_slug?: string;
 	type?: string;
+	category_uuid?: string;
 	categories?: number[];
 	top?: boolean;
 	orderBy?: SORT_TYPE;

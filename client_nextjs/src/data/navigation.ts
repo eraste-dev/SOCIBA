@@ -19,6 +19,10 @@ export const linkByType = (type: IProductType) => {
 	return route("annonces") + "/?type=" + type;
 };
 
+export const linkByUuid = (uuid: string) => {
+	return route("annonces") + "/?category_uuid=" + uuid;
+};
+
 const megaMenuDemo: MegamenuItem[] = [
 	{
 		id: ncNanoId(),

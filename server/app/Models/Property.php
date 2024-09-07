@@ -154,6 +154,7 @@ class Property extends Model
             'slug'               => request()->slug ?? null,
             'category'           => request()->category ?? null,
             'category_slug'      => request()->category_slug ?? null,
+            'category_uuid'      => request()->category_uuid ?? null,
             'categories'         => request()->categories ?? null,
             'location_id'        => request()->location_id ?? null,
             'locations'          => request()->locations ?? null,

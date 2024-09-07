@@ -67,7 +67,7 @@ class PropertyController extends Controller
             'bath'                 => 'nullable|numeric', // |boolean
             'WiFi'                 => 'nullable|numeric', // |boolean
             'pool'                 => 'nullable|numeric', // |boolean
-            'air_conditioning'     => 'nullable|numeric', // |boolean
+            'air_conditioning'     => 'nullable', // |boolean
             'images.*'             => 'required|file|max:10048',
             // 'excerpt'           => 'nullable|string',
         ]);
@@ -88,7 +88,9 @@ class PropertyController extends Controller
             if (isset($validatedData['title'])) {
                 $product->slug = Str::slug($validatedData['title']);
             } else {
-                $product->slug = Str::slug($validatedData['type'] . '-' . $product->id);
+                if(isset($validatedData['type'])) {
+                    $product->slug = Str::slug($validatedData['type'] . '-' . $product->id);
+                }
             }
 
             $product->update($validatedData);
@@ -127,7 +129,7 @@ class PropertyController extends Controller
             $product->bath                 = isset($validatedData['bath']) ? $validatedData['bath'] : null;
             $product->WiFi                 = isset($validatedData['WiFi']) ? $validatedData['WiFi'] : null;
             $product->pool                 = isset($validatedData['pool']) ? $validatedData['pool'] : null;
-            $product->air_conditioning     = isset($validatedData['air_conditioning']) ? $validatedData['air_conditioning'] : null;
+            $product->air_conditioning     = isset($validatedData['air_conditioning']) ? boolval($validatedData['air_conditioning']) : null;
 
 
             // $product->deposit_price        = $validatedData['deposit_price'];

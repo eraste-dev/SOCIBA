@@ -2,6 +2,7 @@ import { MegamenuItem, NavItemType } from "components/Navigation/NavigationItem"
 import { IProductType } from "containers/PageDashboard/DashboardSubmitPost";
 import { route } from "routers/route";
 import ncNanoId from "utils/ncNanoId";
+import { ProductcategoryUUID } from "./categories_uuid";
 
 const createNavItem = (name: string, href: string) => {
 	return {
@@ -11,13 +12,13 @@ const createNavItem = (name: string, href: string) => {
 	};
 };
 
-const href = (id: string | number, type: IProductType | undefined = undefined) => {
-// const href = (uid: string) => {
-	if (type) {
-		return route("annonces") + "/?category=" + id + "&type=" + type;
-	}
-	return route("annonces") + "/?category=" + id;
-	// return route("annonces") + "/?category_uuid=" + uid;
+// const href = (id: string | number, type: IProductType | undefined = undefined) => {
+const href = (uid: string) => {
+	// if (type) {
+	// 	return route("annonces") + "/?category=" + id + "&type=" + type;
+	// }
+	// return route("annonces") + "/?category=" + id;
+	return route("annonces") + "/?category_uuid=" + uid;
 };
 
 export const CAT_KEY_ID = {
@@ -39,25 +40,25 @@ export const CAT_KEY_ID = {
 };
 
 const NAV_COLUMN_ONE: NavItemType[] = [
-	createNavItem("Maison à louer", href(CAT_KEY_ID.MAISON, "LOCATION")),
-	createNavItem("Appartement", href(CAT_KEY_ID.APPARTEMENT, "LOCATION")),
-	createNavItem("Espace à louer", href(CAT_KEY_ID.ESPACE, "LOCATION")),
-	createNavItem("Magasin à louer", href(CAT_KEY_ID.MAGASIN, "LOCATION")),
-	createNavItem("Entrepôt à louer", href(CAT_KEY_ID.ENTREPOT, "LOCATION")),
-	createNavItem("Bureau à louer", href(CAT_KEY_ID.BUREAU, "LOCATION")),
+	createNavItem("Maison à louer", href(ProductcategoryUUID.MAISON.key)),
+	createNavItem("Appartement", href(ProductcategoryUUID.MAISON.children.APPARTEMENT)),
+	createNavItem("Espace à louer", href(ProductcategoryUUID.ENTREPOT.children.ESPACE_A_LOUER)),
+	createNavItem("Magasin à louer", href(ProductcategoryUUID.MAGASIN.key)),
+	createNavItem("Entrepôt à louer", href(ProductcategoryUUID.ENTREPOT.children.ESPACE_A_LOUER)),
+	createNavItem("Bureau à louer", href(ProductcategoryUUID.MAISON.children.BUREAU)),
 	// createNavItem("Autres", href(CAT_KEY_ID.OTHER, "LOCATION")),
 ];
 
 const NAV_COLUMN_TWO: NavItemType[] = [
-	createNavItem("Résidence", href(CAT_KEY_ID.RESIDENCE)),
-	createNavItem("Hôtel", href(CAT_KEY_ID.HOTEL)),
+	createNavItem("Résidence", href(ProductcategoryUUID.RESERVATION.children.RESIDENCE)),
+	createNavItem("Hôtel", href(ProductcategoryUUID.RESERVATION.children.HOTEL)),
 ];
 
 const NAV_COLUMN_THREE: NavItemType[] = [
-	createNavItem("Maison", href(CAT_KEY_ID.VENTE_MAISON)),
-	createNavItem("Terrain", href(CAT_KEY_ID.VENTE_TERRAIN)),
-	createNavItem("Entrepôt", href(CAT_KEY_ID.VENTE_ENTREPOT)),
-	createNavItem("Magasin", href(CAT_KEY_ID.VENTE_MAGASIN)),
+	createNavItem("Maison", href(ProductcategoryUUID.BIEN_EN_VENTE.children.MAISON)),
+	createNavItem("Terrain", href(ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN)),
+	createNavItem("Entrepôt", href(ProductcategoryUUID.BIEN_EN_VENTE.children.ENTREPOT)),
+	createNavItem("Magasin", href(ProductcategoryUUID.BIEN_EN_VENTE.children.MAGASIN)),
 ];
 
 const NAV_COLUMN_FOUR: NavItemType[] = [

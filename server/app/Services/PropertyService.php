@@ -128,6 +128,20 @@ class PropertyService
             $query->whereIn('category_id', explode(',', $payload['categories']));
         }
 
+        if (isset($payload['category_uuid']) && $payload['category_uuid'] !== '*') {
+            $cat = PropertyCategory::where('uuid', $payload['category_uuid'])->first();
+            if ($cat && $cat->parent_id == null) {
+                $cats = PropertyCategory::where('parent_id', $cat->id)->get();
+                foreach ($cats as $c) {
+                    $query->orWhere('category_id', $c->id);
+                }
+            } else {
+                if ($cat != null && $cat->id) {
+                    $query->where('category_id', $cat->id);
+                }
+            }
+        }
+
         if ($payload['created_by'] && $payload['created_by'] !== '*') {
             $query->where('created_by', $payload['created_by']);
         }

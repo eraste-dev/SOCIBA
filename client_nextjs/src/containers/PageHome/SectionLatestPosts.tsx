@@ -90,6 +90,7 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 			const neighborhood = urlSearchParams.get("neighborhood");
 			const category_slug = urlSearchParams.get("category_slug");
 			const type = urlSearchParams.get("type");
+			const category_uuid = urlSearchParams.get("category_uuid");
 
 			console.log("urlSearchParams", {
 				price_sort: price_sort,
@@ -97,6 +98,7 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 				searchText: neighborhood,
 				category_slug: category_slug,
 				type: type,
+				category_uuid: category_uuid,
 			});
 
 			if (price_sort) {
@@ -117,6 +119,10 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 
 			if (type) {
 				params.type = type;
+			}
+
+			if (category_uuid) {
+				params.category_uuid = category_uuid;
 			}
 
 			return dispatch(fetchAllProperties(params));

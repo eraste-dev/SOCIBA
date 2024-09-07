@@ -11,6 +11,7 @@ import Loading from "components/UI/Loading";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 import FloatFilter from "components/Widgets/FloatFilter";
 import { CategoryAction } from "app/reducer/products/propertiy-category";
+import NoDataMessage from "components/NoDataMessage";
 
 export const getParams = (): IGetSearchPropertiesParams => {
 	const params: IGetSearchPropertiesParams = {};
@@ -21,6 +22,7 @@ export const getParams = (): IGetSearchPropertiesParams => {
 	const neighborhood = urlSearchParams.get("neighborhood");
 	const category_slug = urlSearchParams.get("category_slug");
 	const type = urlSearchParams.get("type");
+	const category_uuid = urlSearchParams.get("category_uuid");
 
 	console.log("urlSearchParams", {
 		price_sort: price_sort,
@@ -28,6 +30,7 @@ export const getParams = (): IGetSearchPropertiesParams => {
 		searchText: neighborhood,
 		category_slug: category_slug,
 		type: type,
+		category_uuid: category_uuid,
 	});
 
 	if (price_sort) {
@@ -48,6 +51,10 @@ export const getParams = (): IGetSearchPropertiesParams => {
 
 	if (type) {
 		params.type = type;
+	}
+
+	if (category_uuid) {
+		params.category_uuid = category_uuid;
 	}
 
 	return params;
@@ -135,6 +142,9 @@ const ListProducts: FC<ListProductsProps> = ({
 							{products && products.map((post) => renderCard(post))}
 						</div>
 					)}
+
+					{products?.length === 0 && <NoDataMessage />}
+
 					<div className="flex flex-col mt-12 md:mt-20 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-center sm:items-center">
 						{/* <Pagination /> */}
 						{/* <ButtonPrimary>Show me more</ButtonPrimary> */}

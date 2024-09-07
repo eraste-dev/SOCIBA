@@ -118,6 +118,7 @@ const DashboardSubmitPost = () => {
 		data.pool = data.pool ? 1 : 0;
 		data.WiFi = data.WiFi ? 1 : 0;
 		data.acd = data.acd ? 1 : 0;
+		data.acd = data.air_conditioning ? 1 : 0;
 
 		if (!data.category_id) {
 			if (categorySelected) {

@@ -75,14 +75,14 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item }) => {
 					{item.count_monthly && (
 						<div className="w-full flex lg:justify-end justify-start ">
 							<p className="block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs ">
-								{`${item.count_monthly} mois de loyer`}
+								{`Caution: ${item.count_monthly} mois`}
 							</p>
 						</div>
 					)}
 					{/* MOIS DE LOYER *************************************************** */}
 
 					{/* MOIS D'AVANCE *************************************************** */}
-					{item.count_advance && (
+					{item.count_advance && false && (
 						<div className="w-full flex lg:justify-end justify-start ">
 							<p className="block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs ">
 								{`${item.count_advance} mois d'avance`}

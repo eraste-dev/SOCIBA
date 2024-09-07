@@ -8,9 +8,14 @@ import LogoSvg from "./LogoSvg";
 import NcImage from "components/NcImage/NcImage";
 import { route } from "routers/route";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllProperties, initProductState } from "app/axios/actions/api.action";
+import {
+	fetchAllProperties,
+	initProductState,
+	inittPropertyList,
+} from "app/axios/actions/api.action";
 import { searchParamsFromRedux } from "utils/query-builder.utils";
 import { PropertyAction } from "app/reducer/products/product";
+import Button from "components/Button/Button";
 
 export interface LogoProps {}
 
@@ -27,11 +32,27 @@ const Logo: React.FC<LogoProps> = ({}) => {
 		history.push(route("home"));
 	};
 
+	const onClickItem = () => {
+		dispatch(inittPropertyList());
+		history.push(route("home"));
+	};
+
 	return (
-		<a href="/" className="ttnc-logo inline-block text-primary-6000">
+		<a onClick={onClickItem} className="ttnc-logo inline-block text-primary-6000 cursor-pointer ">
+			{/* href="/" */}
 			<span className="flex items-center">
-				<NcImage src={logoImgTwo} className="hidden md:blockhidden" style={{ height: 85, width: "auto" }} alt="logo" />
-				<NcImage src={logoImg} className="block md:block" style={{ height: 55, width: "auto" }} alt="logo" />
+				<NcImage
+					src={logoImgTwo}
+					className="hidden md:blockhidden"
+					style={{ height: 85, width: "auto" }}
+					alt="logo"
+				/>
+				<NcImage
+					src={logoImg}
+					className="block md:block"
+					style={{ height: 55, width: "auto" }}
+					alt="logo"
+				/>
 			</span>
 
 			{/* {imgLight && !img && <NcImage src={imgLight} alt="logo" />} */}
