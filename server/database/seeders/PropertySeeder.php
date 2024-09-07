@@ -58,19 +58,20 @@ class PropertySeeder extends Seeder
             ],
         ];
 
+
         $data = [
             [
-                'category_id' => 3,
-                'title' => 'Vente villa duplex 5 pièces - Cocody Riviera Attoban',
-                'slug' => 'vente-villa-duplex-5-pièces-cocody-riviera-attoban',
+                'category_id' => 2,
+                'title' => 'Villa duplex 5 pièces - Cocody Riviera Attoban',
+                'slug' => 'villa-duplex-5-pièces-cocody-riviera-attoban',
                 'excerpt' => 'À vendre une très belle duplex de 5 pièces situé à cocody riviera attoban. elle est composé de: ',
                 'content' => "
                 À vendre une très belle duplex de 5 pièces situé à cocody riviera attoban. elle est composé de: 3 chambres non autonomes une très grande cuisine un grand salon ⁠toilette centrale pour les 3 chambres une chambre principale autonome + un balcon une dépendance autonome toilette visiteur un garage de 2 véhicules cour avant, cour arrière superficie : 300m2 prix : 170 millions document : cpf
                 ",
                 'address' => 'Cocody',
                 'client_address' => 'Cocody',
-                'type' => 'VENTE',
-                'price' => 17000000,
+                'type' => 'LOCATION',
+                'price' => 170000,
                 // 'deposit_price' => 1200000,
                 'location_id' => 7,
                 'location_description' => 'Cocody Riviera Attoban',
@@ -81,10 +82,15 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1200,
-                'periodicity' => 'MONTH'
+                'periodicity' => 'MONTH',
+                'bathrooms' => 1,
+                'kitchens' => 1,
+                'area' => 300,
+                'count_advance' => 5,
+                'count_monthly' => 5,
             ],
             [
-                'category_id' => 2,
+                'category_id' => 17,
                 'title' => 'Location villa 4 pièces - Yopougon',
                 'slug' => 'location-villa-4-pièces-yopougon',
                 'excerpt' => 'À louer une belle villa de 4 pièces situé à Yopougon. elle est composé de: ',
@@ -93,9 +99,9 @@ class PropertySeeder extends Seeder
                 ",
                 'address' => 'Yopougon',
                 'client_address' => 'Yopougon',
-                'type' => 'LOCATION',
-                'price' => 1500000,
-                'location_id' => 5,
+                'type' => 'RESERVATION',
+                'price' => 15000,
+                'location_id' => 13,
                 'location_description' => 'Yopougon',
                 'video_link' => null,
                 'latitude' => 5.3211,
@@ -104,7 +110,11 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 800,
-                'periodicity' => 'MONTH'
+                'periodicity' => 'DAY',
+                'jacuzzi' =>  true,
+                'bath' => true,
+                'WiFi' => true,
+                'pool' =>  true,
                 // 'deposit_price' => 1000000,
             ],
             [
@@ -117,7 +127,7 @@ class PropertySeeder extends Seeder
                 ",
                 'address' => 'Marcory',
                 'client_address' => 'Marcory',
-                'type' => 'ACHAT',
+                'type' => 'LOCATION',
                 'price' => 12000000,
                 'deposit_price' => 800000,
                 'location_id' => 3,
@@ -141,8 +151,8 @@ class PropertySeeder extends Seeder
                 ",
                 'address' => 'Cocody',
                 'client_address' => 'Cocody',
-                'type' => 'VENTE',
-                'price' => 25000000,
+                'type' => 'RESERVATION',
+                'price' => 25000,
                 // 'deposit_price' => 1500000,
                 'location_id' => 9,
                 'location_description' => 'Cocody',
@@ -153,20 +163,25 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 2000,
-                'periodicity' => 'MONTH'
+                'periodicity' => 'VISIT',
+                'jacuzzi' =>  false,
+                'bath' => false,
+                'WiFi' => true,
+                'air_conditioning' => true,
+                'pool' =>  false,
             ],
             [
-                'category_id' => 5,
-                'title' => 'Location villa 3 pièces - Abobo',
-                'slug' => 'location-villa-3-pièces-abobo',
+                'category_id' => 21,
+                'title' => 'Vente de villa 3 pièces - Abobo',
+                'slug' => 'vente-villa-3-pièces-abobo',
                 'excerpt' => 'À louer une belle villa de 3 pièces situé à Abobo. elle est composé de: ',
                 'content' => "
-                À louer une belle villa de 3 pièces situé à Abobo. elle est composé de: 2 chambres non autonomes une cuisine équipée un grand salon ⁠toilette centrale pour les 2 chambres une chambre principale autonome + un balcon une dépendance autonome toilette visiteur un garage de 1 véhicule cour avant, cour arrière superficie : 200m2 prix : 1.2 millions par mois document : cpf
+                En vente une belle villa de 3 pièces situé à Abobo. elle est composé de: 2 chambres non autonomes une cuisine équipée un grand salon ⁠toilette centrale pour les 2 chambres une chambre principale autonome + un balcon une dépendance autonome toilette visiteur un garage de 1 véhicule cour avant, cour arrière superficie : 200m2 prix : 1.2 millions par mois document : cpf
                 ",
                 'address' => 'Abobo',
                 'client_address' => 'Abobo',
-                'type' => 'LOCATION',
-                'price' => 1200000,
+                'type' => 'BIEN EN VENTE',
+                'price' => 3500000,
                 // 'deposit_price' => 800000,
                 'location_id' => 2,
                 'location_description' => 'Abobo',
@@ -177,7 +192,9 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1000,
-                'periodicity' => 'MONTH'
+                'area' => 500,
+                'area_unit' => 'M',
+                'acd' => false,
             ],
             [
                 'category_id' => 3,
@@ -619,6 +636,16 @@ class PropertySeeder extends Seeder
 
         foreach ($data as $key => $value) {
             // Property::create($value);
+        }
+
+        // Property::create($data[0]);
+        // Property::create($data[1]);
+        // Property::create($data[2]);
+        // Property::create($data[3]);
+        // Property::create($data[4]);
+
+        for ($i = 0; $i < 5; $i++) {
+            Property::create($data[$i]);
         }
     }
 }

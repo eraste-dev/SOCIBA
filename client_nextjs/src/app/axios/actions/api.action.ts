@@ -50,6 +50,7 @@ import {
 	searchPropertiesStart,
 	searchPropertiesFailure,
 	searchPropertiesSuccess,
+	initFetchAllProperties,
 } from "app/reducer/products/product";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import {
@@ -183,6 +184,10 @@ export const searchProperties =
 
 export const inittializePropertyList = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchAllPropertiesStart());
+};
+
+export const inittPropertyList = () => async (dispatch: AppDispatch) => {
+	dispatch(initFetchAllProperties());
 };
 
 /**

@@ -47,13 +47,20 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 	 * @return {void} No return value.
 	 */
 	const handleChangeCategory = (item: IListBoxSelectFilterWidget): void => {
-		const category = flatCategories()?.find((category) => category.slug === item.value);
-		console.log("handleChangeCategory", flatCategories());
-		console.log("handleChangeCategory", item, category);
-		if (!category) return;
-		updateParamsUrl("category_slug", item.value);
+		let id: number | "*" = "*";
+		const value: string = item.value;
+
+		if (item.value === "*") {
+		} else {
+			const category = flatCategories()?.find((category) => category.slug === item.value);
+			if (!category) return;
+			console.log("handleChangeCategory", flatCategories());
+			console.log("handleChangeCategory", item, category);
+			id = category.id;
+		}
+		updateParamsUrl("category_slug", value);
 		// updateParamsUrl("category", item.value);
-		dispatch(setFilters({ category: category.id }));
+		dispatch(setFilters({ category: id }));
 		handleFetch && handleFetch();
 	};
 
@@ -64,7 +71,7 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 	 */
 	function CATEGORIES(): IListBoxSelectFilterWidget[] {
 		let data: IListBoxSelectFilterWidget[] = [
-			{ name: "Tous(*)", value: "*" },
+			{ name: "Tous(*)", value: "*", selected: true },
 			{ name: "Residence", value: "residence" },
 			{ name: "Hôtel", value: "hotel" },
 			{ name: "Maison", value: "maison" },

@@ -47,7 +47,7 @@ class PropertyController extends Controller
             'title'                => 'nullable|string',
             'category_id'          => 'nullable|integer|exists:property_categories,id',
             'content'              => 'nullable|string',
-            'type'                 => 'nullable|string|in:ACHAT,VENTE,LOCATION,AUTRE',
+            'type'                 => 'nullable|string|in:LOCATION,BIEN EN VENTE,RESERVATION,AUTRE"',
             'status'               => 'nullable|string',
             'location_id'          => 'nullable|string|exists:municipalities,id',
             'location_description' => 'nullable|string',
@@ -59,8 +59,15 @@ class PropertyController extends Controller
             'kitchens'             => 'nullable|numeric',
             'rooms'                => 'nullable|numeric',
             'area'                 => 'nullable|numeric',
-            'count_advance'          => 'nullable|numeric',
-            'count_monthly' => 'nullable|numeric',
+            'area_unit'            => 'nullable', // string|in:M,LOT
+            'acd'                  => 'nullable|numeric',
+            'count_advance'        => 'nullable|numeric',
+            'count_monthly'        => 'nullable|numeric',
+            'jacuzzi'              => 'nullable|numeric', // |boolean
+            'bath'                 => 'nullable|numeric', // |boolean
+            'WiFi'                 => 'nullable|numeric', // |boolean
+            'pool'                 => 'nullable|numeric', // |boolean
+            'air_conditioning'     => 'nullable|numeric', // |boolean
             'images.*'             => 'required|file|max:10048',
             // 'excerpt'           => 'nullable|string',
         ]);
@@ -80,6 +87,8 @@ class PropertyController extends Controller
 
             if (isset($validatedData['title'])) {
                 $product->slug = Str::slug($validatedData['title']);
+            } else {
+                $product->slug = Str::slug($validatedData['type'] . '-' . $product->id);
             }
 
             $product->update($validatedData);
@@ -90,17 +99,19 @@ class PropertyController extends Controller
 
             // 
             $product->status               = 'PENDING';
-            $product->slug                 = Str::slug($validatedData['title']);
+            $product->slug = isset($validatedData['title']) ? Str::slug($validatedData['title']) : Str::slug($validatedData['type'] . '-' . $product->id);
+
+            // $product->slug                 = Str::slug($validatedData['title']);
             $product->created_by           = auth()->user()->id;
 
-            $product->title                = $validatedData['title'];
+            // $product->title                = $validatedData['title'];
             $product->category_id          = $validatedData['category_id'];
-            $product->content              = $validatedData['content'];
+            $product->content              = isset($validatedData['content']) ?? null;
             $product->type                 = $validatedData['type'];
             $product->location_id          = $validatedData['location_id'];
             $product->location_description = $validatedData['location_description'];
             $product->price                = $validatedData['price'];
-            $product->periodicity          = $validatedData['periodicity'];
+            $product->periodicity          = isset($validatedData['periodicity']) ? $validatedData['periodicity'] : null;
 
             // details
             $product->bathrooms            = isset($validatedData['bathrooms']) ? $validatedData['bathrooms'] : null;
@@ -109,9 +120,15 @@ class PropertyController extends Controller
             $product->kitchens             = isset($validatedData['kitchens']) ? $validatedData['kitchens'] : null;
             $product->rooms                = isset($validatedData['rooms']) ? $validatedData['rooms'] : null;
             $product->area                 = isset($validatedData['area']) ? $validatedData['area'] : null;
-            $product->count_advance                 = isset($validatedData['count_advance']) ? $validatedData['count_advance'] : null;
-            $product->count_monthly                 = isset($validatedData['count_monthly']) ? $validatedData['count_monthly'] : null;
- 
+            $product->area_unit            = (!isset($validatedData['area_unit']) || $validatedData['area_unit'] == 0 || !in_array(['LOT', 'M'], $validatedData['area_unit'])) ? null :  $validatedData['area_unit'] ;
+            $product->count_advance        = isset($validatedData['count_advance']) ? $validatedData['count_advance'] : null;
+            $product->count_monthly        = isset($validatedData['count_monthly']) ? $validatedData['count_monthly'] : null;
+            $product->jacuzzi              = isset($validatedData['jacuzzi']) ? $validatedData['jacuzzi'] : null;
+            $product->bath                 = isset($validatedData['bath']) ? $validatedData['bath'] : null;
+            $product->WiFi                 = isset($validatedData['WiFi']) ? $validatedData['WiFi'] : null;
+            $product->pool                 = isset($validatedData['pool']) ? $validatedData['pool'] : null;
+            $product->air_conditioning     = isset($validatedData['air_conditioning']) ? $validatedData['air_conditioning'] : null;
+
 
             // $product->deposit_price        = $validatedData['deposit_price'];
             // $product->excerpt              = $validatedData['excerpt'];
@@ -161,6 +178,13 @@ class PropertyController extends Controller
         $product = Property::find($request->id);
         $product->status  = Utils::STATE_DELETED();
         $product->save();
+
+        $images = PropertyImages::where('property_id', $request->id)->get();
+        foreach ($images as $key => $image) {
+            // $image->delete();
+            $image->property_id = null;
+            $image->save();
+        }
         // $proudct->delete();
         return ResponseService::success(
             PropertyService::search(Property::requestSearch()),

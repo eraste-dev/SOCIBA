@@ -1,6 +1,7 @@
 import { IStoreAction, IStoreDataState } from "../../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "app/reducer/store";
+import { IProductType } from "containers/PageDashboard/DashboardSubmitPost";
 import { TwMainColor } from "data/types";
 
 export interface IPropertyCategory {
@@ -15,6 +16,9 @@ export interface IPropertyCategory {
 	color?: TwMainColor | string;
 	children: IPropertyCategory[];
 	parent: IPropertyCategory | null;
+	type: IProductType[];
+	uuid: string;
+	can_delete: boolean;
 }
 
 export interface IStoreDataCategorie {

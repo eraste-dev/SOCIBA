@@ -13,6 +13,11 @@ import {
 	NAV_COLUMN_THREE,
 	NAV_COLUMN_TWO,
 } from "./navigations-data";
+import { IProductType } from "containers/PageDashboard/DashboardSubmitPost";
+
+export const linkByType = (type: IProductType) => {
+	return route("annonces") + "/?type=" + type;
+};
 
 const megaMenuDemo: MegamenuItem[] = [
 	{
@@ -398,7 +403,7 @@ export const NAVIGATION_SHORT_DEMO: NavItemType[] = [
 	// },
 	{
 		id: ncNanoId(),
-		href: "#",
+		href: linkByType("LOCATION"),
 		// image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
 		name: "Location",
 		type: "megaMenu",
@@ -406,15 +411,15 @@ export const NAVIGATION_SHORT_DEMO: NavItemType[] = [
 	},
 	{
 		id: ncNanoId(),
-		href: "#",
+		href: linkByType("RESERVATION"),
 		name: "Réservation",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU2,
 	},
 	{
 		id: ncNanoId(),
-		href: "#",
-		name: "Achat",
+		href: linkByType("BIEN EN VENTE"),
+		name: "Bien en vente",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU3,
 	},

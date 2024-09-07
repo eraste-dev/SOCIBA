@@ -2,6 +2,7 @@ import { IPagination } from "app/reducer/products/type";
 import { RootState } from "app/reducer/store";
 import { AxiosRequestConfig } from "axios";
 import { STATUS_LABEL } from "components/Dashboard/Products/ChangeProductType";
+import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/DashboardSubmitPost";
 
 export interface IServerResponse {
 	success: boolean;
@@ -109,6 +110,13 @@ export interface ProductRequest {
 	kitchens: number | null;
 	rooms: number | null;
 	area: number | null;
+	area_unit: IPRODUCT_AREA_UNIT_KEY;
 	count_advance: number | null;
 	count_monthly: number | null;
+	jacuzzi: number;
+	bath: number;
+	WiFi: number;
+	pool: number;
+	air_conditioning: number;
+	acd: number;
 }

@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
 import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeaturedMedia";
 import { IProduct } from "app/reducer/products/product";
 import PostPropertyCardMetaV2 from "components/PostCard/PostPropertyCardMeta/PostCardMetaV2";
@@ -9,11 +8,15 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { setSingleProduct } from "app/axios/actions/api.action";
 import { useAppDispatch } from "app/hooks";
 import CategoryPropertyBadgeOne from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeOne";
-import PostCardLikeAndComment from "components/PostCard/PostCardLikeAndComment/PostCardLikeAndComment";
-import PostCardSaveAction from "components/PostCard/PostCardSaveAction/PostCardSaveAction";
 import CategoryPropertyBadgeTwo from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeTwo";
-import { PERIODICITY_LIST, PRODUCT_TYPE } from "containers/PageDashboard/DashboardSubmitPost";
+import {
+	IPRODUCT_PERIODICITY,
+	PERIODICITY_LIST,
+	PERIODICITY_RESERVATION_LIST,
+	PRODUCT_TYPE,
+} from "containers/PageDashboard/DashboardSubmitPost";
 import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
+import Card11Price from "./Card11Price";
 
 export interface Card11Props {
 	className?: string;
@@ -49,6 +52,13 @@ const Card11: FC<Card11Props> = ({
 	const handleSingleClick = () => {
 		dispatch(setSingleProduct(post));
 		history.push(post.href);
+	};
+
+	const GET_PERIODICITY = (): IPRODUCT_PERIODICITY[] => {
+		let data: IPRODUCT_PERIODICITY[] = [];
+		data = [...PERIODICITY_LIST, ...PERIODICITY_RESERVATION_LIST];
+
+		return data;
 	};
 
 	return (
@@ -95,58 +105,7 @@ const Card11: FC<Card11Props> = ({
 						</p>
 					</div>
 
-					<div className=" grid grid-cols-subgrid lg:col-span-4 text-justify col-span-6">
-						{/* SHOW PRICE *********************************************************************** */}
-						<div className="w-full flex lg:justify-end justify-start mt-2 lg:mt-0 ">
-							<span className="nc-card-title block font-bold text-primary-800 dark:text-neutral-100 md:text-base text-xs ">
-								{_f(price)}
-
-								{periodicity &&
-									PERIODICITY_LIST.find((p) => p.id === periodicity) && (
-										<>
-											{` / ` +
-												PERIODICITY_LIST.find((p) => p.id === periodicity)
-													?.name}
-										</>
-									)}
-							</span>
-						</div>
-						{/* SHOW PRICE *********************************************************************** */}
-
-						{/* ! DEAD CODE *************************************************** */}
-						<div className="w-full flex lg:justify-end justify-start ">
-							{deposit_price && false && (
-								<p className="nc-card-title block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs ">
-									{_f(deposit_price)}
-								</p>
-							)}
-						</div>
-						{/* ! DEAD CODE *************************************************** */}
-
-						{type && type === PRODUCT_TYPE[0] && (
-							<>
-								{/* MOIS DE LOYER *************************************************** */}
-								{count_monthly && (
-									<div className="w-full flex lg:justify-end justify-start ">
-										<p className="block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs ">
-											{`${count_monthly} mois de loyer`}
-										</p>
-									</div>
-								)}
-								{/* MOIS DE LOYER *************************************************** */}
-
-								{/* MOIS D'AVANCE *************************************************** */}
-								{count_advance && (
-									<div className="w-full flex lg:justify-end justify-start ">
-										<p className="block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs ">
-											{`${count_advance} mois d'avance`}
-										</p>
-									</div>
-								)}
-								{/* MOIS D'AVANCE *************************************************** */}
-							</>
-						)}
-					</div>
+					<Card11Price item={post} />
 				</div>
 
 				{false && (

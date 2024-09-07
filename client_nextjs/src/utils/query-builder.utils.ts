@@ -5,11 +5,22 @@ export interface IGetQueryParams {
 	[key: string]: string;
 }
 
+export type IGetParamSTATUS =
+	| "PUBLISH"
+	| "DRAFT"
+	| "DELETED"
+	| "REJECTED"
+	| "PENDING"
+	| "BLOCKED"
+	| "*";
+
 export interface IGetSearchPropertiesParams {
 	searchText?: string;
 	id?: number | string;
 	slug?: string;
-	category?: number;
+	category?: number | "*";
+	category_slug?: string;
+	type?: string;
 	categories?: number[];
 	top?: boolean;
 	orderBy?: SORT_TYPE;
@@ -22,6 +33,7 @@ export interface IGetSearchPropertiesParams {
 	locations?: string;
 	created_by?: number;
 	path?: string;
+	status?: IGetParamSTATUS;
 }
 
 export class QueryBuilder {
@@ -96,6 +108,10 @@ export const searchParamsFromURL = () => {
 
 	if (urlParams.has("category_slug")) {
 		params.slug = urlParams.get("category_slug") ?? "*";
+	}
+
+	if (urlParams.has("type")) {
+		params.slug = urlParams.get("type") ?? "*";
 	}
 
 	if (urlParams.has("category")) {

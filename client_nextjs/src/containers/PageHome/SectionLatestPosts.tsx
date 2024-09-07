@@ -5,13 +5,11 @@ import Card11 from "components/Cards/Card11/Card11";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
-import { fetchAllProperties, inittializePropertyList } from "app/axios/actions/api.action";
-import ProductFilterSidebar from "components/Widgets/ProductFilterSidebar";
+import { fetchAllProperties } from "app/axios/actions/api.action";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 import { IGetSearchPropertiesParams, searchParamsFromRedux } from "utils/query-builder.utils";
 import { useHistory } from "react-router-dom";
 import NoDataMessage from "components/NoDataMessage";
-import { FaArrowAltCircleRight, FaSortAlphaDown, FaSortDown, FaTimesCircle } from "react-icons/fa";
 import FloatFilter from "components/Widgets/FloatFilter";
 
 // THIS IS DEMO FOR MAIN DEMO
@@ -84,9 +82,43 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 
 	const fetchAll = () => {
 		if (useStateFilter) {
+			const params: IGetSearchPropertiesParams = {};
 			// const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
-			const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
-			console.log(params, "searchParamsFromURL()");
+			const urlSearchParams = new URLSearchParams(window.location.search);
+			const price_sort = urlSearchParams.get("price_sort");
+			const location = urlSearchParams.get("location");
+			const neighborhood = urlSearchParams.get("neighborhood");
+			const category_slug = urlSearchParams.get("category_slug");
+			const type = urlSearchParams.get("type");
+
+			console.log("urlSearchParams", {
+				price_sort: price_sort,
+				location: location,
+				searchText: neighborhood,
+				category_slug: category_slug,
+				type: type,
+			});
+
+			if (price_sort) {
+				params.price_sort = price_sort as "asc" | "desc";
+			}
+
+			if (location) {
+				params.location = location;
+			}
+
+			if (neighborhood) {
+				params.searchText = neighborhood;
+			}
+
+			if (category_slug) {
+				params.category_slug = category_slug;
+			}
+
+			if (type) {
+				params.type = type;
+			}
+
 			return dispatch(fetchAllProperties(params));
 		}
 	};

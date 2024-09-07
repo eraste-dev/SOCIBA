@@ -6,21 +6,53 @@ import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/
 import { useSelector } from "react-redux";
 import { fetchAllProperties } from "app/axios/actions/api.action";
 import { useHistory, useLocation } from "react-router-dom";
-import {
-	IGetSearchPropertiesParams,
-	searchParamsFromRedux,
-	searchParamsFromURL,
-} from "utils/query-builder.utils";
+import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import Loading from "components/UI/Loading";
-import ProductFilterSidebar from "components/Widgets/ProductFilterSidebar";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 import FloatFilter from "components/Widgets/FloatFilter";
-import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
+import { CategoryAction } from "app/reducer/products/propertiy-category";
 
-// THIS IS DEMO FOR MAIN DEMO
-// OTHER DEMO WILL PASS PROPS
+export const getParams = (): IGetSearchPropertiesParams => {
+	const params: IGetSearchPropertiesParams = {};
+	// const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const price_sort = urlSearchParams.get("price_sort");
+	const location = urlSearchParams.get("location");
+	const neighborhood = urlSearchParams.get("neighborhood");
+	const category_slug = urlSearchParams.get("category_slug");
+	const type = urlSearchParams.get("type");
 
-//
+	console.log("urlSearchParams", {
+		price_sort: price_sort,
+		location: location,
+		searchText: neighborhood,
+		category_slug: category_slug,
+		type: type,
+	});
+
+	if (price_sort) {
+		params.price_sort = price_sort as "asc" | "desc";
+	}
+
+	if (location) {
+		params.location = location;
+	}
+
+	if (neighborhood) {
+		params.searchText = neighborhood;
+	}
+
+	if (category_slug) {
+		params.category_slug = category_slug;
+	}
+
+	if (type) {
+		params.type = type;
+	}
+
+	return params;
+};
+
 export interface ListProductsProps {
 	gridClass?: string;
 	className?: string;
@@ -50,62 +82,19 @@ const ListProducts: FC<ListProductsProps> = ({
 	const [showFilter, setShowFilter] = useState(false);
 	const toggleFilter = () => setShowFilter(!showFilter);
 
-	const FLAT_CATEGORIES = () => {
-		let data: IPropertyCategory[] = [];
-
-		categories?.forEach((category) => {
-			data.push(category);
-			if (category.children) {
-				category.children.forEach((child) => {
-					data.push(child);
-				});
-			}
-		});
-
-		return data;
-	};
-
-	useEffect(() => {
-		if (!products && !loading) {
-			const payload: IGetSearchPropertiesParams = {};
-			if (paramLocation) {
-				payload.location = paramLocation;
-			}
-			dispatch(fetchAllProperties(payload));
-		}
-	}, [dispatch, fetchAllProperties, products, loading]);
-
-	const _fetchAll = () => {
-		if (filters) {
-			const params: IGetSearchPropertiesParams = searchParamsFromRedux(filters);
-			console.log(params, history.location, "searchParamsFromURL()");
-			// return dispatch(fetchAllProperties(searchParamsFromURL()));
-			return dispatch(fetchAllProperties(params));
-		}
-	};
-
 	const fetchAll = () => {
-		if (useStateFilter) {
-			// const params: IGetSearchPropertiesParams = searchParamsFromURL(useStateFilter);
-
-			const params: IGetSearchPropertiesParams = {};
-			const urlParams = new URLSearchParams(window.location.search);
-
-			console.log(params, urlParams, "searchParamsFromURL()");
-			const cat = FLAT_CATEGORIES().find(
-				(cat) => cat.slug === urlParams.get("category_slug")
-			);
-			
-			if (cat) {
-				params.category = cat.id;
-			}
-			return dispatch(fetchAllProperties({ category: 2 }));
-		}
+		return dispatch(fetchAllProperties(getParams()));
 	};
 
 	const renderCard = (post: IProduct) => {
 		return <Card11 key={post.id} post={post} />;
 	};
+
+	useEffect(() => {
+		if (!products && !loading) {
+			dispatch(fetchAllProperties(getParams()));
+		}
+	}, [dispatch, fetchAllProperties, getParams, products, loading]);
 
 	if (loading) {
 		<Loading />;
@@ -127,7 +116,6 @@ const ListProducts: FC<ListProductsProps> = ({
 
 			<div className="flex flex-col lg:flex-row">
 				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
-					{/* <ProductFilterSidebar fetchAll={fetchAll} /> */}
 					<FloatFilter
 						useStateFilter={useStateFilter}
 						setUseStateFilter={setUseStateFilter}

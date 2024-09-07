@@ -9,6 +9,7 @@ import { Grid } from "@mui/material";
 import Button from "components/Button/Button";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import WidgetCategoryBooking from "./WidgetSort/WidgetCategoryBooking";
+import WidgetTypeWithSelect from "./WidgetTypeWithSelect/WidgetTypeWithSelect";
 
 export interface ProductFilterSidebarProps {
 	fetchAll?: () => void;
@@ -56,6 +57,17 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 							groupFilter={groupFilter}
 						/>
 					</Grid>
+
+					{false && (
+						<Grid xs={12} lg={12}>
+							<WidgetTypeWithSelect
+								handleFetch={fetchAll}
+								useStateFilter={useStateFilter}
+								setUseStateFilter={setUseStateFilter}
+								groupFilter={groupFilter}
+							/>
+						</Grid>
+					)}
 
 					<Grid xs={12} lg={12}>
 						<WidgetLocationWithInput

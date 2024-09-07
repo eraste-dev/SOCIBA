@@ -34,13 +34,13 @@ const WidgetSort: FC<WidgetSortProps> = ({
 
 	const handleChangeSortPrice = (item: IListBoxSelectFilterWidget) => {
 		updateParamsUrl("price_sort", item.value);
-		dispatch(setFilters({ price_sort: item.value as SORT_TYPE }));
+		// dispatch(setFilters({ price_sort: item.value as SORT_TYPE }));
 		handleFetch && handleFetch();
 	};
 
 	const handleChangeDepositSortPrice = (item: IListBoxSelectFilterWidget) => {
 		updateParamsUrl("deposit_price_sort", item.value);
-		dispatch(setFilters({ deposit_price_sort: item.value as SORT_TYPE }));
+		// dispatch(setFilters({ deposit_price_sort: item.value as SORT_TYPE }));
 		handleFetch && handleFetch();
 	};
 

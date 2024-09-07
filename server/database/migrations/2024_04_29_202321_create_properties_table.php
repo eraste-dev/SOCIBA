@@ -21,7 +21,7 @@ return new class extends Migration
             $table->longText('content')->nullable();
             $table->string('address')->nullable();
             $table->string('client_address')->nullable();
-            $table->enum('type', ['ACHAT', 'VENTE', 'LOCATION', 'AUTRE'])->nullable();
+            $table->enum('type', ['BIEN EN VENTE', 'RESERVATION', 'LOCATION', 'AUTRE'])->nullable();
             $table->double('price')->nullable();
             $table->double('deposit_price')->nullable();
             // $table->string('post_type')->nullable()->comment('ADMIN :admin CUSTOMER:customer');
@@ -40,8 +40,17 @@ return new class extends Migration
             $table->integer('kitchens')->nullable();
             $table->integer('rooms')->nullable();
             $table->string('area')->nullable();
+            $table->string('area_unit')->nullable(); // METRE CARRE , LOT
             $table->integer('count_advance')->nullable(); // mois d'avance
             $table->double('count_monthly')->nullable(); // mois de loyer
+
+            // ? RESERVATION HOTEL & RESIDENCE
+            $table->boolean('jacuzzi')->nullable();
+            $table->boolean('bath')->nullable();
+            $table->boolean('WiFi')->nullable();
+            $table->boolean('pool')->nullable();
+            $table->boolean('air_conditioning')->nullable();
+            $table->boolean('acd')->nullable();
 
             $table->enum('status', ['PUBLISH', 'DRAFT', 'DELETED', 'REJECTED', 'PENDING', 'BLOCKED'])->default('PENDING');
             $table->bigInteger('total_click')->default(0)->nullable();

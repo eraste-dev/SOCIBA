@@ -18,6 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('icon')->nullable();
             $table->string('description')->nullable();
+            $table->string('uuid')->unique()->nullable();
+            $table->string('type')->nullable(); // ->default('LOCATION')  ['LOCATION', 'BIEN EN VENTE', 'RESERVATION']
+            $table->boolean('can_delete')->nullable()->default(false);
             $table->timestamps();
         });
     }

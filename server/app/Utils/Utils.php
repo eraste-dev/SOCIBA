@@ -83,6 +83,21 @@ class Utils
         return 'BLOCKED';
     }
 
+    static public function TYPE_LOCATION(): string
+    {
+        return 'LOCATION';
+    }
+
+    static public function TYPE_BIEN_EN_VENTE(): string
+    {
+        return 'BIEN EN VENTE';
+    }
+
+    static public function TYPE_RESERVATION(): string
+    {
+        return 'RESERVATION';
+    }
+
     /**
      * Retrieves the logged-in user from the token in the request, if it exists and the user's status is not 'ACTIVE'.
      *

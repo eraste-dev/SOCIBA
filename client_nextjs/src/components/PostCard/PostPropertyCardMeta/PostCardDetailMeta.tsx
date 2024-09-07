@@ -1,12 +1,14 @@
-import React, { FC } from "react";
-import Avatar from "components/Avatar/Avatar";
-import { PostDataType } from "data/types";
-import { Link } from "react-router-dom";
+import { FC } from "react";
 import { IProduct } from "app/reducer/products/product";
 import { FaBath } from "react-icons/fa";
-import { Kitchen, PhotoSizeSelectSmallTwoTone } from "@mui/icons-material";
-import { Tooltip } from "@mui/material";
-import { PRODUCT_TYPE } from "containers/PageDashboard/DashboardSubmitPost";
+import { Cancel, Kitchen, PhotoSizeSelectSmallTwoTone } from "@mui/icons-material";
+import {
+	PRODUCT_TYPE,
+	TYPE_BIEN_EN_VENTE_KEY,
+	TYPE_RESERVATION_KEY,
+} from "containers/PageDashboard/DashboardSubmitPost";
+import ItemChecked from "./ItemCheck";
+import { CheckCircleIcon } from "@heroicons/react/solid";
 
 export interface PostCardDetailMetaProps {
 	className?: string;
@@ -29,25 +31,105 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 			return (
 				<div className="grid grid-cols-3 gap-6">
 					{/* Superficie */}
-					<div className="flex items-center justify-center" title="Superficie">
-						{/* <Tooltip title="Superficie"> */}
-						<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
-						{`${area} / m²`}
-						{/* </Tooltip> */}
-					</div>
-					<div className="flex items-center justify-center">
-						<FaBath size={iconSize} className="mb-1" />
-						{bathrooms}
-					</div>
-					<div className="flex items-center justify-center">
-						<Kitchen className="mb-1" />
-						{kitchens}
-					</div>
+					{area && (
+						<div className="flex items-center justify-center" title="Superficie">
+							{/* <Tooltip title="Superficie"> */}
+							<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
+							{`${area} / m²`}
+							{/* </Tooltip> */}
+						</div>
+					)}
+					{bathrooms && (
+						<div className="flex items-center justify-center">
+							<FaBath size={iconSize} className="mb-1" />
+							{bathrooms}
+						</div>
+					)}
+					{kitchens && (
+						<div className="flex items-center justify-center">
+							<Kitchen className="mb-1" />
+							{kitchens}
+						</div>
+					)}
 				</div>
 			);
 		}
 
 		return null;
+	};
+
+	const ReservationMeta = () => {
+		if (type !== PRODUCT_TYPE[TYPE_RESERVATION_KEY]) return null;
+
+		return (
+			<>
+				<div className="grid grid-cols-2 gap-0 mt-3">
+					{/* JACUZZI */}
+					{meta.jacuzzi && (
+						<ItemChecked
+							name="Jacuzzi"
+							condition={meta.jacuzzi}
+							className="justify-self-start"
+						/>
+					)}
+
+					{/* BATH */}
+					{meta.bath && <ItemChecked name="Baignoire" condition={meta.bath} />}
+
+					{/* WIFI */}
+					{meta.WiFi && <ItemChecked name="WIFI" condition={meta.WiFi} />}
+
+					{/* PICINE */}
+					{meta.pool && <ItemChecked name="Piscine" condition={meta.pool} />}
+
+					{/* CLIMATISATION */}
+					{meta.air_conditioning && (
+						<ItemChecked name="Climatisation" condition={meta.air_conditioning} />
+					)}
+				</div>
+			</>
+		);
+	};
+
+	const VenteMeta = () => {
+		if (type !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY]) return null;
+
+		return (
+			<>
+				<div className="grid grid-cols-2 gap-0 mt-3">
+					<div className="flex items-center justify-center mr-2" title="Superficie">
+						{/* <Tooltip title="Superficie"> */}
+						<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
+						{`${area} / m²`}
+						{/* </Tooltip> */}
+					</div>
+
+					{/* JACUZZI */}
+					<ItemChecked
+						name="ACD"
+						condition={true}
+						className="justify-self-start"
+						icon={
+							meta.acd ? (
+								<CheckCircleIcon
+									className="mr-2"
+									width={iconSize}
+									height={iconSize}
+									color="green"
+								/>
+							) : (
+								<Cancel
+									className="mr-2"
+									width={iconSize}
+									height={iconSize}
+									sx={{ color: "red" }}
+								/>
+							)
+						}
+					/>
+				</div>
+			</>
+		);
 	};
 
 	if (!type) return null;
@@ -63,6 +145,8 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 				data-nc-id="PostCardMetaV2"
 			>
 				<LocationMeta />
+				<ReservationMeta />
+				<VenteMeta />
 			</div>
 		</>
 	);

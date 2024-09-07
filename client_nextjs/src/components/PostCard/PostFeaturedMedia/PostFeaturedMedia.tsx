@@ -7,6 +7,8 @@ import PostTypeFeaturedIcon from "components/PostCard/PostTypeFeaturedIcon/PostT
 import MediaAudio from "./MediaAudio";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
 import { IProduct } from "app/reducer/products/product";
+import { PRODUCT_TYPE, TYPE_BIEN_EN_VENTE_KEY } from "containers/PageDashboard/DashboardSubmitPost";
+import MediaTerrain from "./MediaTerrain";
 
 export interface PostFeaturedMediaProps {
 	className?: string;
@@ -17,13 +19,19 @@ export interface PostFeaturedMediaProps {
 // CHECK FOR VIDEO CARD ON VIEW
 let PREV_RATIO = 0.0;
 
-const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({ className = " w-full h-full ", post, isHover = false }) => {
+const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
+	className = " w-full h-full ",
+	post,
+	isHover = false,
+}) => {
 	const { featured_image, type, video_link, images, id, title } = post || {};
 
 	const videoRef = useRef(null);
 
 	let IS_MOBILE = false;
-	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+	if (
+		/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+	) {
 		IS_MOBILE = true;
 	}
 	const cardIntersectionObserver = useIntersectionObserver(videoRef, {
@@ -70,9 +78,17 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({ className = " w-full h-
 	};
 
 	return (
-		<div className={`nc-PostFeaturedMedia relative ${className}`} data-nc-id="PostFeaturedMedia" ref={videoRef}>
+		<div
+			className={`nc-PostFeaturedMedia relative ${className}`}
+			data-nc-id="PostFeaturedMedia"
+			ref={videoRef}
+		>
 			<NcImage containerClassName="absolute inset-0" src={featured_image} />
-			{renderContent()}
+			{post?.type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] ? (
+				<MediaTerrain post={post} />
+			) : (
+				renderContent()
+			)}
 		</div>
 	);
 };

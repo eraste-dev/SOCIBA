@@ -58,15 +58,20 @@ class PropertyResource extends JsonResource
             "commentCount"         => 15, // $this->commentCount()
 
             // * DETAILS
-            "bathrooms" => $this->bathrooms,
-            "bedrooms"  => $this->bedrooms,
-            "garages"   => $this->garages,
-            "kitchens"  => $this->kitchens,
-            "rooms"     => $this->rooms,
-            "area"      => $this->area,
-            "count_advance"     => $this->count_advance,
-            "count_monthly"      => $this->count_monthly,
-
+            "bathrooms"        => $this->bathrooms,
+            "bedrooms"         => $this->bedrooms,
+            "garages"          => $this->garages,
+            "kitchens"         => $this->kitchens,
+            "rooms"            => $this->rooms,
+            "area"             => $this->area,
+            "area_unit"        => $this->area_unit,
+            "count_advance"    => $this->count_advance,
+            "count_monthly"    => $this->count_monthly,
+            "jacuzzi"          => boolval($this->jacuzzi),
+            "bath"             => boolval($this->bath),
+            "WiFi"             => boolval($this->WiFi),
+            "pool"             => boolval($this->pool),
+            "air_conditioning" => boolval($this->air_conditioning),
 
             // * TIMESTAMPS
             'created_at'           => Carbon::parse($this->created_at)->diffForHumans(),

@@ -12,6 +12,7 @@ import { RootState } from "app/reducer/store";
 import { IUser } from "app/reducer/auth/auth";
 import { ILocation } from "../locations/locations";
 import { IPagination } from "./type";
+import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/DashboardSubmitPost";
 
 export interface IProductImage {
 	id: number;
@@ -61,8 +62,15 @@ export interface IProduct {
 	kitchens: number | null;
 	rooms: number | null;
 	area: number | null;
+	area_unit: IPRODUCT_AREA_UNIT_KEY;
 	count_advance: number;
 	count_monthly: number;
+	jacuzzi: boolean;
+	bath: boolean;
+	WiFi: boolean;
+	pool: boolean;
+	air_conditioning: boolean;
+	acd: boolean;
 }
 
 export type SORT_TYPE = "asc" | "desc" | "*";
@@ -94,7 +102,7 @@ export interface IPropertyFilter {
 	locations?: number[];
 	neighborhood?: string;
 	textSearch?: string;
-	category?: number;
+	category?: number | "*";
 	date?: "all" | "week" | "month" | "year";
 	page?: number;
 }
@@ -174,6 +182,17 @@ export const PropertiesSlice = createSlice({
 	initialState,
 	reducers: {
 		// ALL
+		initFetchAllProperties: (state) => {
+			state.loading = false;
+			state.error = null;
+			state.data = {
+				...state.data,
+				all: createStoreDataStateItem(undefined, false),
+				single: undefined,
+			};
+			state.success = true;
+			state.message = "";
+		},
 		fetchAllPropertiesStart: (state) => {
 			state.loading = true;
 			state.error = null;
@@ -432,6 +451,7 @@ export const PropertiesSlice = createSlice({
 });
 
 export const {
+	initFetchAllProperties,
 	fetchAllPropertiesStart,
 	fetchAllPropertiesSuccess,
 	fetchAllPropertiesFailure,

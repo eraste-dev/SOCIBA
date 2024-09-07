@@ -10,7 +10,16 @@ class PropertyCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'parent_id', 'slug', 'icon', 'description'];
+    protected $fillable = [
+        'name',
+        'parent_id',
+        'slug',
+        'icon',
+        'description',
+        'type',
+        'uuid',
+        'can_delete',
+    ];
 
     public function parent()
     {

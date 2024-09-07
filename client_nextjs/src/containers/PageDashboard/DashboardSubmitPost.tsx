@@ -30,18 +30,37 @@ import ImageUploader from "components/Dashboard/Products/ImageUploader";
 import { formatPrice } from "utils/utils";
 import DetailBien from "./FormPart/DetailBien";
 
-export type IProductType = "LOCATION" | "BIEN EN VENTE" | "RESERVATION" | "AUTRE";
+export type IProductType = "LOCATION" | "BIEN EN VENTE" | "RESERVATION"; // | "AUTRE"
 
 export const TYPE_LOCATION_KEY: number = 0;
 export const TYPE_BIEN_EN_VENTE_KEY: number = 1;
 export const TYPE_RESERVATION_KEY: number = 2;
 export const TYPE_AUTRE_KEY: number = 3;
 
-export const PRODUCT_TYPE: IProductType[] = ["LOCATION", "BIEN EN VENTE", "RESERVATION", "AUTRE"];
+export const PRODUCT_TYPE: IProductType[] = ["LOCATION", "BIEN EN VENTE", "RESERVATION"]; //"AUTRE"
 
-export const PERIODICITY_LIST: { id: string; name: string }[] = [
-	{ id: "MONTH", name: "Mois" },
-	{ id: "WEEK", name: "Semaine" },
+export interface IPRODUCT_PERIODICITY {
+	id: string;
+	name: string;
+}
+export const PERIODICITY_LIST: IPRODUCT_PERIODICITY[] = [{ id: "MONTH", name: "Mois" }];
+
+// { id: "WEEK", name: "Semaine" },
+export const PERIODICITY_RESERVATION_LIST: { id: string; name: string }[] = [
+	{ id: "DAY", name: "Jour" },
+	{ id: "VISIT", name: "Séjour" },
+];
+
+export type IPRODUCT_AREA_UNIT_KEY = "M" | "LOT";
+
+export interface IPRODUCT_AREA_UNIT {
+	id: IPRODUCT_AREA_UNIT_KEY;
+	name: string;
+}
+
+export const PRODUCT_AREA_UNIT: IPRODUCT_AREA_UNIT[] = [
+	{ id: "M", name: "m²" },
+	{ id: "LOT", name: "Lot" },
 ];
 
 const DashboardSubmitPost = () => {
@@ -89,8 +108,32 @@ const DashboardSubmitPost = () => {
 	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
 		console.log("SubmitHandler", data);
 		console.log("SubmitHandler imageFiles", imageFiles);
-		const formData = new FormData();
+		const formData = new FormData(); // initialize form data
+
+		// fix default value
 		data.images = images;
+		data.type = data.type ?? PRODUCT_TYPE[0];
+		data.jacuzzi = data.jacuzzi ? 1 : 0;
+		data.bath = data.bath ? 1 : 0;
+		data.pool = data.pool ? 1 : 0;
+		data.WiFi = data.WiFi ? 1 : 0;
+		data.acd = data.acd ? 1 : 0;
+
+		if (!data.category_id) {
+			if (categorySelected) {
+				data.category_id = categorySelected?.id;
+			} else if (categories && categories.length > 2) {
+				data.category_id = categories[1].id;
+			}
+		}
+
+		if (!data.location_id) {
+			if (defaultValue) {
+				data.location_id = defaultValue.location_id;
+			} else if (locations && locations.length > 0) {
+				data.location_id = locations[0].id.toString();
+			}
+		}
 
 		// Convert data to FormData
 		for (const key in data) {
@@ -123,6 +166,41 @@ const DashboardSubmitPost = () => {
 	const isLocationSelected = (location: ILocation) => {
 		const checked = !!(defaultValue && location.id.toString() === defaultValue.location_id);
 		return checked;
+	};
+
+	const GET_PERIODICITY = () => {
+		switch (getValues("type")) {
+			case PRODUCT_TYPE[0]:
+				return PERIODICITY_LIST;
+
+			case PRODUCT_TYPE[1]:
+				return PERIODICITY_LIST;
+
+			case PRODUCT_TYPE[2]:
+				return PERIODICITY_RESERVATION_LIST;
+
+			default:
+				return PERIODICITY_LIST;
+		}
+	};
+
+	const GET_CATEGORIES = () => {
+		const data: IPropertyCategory[] = [];
+		const type = (getValues("type") as IProductType) ?? (PRODUCT_TYPE[0] as IProductType);
+
+		try {
+			if (categories && categories.length > 0) {
+				categories.forEach((c) => {
+					if (c.type.includes(type)) {
+						data.push(c);
+					}
+				});
+			}
+		} catch (error) {
+			console.error(error);
+		}
+
+		return data;
 	};
 
 	const initForm = (value: ProductRequest) => {
@@ -160,13 +238,14 @@ const DashboardSubmitPost = () => {
 				category_id: product.category.id,
 				excerpt: product.excerpt,
 				content: product.content,
-				type: product.type,
+				type: product.type ?? PRODUCT_TYPE[0],
 				location_id: product.location.id.toString(),
 				location_description: product.location_description,
 				price: product.price,
 				deposit_price: product.deposit_price,
 				// images: null,
 				area: product.area,
+				area_unit: product.area_unit,
 				bathrooms: product.bathrooms,
 				bedrooms: product.bedrooms,
 				garages: product.garages,
@@ -175,6 +254,12 @@ const DashboardSubmitPost = () => {
 				periodicity: product.periodicity as PeriodicityType,
 				count_advance: product.count_advance,
 				count_monthly: product.count_monthly,
+				bath: product.bath ? 1 : 0,
+				jacuzzi: product.jacuzzi ? 1 : 0,
+				pool: product.pool ? 1 : 0,
+				WiFi: product.WiFi ? 1 : 0,
+				air_conditioning: product.air_conditioning ? 1 : 0,
+				acd: product.acd ? 1 : 0,
 			};
 			setDefaultValue(value);
 			setImages(product.images.map((image) => image.image));
@@ -300,8 +385,8 @@ const DashboardSubmitPost = () => {
 												);
 											}}
 										>
-											{categories &&
-												categories
+											{GET_CATEGORIES() &&
+												GET_CATEGORIES()
 													.filter(
 														(category) =>
 															category.parent_id === null &&
@@ -404,6 +489,7 @@ const DashboardSubmitPost = () => {
 						register={register}
 						product={product}
 						setValue={setValue}
+						getValues={getValues}
 						typeDeBien={
 							(getValues("type") as IProductType) ?? (PRODUCT_TYPE[0] as IProductType)
 						}
@@ -414,22 +500,23 @@ const DashboardSubmitPost = () => {
 				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6  mb-5">
 					<div className="grid md:grid-cols-2 gap-6">
 						{/* TITLE */}
-						<label className="block md:col-span-2">
-							<Label>
-								Titre <span className="text-red-500">*</span>
-							</Label>
-							<Input
-								type="text"
-								className="mt-1"
-								{...register("title", { required: true })}
-								defaultValue={(defaultValue && defaultValue.title) ?? ""}
-							/>
-							<ErrorMessage
-								errors={errorArray}
-								error="title"
-								customMessage="Veuillez choisir un titre"
-							/>
-						</label>
+						{false && (
+							<label className="block md:col-span-2">
+								<Label>Titre</Label>
+								<Input
+									type="text"
+									className="mt-1"
+									// { required: true }
+									{...register("title")}
+									// defaultValue={(defaultValue && defaultValue.title) ?? ""}
+								/>
+								<ErrorMessage
+									errors={errorArray}
+									error="title"
+									customMessage="Veuillez choisir un titre"
+								/>
+							</label>
+						)}
 
 						{/* PRICE - DEPOSIT PRICE */}
 						<label className="block md:col-span-2">
@@ -461,36 +548,72 @@ const DashboardSubmitPost = () => {
 								</div>
 
 								<div>
-									<div className="block md:col-span-2 p-2">
-										<Select
-											name="periodicity"
-											className="mt-4"
-											onChange={(event) =>
-												setValue(
-													"periodicity",
-													event.target.value as
-														| "DAY"
-														| "WEEK"
-														| "MONTH"
-														| "YEAR"
-												)
-											}
-										>
-											<option value="">Choisir une périodicité</option>
-											{PERIODICITY_LIST.map((p) => (
-												<option
-													key={p.id}
-													value={p.id}
-													// selected={isCategorySelected(category)}
-													selected={
-														product && product.periodicity === p.id
-													}
-												>
-													{p.name}
-												</option>
-											))}
-										</Select>
-									</div>
+									{getValues("type") !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
+										<div className="block md:col-span-2 p-2">
+											<Select
+												name="periodicity"
+												className="mt-4"
+												onChange={(event) =>
+													setValue(
+														"periodicity",
+														event.target.value as
+															| "DAY"
+															| "WEEK"
+															| "MONTH"
+															| "YEAR"
+													)
+												}
+											>
+												{/* <option value="">Choisir une périodicité</option> */}
+												{GET_PERIODICITY().map((p) => (
+													<option
+														key={p.id}
+														value={p.id}
+														// selected={isCategorySelected(category)}
+														selected={
+															product && product.periodicity === p.id
+														}
+													>
+														{p.name}
+													</option>
+												))}
+											</Select>
+										</div>
+									)}
+
+									{getValues("type") === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
+										<div className="block md:col-span-2 p-2">
+											<Select
+												name="periodicity"
+												className="mt-4"
+												onChange={(event) =>
+													setValue(
+														"periodicity",
+														event.target.value as
+															| "DAY"
+															| "WEEK"
+															| "MONTH"
+															| "YEAR"
+													)
+												}
+											>
+												{PRODUCT_AREA_UNIT.map((u) => (
+													<option
+														key={u.id}
+														value={u.id}
+														selected={
+															product && product.area_unit === u.id
+														}
+														defaultValue={
+															!getValues("area_unit") ? u.id : ""
+														}
+													>
+														{u.name}
+													</option>
+												))}
+											</Select>
+										</div>
+									)}
 
 									{false && (
 										<>
@@ -524,7 +647,7 @@ const DashboardSubmitPost = () => {
 							</div>
 
 							{(getValues("type") === PRODUCT_TYPE[0] ||
-								PRODUCT_TYPE[0] == "LOCATION") && (
+								product?.type === "LOCATION") && (
 								<div className="grid grid-cols-4 gap-6 mt-3">
 									<div className="col-span-2">
 										<Label>
@@ -572,21 +695,23 @@ const DashboardSubmitPost = () => {
 				</div>
 
 				{/* SECTION 03 */}
-				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
-					<div className="grid md:grid-cols-2 gap-6 ">
-						{/* IMAGE */}
-						<div className="block md:col-span-2">
-							<ImageUploader
-								initialImages={images}
-								maxImages={5}
-								images={images}
-								setImages={setImages}
-								imageFiles={imageFiles}
-								setImageFiles={setImageFiles}
-							/>
+				{getValues("type") !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
+					<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
+						<div className="grid md:grid-cols-2 gap-6 ">
+							{/* IMAGE */}
+							<div className="block md:col-span-2">
+								<ImageUploader
+									initialImages={images}
+									maxImages={5}
+									images={images}
+									setImages={setImages}
+									imageFiles={imageFiles}
+									setImageFiles={setImageFiles}
+								/>
+							</div>
 						</div>
 					</div>
-				</div>
+				)}
 
 				{/* SECTION 04 */}
 				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
@@ -632,7 +757,7 @@ const DashboardSubmitPost = () => {
 
 						{/* CONTENT */}
 						<label className="block md:col-span-2">
-							<Label> Post Content</Label>
+							<Label> Detail de l'annonce</Label>
 							<EditorText
 								onEditorChange={(content: string) => setValue("content", content)}
 								initialValue={product && product.content}
