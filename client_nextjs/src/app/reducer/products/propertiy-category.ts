@@ -19,6 +19,7 @@ export interface IPropertyCategory {
 	type: IProductType[];
 	uuid: string;
 	can_delete: boolean;
+	can_upload_image: boolean;
 }
 
 export interface IStoreDataCategorie {

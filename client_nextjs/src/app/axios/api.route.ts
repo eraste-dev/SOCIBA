@@ -1,13 +1,7 @@
-import {
-	IGetQueryParams,
-	IGetSearchPropertiesParams,
-	QueryBuilder,
-} from "utils/query-builder.utils";
+import { IGetSearchPropertiesParams, QueryBuilder } from "utils/query-builder.utils";
 import { ProductRequest, UpdateUserRequest } from "./api.type";
-import { IProduct } from "app/reducer/products/product";
 import { InputsEditCategory } from "components/Dashboard/Products/Categories/EditCategory";
 import { InputsEditSlider } from "containers/PageDashboard/Sliders/EditSlider";
-import { UserRequest } from "app/reducer/users-request/users-request";
 import { MovingRequestInputs } from "containers/PageMovingRequest/SectionContact";
 
 export const apiBase: string = "http://localhost:8000";
@@ -58,6 +52,7 @@ export interface IServerEndpoint {
 			getAll: IAxiosRequestConfig;
 			delete: (id: number) => IAxiosRequestConfig;
 			sendUserRequest: (payload: MovingRequestInputs) => IAxiosRequestConfig;
+			getAllUserRequest: IAxiosRequestConfig;
 		};
 		meta: {
 			search: (key: string) => IAxiosRequestConfig;
@@ -143,6 +138,7 @@ export const serverEndpoints: IServerEndpoint = {
 				url: `${v100}/user/send-request`,
 				data: payload,
 			}),
+			getAllUserRequest: { method: "GET", url: `${v100}/user/user-request` },
 		},
 		meta: {
 			search: (key: string) => ({ method: "GET", url: `${v100}/meta/${key}` }),

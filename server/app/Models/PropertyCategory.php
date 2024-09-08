@@ -19,6 +19,7 @@ class PropertyCategory extends Model
         'type',
         'uuid',
         'can_delete',
+        'can_upload_image',
     ];
 
     public function parent()

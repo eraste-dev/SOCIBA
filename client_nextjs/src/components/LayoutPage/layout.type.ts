@@ -9,6 +9,7 @@ import DashboardSubmitPost from "containers/PageDashboard/DashboardSubmitPost";
 import DashboardUsers from "containers/PageDashboard/DashboardUsers";
 import DashboardSetting from "containers/PageDashboard/settings/DashboardSetting";
 import DashboardSliders from "containers/PageDashboard/Sliders/DashboardSliders";
+import DashboardUserRequest from "containers/PageDashboard/userRequest/DashboardUserRequest";
 import { ComponentType } from "react";
 
 export interface DashboardLocationState {
@@ -22,6 +23,7 @@ export interface DashboardLocationState {
 	"/account"?: {};
 	"/post-categories"?: {};
 	"/sliders"?: {};
+	"/user-request"?: {};
 	"/settings"?: {};
 }
 
@@ -79,6 +81,12 @@ export const ADMIN_SUB_PAGES: DashboardPage[] = [
 		component: DashboardSliders,
 		emoij: "  ",
 		pageName: "Banniers",
+	},
+	{
+		sPath: "/user-request",
+		component: DashboardUserRequest,
+		emoij: "  ",
+		pageName: "Demandes de démenagement",
 	},
 	// {
 	// 	sPath: "/settings",

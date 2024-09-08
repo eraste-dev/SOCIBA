@@ -5,6 +5,7 @@ import { NavLink, RouteComponentProps, withRouter } from "react-router-dom";
 import NcImage from "components/NcImage/NcImage";
 import { useAppDispatch } from "app/hooks";
 import { inittializePropertyList, inittPropertyList } from "app/axios/actions/api.action";
+import { initUserRequest } from "app/axios/actions/api.users.action";
 
 // <--- NavItemType --->
 export interface MegamenuItem {
@@ -120,6 +121,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }
 	const renderMegaMenuNavlink = (item: NavItemType) => {
 		const dispatch = useAppDispatch();
 		const onClickItem = () => {
+			dispatch(initUserRequest());
 			dispatch(inittPropertyList());
 		};
 
@@ -301,6 +303,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }
 	const renderMainItem = (item: NavItemType) => {
 		const dispatch = useAppDispatch();
 		const onClickItem = () => {
+			dispatch(initUserRequest());
 			dispatch(inittPropertyList());
 		};
 

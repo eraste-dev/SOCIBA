@@ -33,11 +33,11 @@ import DetailBien from "./FormPart/DetailBien";
 export type IProductType = "LOCATION" | "BIEN EN VENTE" | "RESERVATION"; // | "AUTRE"
 
 export const TYPE_LOCATION_KEY: number = 0;
-export const TYPE_BIEN_EN_VENTE_KEY: number = 1;
-export const TYPE_RESERVATION_KEY: number = 2;
+export const TYPE_RESERVATION_KEY: number = 1;
+export const TYPE_BIEN_EN_VENTE_KEY: number = 2;
 export const TYPE_AUTRE_KEY: number = 3;
 
-export const PRODUCT_TYPE: IProductType[] = ["LOCATION", "BIEN EN VENTE", "RESERVATION"]; //"AUTRE"
+export const PRODUCT_TYPE: IProductType[] = ["LOCATION", "RESERVATION", "BIEN EN VENTE"]; //"AUTRE"
 
 export interface IPRODUCT_PERIODICITY {
 	id: string;
@@ -761,7 +761,7 @@ const DashboardSubmitPost = () => {
 							<Label> Detail de l'annonce</Label>
 							<EditorText
 								onEditorChange={(content: string) => setValue("content", content)}
-								initialValue={product && product.content}
+								initialValue={defaultValue?.content}
 							/>
 							<ErrorMessage
 								errors={errorArray}

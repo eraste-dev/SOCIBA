@@ -15,13 +15,17 @@ import {
 	deleteUserSuccess,
 	deleteUserFailure,
 } from "app/reducer/users/users";
-import {
-	postUserRequestsFailure,
-	postUserRequestsStart,
-	postUserRequestsSuccess,
-	UserRequest,
-} from "app/reducer/users-request/users-request";
+
 import { MovingRequestInputs } from "containers/PageMovingRequest/SectionContact";
+import {
+	fetchALlUserRequestsFailure,
+	fetchALlUserRequestsStart,
+	fetchALlUserRequestsSuccess,
+	postuserRequestsFailure,
+	postuserRequestsInitial,
+	postuserRequestsStart,
+	postuserRequestsSuccess,
+} from "app/reducer/userRequest/userRequest";
 
 /**
  * Fetches all users from the server and dispatches corresponding actions.
@@ -70,15 +74,33 @@ export const deleteUser = (payload: number) => async (dispatch: AppDispatch) => 
  * @return {Promise<void>} A Promise that resolves when the request is sent successfully.
  */
 export const sendUserRequest = (payload: MovingRequestInputs) => async (dispatch: AppDispatch) => {
-	dispatch(postUserRequestsStart());
+	dispatch(postuserRequestsStart());
 
 	try {
 		const response = await axiosRequest<IServerResponse>({
 			...serverEndpoints.public.users.sendUserRequest(payload),
 		});
-		dispatch(postUserRequestsSuccess(response));
+		dispatch(postuserRequestsSuccess(response));
 	} catch (error: any) {
 		console.log(error);
-		dispatch(postUserRequestsFailure(error.message));
+		dispatch(postuserRequestsFailure(error.message));
+	}
+};
+
+export const initUserRequest = () => async (dispatch: AppDispatch) => {
+	dispatch(postuserRequestsInitial());
+};
+
+export const fetchAllUserRequest = () => async (dispatch: AppDispatch) => {
+	dispatch(fetchALlUserRequestsStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.users.getAllUserRequest,
+		});
+		dispatch(fetchALlUserRequestsSuccess(response.data));
+	} catch (error: any) {
+		console.log(error);
+		dispatch(fetchALlUserRequestsFailure(error.message));
 	}
 };

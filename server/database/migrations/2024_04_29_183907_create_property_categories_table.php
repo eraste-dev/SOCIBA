@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('uuid')->unique()->nullable();
             $table->string('type')->nullable(); // ->default('LOCATION')  ['LOCATION', 'BIEN EN VENTE', 'RESERVATION']
             $table->boolean('can_delete')->nullable()->default(false);
+            $table->boolean('can_upload_image')->nullable()->default(true);
             $table->timestamps();
         });
     }

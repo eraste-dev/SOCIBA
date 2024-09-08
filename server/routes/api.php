@@ -79,6 +79,9 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead']);
             Route::delete('/notifications/{id}',            [NotificationController::class, 'destroy']);
             Route::post('/notifications/mark-all-as-read',  [NotificationController::class, 'markAllAsRead']);
+
+            // ? USER REQUEST
+            Route::get('user-request', [UserRequestController::class, 'index']);
         });
     });
 });

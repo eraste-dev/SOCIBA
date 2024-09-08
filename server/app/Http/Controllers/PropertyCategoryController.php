@@ -25,12 +25,16 @@ class PropertyCategoryController extends Controller
     {
         // Valider les données de la requête
         $request->validate([
-            'id'          => 'nullable|integer|exists:property_categories,id',
-            'name'        => 'required|string',
-            'parent_id'   => 'nullable|exists:property_categories,id',
-            'slug'        => 'nullable|string|unique:property_categories,slug',
-            'icon'        => 'nullable|string',
-            'description' => 'nullable|string',
+            'id'               => 'nullable|integer|exists:property_categories,id',
+            'name'             => 'required|string',
+            'parent_id'        => 'nullable|exists:property_categories,id',
+            'slug'             => 'nullable|string|unique:property_categories,slug',
+            'icon'             => 'nullable|string',
+            'description'      => 'nullable|string',
+            'type'             => 'nullable|string',
+            'uuid'             => 'nullable|string',
+            'can_delete'       => 'nullable|boolean',
+            'can_upload_image' => 'nullable|boolean',
             // Ajoutez d'autres règles de validation si nécessaire
         ]);
 

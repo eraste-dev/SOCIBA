@@ -65,6 +65,7 @@ class PropertyCategorySeeder extends Seeder
                 'uuid' => $categoryData['uuid'],
                 'type' => $categoryData['type'],
                 'can_delete' => false,
+                'can_upload_image' => true,
             ]);
 
             // Sous-catégories pour la catégorie principale "Maison"
@@ -88,6 +89,7 @@ class PropertyCategorySeeder extends Seeder
                         'type' => Type::TYPE_LOCATION(),
                         'uuid' => Type::makeUUID($subCategoryData['name'], Type::TYPE_LOCATION()),
                         'can_delete' => false,
+                        'can_upload_image' => true,
                     ]);
                 }
             }
@@ -109,6 +111,7 @@ class PropertyCategorySeeder extends Seeder
                         'type' => $subCategoryData['type'],
                         'uuid' => Type::makeUUID($subCategoryData['name'], $subCategoryData['type']),
                         'can_delete' => false,
+                        'can_upload_image' => true,
                     ]);
                 }
             }
@@ -134,6 +137,7 @@ class PropertyCategorySeeder extends Seeder
                         'type' => Type::TYPE_RESERVATION(),
                         'uuid' => Type::makeUUID($subCategoryData['name'], Type::TYPE_RESERVATION()),
                         'can_delete' => false,
+                        'can_upload_image' => true,
                     ]);
                 }
             }
@@ -145,21 +149,25 @@ class PropertyCategorySeeder extends Seeder
                         'name' => 'Maison ',
                         'slug' => 'achat-maison',
                         'type' => Type::TYPE_BIEN_EN_VENTE(),
+                        'can_upload_image' => true,
                     ],
                     [
                         'name' => 'Terrain',
                         'slug' => 'terrain',
                         'type' => Type::TYPE_BIEN_EN_VENTE(),
+                        'can_upload_image' => false,
                     ],
                     [
                         'name' => 'Entrepôt',
                         'slug' => 'entrepôt',
                         'type' => Type::TYPE_BIEN_EN_VENTE(),
+                        'can_upload_image' => true,
                     ],
                     [
                         'name' => 'Magasin',
                         'slug' => 'achat-magasin',
                         'type' => Type::TYPE_BIEN_EN_VENTE(),
+                        'can_upload_image' => true,
                     ],
                 ];
 
@@ -170,6 +178,7 @@ class PropertyCategorySeeder extends Seeder
                         'type' => Type::TYPE_BIEN_EN_VENTE(),
                         'uuid' => Type::makeUUID($subCategoryData['name'], Type::TYPE_BIEN_EN_VENTE()),
                         'can_delete' => false,
+                        'can_upload_image' => $subCategoryData['can_upload_image'],
                     ]);
                 }
             }

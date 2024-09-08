@@ -5,12 +5,12 @@ import darkmodeReducer from "./darkmode/darkmode";
 import pagesReducer from "./pages/pages";
 import mediaRunningReducer from "./mediaRunning/mediaRunning";
 import sliderReducer from "./sliders/sliders";
+import userRequestsReducer from "./userRequest/userRequest";
 import categoryReducer from "./products/propertiy-category";
 import productReducer from "./products/product";
 import usersReducer from "./users/users";
 import metaReducer from "./meta/meta";
 import authReducer from "./auth/auth";
-import userRequests from "./users-request/users-request";
 import locationReducer from "./locations/locations";
 
 const rootReducers = {
@@ -27,7 +27,7 @@ const rootReducers = {
 	locations: locationReducer,
 	usersManagement: usersReducer,
 	meta: metaReducer,
-	UserRequests: userRequests,
+	userRequests: userRequestsReducer,
 };
 
 export default rootReducers;
