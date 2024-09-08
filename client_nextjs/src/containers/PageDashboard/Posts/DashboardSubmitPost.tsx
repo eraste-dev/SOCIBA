@@ -334,6 +334,7 @@ const DashboardSubmitPost = () => {
 				accessibility: product.accessibility,
 				purchase_power: product.purchase_power,
 				security: product.security,
+				area_count: product.area_count,
 			};
 			setDefaultValue(value);
 			setImages(product.images.map((image) => image.image));
@@ -513,6 +514,7 @@ const DashboardSubmitPost = () => {
 								/>
 							</div>
 						</label>
+
 						{/* DETAIL CATEGORY */}
 						{hasResidence() && (
 							<label className="block md:col-span-2">
@@ -559,6 +561,42 @@ const DashboardSubmitPost = () => {
 								</div>
 							</label>
 						)}
+
+						{/* DETAIL CATEGORY */}
+						{getValues("type") === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
+							<label className="block md:col-span-2">
+								<div className="grid grid-cols-1 gap-6">
+									<div>
+										<Label>
+											Nombre de terrain{" "}
+											<span className="text-red-500">*</span>
+										</Label>
+
+										<div className="block md:col-span-2 p-2">
+											<Input
+												name="area_count"
+												autoComplete="on"
+												onChange={(event) => {
+													event.target.value &&
+														setValue(
+															"area_count",
+															parseInt(event.target.value)
+														);
+												}}
+											></Input>
+										</div>
+									</div>
+								</div>
+								<div>
+									<ErrorMessage
+										errors={errorArray}
+										error="category_id"
+										customMessage="Veuillez choisir un type de bien"
+									/>
+								</div>
+							</label>
+						)}
+
 						{/* VILLE - COUNTRY - STATE */}
 						<label className="block md:col-span-2">
 							<div className="grid grid-cols-2 gap-6">
@@ -629,17 +667,16 @@ const DashboardSubmitPost = () => {
 						}
 					/>
 
-						<DetailBienTwo
-							errorArray={errorArray}
-							register={register}
-							product={product}
-							setValue={setValue}
-							getValues={getValues}
-							typeDeBien={
-								(getValues("type") as IProductType) ??
-								(PRODUCT_TYPE[0] as IProductType)
-							}
-						/>
+					<DetailBienTwo
+						errorArray={errorArray}
+						register={register}
+						product={product}
+						setValue={setValue}
+						getValues={getValues}
+						typeDeBien={
+							(getValues("type") as IProductType) ?? (PRODUCT_TYPE[0] as IProductType)
+						}
+					/>
 				</div>
 
 				{/* SECTION 01 */}
@@ -795,9 +832,9 @@ const DashboardSubmitPost = () => {
 							{(getValues("type") === PRODUCT_TYPE[0] ||
 								product?.type === "LOCATION") && (
 								<div className="grid grid-cols-4 gap-6 mt-3">
-									<div className="col-span-2">
+									<div className="col-span-4">
 										<Label>
-											Mois de loyer
+											Caution (Nombre de mois)
 											<div className="flex items-center">
 												<Input
 													type="number"
@@ -815,25 +852,27 @@ const DashboardSubmitPost = () => {
 										/>
 									</div>
 
-									<div className="col-span-2">
-										<Label>
-											Mois d'avance
-											<div className="flex items-center">
-												<Input
-													type="number"
-													className="mt-1"
-													min={0}
-													defaultValue={product && product.count_advance}
-													{...register("count_advance")}
-												/>
-											</div>
-										</Label>
-										<ErrorMessage
-											errors={errorArray}
-											error="price"
-											customMessage="Veuillez saisir un prix"
-										/>
-									</div>
+									{false && (
+										<div className="col-span-6">
+											<Label>
+												Mois d'avance
+												<div className="flex items-center">
+													<Input
+														type="number"
+														className="mt-1"
+														min={0}
+														defaultValue={product!.count_advance ?? 0}
+														{...register("count_advance")}
+													/>
+												</div>
+											</Label>
+											<ErrorMessage
+												errors={errorArray}
+												error="price"
+												customMessage="Veuillez saisir un prix"
+											/>
+										</div>
+									)}
 								</div>
 							)}
 						</label>

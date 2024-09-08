@@ -73,6 +73,7 @@ export interface IProduct {
 	reservation_type: string;
 	acd: boolean;
 	security: string;
+	area_count: number;
 	purchase_power: string;
 	accessibility: string;
 }

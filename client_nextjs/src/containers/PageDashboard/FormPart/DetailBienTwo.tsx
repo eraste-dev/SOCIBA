@@ -72,6 +72,7 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 				<div className="grid grid-cols-3 gap-6 mt-3">
 					{/* SECURITY */}
 					<div>
+					<Label>Sécurité</Label>
 						<div className="block md:col-span-2 p-2">
 							<div className="flex  " style={{ alignItems: "center" }}>
 								<Security className="mr-2" />

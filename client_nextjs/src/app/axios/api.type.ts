@@ -123,4 +123,5 @@ export interface ProductRequest {
 	security: string;
 	purchase_power: string;
 	accessibility: string;
+	area_count: number;
 }
