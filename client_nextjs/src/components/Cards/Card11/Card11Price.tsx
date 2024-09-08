@@ -9,7 +9,7 @@ import {
 	PRODUCT_AREA_UNIT,
 	PRODUCT_TYPE,
 	TYPE_BIEN_EN_VENTE_KEY,
-} from "containers/PageDashboard/DashboardSubmitPost";
+} from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import React from "react";
 import { _f } from "utils/money-format";
 

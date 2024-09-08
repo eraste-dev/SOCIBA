@@ -63,11 +63,16 @@ class PropertyController extends Controller
             'acd'                  => 'nullable|numeric',
             'count_advance'        => 'nullable|numeric',
             'count_monthly'        => 'nullable|numeric',
+            'reservation_type'     => 'nullable|string',
             'jacuzzi'              => 'nullable|numeric', // |boolean
             'bath'                 => 'nullable|numeric', // |boolean
             'WiFi'                 => 'nullable|numeric', // |boolean
             'pool'                 => 'nullable|numeric', // |boolean
+            'area_count'           => 'nullable|numeric', // |boolean
             'air_conditioning'     => 'nullable', // |boolean
+            'security'             => 'nullable|string|in:WITH_GUARD,WITHOUT_GUARD',
+            'purchase_power'       => 'nullable|string|in:LESS_EXPENSIVE,EQUAL_EXPENSIVE,MORE_EXPENSIVE',
+            'accessibility'        => 'nullable|string|in:NOT_FAR_FROM_THE_TAR,A_LITTLE_FAR_FROM_THE_TAR,FAR_FROM_THE_TAR',
             'images.*'             => 'required|file|max:10048',
             // 'excerpt'           => 'nullable|string',
         ]);
@@ -88,7 +93,7 @@ class PropertyController extends Controller
             if (isset($validatedData['title'])) {
                 $product->slug = Str::slug($validatedData['title']);
             } else {
-                if(isset($validatedData['type'])) {
+                if (isset($validatedData['type'])) {
                     $product->slug = Str::slug($validatedData['type'] . '-' . $product->id);
                 }
             }
@@ -122,7 +127,8 @@ class PropertyController extends Controller
             $product->kitchens             = isset($validatedData['kitchens']) ? $validatedData['kitchens'] : null;
             $product->rooms                = isset($validatedData['rooms']) ? $validatedData['rooms'] : null;
             $product->area                 = isset($validatedData['area']) ? $validatedData['area'] : null;
-            $product->area_unit            = (!isset($validatedData['area_unit']) || $validatedData['area_unit'] == 0 || !in_array(['LOT', 'M'], $validatedData['area_unit'])) ? null :  $validatedData['area_unit'] ;
+            $product->area_count           = isset($validatedData['area_count']) ? $validatedData['area_count'] : null;
+            $product->area_unit            = (!isset($validatedData['area_unit']) || $validatedData['area_unit'] == 0 || !in_array(['LOT', 'M'], $validatedData['area_unit'])) ? null :  $validatedData['area_unit'];
             $product->count_advance        = isset($validatedData['count_advance']) ? $validatedData['count_advance'] : null;
             $product->count_monthly        = isset($validatedData['count_monthly']) ? $validatedData['count_monthly'] : null;
             $product->jacuzzi              = isset($validatedData['jacuzzi']) ? $validatedData['jacuzzi'] : null;
@@ -130,6 +136,10 @@ class PropertyController extends Controller
             $product->WiFi                 = isset($validatedData['WiFi']) ? $validatedData['WiFi'] : null;
             $product->pool                 = isset($validatedData['pool']) ? $validatedData['pool'] : null;
             $product->air_conditioning     = isset($validatedData['air_conditioning']) ? boolval($validatedData['air_conditioning']) : null;
+            $product->reservation_type     = isset($validatedData['reservation_type']) ? ($validatedData['reservation_type']) : null;
+            $product->security             = isset($validatedData['security']) ? $validatedData['security'] : null;
+            $product->purchase_power       = isset($validatedData['purchase_power']) ? $validatedData['purchase_power'] : null;
+            $product->accessibility        = isset($validatedData['accessibility']) ? $validatedData['accessibility'] : null;
 
 
             // $product->deposit_price        = $validatedData['deposit_price'];

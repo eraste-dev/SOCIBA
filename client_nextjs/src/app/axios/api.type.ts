@@ -2,7 +2,7 @@ import { IPagination } from "app/reducer/products/type";
 import { RootState } from "app/reducer/store";
 import { AxiosRequestConfig } from "axios";
 import { STATUS_LABEL } from "components/Dashboard/Products/ChangeProductType";
-import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/DashboardSubmitPost";
+import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 
 export interface IServerResponse {
 	success: boolean;
@@ -119,4 +119,8 @@ export interface ProductRequest {
 	pool: number;
 	air_conditioning: number;
 	acd: number;
+	reservation_type: string;
+	security: string;
+	purchase_power: string;
+	accessibility: string;
 }

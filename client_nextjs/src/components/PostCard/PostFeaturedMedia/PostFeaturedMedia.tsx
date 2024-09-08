@@ -7,7 +7,7 @@ import PostTypeFeaturedIcon from "components/PostCard/PostTypeFeaturedIcon/PostT
 import MediaAudio from "./MediaAudio";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
 import { IProduct } from "app/reducer/products/product";
-import { PRODUCT_TYPE, TYPE_BIEN_EN_VENTE_KEY } from "containers/PageDashboard/DashboardSubmitPost";
+import { PRODUCT_TYPE, TYPE_BIEN_EN_VENTE_KEY } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import MediaTerrain from "./MediaTerrain";
 
 export interface PostFeaturedMediaProps {

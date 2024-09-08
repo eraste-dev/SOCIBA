@@ -47,6 +47,7 @@ class Property extends Model
         'rooms',
         'area',
         'area_unit',
+        'area_count',
         'count_advance',
         'count_monthly',
 
@@ -55,6 +56,10 @@ class Property extends Model
         'WiFi',
         'pool',
         'air_conditioning',
+        'reservation_type',
+        'security',
+        'purchase_power',
+        'accessibility',
 
         'created_by',
         'updated_by',

@@ -11,7 +11,7 @@ const EditorText: FC<EditorTextProps> = ({ onEditorChange, initialValue }) => {
 	return (
 		<Editor
 			apiKey="yzz1chogxlfmvur9dccog16q7rw63ajhx4po8tcxi6fbzhpg"
-			initialValue={`${initialValue} `}
+			initialValue={initialValue}
 			init={{
 				height: 500,
 				menubar: true,

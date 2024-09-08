@@ -28,7 +28,9 @@ import { route } from "routers/route";
 import { useBoolean } from "react-use";
 import ImageUploader from "components/Dashboard/Products/ImageUploader";
 import { formatPrice } from "utils/utils";
-import DetailBien from "./FormPart/DetailBien";
+import DetailBien from "../FormPart/DetailBien";
+import { ProductcategoryUUID } from "data/categories_uuid";
+import DetailBienTwo from "../FormPart/DetailBienTwo";
 
 export type IProductType = "LOCATION" | "BIEN EN VENTE" | "RESERVATION"; // | "AUTRE"
 
@@ -63,6 +65,11 @@ export const PRODUCT_AREA_UNIT: IPRODUCT_AREA_UNIT[] = [
 	{ id: "LOT", name: "Lot" },
 ];
 
+export interface IResidenceType {
+	code: string;
+	name: string;
+}
+
 const DashboardSubmitPost = () => {
 	const CURRENCY: string = "FCFA";
 
@@ -93,6 +100,7 @@ const DashboardSubmitPost = () => {
 	const [currentImage, setCurrentImage] = useState<string | null>(null);
 	const [images, setImages] = useState<string[]>([]);
 	const [imageFiles, setImageFiles] = useState<File[]>([]);
+	const [tmpcatId, settmpcatId] = useState(0);
 
 	const {
 		register,
@@ -113,6 +121,8 @@ const DashboardSubmitPost = () => {
 		// fix default value
 		data.images = images;
 		data.type = data.type ?? PRODUCT_TYPE[0];
+		data.reservation_type =
+			data.reservation_type ?? Object.values(SUB_RESERVATION_CATEGORIES)[0];
 		data.jacuzzi = data.jacuzzi ? 1 : 0;
 		data.bath = data.bath ? 1 : 0;
 		data.pool = data.pool ? 1 : 0;
@@ -121,10 +131,14 @@ const DashboardSubmitPost = () => {
 		data.acd = data.air_conditioning ? 1 : 0;
 
 		if (!data.category_id) {
-			if (categorySelected) {
-				data.category_id = categorySelected?.id;
-			} else if (categories && categories.length > 2) {
-				data.category_id = categories[1].id;
+			if (tmpcatId) {
+				data.category_id = tmpcatId;
+			} else if (
+				GET_CATEGORIES() &&
+				GET_CATEGORIES().length > 1 &&
+				GET_CATEGORIES()[0].children.length > 0
+			) {
+				data.category_id = GET_CATEGORIES()[1].children[0].id;
 			}
 		}
 
@@ -169,6 +183,10 @@ const DashboardSubmitPost = () => {
 		return checked;
 	};
 
+	const canShowImage = () => {
+		return getValues("category_id") && getValues("category_id") != 21;
+	};
+
 	const GET_PERIODICITY = () => {
 		switch (getValues("type")) {
 			case PRODUCT_TYPE[0]:
@@ -204,6 +222,56 @@ const DashboardSubmitPost = () => {
 		return data;
 	};
 
+	const SUB_RESERVATION_CATEGORIES = (): IResidenceType[] => {
+		return [
+			{
+				code: "APPARTEMENT",
+				name: "Appartement",
+			},
+			{
+				code: "STUDIO",
+				name: "Studio",
+			},
+			{ code: "TWO_PIECE", name: "2 pièces" },
+			{ code: "THREE_PIECE", name: "3 pièces" },
+			{ code: "FOUR_PIECE", name: "4 pièces" },
+			{ code: "VILLA", name: "Villa" },
+			{ code: "DUPLEX", name: "Duplex" },
+			{ code: "TRIPLEX", name: "Triplex" },
+		];
+	};
+
+	const hasResidence = (): boolean => {
+		let output: boolean = false;
+
+		GET_CATEGORIES().forEach((c) => {
+			c.children.forEach((child) => {
+				if (
+					child.id === getValues("category_id") &&
+					child.uuid === ProductcategoryUUID.RESERVATION.children.RESIDENCE
+				) {
+					output = true;
+				}
+			});
+		});
+
+		return output;
+	};
+
+	const allowImage = (): boolean => {
+		let output: boolean = false;
+
+		GET_CATEGORIES().forEach((c) => {
+			c.children.forEach((child) => {
+				if (child.id === getValues("category_id") && child.can_upload_image) {
+					output = true;
+				}
+			});
+		});
+
+		return output;
+	};
+
 	const initForm = (value: ProductRequest) => {
 		setValue("id", value.id);
 		setValue("category_id", value.category_id);
@@ -217,6 +285,7 @@ const DashboardSubmitPost = () => {
 		setValue("price", value.price);
 		setValue("deposit_price", value.deposit_price);
 		setValue("periodicity", value.periodicity);
+		setValue("reservation_type", value.reservation_type);
 		// setValue("images", value.images);
 		// setDefaultValue(value);
 		// setPreviewUrls(value.images ? value.images.map((item: any) => URL.createObjectURL(item)) : []);
@@ -261,6 +330,10 @@ const DashboardSubmitPost = () => {
 				WiFi: product.WiFi ? 1 : 0,
 				air_conditioning: product.air_conditioning ? 1 : 0,
 				acd: product.acd ? 1 : 0,
+				reservation_type: product.reservation_type,
+				accessibility: product.accessibility,
+				purchase_power: product.purchase_power,
+				security: product.security,
 			};
 			setDefaultValue(value);
 			setImages(product.images.map((image) => image.image));
@@ -351,7 +424,18 @@ const DashboardSubmitPost = () => {
 
 							<SelectProductType
 								options={PRODUCT_TYPE}
-								onChangeOption={(value) => setValue("type", value)}
+								onChangeOption={(value) => {
+									setValue("type", value);
+									if (GET_CATEGORIES()[0].id) {
+										setValue("category_id", GET_CATEGORIES()[0].id);
+										settmpcatId(GET_CATEGORIES()[0].id);
+									}
+									console.log({
+										category_id: getValues("category_id"),
+										type: getValues("type"),
+										hasResidence: hasResidence(),
+									});
+								}}
 								selected={watch("type") ?? PRODUCT_TYPE[0]}
 							/>
 							<ErrorMessage
@@ -360,7 +444,6 @@ const DashboardSubmitPost = () => {
 								customMessage="Veuillez choisir un type d'offre"
 							/>
 						</label>
-
 						{/* CATEGORY */}
 						<label className="block md:col-span-2">
 							<div className="grid grid-cols-1 gap-6">
@@ -374,6 +457,8 @@ const DashboardSubmitPost = () => {
 										<Select
 											name="category_id"
 											onChange={(event) => {
+												settmpcatId(parseInt(event.target.value));
+
 												event.target.value &&
 													setValue(
 														"category_id",
@@ -382,10 +467,13 @@ const DashboardSubmitPost = () => {
 												console.log(
 													"category_id",
 													event.target.value,
-													getValues("category_id")
+													getValues("category_id"),
+													tmpcatId
 												);
 											}}
 										>
+											<option>Choix du type de bien</option>
+
 											{GET_CATEGORIES() &&
 												GET_CATEGORIES()
 													.filter(
@@ -425,7 +513,52 @@ const DashboardSubmitPost = () => {
 								/>
 							</div>
 						</label>
+						{/* DETAIL CATEGORY */}
+						{hasResidence() && (
+							<label className="block md:col-span-2">
+								<div className="grid grid-cols-1 gap-6">
+									<div>
+										<Label>
+											Type de maison <span className="text-red-500">*</span>
+										</Label>
 
+										<div className="block md:col-span-2 p-2">
+											<Select
+												name="reservation_type"
+												onChange={(event) => {
+													event.target.value &&
+														setValue(
+															"reservation_type",
+															event.target.value
+														);
+												}}
+											>
+												{SUB_RESERVATION_CATEGORIES() &&
+													SUB_RESERVATION_CATEGORIES().map((c) => (
+														<option
+															key={c.code}
+															value={c.name}
+															selected={
+																c.name ===
+																getValues("reservation_type")
+															}
+														>
+															{c.name}
+														</option>
+													))}
+											</Select>
+										</div>
+									</div>
+								</div>
+								<div>
+									<ErrorMessage
+										errors={errorArray}
+										error="category_id"
+										customMessage="Veuillez choisir un type de bien"
+									/>
+								</div>
+							</label>
+						)}
 						{/* VILLE - COUNTRY - STATE */}
 						<label className="block md:col-span-2">
 							<div className="grid grid-cols-2 gap-6">
@@ -495,6 +628,18 @@ const DashboardSubmitPost = () => {
 							(getValues("type") as IProductType) ?? (PRODUCT_TYPE[0] as IProductType)
 						}
 					/>
+
+						<DetailBienTwo
+							errorArray={errorArray}
+							register={register}
+							product={product}
+							setValue={setValue}
+							getValues={getValues}
+							typeDeBien={
+								(getValues("type") as IProductType) ??
+								(PRODUCT_TYPE[0] as IProductType)
+							}
+						/>
 				</div>
 
 				{/* SECTION 01 */}
@@ -696,7 +841,8 @@ const DashboardSubmitPost = () => {
 				</div>
 
 				{/* SECTION 03 */}
-				{getValues("type") !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
+				{/* getValues("type") !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY]  */}
+				{allowImage() && (
 					<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
 						<div className="grid md:grid-cols-2 gap-6 ">
 							{/* IMAGE */}

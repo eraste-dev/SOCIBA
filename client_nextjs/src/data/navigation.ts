@@ -13,7 +13,7 @@ import {
 	NAV_COLUMN_THREE,
 	NAV_COLUMN_TWO,
 } from "./navigations-data";
-import { IProductType } from "containers/PageDashboard/DashboardSubmitPost";
+import { IProductType } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 
 export const linkByType = (type: IProductType) => {
 	return route("annonces") + "/?type=" + type;

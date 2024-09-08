@@ -6,7 +6,7 @@ import {
 	PRODUCT_TYPE,
 	TYPE_BIEN_EN_VENTE_KEY,
 	TYPE_RESERVATION_KEY,
-} from "containers/PageDashboard/DashboardSubmitPost";
+} from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import ItemChecked from "./ItemCheck";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 
@@ -104,29 +104,22 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 						{/* </Tooltip> */}
 					</div>
 
-					{/* JACUZZI */}
-					<ItemChecked
-						name="ACD"
-						condition={true}
-						className="justify-self-start"
-						icon={
-							meta.acd ? (
+					{/* ACD */}
+					{meta.acd && (
+						<ItemChecked
+							name="ACD"
+							condition={true}
+							className="justify-self-start"
+							icon={
 								<CheckCircleIcon
 									className="mr-2"
 									width={iconSize}
 									height={iconSize}
 									color="green"
 								/>
-							) : (
-								<Cancel
-									className="mr-2"
-									width={iconSize}
-									height={iconSize}
-									sx={{ color: "red" }}
-								/>
-							)
-						}
-					/>
+							}
+						/>
+					)}
 				</div>
 			</>
 		);

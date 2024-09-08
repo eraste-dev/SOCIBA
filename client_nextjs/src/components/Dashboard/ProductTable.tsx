@@ -20,7 +20,7 @@ import { ListBoxItemType } from "components/NcListBox/NcListBox";
 import ChangeProductType, { STATUS_LABEL } from "./Products/ChangeProductType";
 import ChangeProductTypeTableHeader from "./Products/ChangeProductTypeTableHeader";
 import { _f } from "utils/money-format";
-import { PERIODICITY_LIST } from "containers/PageDashboard/DashboardSubmitPost";
+import { PERIODICITY_LIST } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 
 export interface ColumnProductTable {
 	id: "id" | "title" | "price" | "excerpt" | "content" | "actions" | "type" | "status";

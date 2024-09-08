@@ -14,7 +14,7 @@ import {
 	TYPE_BIEN_EN_VENTE_KEY,
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
-} from "../DashboardSubmitPost";
+} from "../Posts/DashboardSubmitPost";
 import { Fastfood, Kitchen, PhotoSizeSelectSmallTwoTone, PoolSharp } from "@mui/icons-material";
 
 export interface DetailBienProps {

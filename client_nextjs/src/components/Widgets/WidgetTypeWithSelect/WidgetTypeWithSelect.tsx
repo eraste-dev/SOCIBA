@@ -10,7 +10,7 @@ import { fetchLocation } from "app/axios/actions/api.others.action";
 import { updateParamsUrl } from "utils/utils";
 import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "../WidgetSort/ListBoxSelectFilter";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
-import { PRODUCT_TYPE } from "containers/PageDashboard/DashboardSubmitPost";
+import { PRODUCT_TYPE } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 
 export interface WidgetTypeWithSelectProps {
 	className?: string;

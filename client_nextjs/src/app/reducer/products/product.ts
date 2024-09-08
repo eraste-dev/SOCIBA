@@ -12,7 +12,7 @@ import { RootState } from "app/reducer/store";
 import { IUser } from "app/reducer/auth/auth";
 import { ILocation } from "../locations/locations";
 import { IPagination } from "./type";
-import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/DashboardSubmitPost";
+import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 
 export interface IProductImage {
 	id: number;
@@ -70,7 +70,11 @@ export interface IProduct {
 	WiFi: boolean;
 	pool: boolean;
 	air_conditioning: boolean;
+	reservation_type: string;
 	acd: boolean;
+	security: string;
+	purchase_power: string;
+	accessibility: string;
 }
 
 export type SORT_TYPE = "asc" | "desc" | "*";

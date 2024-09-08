@@ -5,7 +5,7 @@ import DashboardPostCategories from "containers/PageDashboard/DashboardPostCateg
 import DashboardPosts from "containers/PageDashboard/DashboardPosts";
 import DashboardRoot from "containers/PageDashboard/DashboardRoot";
 import DashboardSubcription from "containers/PageDashboard/DashboardSubcription";
-import DashboardSubmitPost from "containers/PageDashboard/DashboardSubmitPost";
+import DashboardSubmitPost from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import DashboardUsers from "containers/PageDashboard/DashboardUsers";
 import DashboardSetting from "containers/PageDashboard/settings/DashboardSetting";
 import DashboardSliders from "containers/PageDashboard/Sliders/DashboardSliders";

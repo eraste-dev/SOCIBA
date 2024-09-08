@@ -115,6 +115,7 @@ class PropertySeeder extends Seeder
                 'bath' => true,
                 'WiFi' => true,
                 'pool' =>  true,
+                'reservation_type' => '2 pièces'
                 // 'deposit_price' => 1000000,
             ],
             [
@@ -181,6 +182,7 @@ class PropertySeeder extends Seeder
                 'address' => 'Abobo',
                 'client_address' => 'Abobo',
                 'type' => 'BIEN EN VENTE',
+                'area_count' => 3,
                 'price' => 3500000,
                 // 'deposit_price' => 800000,
                 'location_id' => 2,

@@ -14,7 +14,7 @@ import {
 	PERIODICITY_LIST,
 	PERIODICITY_RESERVATION_LIST,
 	PRODUCT_TYPE,
-} from "containers/PageDashboard/DashboardSubmitPost";
+} from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
 import Card11Price from "./Card11Price";
 
@@ -44,6 +44,7 @@ const Card11: FC<Card11Props> = ({
 		count_advance,
 		count_monthly,
 		type,
+		reservation_type
 	} = post;
 	const [isHover, setIsHover] = useState(false);
 	const dispatch = useAppDispatch();
@@ -90,8 +91,9 @@ const Card11: FC<Card11Props> = ({
 				<div className="grid grid-cols-6">
 					<div className="grid grid-cols-subgrid lg:col-span-2 col-span-6">
 						<CategoryPropertyBadgeTwo
-							className="text-xs md:text-md "
+							className="text-xs md:text-md"
 							category={category}
+							reservationDetail={reservation_type}
 						/>
 						<p className="mt-2 text-xs font-semibold text-secondary-900 dark:text-neutral-100 ">
 							{false && (
