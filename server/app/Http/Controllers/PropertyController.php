@@ -155,7 +155,7 @@ class PropertyController extends Controller
                 $images = $request->images;
                 foreach ($images as $key => $image) {
                     // $filetomove = $image->getClientOriginalName() . "-" . time() . "." . $image->getClientOriginalExtension();
-                    $filetomove = $product->id . "__" . time() . "__image"  . "." . $image->getClientOriginalExtension();
+                    $filetomove = $product->id . "__" . time() . "__image" . "__" . $key . "__"  . "." . $image->getClientOriginalExtension();
 
                     $destinationPath = public_path('assets/images/products');
                     $image->move($destinationPath, $filetomove);

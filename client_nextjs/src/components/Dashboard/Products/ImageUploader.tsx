@@ -24,6 +24,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 		if (!e.target.files) return;
 
 		const fileArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
+
 		const newImages = [...images, ...fileArray].slice(0, maxImages);
 
 		setImageFiles([...imageFiles, ...Array.from(e.target.files)]);

@@ -153,10 +153,12 @@ const DashboardSubmitPost = () => {
 		// Convert data to FormData
 		for (const key in data) {
 			if (data.hasOwnProperty(key) && data[key as keyof ProductRequest] !== undefined) {
-				console.log("check images", key === "images" && data.images);
 				if (key === "images" && data.images) {
 					if (Array.isArray(imageFiles)) {
-						imageFiles.forEach((image) => formData.append("images[]", image));
+						imageFiles.forEach((image) => {
+							console.log("check images", image);
+							formData.append("images[]", image);
+						});
 					}
 				} else {
 					formData.append(key, data[key as keyof ProductRequest] as any);
