@@ -30,6 +30,19 @@ import { ProductcategoryUUID } from "data/categories_uuid";
 import DetailBienTwo from "../FormPart/DetailBienTwo";
 import { LinearProgress } from "@mui/material";
 import Loading from "components/UI/Loading";
+import {
+	CategorySubAction,
+	IPropertySubCategory,
+} from "app/reducer/products/sub-propertiy-category";
+import {
+	AUTRE_KEY,
+	CATEGORIES_SUB,
+	DUPLEX_KEY,
+	MAISON_KEY,
+	TERRAIN_KEY,
+	TRIPLEX_KEY,
+	VILLA_KEY,
+} from "data/categories_sub";
 
 export type IProductType = "LOCATION" | "BIEN EN VENTE" | "RESERVATION"; // | "AUTRE"
 
@@ -64,12 +77,12 @@ export const PRODUCT_AREA_UNIT: IPRODUCT_AREA_UNIT[] = [
 	{ id: "LOT", name: "Lot" },
 ];
 
-export interface IResidenceType {
+export interface ISubCategoryType {
 	code: string;
 	name: string;
 }
 
-export const SUB_MAISON_ONE_DETAIL: IResidenceType[] = [
+export const SUB_MAISON_ONE_DETAIL: ISubCategoryType[] = [
 	// {
 	// 	code: "APPARTEMENT",
 	// 	name: "Appartement",
@@ -86,7 +99,7 @@ export const SUB_MAISON_ONE_DETAIL: IResidenceType[] = [
 	{ code: "TRIPLEX", name: "Triplex" },
 ];
 
-export const SUB_MAISON_DETAIL: IResidenceType[] = [
+export const SUB_MAISON_DETAIL: ISubCategoryType[] = [
 	// {
 	// 	code: "APPARTEMENT",
 	// 	name: "Appartement",
@@ -103,7 +116,7 @@ export const SUB_MAISON_DETAIL: IResidenceType[] = [
 	// { code: "TRIPLEX", name: "Triplex" },
 ];
 
-export const SUB_HOTEL_DETAIL: IResidenceType[] = [
+export const SUB_HOTEL_DETAIL: ISubCategoryType[] = [
 	{
 		code: "CHAMBRE",
 		name: "Chambre",
@@ -127,6 +140,8 @@ const DashboardSubmitPost = () => {
 	const loading = useSelector(PropertyAction.loading);
 
 	const categories = useSelector(CategoryAction.data);
+	const [_hasOtherKey, set_hasOtherKey] = useState("");
+	const sub_categories: IPropertySubCategory[] = CATEGORIES_SUB; //useSelector(CategorySubAction.data);
 	const categoriesLoading = useAppSelector(CategoryAction.loading);
 
 	const locations = useSelector(LocationAction.data);
@@ -152,7 +167,7 @@ const DashboardSubmitPost = () => {
 		// ! FIX DEFAULT VALUE
 		data.images = images;
 		data.type = data.type ?? PRODUCT_TYPE[0];
-		data.home_type = data.home_type ?? Object.values(SUB_RESERVATION_CATEGORIES)[0];
+		data.home_type = data.home_type ?? Object.values(SUB_CATEGORIES())[0];
 		data.jacuzzi = data.jacuzzi ? 1 : 0;
 		data.bath = data.bath ? 1 : 0;
 		data.pool = data.pool ? 1 : 0;
@@ -213,6 +228,28 @@ const DashboardSubmitPost = () => {
 		return checked;
 	};
 
+	const getTypeDeteailLabel = (): string => {
+		let label: string = "";
+		const currentId = getValues("category_id");
+		const cat: IPropertyCategory = GET_CATEGORIES()?.find(
+			(c) => c.id === currentId
+		) as IPropertyCategory;
+
+		if (cat) {
+			const currentName = cat.name;
+			// Vérifier si le nom commence par une voyelle
+			const startsWithVowel = /^[aeiou]/i.test(currentName);
+
+			// Adapter le label en fonction de la première lettre du nom
+			if (startsWithVowel) {
+				label = `Type d'${currentName.toLowerCase()}`;
+			} else {
+				label = `Type de ${currentName.toLowerCase()}`;
+			}
+		}
+		return label;
+	};
+
 	const isLocationSelected = (location: ILocation) => {
 		const checked = !!(defaultValue && location.id.toString() === defaultValue.location_id);
 		return checked;
@@ -245,6 +282,8 @@ const DashboardSubmitPost = () => {
 						data.push(c);
 					}
 				});
+
+				console.log(">> cats", data);
 			}
 		} catch (error) {
 			console.error(error);
@@ -253,8 +292,56 @@ const DashboardSubmitPost = () => {
 		return data;
 	};
 
-	const SUB_RESERVATION_CATEGORIES = (): IResidenceType[] => {
-		return SUB_MAISON_DETAIL;
+	const _findCat = (id?: number) => {
+		return GET_CATEGORIES().filter((c) => c.id === id);
+	};
+
+	const SUB_CATEGORIES = (): ISubCategoryType[] => {
+		let data: ISubCategoryType[] = [];
+
+		const _cat_id: number | undefined =
+			getValues("category_id") ?? (categories && categories[0].id);
+
+		const _type = (getValues("type") as IProductType) ?? (PRODUCT_TYPE[0] as IProductType);
+		const _cat: IPropertyCategory | undefined =
+			_findCat(_cat_id) && _findCat(_cat_id).length > 0 ? _findCat(_cat_id)[0] : undefined;
+
+		try {
+			CATEGORIES_SUB;
+			if (_cat && _cat.name) {
+				sub_categories.forEach((c) => {
+					if (c.allow.includes(_cat?.name)) {
+						data.push({
+							code: c.uuid,
+							name: c.name,
+						});
+					}
+				});
+			}
+		} catch (error) {}
+
+		return data;
+	};
+
+	const hasOtherKey = (): boolean => {
+		const homeType = _hasOtherKey ?? getValues("home_type");
+		console.log("hasOtherKey", homeType);
+		return (
+			[AUTRE_KEY, VILLA_KEY, DUPLEX_KEY, TRIPLEX_KEY, TERRAIN_KEY].includes(homeType) &&
+			SUB_CATEGORIES().length > 0
+		);
+	};
+
+	const canShowOtherInput = (): boolean => {
+		const _type = getValues("type") ?? PRODUCT_TYPE[0]; // product?.type ??
+		const cat: IPropertyCategory | null =
+			GET_CATEGORIES()?.find((c) => c.id === getValues("category_id")) ?? null;
+		console.log("canShowOtherInput", _type, cat?.name === MAISON_KEY);
+
+		return (
+			(_type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && cat?.name === MAISON_KEY) ||
+			(SUB_CATEGORIES() && SUB_CATEGORIES().length === 0)
+		);
 	};
 
 	const hasResidence = (): boolean => {
@@ -503,6 +590,9 @@ const DashboardSubmitPost = () => {
 														"category_id",
 														parseInt(event.target.value)
 													);
+
+												set_hasOtherKey(event.target.value);
+
 												console.log(
 													"category_id",
 													event.target.value,
@@ -514,32 +604,15 @@ const DashboardSubmitPost = () => {
 											<option>Choix du type de bien</option>
 
 											{GET_CATEGORIES() &&
-												GET_CATEGORIES()
-													.filter(
-														(category) =>
-															category.parent_id === null &&
-															category.children.length != 0
-													)
-													.map((category) => (
-														<optgroup
-															label={category.name}
-															key={category.id}
-														>
-															{(category.children || []).map(
-																(category) => (
-																	<option
-																		key={category.id}
-																		value={category.id}
-																		selected={isCategorySelected(
-																			category
-																		)}
-																	>
-																		{category.name}
-																	</option>
-																)
-															)}
-														</optgroup>
-													))}
+												GET_CATEGORIES().map((category) => (
+													<option
+														key={category.id}
+														value={category.id}
+														selected={isCategorySelected(category)}
+													>
+														{category.name}
+													</option>
+												))}
 										</Select>
 									</div>
 								</div>
@@ -554,35 +627,94 @@ const DashboardSubmitPost = () => {
 						</label>
 
 						{/* DETAIL CATEGORY */}
-						{hasResidence() && (
+						{/* hasResidence() && */}
+						{
 							<label className="block md:col-span-2">
 								<div className="grid grid-cols-1 gap-6">
 									<div>
 										<Label>
-											Type de maison <span className="text-red-500">*</span>
+											{getTypeDeteailLabel()}
+
+											{/* <span className="text-red-500">*</span> */}
 										</Label>
 
 										<div className="block md:col-span-2 p-2">
-											<Select
-												name="home_type"
+											{/* SELECT_HOME_TYPE */}
+											{SUB_CATEGORIES() &&
+												SUB_CATEGORIES().length > 0 &&
+												!canShowOtherInput() && (
+													<Select
+														onChange={(event) => {
+															event.target.value &&
+																setValue(
+																	"home_type",
+																	event.target.value
+																);
+
+															set_hasOtherKey(event.target.value);
+														}}
+													>
+														<option>Choix</option>
+														{SUB_CATEGORIES() &&
+															SUB_CATEGORIES().map((c) => (
+																<option
+																	key={c.code}
+																	value={c.name}
+																	selected={
+																		c.name ===
+																		getValues("home_type")
+																	}
+																>
+																	{c.name}
+																</option>
+															))}
+													</Select>
+												)}
+
+											{/* INPUT_HOME_TYPE */}
+											{canShowOtherInput() && (
+												<Input
+													autoComplete="on"
+													name="home_type"
+													maxLength={20}
+													onChange={(e) => {
+														setValue("home_type", e.target.value);
+														set_hasOtherKey(e.target.value);
+													}}
+												/>
+											)}
+										</div>
+									</div>
+								</div>
+								<div>
+									<ErrorMessage
+										errors={errorArray}
+										error="category_id"
+										customMessage="Veuillez choisir un type de bien"
+									/>
+								</div>
+							</label>
+						}
+
+						{/* NOMBRE DE PIECE */}
+						{hasOtherKey() && (
+							<label className="block md:col-span-2">
+								<div className="grid grid-cols-1 gap-6">
+									<div>
+										<Label>Nombre de pièces</Label>
+
+										<div className="block md:col-span-2 p-2">
+											<Input
+												name="area_count"
+												autoComplete="on"
 												onChange={(event) => {
 													event.target.value &&
-														setValue("home_type", event.target.value);
+														setValue(
+															"area_count",
+															parseInt(event.target.value)
+														);
 												}}
-											>
-												{SUB_RESERVATION_CATEGORIES() &&
-													SUB_RESERVATION_CATEGORIES().map((c) => (
-														<option
-															key={c.code}
-															value={c.name}
-															selected={
-																c.name === getValues("home_type")
-															}
-														>
-															{c.name}
-														</option>
-													))}
-											</Select>
+											></Input>
 										</div>
 									</div>
 								</div>

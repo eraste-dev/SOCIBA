@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->unsignedBigInteger('parent_id')->nullable();
+            // $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('icon')->nullable();
             $table->string('description')->nullable();
             $table->string('uuid')->unique()->nullable();

@@ -58,7 +58,7 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 						<Label>Sécurité</Label>
 						<div className="block md:col-span-2 p-2">
 							<div className="flex  " style={{ alignItems: "center" }}>
-								<Security className="mr-2" />
+								{/* <Security className="mr-2" /> */}
 								<Select
 									onChange={(event) => {
 										event.target.value &&
@@ -89,7 +89,7 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 						<Label>Zone à pouvoir d'achat</Label>
 						<div className="block md:col-span-2 p-2">
 							<div className="flex" style={{ alignItems: "center" }}>
-								<Security className="mr-2" />
+								{/* <Security className="mr-2" /> */}
 								<Select
 									onChange={(event) => {
 										event.target.value &&
@@ -117,17 +117,17 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 
 					{/* ACCESSIBILITY */}
 					<div>
-						<Label>Zone à pouvoir d'achat</Label>
+						<Label>Accessibilité</Label>
 						<div className="block md:col-span-2 p-2">
 							<div className="flex" style={{ alignItems: "center" }}>
-								<Security className="mr-2" />
+								{/* <Security className="mr-2" /> */}
 								<Select
 									onChange={(event) => {
 										event.target.value &&
 											setValue("accessibility", event.target.value);
 									}}
 								>
-									<option>Choix du pouvoir d'achat</option>
+									<option>Choix de l'accessibilité</option>
 									{accessibilities.map((i) => (
 										<option
 											value={i.value}

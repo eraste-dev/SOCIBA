@@ -42,7 +42,8 @@ class PropertyCategory extends Model
 
     public static function getByParent()
     {
-        $parents = PropertyCategory::where('parent_id', null)->get();
+        // $parents = PropertyCategory::where('parent_id', null)->get();
+        $parents = PropertyCategory::all();
         return PropertyCategoryResource::collection($parents);
     }
 

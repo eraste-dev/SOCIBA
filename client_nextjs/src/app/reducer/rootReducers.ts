@@ -7,6 +7,7 @@ import mediaRunningReducer from "./mediaRunning/mediaRunning";
 import sliderReducer from "./sliders/sliders";
 import userRequestsReducer from "./userRequest/userRequest";
 import categoryReducer from "./products/propertiy-category";
+import subCategoryReducer from "./products/sub-propertiy-category";
 import productReducer from "./products/product";
 import usersReducer from "./users/users";
 import metaReducer from "./meta/meta";
@@ -22,6 +23,7 @@ const rootReducers = {
 	mediaRunning: mediaRunningReducer,
 	sliders: sliderReducer,
 	categories: categoryReducer,
+	subCategories: subCategoryReducer,
 	products: productReducer,
 	auth: authReducer,
 	locations: locationReducer,
