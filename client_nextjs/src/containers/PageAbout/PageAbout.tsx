@@ -18,23 +18,29 @@ export const ABOUT_TEXT: { TITLE: string; DESCRIPTION: string } = {
 
 const PageAbout: FC<PageAboutProps> = ({ className = "" }) => {
 	return (
-		<div className={`nc-PageAbout overflow-hidden relative ${className}`} data-nc-id="PageAbout">
+		<div
+			className={`nc-PageAbout overflow-hidden relative ${className}`}
+			data-nc-id="PageAbout"
+		>
 			<Helmet>
 				<title>A propos || SOCIBA</title>
 			</Helmet>
 
 			{/* ======== BG GLASS ======== */}
-			<BgGlassmorphism />
+			<BgGlassmorphism className="my-0" />
 
-			<div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
+			{/* py-16 lg:py-28 */}
+			<div className="container py-5 ">
 				{/* <SectionHero rightImg={rightImg} heading={ABOUT_TEXT.TITLE} btnText="" subHeading={ABOUT_TEXT.DESCRIPTION} /> */}
 
 				<SectionFounder />
 
-				<div className="relative py-16">
-					<BackgroundSection />
-					<SectionStatistic />
-				</div>
+				{false && (
+					<div className="relative py-16">
+						<BackgroundSection />
+						<SectionStatistic />
+					</div>
+				)}
 
 				{/* <SectionSubscribe2 /> */}
 

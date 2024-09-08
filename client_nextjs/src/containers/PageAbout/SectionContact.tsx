@@ -35,16 +35,22 @@ export interface SectionContactProps {
 
 const SectionContact: FC<SectionContactProps> = ({ className = "" }) => {
 	return (
-		<div className="grid gap-8 lg:grid-cols-2">
-			<div className="max-w-sm space-y-6">
+		<div className="grid gap-8 lg:grid-cols-2 mt-0" style={{ marginTop: "10px !important" }}>
+			<div className="max-w-sm ">
 				{INFO_CONTACT.map((item, index) => (
 					<div key={index}>
-						<h3 className="uppercase font-semibold text-sm dark:text-neutral-200 tracking-wider">{item.title}</h3>
-						<span className="block mt-2 text-neutral-500 dark:text-neutral-400">{item.desc}</span>
+						<h3 className="uppercase font-semibold text-sm dark:text-neutral-200 tracking-wider">
+							{item.title}
+						</h3>
+						<span className="block mt-2 text-neutral-500 dark:text-neutral-400">
+							{item.desc}
+						</span>
 					</div>
 				))}
 				<div>
-					<h3 className="uppercase font-semibold text-sm dark:text-neutral-200 tracking-wider">🌏 SOCIALS</h3>
+					<h3 className="uppercase font-semibold text-sm dark:text-neutral-200 tracking-wider">
+						🌏 SOCIALS
+					</h3>
 					<SocialsList className="mt-2" />
 				</div>
 			</div>
@@ -52,6 +58,9 @@ const SectionContact: FC<SectionContactProps> = ({ className = "" }) => {
 			<div className="border border-neutral-100 dark:border-neutral-700 lg:hidden"></div>
 
 			<div>
+				<h3 className="font-semibold text-xl dark:text-neutral-200 tracking-wider mb-5">
+					Nous contacter
+				</h3>
 				<form className="grid grid-cols-1 gap-6" action="#" method="post">
 					<label className="block">
 						<Label>Nom & Prénoms</Label>

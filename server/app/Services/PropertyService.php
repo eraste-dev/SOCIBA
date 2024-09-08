@@ -107,22 +107,6 @@ class PropertyService
             $query->where('category_id', $payload['category']);
         }
 
-        if ($payload['category_slug'] && $payload['category_slug'] !== '*') {
-            $cat = PropertyCategory::where('slug', $payload['category_slug'])->first();
-            // if ($cat->parent_id == null) {
-            //     $categories = $queryCategory->get();
-            //     foreach ($categories as $category) {
-            //         $query->orWhere(
-            //             'category_id',
-            //             $category->id
-            //         );
-            //     }
-            // } else {
-            //     $query->where('category_id', $cat->id);
-            // }
-            $query->where('category_id', $cat->id);
-        }
-
         // Filtre par plusieurs catégories si spécifiées
         if ($payload['categories'] && count(explode(',', $payload['categories'])) > 0) {
             $query->whereIn('category_id', explode(',', $payload['categories']));
@@ -145,6 +129,44 @@ class PropertyService
         if ($payload['created_by'] && $payload['created_by'] !== '*') {
             $query->where('created_by', $payload['created_by']);
         }
+
+        if ($payload['category_slug'] && $payload['category_slug'] !== '*') {
+            $cat = PropertyCategory::where('slug', $payload['category_slug'])->first();
+            if ($cat && $cat->parent_id == null && !isset($payload['category_slug_selected'])) {
+                $cats = PropertyCategory::where('parent_id', $cat->id)->get();
+                foreach ($cats as $c) {
+                    $query->orWhere('category_id', $c->id);
+                }
+            } else {
+                if ($cat != null && $cat->id) {
+                    $query->where('category_id', $cat->id);
+                }
+            }
+
+
+            if ($payload['home_type'] && $payload['home_type'] !== '*') {
+                // ? WHEN home_type and category_slug_selected is not 'maison'
+                if (isset($payload['category_slug_selected']) && $payload['category_slug_selected'] !== 'maison') {
+                    $query->where(
+                        'home_type',
+                        'like',
+                        '%' . $payload['home_type'] . '%'
+                    );
+                } else {
+                    // ? WHEN home_type and category_slug_selected is 'maison'
+                    $category_maison = PropertyCategory::where('slug', 'maison')->first();
+                    if ($category_maison != null) {
+                        $categories_with_parent_is_maison = PropertyCategory::where('parent_id', $category_maison->id)->get();
+                        foreach ($categories_with_parent_is_maison as $c) {
+                            $query->where('category_id', $c->id);
+                        }
+                    }
+                }
+            }
+
+            // $query->where('category_id', $cat->id);
+        }
+
 
         if (isset($payload['location_id']) && $payload['location_id'] !== '*') {
             $query->where('location_id', $payload['location_id']);

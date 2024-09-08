@@ -44,7 +44,7 @@ const Card11: FC<Card11Props> = ({
 		count_advance,
 		count_monthly,
 		type,
-		reservation_type
+		home_type,
 	} = post;
 	const [isHover, setIsHover] = useState(false);
 	const dispatch = useAppDispatch();
@@ -90,11 +90,7 @@ const Card11: FC<Card11Props> = ({
 
 				<div className="grid grid-cols-6">
 					<div className="grid grid-cols-subgrid lg:col-span-2 col-span-6">
-						<CategoryPropertyBadgeTwo
-							className="text-xs md:text-md"
-							category={category}
-							reservationDetail={reservation_type}
-						/>
+						<CategoryPropertyBadgeTwo className="text-xs md:text-md" item={post} />
 						<p className="mt-2 text-xs font-semibold text-secondary-900 dark:text-neutral-100 ">
 							{false && (
 								<span className="text-xs text-neutral-500 flex justify-items-center ">

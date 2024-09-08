@@ -15,7 +15,13 @@ import {
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
 } from "../Posts/DashboardSubmitPost";
-import { Fastfood, Kitchen, PhotoSizeSelectSmallTwoTone, PoolSharp } from "@mui/icons-material";
+import {
+	Fastfood,
+	Kitchen,
+	KitchenSharp,
+	PhotoSizeSelectSmallTwoTone,
+	PoolSharp,
+} from "@mui/icons-material";
 
 export interface DetailBienProps {
 	register: UseFormRegister<ProductRequest>;
@@ -86,7 +92,8 @@ const DetailBien: FC<DetailBienProps> = ({
 						<Label>Nombre de cuisine</Label>
 						<div className="block md:col-span-2 p-2">
 							<div className="flex  " style={{ alignItems: "center" }}>
-								<Kitchen className="mr-2" />
+								{/* <Kitchen className="mr-2" /> */}
+								<KitchenSharp className="mr-2" />
 								<Input
 									type="number"
 									className="mt-1"
@@ -117,7 +124,7 @@ const DetailBien: FC<DetailBienProps> = ({
 							<input
 								type="checkbox"
 								className="mx-2"
-								// checked={(product && product.jacuzzi && product.jacuzzi) ?? false}
+								checked={product?.jacuzzi ?? false}
 								{...register("jacuzzi")}
 							/>
 							<Label>Jacuzzi</Label>
@@ -198,7 +205,7 @@ const DetailBien: FC<DetailBienProps> = ({
 								<Input
 									type="number"
 									className="mt-1"
-									defaultValue={(product && product.area && product.area) ?? 0}
+									defaultValue={product!.area ?? 0}
 									{...register("area_unit")}
 								/>
 							</div>

@@ -76,10 +76,10 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 	const columns: ColumnProductTable[] = [
 		// { id: "id", label: "ID", minWidth: 170 },
 		{ id: "title", label: "Title", minWidth: 100 },
-		{ id: "pice", label: "Prix", minWidth: 100 },
+		// { id: "pice", label: "Prix", minWidth: 100 },
 		// { id: "excerpt", label: "Excerpt", minWidth: 100 },
 		// { id: "content", label: "Content", minWidth: 100 },
-		{ id: "type", label: "Type de bien & Catégorie", minWidth: 100 },
+		{ id: "type", label: "Prix", minWidth: 100 },
 		{ id: "status", label: "Status", minWidth: 50 },
 		{ id: "actions", label: "Actions" },
 	];

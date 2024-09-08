@@ -7,7 +7,10 @@ import PostTypeFeaturedIcon from "components/PostCard/PostTypeFeaturedIcon/PostT
 import MediaAudio from "./MediaAudio";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
 import { IProduct } from "app/reducer/products/product";
-import { PRODUCT_TYPE, TYPE_BIEN_EN_VENTE_KEY } from "containers/PageDashboard/Posts/DashboardSubmitPost";
+import {
+	PRODUCT_TYPE,
+	TYPE_BIEN_EN_VENTE_KEY,
+} from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import MediaTerrain from "./MediaTerrain";
 
 export interface PostFeaturedMediaProps {
@@ -84,11 +87,13 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
 			ref={videoRef}
 		>
 			<NcImage containerClassName="absolute inset-0" src={featured_image} />
-			{post?.type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] ? (
+			{/* {post?.type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] ? (
 				<MediaTerrain post={post} />
 			) : (
 				renderContent()
-			)}
+			)} */}
+
+			{renderContent()}
 		</div>
 	);
 };

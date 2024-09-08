@@ -15,6 +15,7 @@ import NoDataMessage from "components/NoDataMessage";
 
 export const getParams = (): IGetSearchPropertiesParams => {
 	const params: IGetSearchPropertiesParams = {};
+
 	// const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
 	const urlSearchParams = new URLSearchParams(window.location.search);
 	const price_sort = urlSearchParams.get("price_sort");
@@ -23,6 +24,8 @@ export const getParams = (): IGetSearchPropertiesParams => {
 	const category_slug = urlSearchParams.get("category_slug");
 	const type = urlSearchParams.get("type");
 	const category_uuid = urlSearchParams.get("category_uuid");
+	const home_type = urlSearchParams.get("home_type");
+	const category_slug_selected = urlSearchParams.get("category_slug_selected");
 
 	console.log("urlSearchParams", {
 		price_sort: price_sort,
@@ -31,6 +34,8 @@ export const getParams = (): IGetSearchPropertiesParams => {
 		category_slug: category_slug,
 		type: type,
 		category_uuid: category_uuid,
+		home_type: home_type,
+		category_slug_selected: category_slug_selected,
 	});
 
 	if (price_sort) {
@@ -55,6 +60,14 @@ export const getParams = (): IGetSearchPropertiesParams => {
 
 	if (category_uuid) {
 		params.category_uuid = category_uuid;
+	}
+
+	if (home_type) {
+		params.home_type = home_type;
+	}
+
+	if (category_slug_selected) {
+		params.category_slug_selected = category_slug_selected;
 	}
 
 	return params;
@@ -98,8 +111,12 @@ const ListProducts: FC<ListProductsProps> = ({
 	};
 
 	useEffect(() => {
-		if (!products && !loading) {
-			dispatch(fetchAllProperties(getParams()));
+		// Check if there is a 'get' parameter
+		const hasGetParameter = getParams().hasOwnProperty("get");
+
+		if (!products && !loading && !hasGetParameter) {
+			// TODO : fetch all properties
+			// dispatch(fetchAllProperties(getParams()));
 		}
 	}, [dispatch, fetchAllProperties, getParams, products, loading]);
 

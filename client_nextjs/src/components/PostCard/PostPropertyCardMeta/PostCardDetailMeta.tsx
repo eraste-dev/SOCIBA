@@ -1,7 +1,16 @@
 import { FC } from "react";
 import { IProduct } from "app/reducer/products/product";
-import { FaBath } from "react-icons/fa";
-import { Cancel, Kitchen, PhotoSizeSelectSmallTwoTone } from "@mui/icons-material";
+import { FaBath, FaFirstOrderAlt } from "react-icons/fa";
+import {
+	Cancel,
+	Fastfood,
+	FoodBankOutlined,
+	ForkLeftRounded,
+	Kitchen,
+	KitchenOutlined,
+	PhotoSizeSelectSmallTwoTone,
+	ToysTwoTone,
+} from "@mui/icons-material";
 import {
 	PRODUCT_TYPE,
 	TYPE_BIEN_EN_VENTE_KEY,
@@ -9,6 +18,7 @@ import {
 } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import ItemChecked from "./ItemCheck";
 import { CheckCircleIcon } from "@heroicons/react/solid";
+import { Tooltip } from "@mui/material";
 
 export interface PostCardDetailMetaProps {
 	className?: string;
@@ -41,15 +51,18 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 					)}
 					{bathrooms && (
 						<div className="flex items-center justify-center">
-							<FaBath size={iconSize} className="mb-1" />
+							<FaBath size={iconSize} className="mb-1 mr-1" />
 							{bathrooms}
 						</div>
 					)}
 					{kitchens && (
-						<div className="flex items-center justify-center">
-							<Kitchen className="mb-1" />
-							{kitchens}
-						</div>
+						<Tooltip title="Cuisine">
+							<div className="flex items-center justify-center">
+								{/* <Kitchen className="mb-1 mr-1" /> */}
+								<Fastfood className="mb-1 mr-1" />
+								{kitchens}
+							</div>
+						</Tooltip>
 					)}
 				</div>
 			);

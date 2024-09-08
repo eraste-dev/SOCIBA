@@ -9,6 +9,21 @@ import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "./ListBoxSelect
 import { useSelector } from "react-redux";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 
+export const SIMPLIFY_LIST_CAT = [
+	{ name: "Tous(*)", value: "*" },
+	{
+		name: "Residence",
+		value: "residence",
+		uuid: ["RESERVATION__RéSIDENCE_"],
+	},
+	{ name: "Hôtel", value: "hotel", uuid: ["RESERVATION__HôTEL"] },
+	{ name: "Maison", value: "maison" },
+	{ name: "Bureau", value: "bureau" },
+	{ name: "Magasin", value: "location-magasin" },
+	{ name: "Entrepôt", value: "entrepot" },
+	{ name: "Terrain", value: "terrain" },
+];
+
 export interface WidgetCategoryBookingProps {
 	className?: string;
 	handleFetch?: () => void;
@@ -59,6 +74,7 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 			id = category.id;
 		}
 		updateParamsUrl("category_slug", value);
+		updateParamsUrl("category_slug_selected", value);
 		// updateParamsUrl("category", item.value);
 		dispatch(setFilters({ category: id }));
 		handleFetch && handleFetch();
@@ -70,16 +86,20 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 	 * @return {IListBoxSelectFilterWidget[]} The list of IListBoxSelectFilterWidget items
 	 */
 	function CATEGORIES(): IListBoxSelectFilterWidget[] {
-		let data: IListBoxSelectFilterWidget[] = [
-			{ name: "Tous(*)", value: "*", selected: true },
-			{ name: "Residence", value: "residence" },
-			{ name: "Hôtel", value: "hotel" },
-			{ name: "Maison", value: "maison" },
-			{ name: "Bureau", value: "bureau" },
-			{ name: "Magasin", value: "magasin" },
-			{ name: "Enrepôt", value: "entrepot" },
-			{ name: "Terrain", value: "terrain" },
-		];
+		const urlSearchParams = new URLSearchParams(window.location.search);
+		const current = urlSearchParams.get("category_slug_selected");
+		const currentUuid = urlSearchParams.get("category_uuid");
+		// category_slug_selected
+
+		let data: IListBoxSelectFilterWidget[] = SIMPLIFY_LIST_CAT;
+
+		data.forEach((item) => {
+			if (item.value === current || item.uuid?.includes(currentUuid ?? "")) {
+				item.selected = true;
+			} else {
+				data[0].selected = true;
+			}
+		});
 
 		// if (categories && categories.length > 0) {
 		// 	categories.forEach((category) => {

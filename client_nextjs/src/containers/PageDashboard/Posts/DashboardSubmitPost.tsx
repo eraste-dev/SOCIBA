@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "components/Form/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import Select from "components/Form/Select/Select";
@@ -6,7 +6,6 @@ import Textarea from "components/Textarea/Textarea";
 import Label from "components/Form/Label/Label";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { AuthAction, IUser } from "app/reducer/auth/auth";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 import { useAppSelector } from "app/hooks";
 import {
@@ -17,20 +16,20 @@ import {
 } from "app/axios/actions/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
-import { PeriodicityType, ProductRequest } from "app/axios/api.type";
+import { PeriodicityType, PRODUCT_REQUEST_EMPTY, ProductRequest } from "app/axios/api.type";
 import { ILocation, LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import { useSnackbar } from "notistack";
-import { PropertyAction } from "app/reducer/products/product";
+import { IProduct, PropertyAction } from "app/reducer/products/product";
 import ErrorMessage from "components/Form/ErrorMessage";
 import { useHistory } from "react-router-dom";
 import { route } from "routers/route";
-import { useBoolean } from "react-use";
 import ImageUploader from "components/Dashboard/Products/ImageUploader";
-import { formatPrice } from "utils/utils";
 import DetailBien from "../FormPart/DetailBien";
 import { ProductcategoryUUID } from "data/categories_uuid";
 import DetailBienTwo from "../FormPart/DetailBienTwo";
+import { LinearProgress } from "@mui/material";
+import Loading from "components/UI/Loading";
 
 export type IProductType = "LOCATION" | "BIEN EN VENTE" | "RESERVATION"; // | "AUTRE"
 
@@ -70,6 +69,48 @@ export interface IResidenceType {
 	name: string;
 }
 
+export const SUB_MAISON_ONE_DETAIL: IResidenceType[] = [
+	// {
+	// 	code: "APPARTEMENT",
+	// 	name: "Appartement",
+	// },
+	{
+		code: "STUDIO",
+		name: "Studio",
+	},
+	{ code: "TWO_PIECE", name: "2 pièces" },
+	{ code: "THREE_PIECE", name: "3 pièces" },
+	{ code: "FOUR_PIECE", name: "4 pièces" },
+	{ code: "VILLA", name: "Villa" },
+	{ code: "DUPLEX", name: "Duplex" },
+	{ code: "TRIPLEX", name: "Triplex" },
+];
+
+export const SUB_MAISON_DETAIL: IResidenceType[] = [
+	// {
+	// 	code: "APPARTEMENT",
+	// 	name: "Appartement",
+	// },
+	{
+		code: "STUDIO",
+		name: "Studio",
+	},
+	{ code: "TWO_PIECE", name: "2 pièces" },
+	{ code: "THREE_PIECE", name: "3 pièces" },
+	// { code: "FOUR_PIECE", name: "4 pièces" },
+	{ code: "VILLA", name: "Villa" },
+	// { code: "DUPLEX", name: "Duplex" },
+	// { code: "TRIPLEX", name: "Triplex" },
+];
+
+export const SUB_HOTEL_DETAIL: IResidenceType[] = [
+	{
+		code: "CHAMBRE",
+		name: "Chambre",
+	},
+	{ code: "SUITE", name: "Suite" },
+];
+
 const DashboardSubmitPost = () => {
 	const CURRENCY: string = "FCFA";
 
@@ -78,7 +119,6 @@ const DashboardSubmitPost = () => {
 	const history = useHistory();
 	const queryParams = new URLSearchParams(location.search);
 
-	const user: IUser | undefined = useSelector(AuthAction.data)?.user;
 	const product = useSelector(PropertyAction.data)?.single;
 	const productId = queryParams.get("id");
 	const errorMessage = useSelector(PropertyAction.error);
@@ -95,40 +135,33 @@ const DashboardSubmitPost = () => {
 	const [initialize, setInitialize] = useState(false);
 	const [categorySelected, setCategorySelected] = useState(null as IPropertyCategory | null);
 	const [defaultValue, setDefaultValue] = useState(null as ProductRequest | null);
-	const [previewUrls, setPreviewUrls]: any = useState([]);
-	const [openLightbox, setOpenLightbox] = useBoolean(false);
-	const [currentImage, setCurrentImage] = useState<string | null>(null);
+	// const [previewUrls, setPreviewUrls]: any = useState([]);
+	// const [openLightbox, setOpenLightbox] = useBoolean(false);
+	// const [currentImage, setCurrentImage] = useState<string | null>(null);
 	const [images, setImages] = useState<string[]>([]);
 	const [imageFiles, setImageFiles] = useState<File[]>([]);
 	const [tmpcatId, settmpcatId] = useState(0);
 
-	const {
-		register,
-		handleSubmit,
-		watch,
-		formState: { errors, isValid },
-		reset,
-		setValue,
-		resetField,
-		getValues,
-	} = useForm<ProductRequest>();
+	const { register, handleSubmit, watch, setValue, getValues } = useForm<ProductRequest>();
 
 	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
 		console.log("SubmitHandler", data);
 		console.log("SubmitHandler imageFiles", imageFiles);
 		const formData = new FormData(); // initialize form data
 
-		// fix default value
+		// ! FIX DEFAULT VALUE
 		data.images = images;
 		data.type = data.type ?? PRODUCT_TYPE[0];
-		data.reservation_type =
-			data.reservation_type ?? Object.values(SUB_RESERVATION_CATEGORIES)[0];
+		data.home_type = data.home_type ?? Object.values(SUB_RESERVATION_CATEGORIES)[0];
 		data.jacuzzi = data.jacuzzi ? 1 : 0;
 		data.bath = data.bath ? 1 : 0;
 		data.pool = data.pool ? 1 : 0;
 		data.WiFi = data.WiFi ? 1 : 0;
 		data.acd = data.acd ? 1 : 0;
 		data.acd = data.air_conditioning ? 1 : 0;
+		data.bathrooms = data.bathrooms ?? 0;
+		data.kitchens = data.kitchens ?? 0;
+		data.area = data.area ?? 0;
 
 		if (!data.category_id) {
 			if (tmpcatId) {
@@ -185,10 +218,6 @@ const DashboardSubmitPost = () => {
 		return checked;
 	};
 
-	const canShowImage = () => {
-		return getValues("category_id") && getValues("category_id") != 21;
-	};
-
 	const GET_PERIODICITY = () => {
 		switch (getValues("type")) {
 			case PRODUCT_TYPE[0]:
@@ -225,22 +254,7 @@ const DashboardSubmitPost = () => {
 	};
 
 	const SUB_RESERVATION_CATEGORIES = (): IResidenceType[] => {
-		return [
-			{
-				code: "APPARTEMENT",
-				name: "Appartement",
-			},
-			{
-				code: "STUDIO",
-				name: "Studio",
-			},
-			{ code: "TWO_PIECE", name: "2 pièces" },
-			{ code: "THREE_PIECE", name: "3 pièces" },
-			{ code: "FOUR_PIECE", name: "4 pièces" },
-			{ code: "VILLA", name: "Villa" },
-			{ code: "DUPLEX", name: "Duplex" },
-			{ code: "TRIPLEX", name: "Triplex" },
-		];
+		return SUB_MAISON_DETAIL;
 	};
 
 	const hasResidence = (): boolean => {
@@ -266,12 +280,12 @@ const DashboardSubmitPost = () => {
 		GET_CATEGORIES().forEach((c) => {
 			c.children.forEach((child) => {
 				if (child.id === getValues("category_id") && child.can_upload_image) {
-					output = true;
+					// output = true;
 				}
 			});
 		});
 
-		return output;
+		return true; // output
 	};
 
 	const initForm = (value: ProductRequest) => {
@@ -282,28 +296,27 @@ const DashboardSubmitPost = () => {
 		setValue("excerpt", value.excerpt);
 		setValue("content", value.content);
 		// setValue("type", value.type);
-		setValue("type", PRODUCT_TYPE[0]);
+		setValue("type", product?.type ?? PRODUCT_TYPE[0]);
 		setValue("location_description", value.location_description);
 		setValue("price", value.price);
 		setValue("deposit_price", value.deposit_price);
 		setValue("periodicity", value.periodicity);
-		setValue("reservation_type", value.reservation_type);
+		setValue("home_type", value.home_type);
+		setValue("jacuzzi", value.jacuzzi);
+		setValue("bath", value.bath);
+		setValue("air_conditioning", value.air_conditioning);
+		setValue("kitchens", value.kitchens);
+		setValue("pool", value.pool);
+		setValue("WiFi", value.WiFi);
+		setValue("bathrooms", value.bathrooms);
+		setValue("area", value.area);
 		// setValue("images", value.images);
 		// setDefaultValue(value);
 		// setPreviewUrls(value.images ? value.images.map((item: any) => URL.createObjectURL(item)) : []);
 	};
 
-	// INIT
-	useEffect(() => {
-		if (!initialize) {
-			dispatch(initProductState());
-			setInitialize(true);
-		}
-	}, [dispatch, initProductState, setInitialize, initialize]);
-
-	// SET DEFAULT VALUES
-	useEffect(() => {
-		if (product && productId && !defaultValue && categories && categories.length > 0) {
+	const initializeForm = (product: IProduct | undefined) => {
+		if (productId && product) {
 			const value: ProductRequest = {
 				id: product.id,
 				title: product.title,
@@ -315,7 +328,6 @@ const DashboardSubmitPost = () => {
 				location_description: product.location_description,
 				price: product.price,
 				deposit_price: product.deposit_price,
-				// images: null,
 				area: product.area,
 				area_unit: product.area_unit,
 				bathrooms: product.bathrooms,
@@ -332,7 +344,7 @@ const DashboardSubmitPost = () => {
 				WiFi: product.WiFi ? 1 : 0,
 				air_conditioning: product.air_conditioning ? 1 : 0,
 				acd: product.acd ? 1 : 0,
-				reservation_type: product.reservation_type,
+				home_type: product.home_type,
 				accessibility: product.accessibility,
 				purchase_power: product.purchase_power,
 				security: product.security,
@@ -344,38 +356,55 @@ const DashboardSubmitPost = () => {
 			initForm(value);
 
 			if (categories && categories.length > 0) {
-				// if (
-				// 	product.category &&
-				// 	product.category &&
-				// 	product.category.parent &&
-				// 	product.category.parent.id
-				// ) {
-				// 	setCategoryParent(
-				// 		categories?.filter((_cat) => _cat.id === product.category?.parent?.id)[0] ||
-				// 			null
-				// 	);
-				// }
-
 				setCategorySelected(
 					categories?.filter((_cat) => _cat.id === product.category?.id)[0] || null
 				);
 			}
+			setInitialize(true);
+		} else {
+			setDefaultValue(PRODUCT_REQUEST_EMPTY);
+			initForm(PRODUCT_REQUEST_EMPTY);
 		}
-	}, [product, productId, defaultValue, setDefaultValue, categories, initForm]);
+	};
 
-	// FETCH_SINGLE
 	useEffect(() => {
-		if (!product && productId && !loading) {
-			dispatch(fetchSingleProperties({ id: parseInt(productId) }));
+		if (!product && productId) {
+			dispatch(fetchSingleProperties({ id: productId }));
 		}
-	}, [product, productId, dispatch, fetchSingleProperties, loading]);
+	}, [product, productId, fetchSingleProperties, dispatch]);
 
-	// ! fix this
-	// useEffect(() => {
-	// 	if (product && productId && !watch("category_id") && product.parent && product.parent?.id && categories) {
-	// 		setCategoryParent(categories.find((cat) => cat.id === product.parent?.id));
-	// 	}
-	// }, []);
+	// INIT
+	// SET DEFAULT VALUES
+	useEffect(() => {
+		console.log(">>> useEffect initialize", {
+			defaultValue,
+			initialize,
+		});
+
+		if (product && productId && defaultValue == null && !initialize) {
+			dispatch(initProductState());
+			initializeForm(product);
+			// console.log(">>> SET_DEFAULT", defaultValue);
+		} else if (!product && !productId) {
+			initializeForm(undefined);
+			setInitialize(true);
+		}
+
+		// dispatch(initProductState());
+	}, [
+		setDefaultValue,
+		initForm,
+		dispatch,
+		fetchSingleProperties,
+		initProductState,
+		initializeForm,
+		product,
+		productId,
+		defaultValue,
+		categories,
+		loading,
+		initialize,
+	]);
 
 	// FETCH_CATEGORIES
 	useEffect(() => {
@@ -408,6 +437,13 @@ const DashboardSubmitPost = () => {
 			history.push(route("dashboard"));
 		}
 	}, [snackbar, success, loading, history]);
+
+	if ((initialize === false || defaultValue == null) && productId)
+		return (
+			<div className="flex justify-center justify-self-center" style={{ height: "100vh" }}>
+				<Loading />
+			</div>
+		);
 
 	return (
 		<div className="md:p-6">
@@ -528,13 +564,10 @@ const DashboardSubmitPost = () => {
 
 										<div className="block md:col-span-2 p-2">
 											<Select
-												name="reservation_type"
+												name="home_type"
 												onChange={(event) => {
 													event.target.value &&
-														setValue(
-															"reservation_type",
-															event.target.value
-														);
+														setValue("home_type", event.target.value);
 												}}
 											>
 												{SUB_RESERVATION_CATEGORIES() &&
@@ -543,8 +576,7 @@ const DashboardSubmitPost = () => {
 															key={c.code}
 															value={c.name}
 															selected={
-																c.name ===
-																getValues("reservation_type")
+																c.name === getValues("home_type")
 															}
 														>
 															{c.name}

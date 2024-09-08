@@ -63,7 +63,7 @@ class PropertyController extends Controller
             'acd'                  => 'nullable|numeric',
             'count_advance'        => 'nullable|numeric',
             'count_monthly'        => 'nullable|numeric',
-            'reservation_type'     => 'nullable|string',
+            'home_type'     => 'nullable|string',
             'jacuzzi'              => 'nullable|numeric', // |boolean
             'bath'                 => 'nullable|numeric', // |boolean
             'WiFi'                 => 'nullable|numeric', // |boolean
@@ -136,7 +136,7 @@ class PropertyController extends Controller
             $product->WiFi                 = isset($validatedData['WiFi']) ? $validatedData['WiFi'] : null;
             $product->pool                 = isset($validatedData['pool']) ? $validatedData['pool'] : null;
             $product->air_conditioning     = isset($validatedData['air_conditioning']) ? boolval($validatedData['air_conditioning']) : null;
-            $product->reservation_type     = isset($validatedData['reservation_type']) ? ($validatedData['reservation_type']) : null;
+            $product->home_type     = isset($validatedData['home_type']) ? ($validatedData['home_type']) : null;
             $product->security             = isset($validatedData['security']) ? $validatedData['security'] : null;
             $product->purchase_power       = isset($validatedData['purchase_power']) ? $validatedData['purchase_power'] : null;
             $product->accessibility        = isset($validatedData['accessibility']) ? $validatedData['accessibility'] : null;

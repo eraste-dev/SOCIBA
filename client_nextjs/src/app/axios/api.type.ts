@@ -119,9 +119,32 @@ export interface ProductRequest {
 	pool: number;
 	air_conditioning: number;
 	acd: number;
-	reservation_type: string;
+	home_type: string;
 	security: string;
 	purchase_power: string;
 	accessibility: string;
 	area_count: number;
 }
+
+export const PRODUCT_REQUEST_EMPTY: ProductRequest = {
+	bathrooms: null,
+	bedrooms: null,
+	garages: null,
+	kitchens: null,
+	rooms: null,
+	area: null,
+	area_unit: "M",
+	count_advance: null,
+	count_monthly: null,
+	jacuzzi: 0,
+	bath: 0,
+	WiFi: 0,
+	pool: 0,
+	air_conditioning: 0,
+	acd: 0,
+	home_type: "",
+	security: "",
+	purchase_power: "",
+	accessibility: "",
+	area_count: 0,
+};

@@ -31,7 +31,7 @@ const MainNav2: FC<MainNav2Props> = () => {
 		return history.location.pathname.includes("dashboard");
 	};
 
-	const classNameContainer = isDashboard() ? "px-10" : "container";
+	const classNameContainer = isDashboard() ? "px-10" : "md:container";
 
 	return (
 		<div className={`nc-MainNav nc-MainNav2 relative z-10 ${"notOnTop backdrop-filter "}`}>

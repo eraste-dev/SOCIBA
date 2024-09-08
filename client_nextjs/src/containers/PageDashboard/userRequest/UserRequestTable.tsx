@@ -19,7 +19,7 @@ import { FaEye } from "react-icons/fa";
 import UserRequestDetail from "./UserRequestDetail";
 
 export interface ColumnTable {
-	id: "id" | "name" | "location" | "area" | "message" | "other" | "actions";
+	id: "id" | "name" | "location" | "area" | "message" | "other"; // | "actions"
 	label: string;
 	minWidth?: number;
 	align?: "right";
@@ -64,9 +64,9 @@ const UserRequestTable: FC<UserRequestTableProps> = ({ rows }) => {
 		{ id: "name", label: "Libellé", minWidth: 100 },
 		{ id: "location", label: "Lieu", minWidth: 100 },
 		{ id: "area", label: "Sufarce", minWidth: 100 },
-		{ id: "message", label: "MEssage", minWidth: 100 },
+		{ id: "message", label: "Message", minWidth: 100 },
 		{ id: "other", label: "Autre", minWidth: 100 },
-		{ id: "actions", label: "Actions" },
+		// { id: "actions", label: "Actions" },
 	];
 
 	if (!columns && !rows) {

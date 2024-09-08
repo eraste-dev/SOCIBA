@@ -25,7 +25,7 @@ class PropertyCategorySeeder extends Seeder
             ],
             [
                 'name' => 'Magasin',
-                'slug' => 'magasin',
+                'slug' => 'location-magasin',
                 'icon' => '',
                 'description' => '',
                 'type' => Type::TYPE_LOCATION(),
@@ -64,7 +64,7 @@ class PropertyCategorySeeder extends Seeder
                 'slug' => $categoryData['slug'],
                 'uuid' => $categoryData['uuid'],
                 'type' => $categoryData['type'],
-                'can_delete' => false,
+                'can_delete' => true,
                 'can_upload_image' => true,
             ]);
 

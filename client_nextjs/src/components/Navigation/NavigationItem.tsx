@@ -315,7 +315,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }
 				href={item.href}
 			>
 				{item.name}
-				{item.type && (
+				{item.type && item.megaMenu && (
 					<ChevronDownIcon
 						className="ml-1 -mr-1 h-4 w-4 text-neutral-400"
 						aria-hidden="true"
@@ -335,7 +335,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }
 				activeClassName="!font-semibold !text-neutral-900 bg-neutral-100 dark:bg-neutral-800 dark:!text-neutral-100"
 			>
 				{item.name}
-				{item.type && (
+				{item.type  && item.megaMenu && (
 					<ChevronDownIcon
 						className="ml-1 -mr-1 h-4 w-4 text-neutral-400"
 						aria-hidden="true"

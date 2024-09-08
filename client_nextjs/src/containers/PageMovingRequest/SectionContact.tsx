@@ -12,29 +12,14 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { initUserRequest, sendUserRequest } from "app/axios/actions/api.users.action";
 import { userRequestAction } from "app/reducer/userRequest/userRequest";
 import Loading from "components/UI/Loading";
+import NcImage from "components/NcImage/NcImage";
+import Image from "images/pages/moving.png";
+
 export interface Statistic {
 	id: string;
 	heading: string;
 	subHeading: string;
 }
-
-const FOUNDER_DEMO: Statistic[] = [
-	{
-		id: "1",
-		heading: "10 million",
-		subHeading: "Articles have been public around the world (as of Sept. 30, 2021)",
-	},
-	{
-		id: "2",
-		heading: "100,000",
-		subHeading: "Registered users account (as of Sept. 30, 2021)",
-	},
-	{
-		id: "3",
-		heading: "220+",
-		subHeading: "Countries and regions have our presence (as of Sept. 30, 2021)",
-	},
-];
 
 export interface SectionContactProps {
 	className?: string;
@@ -50,11 +35,10 @@ export type MovingRequestInputs = {
 	date: string;
 };
 
-const SectionContact: FC<SectionContactProps> = ({ className = "" }) => {
+const SectionContact: FC<SectionContactProps> = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const snackbar = useSnackbar();
-	const user = useSelector(userRequestAction.data);
 	const error = useSelector(userRequestAction.error);
 	const success = useSelector(userRequestAction.success);
 	const loading = useSelector(userRequestAction.loading);
@@ -63,8 +47,7 @@ const SectionContact: FC<SectionContactProps> = ({ className = "" }) => {
 	const {
 		register,
 		handleSubmit,
-		watch,
-		formState: { errors, isSubmitted },
+		formState: { isSubmitSuccessful },
 	} = useForm<MovingRequestInputs>();
 
 	const onSubmit: SubmitHandler<MovingRequestInputs> = (data) => {
@@ -75,104 +58,108 @@ const SectionContact: FC<SectionContactProps> = ({ className = "" }) => {
 	};
 
 	useEffect(() => {
-		if (error && isSubmitted && !loading) {
+		if (error && isSubmitSuccessful && !loading) {
 			snackbar.enqueueSnackbar(error, { variant: "error" });
 		}
-		if (success && isSubmitted && !loading) {
+		if (success && isSubmitSuccessful && !loading) {
 			snackbar.enqueueSnackbar("Votre demande a bien été envoyée", { variant: "success" });
 		}
 	}, [error, success]);
 
 	return (
-		<div className=" flex justify-center">
-			{loading && <Loading />}
+		<div className="mb-12" >
+			<div>
+				<NcImage src={Image} />
+			</div>
+			<div className=" flex justify-center">
+				{loading && <Loading />}
 
-			{isSubmitted && success && (
-				<div className="w-2/3 flex flex-col items-center justify-center  ">
-					<h1 className="text-3xl font-bold text-primary-800 text-center mb-12">
-						Votre demande a bien été envoyée
-					</h1>
-					<ButtonPrimary
-						onClick={() => {
-							dispatch(initUserRequest());
-							history.push("/");
-						}}
-					>
-						Retourner à la page d'accueil
-					</ButtonPrimary>
-				</div>
-			)}
-
-			{!isSubmitted && !success && (
-				<div className="w-2/3">
-					<div className="fe" >
-						<p className="text-3xl font-bold text-primary-800 text-center mb-5">
-							Formulaire de démenagement
-						</p>
-
-						<p className="text-base font-bold text-primary-800 text-center mb-12">
-							Veuillez remplir le formulaire ci-dessous pour nous contacter
-						</p>
+				{isSubmitSuccessful && success && (
+					<div className="w-2/3 flex flex-col items-center justify-center  ">
+						<h1 className="text-3xl font-bold text-primary-800 text-center mb-12">
+							Votre demande a bien été envoyée
+						</h1>
+						<ButtonPrimary
+							onClick={() => {
+								dispatch(initUserRequest());
+								history.push("/");
+							}}
+						>
+							Retourner à la page d'accueil
+						</ButtonPrimary>
 					</div>
+				)}
 
+				{!isSubmitSuccessful && !success && (
+					<div className="w-2/3">
+						<div className="fe">
+							<p className="text-3xl font-bold text-primary-800 text-center mb-5">
+								Formulaire de démenagement
+							</p>
 
-					<form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit(onSubmit)}>
-						<label className="block">
-							<Label>Nom & Prénoms</Label>
-							<Input
-								type="text"
-								className="mt-1"
-								{...register("name", { required: true })}
-								autoComplete="on"
-							/>
-						</label>
+							<p className="text-base font-bold text-primary-800 text-center mb-12">
+								Veuillez remplir le formulaire ci-dessous pour nous contacter
+							</p>
+						</div>
 
-						<label className="block">
-							<Label>Contact</Label>
-							<Input
-								type="text"
-								className="mt-1"
-								{...register("phone", { required: true })}
-							/>
-						</label>
+						<form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit(onSubmit)}>
+							<label className="block">
+								<Label>Nom & Prénoms</Label>
+								<Input
+									type="text"
+									className="mt-1"
+									{...register("name", { required: true })}
+									autoComplete="on"
+								/>
+							</label>
 
-						<label className="block">
-							<Label>Surface à demenager</Label>
-							<Input type="text" className="mt-1" {...register("area")} />
-						</label>
+							<label className="block">
+								<Label>Contact</Label>
+								<Input
+									type="text"
+									className="mt-1"
+									{...register("phone", { required: true })}
+								/>
+							</label>
 
-						<label className="block">
-							<Label>Lieu</Label>
-							<Input
-								type="text"
-								className="mt-1"
-								{...register("location", { required: true })}
-							/>
-						</label>
+							<label className="block">
+								<Label>Surface à demenager</Label>
+								<Input type="text" className="mt-1" {...register("area")} />
+							</label>
 
-						<label className="block">
-							<Label>Date de demenagement</Label>
-							<Input type="date" className="mt-1" {...register("date")} />
-						</label>
+							<label className="block">
+								<Label>Lieu</Label>
+								<Input
+									type="text"
+									className="mt-1"
+									{...register("location", { required: true })}
+								/>
+							</label>
 
-						<label className="block">
-							<Label>Message</Label>
-							<Textarea
-								className="mt-1"
-								rows={6}
-								{...register("message", { required: true })}
-							/>
-						</label>
+							<label className="block">
+								<Label>Date de demenagement</Label>
+								<Input type="date" className="mt-1" {...register("date")} />
+							</label>
 
-						<label className="block">
-							<Label>Autres informagtions supplémentaires</Label>
-							<Textarea className="mt-1" {...register("others")} />
-						</label>
+							<label className="block">
+								<Label>Message</Label>
+								<Textarea
+									className="mt-1"
+									rows={6}
+									{...register("message", { required: true })}
+								/>
+							</label>
 
-						<ButtonPrimary type="submit">Envoyer</ButtonPrimary>
-					</form>
-				</div>
-			)}
+							<label className="block">
+								<Label>Autres informagtions supplémentaires</Label>
+								<Textarea className="mt-1" {...register("others")} />
+							</label>
+
+							<ButtonPrimary type="submit">Envoyer</ButtonPrimary>
+						</form>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

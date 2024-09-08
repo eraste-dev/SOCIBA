@@ -11,6 +11,7 @@ import { IGetSearchPropertiesParams, searchParamsFromRedux } from "utils/query-b
 import { useHistory } from "react-router-dom";
 import NoDataMessage from "components/NoDataMessage";
 import FloatFilter from "components/Widgets/FloatFilter";
+import { getParams } from "./ListProducts";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -51,7 +52,8 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 	useEffect(() => {
 		if (!data && !loading && !error && filters) {
 			const params: IGetSearchPropertiesParams = searchParamsFromRedux(filters);
-			dispatch(fetchAllProperties(params));
+			// TODO : fetch all properties
+			// dispatch(fetchAllProperties(params));
 		}
 	}, [dispatch, fetchAllProperties, data, loading, error]);
 
@@ -69,7 +71,8 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 				console.log(params, "update searchParamsFromURL()");
 				setIsFetched(useStateFilter);
 				previousFilterRef.current = useStateFilter;
-				await dispatch(fetchAllProperties(params));
+				// TODO : fetch all properties
+				// await dispatch(fetchAllProperties(params));
 			}
 		};
 
@@ -82,49 +85,8 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 
 	const fetchAll = () => {
 		if (useStateFilter) {
-			const params: IGetSearchPropertiesParams = {};
-			// const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
-			const urlSearchParams = new URLSearchParams(window.location.search);
-			const price_sort = urlSearchParams.get("price_sort");
-			const location = urlSearchParams.get("location");
-			const neighborhood = urlSearchParams.get("neighborhood");
-			const category_slug = urlSearchParams.get("category_slug");
-			const type = urlSearchParams.get("type");
-			const category_uuid = urlSearchParams.get("category_uuid");
-
-			console.log("urlSearchParams", {
-				price_sort: price_sort,
-				location: location,
-				searchText: neighborhood,
-				category_slug: category_slug,
-				type: type,
-				category_uuid: category_uuid,
-			});
-
-			if (price_sort) {
-				params.price_sort = price_sort as "asc" | "desc";
-			}
-
-			if (location) {
-				params.location = location;
-			}
-
-			if (neighborhood) {
-				params.searchText = neighborhood;
-			}
-
-			if (category_slug) {
-				params.category_slug = category_slug;
-			}
-
-			if (type) {
-				params.type = type;
-			}
-
-			if (category_uuid) {
-				params.category_uuid = category_uuid;
-			}
-
+			const params: IGetSearchPropertiesParams = getParams();
+			// TODO : fetch all properties
 			return dispatch(fetchAllProperties(params));
 		}
 	};

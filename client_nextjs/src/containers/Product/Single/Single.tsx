@@ -114,12 +114,18 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 
 	return (
 		<>
-			<div className="bg-gray-100 dark:bg-neutral-800">{single && <SingleBreadcrumb meta={single} />}</div>
+			<div className="bg-gray-100 dark:bg-neutral-800">
+				{single && <SingleBreadcrumb meta={single} />}
+			</div>
 
 			<div className={`nc-Single pt-8 lg:pt-16 ${className}`} data-nc-id="Single">
 				{/* SINGLE HEADER */}
 				<div className="container">
-					<header className="rounded-xl">{single && <SingleHeader metaActionStyle="style2" hiddenDesc pageData={single} />}</header>
+					<header className="rounded-xl">
+						{single && (
+							<SingleHeader metaActionStyle="style2" hiddenDesc pageData={single} />
+						)}
+					</header>
 
 					<ContactSeller productLink={single?.href} />
 
@@ -138,13 +144,13 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 					{/* SINGLE MAIN CONTENT */}
 
 					{single && (
-						<div className="container">
+						<div className="">
 							<SingleContent data={single} />
 						</div>
 					)}
-
-					{/* RELATED POSTS */}
 				</div>
+
+				{/* RELATED POSTS */}
 				{related && <SingleRelatedPosts related={related} />}
 			</div>
 		</>

@@ -1,3 +1,4 @@
+import { IProduct } from "app/reducer/products/product";
 import { IPropertyCategory } from "app/reducer/products/propertiy-category";
 import React, { FC, useEffect } from "react";
 
@@ -24,14 +25,14 @@ const SelectProductType: FC<SelectProductTypeProps> = ({ options, onChangeOption
 	const classNameSelected =
 		"cursor-pointer bg-yellow-300 rounded-md p-2 m-2 dark:bg-yellow-800 dark:text-white";
 
-	const getClassName = (option: string) => {
-		return option === selected ? classNameSelected : className;
-	};
-
 	const noneSelection = () => {
 		if (options.filter((option) => option === selected).length === 0) {
 			onChangeOption(options[0]);
 		}
+	};
+
+	const selectClassName = (option: string): string => {
+		return option.toString() === selected ? classNameSelected : className;
 	};
 
 	useEffect(() => {
@@ -46,9 +47,7 @@ const SelectProductType: FC<SelectProductTypeProps> = ({ options, onChangeOption
 				options.map((option) => (
 					<div
 						key={option}
-						className={
-							option.toString() === (selected ?? null) ? classNameSelected : className
-						}
+						className={selectClassName(option.toString())}
 						onClick={() => onChangeOption(option.toString())}
 					>
 						{option}

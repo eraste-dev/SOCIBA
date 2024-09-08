@@ -52,10 +52,10 @@ return new class extends Migration
             $table->boolean('pool')->nullable();
             $table->boolean('air_conditioning')->nullable();
             $table->boolean('acd')->nullable();
-            $table->string('reservation_type')->nullable();
-            $table->enum('security', ['WITH_GUARD', 'WITHOUT_GUARD'])->default('WITHOUT_GUARD')->nullable();
-            $table->enum('purchase_power', ['LESS_EXPENSIVE', 'EQUAL_EXPENSIVE', 'MORE_EXPENSIVE'])->default('LESS_EXPENSIVE')->nullable();
-            $table->enum('accessibility', ['NOT_FAR_FROM_THE_TAR', 'A_LITTLE_FAR_FROM_THE_TAR', 'FAR_FROM_THE_TAR'])->default('NOT_FAR_FROM_THE_TAR')->nullable();
+            $table->string('home_type')->nullable();
+            $table->enum('security', [null, 'WITH_GUARD', 'WITHOUT_GUARD'])->default(null)->nullable();
+            $table->enum('purchase_power', [null, 'LESS_EXPENSIVE', 'EQUAL_EXPENSIVE', 'MORE_EXPENSIVE'])->default(null)->nullable();
+            $table->enum('accessibility', [null, 'NOT_FAR_FROM_THE_TAR', 'A_LITTLE_FAR_FROM_THE_TAR', 'FAR_FROM_THE_TAR'])->default(null)->nullable();
 
             $table->enum('status', ['PUBLISH', 'DRAFT', 'DELETED', 'REJECTED', 'PENDING', 'BLOCKED'])->default('PENDING');
             $table->bigInteger('total_click')->default(0)->nullable();

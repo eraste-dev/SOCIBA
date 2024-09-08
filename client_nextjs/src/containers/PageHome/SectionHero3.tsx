@@ -20,7 +20,8 @@ const SectionHero3: FC<SectionHero3Props> = ({ posts, className = "" }) => {
         />
         <span className="absolute inset-0 rounded-[40px] bg-black bg-opacity-50"></span>
         <div className="absolute inset-0 p-5 md:p-14 xl:p-20 2xl:p-28">
-          <div className="max-w-2xl">
+          <div className="max-w-full">
+            {/* w-2xl */}
             <h2 className="text-xl sm:text-3xl lg:text-4xl font-semibold text-white">
               <span className="line-clamp-2">{title}</span>
             </h2>

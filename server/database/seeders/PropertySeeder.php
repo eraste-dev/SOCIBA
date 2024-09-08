@@ -88,6 +88,8 @@ class PropertySeeder extends Seeder
                 'area' => 300,
                 'count_advance' => 5,
                 'count_monthly' => 5,
+                'security' => 'WITH_GUARD',
+                "purchase_power"=>"MORE_EXPENSIVE"
             ],
             [
                 'category_id' => 17,
@@ -115,7 +117,7 @@ class PropertySeeder extends Seeder
                 'bath' => true,
                 'WiFi' => true,
                 'pool' =>  true,
-                'reservation_type' => '2 pièces'
+                'home_type' => '2 pièces'
                 // 'deposit_price' => 1000000,
             ],
             [

@@ -432,13 +432,13 @@ export const NAVIGATION_SHORT_DEMO: NavItemType[] = [
 		href: "/moving",
 		name: "Démenagement",
 		type: "none",
-		megaMenu: MEGA_MENU4,
+		// megaMenu: MEGA_MENU4,
 	},
 	{
 		id: ncNanoId(),
 		href: "/about",
-		name: "Autres",
-		type: "megaMenu",
-		megaMenu: MEGA_MENU5,
+		name: "A propose de nous",
+		type: "none",
+		// megaMenu: MEGA_MENU5,	
 	},
 ];

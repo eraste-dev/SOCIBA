@@ -51,6 +51,7 @@ import {
 	searchPropertiesFailure,
 	searchPropertiesSuccess,
 	initFetchAllProperties,
+	postProductInit,
 } from "app/reducer/products/product";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import {
@@ -298,7 +299,7 @@ export const deleteProduct = (payload: number) => async (dispatch: AppDispatch) 
 };
 
 export const initProductState = () => async (dispatch: AppDispatch) => {
-	dispatch(postProductStart());
+	dispatch(postProductInit());
 };
 
 // ----------------------------------------

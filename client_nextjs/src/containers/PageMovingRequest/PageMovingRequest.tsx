@@ -29,7 +29,7 @@ const PageMovingRequest: FC<PageMovingRequestProps> = ({ className = "" }) => {
 			{/* ======== BG GLASS ======== */}
 			{/* <BgGlassmorphism /> */}
 
-			<div className="container py-16 lg:py-28 space-y-16 lg:space-y-28">
+			<div className="container space-y-5">
 				{/* <SectionSubscribe2 /> */}
 				{/* <SectionFounder /> */}
 

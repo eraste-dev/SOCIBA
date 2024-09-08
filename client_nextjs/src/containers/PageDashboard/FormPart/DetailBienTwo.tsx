@@ -1,28 +1,12 @@
 import { ProductRequest } from "app/axios/api.type";
-import { ILocation } from "app/reducer/locations/locations";
 import { IProduct } from "app/reducer/products/product";
 import ErrorMessage from "components/Form/ErrorMessage";
-import Input from "components/Form/Input/Input";
 import Label from "components/Form/Label/Label";
 import Select from "components/Form/Select/Select";
-import React, { FC } from "react";
+import { FC } from "react";
 import { UseFormRegister } from "react-hook-form";
-import { FaAdjust, FaBath, FaRecycle } from "react-icons/fa";
-import {
-	IProductType,
-	PRODUCT_TYPE,
-	TYPE_BIEN_EN_VENTE_KEY,
-	TYPE_LOCATION_KEY,
-	TYPE_RESERVATION_KEY,
-} from "../Posts/DashboardSubmitPost";
-import {
-	AutoFixHigh,
-	Fastfood,
-	Kitchen,
-	PhotoSizeSelectSmallTwoTone,
-	PoolSharp,
-	Security,
-} from "@mui/icons-material";
+import { IProductType, PRODUCT_TYPE, TYPE_LOCATION_KEY } from "../Posts/DashboardSubmitPost";
+import { Security } from "@mui/icons-material";
 
 export const securities: { value: string; label: string }[] = [
 	{ value: "WITH_GUARD", label: "Avec vigile" },
@@ -61,7 +45,6 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 	const iconSize = 38;
 
 	console.log(product);
-	
 
 	const DetailTwoLocation = () => {
 		return (
@@ -72,7 +55,7 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 				<div className="grid grid-cols-3 gap-6 mt-3">
 					{/* SECURITY */}
 					<div>
-					<Label>Sécurité</Label>
+						<Label>Sécurité</Label>
 						<div className="block md:col-span-2 p-2">
 							<div className="flex  " style={{ alignItems: "center" }}>
 								<Security className="mr-2" />
@@ -115,7 +98,12 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 								>
 									<option>Choix du pouvoir d'achat</option>
 									{purchase_powers.map((i) => (
-										<option value={i.value}>{i.label}</option>
+										<option
+											value={i.value}
+											selected={i.value === product?.purchase_power}
+										>
+											{i.label}
+										</option>
 									))}
 								</Select>
 							</div>
@@ -141,7 +129,12 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 								>
 									<option>Choix du pouvoir d'achat</option>
 									{accessibilities.map((i) => (
-										<option value={i.value}>{i.label}</option>
+										<option
+											value={i.value}
+											selected={i.value === product?.accessibility}
+										>
+											{i.label}{" "}
+										</option>
 									))}
 								</Select>
 							</div>

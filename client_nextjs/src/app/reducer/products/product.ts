@@ -70,7 +70,7 @@ export interface IProduct {
 	WiFi: boolean;
 	pool: boolean;
 	air_conditioning: boolean;
-	reservation_type: string;
+	home_type: string;
 	acd: boolean;
 	security: string;
 	area_count: number;
@@ -363,6 +363,14 @@ export const PropertiesSlice = createSlice({
 		},
 
 		// set selected to actions by user
+		postProductInit: (state) => {
+			state.loading = false;
+			state.error = null;
+			state.data = undefined;
+			state.success = false;
+			state.errors = undefined;
+			state.message = "";
+		},
 
 		// POST
 		postProductStart: (state) => {
@@ -480,6 +488,7 @@ export const {
 	setFiltersSuccess,
 	resetFiltersSuccess,
 	postProductStart,
+	postProductInit,
 	postProductSuccess,
 	postProductFailure,
 	deleteProductStart,
