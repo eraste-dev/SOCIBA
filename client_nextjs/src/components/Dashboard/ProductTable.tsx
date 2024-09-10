@@ -206,15 +206,12 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 
 										<TableCell>
 											<div className="flex">
-												{category.parent && (
-													<>
-														<span className="mr- 2">
-															{category.parent?.name}
-														</span>
-														{" , "}
-													</>
+												{/* <>
+													<span className="mr- 2">{category.name}</span>
+												</> */}
+												{category && (
+													<span className="mr- 2">{category.name}</span>
 												)}
-												<span className="mr- 2">{category.name}</span>
 											</div>
 										</TableCell>
 

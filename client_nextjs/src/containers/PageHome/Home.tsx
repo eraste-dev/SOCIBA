@@ -11,6 +11,7 @@ import SectionGridCitiesBox from "components/SectionGridCitiesBox/SectionGridCit
 import SectionSliderCities from "./SectionSliderCities";
 import SectionSliderNewCategories from "components/SectionSliderNewCategories/SectionSliderNewCategories";
 import SectionGridCitiesBoxTwo from "components/SectionGridCitiesBox/SectionGridCitiesBoxTwo";
+import ListProducts from "./ListProducts";
 
 // DEMO DATA
 const POSTS = DEMO_POSTS;
@@ -80,13 +81,19 @@ const Home: React.FC = () => {
 				{/* === SECTION TOP POSTS === */}
 
 				{/* === SECTION LATEST POSTS === */}
-				<SectionLatestPosts
+				{/* <SectionLatestPosts
 					posts={DEMO_POSTS.filter((_, i) => i > 7 && i < 18)}
 					widgetPosts={DEMO_POSTS.filter((_, i) => i > 2 && i < 7)}
 					categories={DEMO_CATEGORIES.filter((_, i) => i > 2 && i < 8)}
 					tags={DEMO_CATEGORIES}
 					postCardName="card11"
-					gridClass="grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3	"
+					gridClass="grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 md:grid-cols-3"
+					className="pb-16 lg:pb-28"
+				/> */}
+
+				<ListProducts
+					postCardName="card11"
+					gridClass="grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
 					className="pb-16 lg:pb-28"
 				/>
 				{/* === SECTION LATEST POSTS === */}

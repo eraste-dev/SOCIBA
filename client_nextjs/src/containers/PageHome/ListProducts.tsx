@@ -114,9 +114,9 @@ const ListProducts: FC<ListProductsProps> = ({
 		// Check if there is a 'get' parameter
 		const hasGetParameter = getParams().hasOwnProperty("get");
 
-		if (!products && !loading && !hasGetParameter) {
+		if (!products && !loading) {
 			// TODO : fetch all properties
-			// dispatch(fetchAllProperties(getParams()));
+			dispatch(fetchAllProperties(getParams()));
 		}
 	}, [dispatch, fetchAllProperties, getParams, products, loading]);
 
@@ -130,16 +130,8 @@ const ListProducts: FC<ListProductsProps> = ({
 				<Heading>{heading}</Heading>
 			</div>
 
-			{/* <FloatFilter
-				useStateFilter={useStateFilter}
-				setUseStateFilter={setUseStateFilter}
-				showFilter={showFilter}
-				toggleFilter={toggleFilter}
-				fetchAll={fetchAll}
-			/> */}
-
-			<div className="flex flex-col lg:flex-row">
-				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
+			<div className="flex flex-row xl:flex-row">
+				<div className="w-1/5 sm:w-1/8 lg:w-1/4 xl:w-1/5">
 					<FloatFilter
 						useStateFilter={useStateFilter}
 						setUseStateFilter={setUseStateFilter}
@@ -151,7 +143,7 @@ const ListProducts: FC<ListProductsProps> = ({
 				</div>
 
 				{/*  xl:pl-14 lg:pl-7 */}
-				<div className="w-full lg:w-4/4 xl:w-6/6 ">
+				<div className="w-4/5 sm:w-6/8 lg:w-3/4 xl:w-4/5 lg:pl-7">
 					{loading && loading ? (
 						<CardSkeleton arrayLength={8} />
 					) : (

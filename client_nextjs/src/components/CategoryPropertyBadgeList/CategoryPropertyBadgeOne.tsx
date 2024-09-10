@@ -35,11 +35,11 @@ const CategoryPropertyBadgeOne: FC<CategoryPropertyBadgeOneProps> = ({
 						color="purple"
 					/>
 				) : (
-					category.parent && (
+					category && (
 						<Badge
 							className={itemClass}
-							name={category.parent.name}
-							href={route("annonces") + "?category_uuid=" + category.parent.uuid}
+							name={category.name}
+							href={route("annonces") + "?category_uuid=" + category.uuid}
 							color="gray"
 						/>
 					)

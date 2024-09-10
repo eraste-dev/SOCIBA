@@ -16,7 +16,7 @@ import {
 } from "app/axios/actions/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
-import { PeriodicityType, PRODUCT_REQUEST_EMPTY, ProductRequest } from "app/axios/api.type";
+import { EMPTY_PRODUCT, PeriodicityType, PRODUCT_REQUEST_EMPTY, ProductRequest } from "app/axios/api.type";
 import { ILocation, LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import { useSnackbar } from "notistack";
@@ -28,12 +28,8 @@ import ImageUploader from "components/Dashboard/Products/ImageUploader";
 import DetailBien from "../FormPart/DetailBien";
 import { ProductcategoryUUID } from "data/categories_uuid";
 import DetailBienTwo from "../FormPart/DetailBienTwo";
-import { LinearProgress } from "@mui/material";
 import Loading from "components/UI/Loading";
-import {
-	CategorySubAction,
-	IPropertySubCategory,
-} from "app/reducer/products/sub-propertiy-category";
+import { IPropertySubCategory } from "app/reducer/products/sub-propertiy-category";
 import {
 	AUTRE_KEY,
 	CATEGORIES_SUB,
@@ -150,9 +146,6 @@ const DashboardSubmitPost = () => {
 	const [initialize, setInitialize] = useState(false);
 	const [categorySelected, setCategorySelected] = useState(null as IPropertyCategory | null);
 	const [defaultValue, setDefaultValue] = useState(null as ProductRequest | null);
-	// const [previewUrls, setPreviewUrls]: any = useState([]);
-	// const [openLightbox, setOpenLightbox] = useBoolean(false);
-	// const [currentImage, setCurrentImage] = useState<string | null>(null);
 	const [images, setImages] = useState<string[]>([]);
 	const [imageFiles, setImageFiles] = useState<File[]>([]);
 	const [tmpcatId, settmpcatId] = useState(0);
@@ -460,23 +453,17 @@ const DashboardSubmitPost = () => {
 		}
 	}, [product, productId, fetchSingleProperties, dispatch]);
 
-	// INIT
-	// SET DEFAULT VALUES
+	// *INIT
 	useEffect(() => {
-		console.log(">>> useEffect initialize", {
-			defaultValue,
-			initialize,
-		});
-
 		if (product && productId && defaultValue == null && !initialize) {
-			dispatch(initProductState());
 			initializeForm(product);
-			// console.log(">>> SET_DEFAULT", defaultValue);
 		} else if (!product && !productId) {
-			initializeForm(undefined);
+			// initializeForm(undefined);
 			setInitialize(true);
 		}
+		dispatch(initProductState());
 
+		console.log(">>> SET_DEFAULT", initialize);
 		// dispatch(initProductState());
 	}, [
 		setDefaultValue,
@@ -913,12 +900,11 @@ const DashboardSubmitPost = () => {
 													)
 												}
 											>
-												{/* <option value="">Choisir une périodicité</option> */}
+												<option value="">Choisir une périodicité</option>
 												{GET_PERIODICITY().map((p) => (
 													<option
 														key={p.id}
 														value={p.id}
-														// selected={isCategorySelected(category)}
 														selected={
 															product && product.periodicity === p.id
 														}

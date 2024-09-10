@@ -5,3 +5,13 @@
 @import "./_theme_custom";
 //
 @import "./header";
+
+
+
+// CUSTOM
+
+@media (min-width: 576px) {
+    .container {
+        max-width: 95% !important;
+    }
+}
