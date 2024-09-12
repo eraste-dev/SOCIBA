@@ -11,7 +11,7 @@ import React, { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import AvatarUpload from "./updateUser/AvatarUpload";
+import AvatarUpload from "./Users/updateUser/AvatarUpload";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 import { useAppSelector } from "app/hooks";
 

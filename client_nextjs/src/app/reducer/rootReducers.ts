@@ -6,6 +6,7 @@ import pagesReducer from "./pages/pages";
 import mediaRunningReducer from "./mediaRunning/mediaRunning";
 import sliderReducer from "./sliders/sliders";
 import userRequestsReducer from "./userRequest/userRequest";
+import notificationsReducer from "./notifications/notifications";
 import categoryReducer from "./products/propertiy-category";
 import subCategoryReducer from "./products/sub-propertiy-category";
 import productReducer from "./products/product";
@@ -21,15 +22,17 @@ const rootReducers = {
 	commentLikes: commentLikesReducer,
 	pages: pagesReducer,
 	mediaRunning: mediaRunningReducer,
+	meta: metaReducer,
+	// CUSTOM
+	auth: authReducer,
 	sliders: sliderReducer,
 	categories: categoryReducer,
 	subCategories: subCategoryReducer,
 	products: productReducer,
-	auth: authReducer,
 	locations: locationReducer,
 	usersManagement: usersReducer,
-	meta: metaReducer,
 	userRequests: userRequestsReducer,
+	notifications: notificationsReducer,
 };
 
 export default rootReducers;

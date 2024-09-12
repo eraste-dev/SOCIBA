@@ -26,6 +26,14 @@ import {
 	postuserRequestsStart,
 	postuserRequestsSuccess,
 } from "app/reducer/userRequest/userRequest";
+import {
+	fetchALlNotificationFailure,
+	fetchALlNotificationStart,
+	fetchALlNotificationSuccess,
+	markAsReadNotificationFailure,
+	markAsReadNotificationStart,
+	markAsReadNotificationSuccess,
+} from "app/reducer/notifications/notifications";
 
 /**
  * Fetches all users from the server and dispatches corresponding actions.
@@ -102,5 +110,37 @@ export const fetchAllUserRequest = () => async (dispatch: AppDispatch) => {
 	} catch (error: any) {
 		console.log(error);
 		dispatch(fetchALlUserRequestsFailure(error.message));
+	}
+};
+
+export const initFetchNotification = () => async (dispatch: AppDispatch) => {
+	dispatch(initFetchNotificationStart());
+};
+
+export const fetchNotification = () => async (dispatch: AppDispatch) => {
+	dispatch(fetchALlNotificationStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.users.notifications,
+		});
+		dispatch(fetchALlNotificationSuccess(response.data));
+	} catch (error: any) {
+		console.log(error);
+		dispatch(fetchALlNotificationFailure(error.message));
+	}
+};
+
+export const markNotificationAsRead = () => async (dispatch: AppDispatch) => {
+	dispatch(markAsReadNotificationStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.users.markAsReadnotifications,
+		});
+		dispatch(markAsReadNotificationSuccess(response.data));
+	} catch (error: any) {
+		console.log(error);
+		dispatch(markAsReadNotificationFailure(error.message));
 	}
 };

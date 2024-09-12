@@ -1,12 +1,7 @@
-import { AuthAction } from "app/reducer/auth/auth";
-import { isAdmin } from "app/axios/actions/api.action";
 import Logo from "components/Logo/Logo";
 import SocialsList1 from "components/SocialsList1/SocialsList1";
 import { CustomLink } from "data/types";
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import FooterLoggedIn from "./FooterLoggedIn";
-import { useHistory } from "react-router-dom";
+import React from "react";
 import { route } from "routers/route";
 
 export interface WidgetFooterMenu {
@@ -23,17 +18,8 @@ const widgetMenus: WidgetFooterMenu[] = [
 			{ href: route("about"), label: "Qui nous sommes ?" },
 			{ href: "#", label: "Nous rejoindre" },
 			{ href: "#", label: "Alerte e-mail" },
-			// { href: "#", label: "Entrepôt à louer etc…" },
 		],
 	},
-	// {
-	// 	id: "1",
-	// 	title: "Annonce de réservation",
-	// 	menus: [
-	// 		{ href: "#", label: "Résidence disponible" },
-	// 		{ href: "#", label: "Hôtel disponible etc…" },
-	// 	],
-	// },
 	{
 		id: "2",
 		title: "Informations légales",
@@ -44,30 +30,16 @@ const widgetMenus: WidgetFooterMenu[] = [
 			{ href: "#", label: "Règle de diffusion" },
 		],
 	},
-	// {
-	// 	id: "4",
-	// 	title: "Annonce évènementiels",
-	// 	menus: [
-	// 		{ href: "#", label: "Restaurant / maquis/ Point Chaud" },
-	// 		{ href: "#", label: "Concert/ plein air" },
-	// 	],
-	// },
 ];
 
 const Footer: React.FC = () => {
-	// const user = useSelector(AuthAction.data)?.user;
-	// const history = useHistory();
-
-	// if (!isFrontView) {
-	// 	return <FooterLoggedIn />;
-	// }
-
 	const renderWidgetMenuItem = (menu: WidgetFooterMenu, index: number) => {
 		return (
 			<div key={index} className="text-sm">
 				<h2 className="font-semibold text-neutral-700 dark:text-neutral-200">
 					{menu.title}
 				</h2>
+
 				<ul className="mt-5 space-y-4">
 					{menu.menus.map((item, index) => (
 						<li key={index}>

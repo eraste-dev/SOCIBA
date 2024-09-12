@@ -53,6 +53,8 @@ export interface IServerEndpoint {
 			delete: (id: number) => IAxiosRequestConfig;
 			sendUserRequest: (payload: MovingRequestInputs) => IAxiosRequestConfig;
 			getAllUserRequest: IAxiosRequestConfig;
+			notifications: IAxiosRequestConfig;
+			markAsReadnotifications: IAxiosRequestConfig;
 		};
 		meta: {
 			search: (key: string) => IAxiosRequestConfig;
@@ -128,6 +130,8 @@ export const serverEndpoints: IServerEndpoint = {
 		},
 		users: {
 			getAll: { method: "GET", url: `${v100}/user/list` },
+			notifications: { method: "GET", url: `${v100}/user/notifications/unread` },
+			markAsReadnotifications: { method: "POST", url: `${v100}/user/notifications/mark-all-as-read` },
 			delete: (id: number) => ({
 				method: "DELETE",
 				url: `${v100}/user/delete`,

@@ -46,18 +46,18 @@ class NotificationService
         if (auth()->user()->type === "USER") {
             NotificationService::notify(
                 auth()->user(),
-                'L\'annonce <<' . $product->title . '>> a été mise à jour',
-                'L\'annonce <<' . $product->title . '>> a été mise à jour',
+                'L\'annonce <strong>' . $product->title . '</strong> a été mise à jour',
+                'L\'annonce <strong>' . $product->title . '</strong> a été mise à jour',
                 [
-                    'title'   => 'L\'annonce <<' . $product->title . '>> a été mise à jour',
-                    'message' => 'L\'annonce <<' . $product->title . '>> a été mise à jour, par ' . auth()->user()->name . ' ' . auth()->user()->last_name,
+                    'title'   => 'L\'annonce <strong>' . $product->title . '</strong> a été mise à jour',
+                    'message' => 'L\'annonce <strong>' . $product->title . '</strong> a été mise à jour, par ' . auth()->user()->name . ' ' . auth()->user()->last_name,
                 ]
             );
         } else {
             NotificationService::notify(
                 auth()->user(),
-                'L\'annonce <<' . $product->title . '>> a été mise à jour',
-                'L\'annonce <<' . $product->title . '>> a été mise à jour',
+                'L\'annonce <strong>' . $product->title . '</strong> a été mise à jour',
+                'L\'annonce <strong>' . $product->title . '</strong> a été mise à jour',
             );
         }
     }

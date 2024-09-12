@@ -1,26 +1,21 @@
 import { ProductRequest } from "app/axios/api.type";
-import { ILocation } from "app/reducer/locations/locations";
 import { IProduct } from "app/reducer/products/product";
 import ErrorMessage from "components/Form/ErrorMessage";
 import Input from "components/Form/Input/Input";
 import Label from "components/Form/Label/Label";
-import Select from "components/Form/Select/Select";
-import React, { FC } from "react";
+import { FC } from "react";
 import { UseFormRegister } from "react-hook-form";
-import { FaAdjust, FaBath, FaRecycle } from "react-icons/fa";
+import { FaBath } from "react-icons/fa";
 import {
 	IProductType,
 	PRODUCT_TYPE,
 	TYPE_BIEN_EN_VENTE_KEY,
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
-} from "../Posts/DashboardSubmitPost";
+} from "../../DashboardSubmitPost";
 import {
-	Fastfood,
-	Kitchen,
 	KitchenSharp,
 	PhotoSizeSelectSmallTwoTone,
-	PoolSharp,
 } from "@mui/icons-material";
 
 export interface DetailBienProps {

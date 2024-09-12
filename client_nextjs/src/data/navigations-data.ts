@@ -1,5 +1,4 @@
 import { MegamenuItem, NavItemType } from "components/Navigation/NavigationItem";
-import { IProductType } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import { route } from "routers/route";
 import ncNanoId from "utils/ncNanoId";
 import { ProductcategoryUUID } from "./categories_uuid";

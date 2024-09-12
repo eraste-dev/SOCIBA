@@ -1,15 +1,11 @@
 import { IUser } from "app/reducer/auth/auth";
-import DashboardBillingAddress from "containers/PageDashboard/DashboardBillingAddress";
 import DashboardEditProfile from "containers/PageDashboard/DashboardEditProfile";
 import DashboardPostCategories from "containers/PageDashboard/DashboardPostCategories";
 import DashboardPosts from "containers/PageDashboard/DashboardPosts";
-import DashboardRoot from "containers/PageDashboard/DashboardRoot";
-import DashboardSubcription from "containers/PageDashboard/DashboardSubcription";
 import DashboardSubmitPost from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import DashboardUsers from "containers/PageDashboard/DashboardUsers";
-import DashboardSetting from "containers/PageDashboard/settings/DashboardSetting";
 import DashboardSliders from "containers/PageDashboard/Sliders/DashboardSliders";
-import DashboardUserRequest from "containers/PageDashboard/userRequest/DashboardUserRequest";
+import DashboardUserRequest from "containers/PageDashboard/Users/userRequest/DashboardUserRequest";
 import { ComponentType } from "react";
 
 export interface DashboardLocationState {

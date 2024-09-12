@@ -5,8 +5,7 @@ import Label from "components/Form/Label/Label";
 import Select from "components/Form/Select/Select";
 import { FC } from "react";
 import { UseFormRegister } from "react-hook-form";
-import { IProductType, PRODUCT_TYPE, TYPE_LOCATION_KEY } from "../Posts/DashboardSubmitPost";
-import { Security } from "@mui/icons-material";
+import { IProductType, PRODUCT_TYPE, TYPE_LOCATION_KEY } from "../../DashboardSubmitPost";
 
 export const securities: { value: string; label: string }[] = [
 	{ value: "WITH_GUARD", label: "Avec vigile" },

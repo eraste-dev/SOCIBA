@@ -16,7 +16,12 @@ import {
 } from "app/axios/actions/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
-import { EMPTY_PRODUCT, PeriodicityType, PRODUCT_REQUEST_EMPTY, ProductRequest } from "app/axios/api.type";
+import {
+	EMPTY_PRODUCT,
+	PeriodicityType,
+	PRODUCT_REQUEST_EMPTY,
+	ProductRequest,
+} from "app/axios/api.type";
 import { ILocation, LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import { useSnackbar } from "notistack";
@@ -25,9 +30,7 @@ import ErrorMessage from "components/Form/ErrorMessage";
 import { useHistory } from "react-router-dom";
 import { route } from "routers/route";
 import ImageUploader from "components/Dashboard/Products/ImageUploader";
-import DetailBien from "../FormPart/DetailBien";
 import { ProductcategoryUUID } from "data/categories_uuid";
-import DetailBienTwo from "../FormPart/DetailBienTwo";
 import Loading from "components/UI/Loading";
 import { IPropertySubCategory } from "app/reducer/products/sub-propertiy-category";
 import {
@@ -39,6 +42,8 @@ import {
 	TRIPLEX_KEY,
 	VILLA_KEY,
 } from "data/categories_sub";
+import DetailBien from "./components/Forms/DetailBien";
+import DetailBienTwo from "./components/Forms/DetailBienTwo";
 
 export type IProductType = "LOCATION" | "BIEN EN VENTE" | "RESERVATION"; // | "AUTRE"
 
