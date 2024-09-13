@@ -9,9 +9,31 @@
 
 
 // CUSTOM
-
 @media (min-width: 576px) {
     .container {
         max-width: 95% !important;
     }
+}
+
+/* Styles pour les barres de défilement */
+/* Chrome, Safari, Edge, Opera */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #33333320;
+    /* Couleur de fond de la barre de défilement */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #66666632;
+    /* Couleur de la poignée de défilement */
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #66666632 #33333320;
+    /* Couleur de la poignée de défilement et de la barre de défilement */
 }

@@ -104,7 +104,7 @@ export interface ProductRequest {
 	status?: STATUS_LABEL;
 	location_id?: string;
 	location_description?: string; // detail commune location
-	price?: number;
+	price: number;
 	deposit_price?: number;
 	images?: FileList | string[] | null;
 	// details
@@ -131,6 +131,7 @@ export interface ProductRequest {
 }
 
 export const PRODUCT_REQUEST_EMPTY: ProductRequest = {
+	price: 0,
 	bathrooms: null,
 	bedrooms: null,
 	garages: null,

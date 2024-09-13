@@ -13,7 +13,14 @@ import {
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
 } from "../../DashboardSubmitPost";
-import { FoodBankOutlined, FoodBankTwoTone, InfoOutlined, KitchenSharp, LunchDining, PhotoSizeSelectSmallTwoTone } from "@mui/icons-material";
+import {
+	FoodBankOutlined,
+	FoodBankTwoTone,
+	InfoOutlined,
+	KitchenSharp,
+	LunchDining,
+	PhotoSizeSelectSmallTwoTone,
+} from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
 import { useSelector } from "react-redux";
 import { CategoryAction } from "app/reducer/products/propertiy-category";
@@ -100,7 +107,15 @@ const DetailBien: FC<DetailBienProps> = ({
 
 					{/* CUISINE */}
 					<div>
-						<Label>Nombre de cuisine</Label>
+						<div
+							id="tooltip-light"
+							role="tooltip"
+							className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip"
+						>
+							Tooltip content
+							<div className="tooltip-arrow" data-popper-arrow></div>
+						</div>
+						{/* <Label>Nombre de cuisine</Label> */}
 						<div className="block md:col-span-2 p-2">
 							<div className="flex  " style={{ alignItems: "center" }}>
 								{/* <Kitchen className="mr-2" /> */}

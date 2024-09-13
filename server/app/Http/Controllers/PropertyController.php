@@ -88,7 +88,7 @@ class PropertyController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return ResponseService::error("Erreur d'enregistrement", 422, $validator->errors());
+            return ResponseService::error("Erreur d'enregistrement : " . $validator->errors()->first(), 422, $validator->errors());
         }
 
         // Enregistrer les données dans la base de données
