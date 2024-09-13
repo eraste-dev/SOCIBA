@@ -3,6 +3,7 @@ import { ProductRequest, UpdateUserRequest } from "./api.type";
 import { InputsEditCategory } from "components/Dashboard/Products/Categories/EditCategory";
 import { InputsEditSlider } from "containers/PageDashboard/Sliders/EditSlider";
 import { MovingRequestInputs } from "containers/PageMovingRequest/SectionContact";
+import { ISettings } from "app/reducer/settings/settings.";
 
 export const apiBase: string = "http://localhost:8000";
 
@@ -19,6 +20,10 @@ export interface IAxiosRequestConfig {
 
 export interface IServerEndpoint {
 	public: {
+		settings: {
+			get: (key: string) => IAxiosRequestConfig;
+			post: (data: ISettings) => IAxiosRequestConfig;
+		};
 		sliders: {
 			get: IAxiosRequestConfig;
 			post: (product: FormData | InputsEditSlider) => IAxiosRequestConfig;
@@ -65,6 +70,17 @@ export interface IServerEndpoint {
 
 export const serverEndpoints: IServerEndpoint = {
 	public: {
+		settings: {
+			get: (key: string) => ({
+				method: "GET",
+				url: `${v100}/settings?key=${key}`,
+			}),
+			post: (data: ISettings) => ({
+				method: "POST",
+				url: `${v100}/settings/update`,
+				data,
+			}),
+		},
 		sliders: {
 			get: { method: "GET", url: `${v100}/sliders` },
 			post: (data: FormData | InputsEditSlider) => ({
@@ -131,7 +147,10 @@ export const serverEndpoints: IServerEndpoint = {
 		users: {
 			getAll: { method: "GET", url: `${v100}/user/list` },
 			notifications: { method: "GET", url: `${v100}/user/notifications/unread` },
-			markAsReadnotifications: { method: "POST", url: `${v100}/user/notifications/mark-all-as-read` },
+			markAsReadnotifications: {
+				method: "POST",
+				url: `${v100}/user/notifications/mark-all-as-read`,
+			},
 			delete: (id: number) => ({
 				method: "DELETE",
 				url: `${v100}/user/delete`,

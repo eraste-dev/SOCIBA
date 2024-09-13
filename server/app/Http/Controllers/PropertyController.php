@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Collection;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImages;
@@ -12,10 +11,8 @@ use App\Services\PropertyService;
 use App\Services\ResponseService;
 use App\Utils\Utils;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
-use Intervention\Image\Facades\Image;
 
 class PropertyController extends Controller
 {

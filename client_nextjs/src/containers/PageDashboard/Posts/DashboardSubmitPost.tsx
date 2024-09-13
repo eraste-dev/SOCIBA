@@ -162,14 +162,14 @@ const DashboardSubmitPost = () => {
 		console.log("SubmitHandler", data);
 		console.log("SubmitHandler imageFiles", imageFiles);
 		const formData = new FormData(); // initialize form data
-		const defaultType =
+		const defaultType: string =
 			data.home_type ??
-			(SUB_CATEGORIES().length > 0 && Object.values(SUB_CATEGORIES())[0].code);
+			(SUB_CATEGORIES().length > 0 ? Object.values(SUB_CATEGORIES())[0].code : "");
 
 		// ! FIX DEFAULT VALUE
 		data.images = images;
 		data.type = data.type ?? PRODUCT_TYPE[0];
-		data.home_type = defaultType ?? "";
+		data.home_type = defaultType;
 		data.jacuzzi = data.jacuzzi ? 1 : 0;
 		data.bath = data.bath ? 1 : 0;
 		data.pool = data.pool ? 1 : 0;
@@ -310,8 +310,8 @@ const DashboardSubmitPost = () => {
 			_findCat(_cat_id) && _findCat(_cat_id).length > 0 ? _findCat(_cat_id)[0] : undefined;
 
 		try {
-			CATEGORIES_SUB;
-			if (_cat && _cat.name) {
+			// ? for locations
+			if (_cat && _cat.name && _type === "LOCATION") {
 				sub_categories.forEach((c) => {
 					if (c.allow.includes(_cat?.name)) {
 						data.push({
@@ -321,7 +321,22 @@ const DashboardSubmitPost = () => {
 					}
 				});
 			}
-		} catch (error) {}
+
+			// ? for bien en location
+			if (_cat && _cat.name && _type === "BIEN EN VENTE") {
+				sub_categories.forEach((c) => {
+					console.log(">>> _cat :: maison", c.allow_type);
+					if (c.allow.includes(_cat?.name) && c.allow_type !== "LOCATION") {
+						data.push({
+							code: c.uuid,
+							name: c.name,
+						});
+					}
+				});
+			}
+		} catch (error) {
+			console.error(">>> _cat", error);
+		}
 
 		return data;
 	};
@@ -342,21 +357,35 @@ const DashboardSubmitPost = () => {
 		const conditionTwo: boolean =
 			(cat && cat.uuid == ProductcategoryUUID.MAISON.children.BUREAU) ?? false;
 
+		const conditionThree =
+			getVenteCountLabel() != "Nombre de pièces" &&
+			homeType === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY];
+
 		console.log("hasOtherKey", conditionOne, conditionTwo);
 
-		return (conditionOne && SUB_CATEGORIES().length > 0) || conditionTwo;
+		return (conditionOne && SUB_CATEGORIES().length > 0) || conditionTwo; // && !conditionThree
 	};
 
 	const canShowOtherInput = (): boolean => {
 		const _type = getValues("type") ?? PRODUCT_TYPE[0]; // product?.type ??
 		const cat: IPropertyCategory | null =
 			GET_CATEGORIES()?.find((c) => c.id === getValues("category_id")) ?? null;
-		console.log("canShowOtherInput", _type, cat?.name === MAISON_KEY);
+		console.log("canShowOtherInput", SUB_CATEGORIES());
+		const typeCondition: boolean = _type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY];
 
-		return (
-			(_type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && cat?.name === MAISON_KEY) ||
-			(SUB_CATEGORIES() && SUB_CATEGORIES().length === 0)
-		);
+		return SUB_CATEGORIES() && SUB_CATEGORIES().length === 0;
+	};
+
+	const getVenteCountLabel = () => {
+		let label: "Nombre de terrain" | "Nombre de pièces" = "Nombre de terrain";
+
+		const cat: IPropertyCategory | null =
+			categories?.find((c) => c.id === getValues("category_id")) ?? null;
+		if (cat && cat.uuid === ProductcategoryUUID.MAISON.key) {
+			label = "Nombre de pièces";
+		}
+
+		return label;
 	};
 
 	const hasResidence = (): boolean => {
@@ -708,9 +737,9 @@ const DashboardSubmitPost = () => {
 
 												<div className="block md:col-span-2 p-2">
 													{/* SELECT_HOME_TYPE */}
+													{/* canShowOtherInput() &&  */}
 													{SUB_CATEGORIES() &&
-														SUB_CATEGORIES().length > 0 &&
-														!canShowOtherInput() && (
+														SUB_CATEGORIES().length > 0 && (
 															<Select
 																onChange={(event) => {
 																	event.target.value &&
@@ -803,39 +832,42 @@ const DashboardSubmitPost = () => {
 									)}
 
 									{/* DETAIL CATEGORY */}
-									{getValues("type") === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
-										<label className="block col-span-4">
-											<div className="grid grid-cols-1 gap-6">
-												<div>
-													<Label>
-														Nombre de terrain{" "}
-														<span className="text-red-500">*</span>
-													</Label>
+									{getValues("type") === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] &&
+										!showNumberOfRooms() && (
+											<label className="block col-span-4">
+												<div className="grid grid-cols-1 gap-6">
+													<div>
+														<Label>
+															{getVenteCountLabel()}
+															<span className="text-red-500">*</span>
+														</Label>
 
-													<div className="block md:col-span-2 p-2">
-														<Input
-															name="area_count"
-															autoComplete="on"
-															onChange={(event) => {
-																event.target.value &&
-																	setValue(
-																		"area_count",
-																		parseInt(event.target.value)
-																	);
-															}}
-														></Input>
+														<div className="block md:col-span-2 p-2">
+															<Input
+																name="area_count"
+																autoComplete="on"
+																onChange={(event) => {
+																	event.target.value &&
+																		setValue(
+																			"area_count",
+																			parseInt(
+																				event.target.value
+																			)
+																		);
+																}}
+															></Input>
+														</div>
 													</div>
 												</div>
-											</div>
-											<div>
-												<ErrorMessage
-													errors={errorArray}
-													error="category_id"
-													customMessage="Veuillez choisir un type de bien"
-												/>
-											</div>
-										</label>
-									)}
+												<div>
+													<ErrorMessage
+														errors={errorArray}
+														error="category_id"
+														customMessage="Veuillez choisir un type de bien"
+													/>
+												</div>
+											</label>
+										)}
 
 									{/* VILLE - COUNTRY - STATE */}
 									<label className="block md:col-span-2">
@@ -1147,26 +1179,6 @@ const DashboardSubmitPost = () => {
 								</div>
 							</div>
 						</div>
-
-						{/* SECTION 03 */}
-						{/* getValues("type") !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY]  */}
-						{allowImage() && (
-							<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 mb-5">
-								<div className="grid md:grid-cols-2 gap-6 ">
-									{/* IMAGE */}
-									<div className="block md:col-span-2">
-										<ImageUploader
-											initialImages={images}
-											maxImages={5}
-											images={images}
-											setImages={setImages}
-											imageFiles={imageFiles}
-											setImageFiles={setImageFiles}
-										/>
-									</div>
-								</div>
-							</div>
-						)}
 					</div>
 				</div>
 
@@ -1174,6 +1186,26 @@ const DashboardSubmitPost = () => {
 				<div className="grid md:grid-cols-5 gap-6">
 					<div className="col-span-6 lg:col-span-3">
 						<div className="bg-white dark:bg-neutral-900">
+							{/* SECTION 03 */}
+							{/* getValues("type") !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY]  */}
+							{allowImage() && (
+								<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 mb-5">
+									<div className="grid md:grid-cols-2 gap-6 ">
+										{/* IMAGE */}
+										<div className="block md:col-span-2">
+											<ImageUploader
+												initialImages={images}
+												maxImages={5}
+												images={images}
+												setImages={setImages}
+												imageFiles={imageFiles}
+												setImageFiles={setImageFiles}
+											/>
+										</div>
+									</div>
+								</div>
+							)}
+
 							{/* SECTION 04 */}
 							<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
 								<div className="grid md:grid-cols-2 gap-6 ">

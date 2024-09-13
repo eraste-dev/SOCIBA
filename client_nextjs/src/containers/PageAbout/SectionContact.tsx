@@ -5,35 +5,39 @@ import Label from "components/Form/Label/Label";
 import Input from "components/Form/Input/Input";
 import Textarea from "components/Textarea/Textarea";
 import ButtonPrimary from "components/Button/ButtonPrimary";
+import { sendUserRequest } from "app/axios/actions/api.users.action";
+import { useDispatch } from "react-redux";
+import { useSnackbar } from "notistack";
+import { useForm } from "react-hook-form";
+
+export interface ContactUsForm {
+	name: string;
+	email: string;
+	message: string;
+}
+
 export interface Statistic {
 	id: string;
 	heading: string;
 	subHeading: string;
 }
 
-const FOUNDER_DEMO: Statistic[] = [
-	{
-		id: "1",
-		heading: "10 million",
-		subHeading: "Articles have been public around the world (as of Sept. 30, 2021)",
-	},
-	{
-		id: "2",
-		heading: "100,000",
-		subHeading: "Registered users account (as of Sept. 30, 2021)",
-	},
-	{
-		id: "3",
-		heading: "220+",
-		subHeading: "Countries and regions have our presence (as of Sept. 30, 2021)",
-	},
-];
-
 export interface SectionContactProps {
 	className?: string;
 }
 
 const SectionContact: FC<SectionContactProps> = ({ className = "" }) => {
+	const dispatch = useDispatch();
+	const snackbar = useSnackbar();
+
+	const { register, handleSubmit, watch, setValue, getValues } = useForm<ContactUsForm>();
+
+	const onSubmit = (data: ContactUsForm) => {
+		console.log("SubmitHandler", data);
+		console.log("getValues", getValues());
+		// dispatch(sendUserRequest(data));
+	};
+
 	return (
 		<div className="grid gap-8 lg:grid-cols-2 mt-0" style={{ marginTop: "10px !important" }}>
 			<div className="max-w-sm ">
@@ -61,20 +65,30 @@ const SectionContact: FC<SectionContactProps> = ({ className = "" }) => {
 				<h3 className="font-semibold text-xl dark:text-neutral-200 tracking-wider mb-5">
 					Nous contacter
 				</h3>
-				<form className="grid grid-cols-1 gap-6" action="#" method="post">
+				<form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-6">
 					<label className="block">
 						<Label>Nom & Prénoms</Label>
-						<Input placeholder="Exemple Doe" type="text" className="mt-1" />
+						<Input
+							placeholder="Exemple Franck"
+							type="text"
+							className="mt-1"
+							{...register("name")}
+						/>
 					</label>
 
 					<label className="block">
 						<Label>Email</Label>
-						<Input type="email" placeholder="example@example.com" className="mt-1" />
+						<Input
+							type="email"
+							placeholder="franck@gmail.com"
+							className="mt-1"
+							{...register("email")}
+						/>
 					</label>
 
 					<label className="block">
 						<Label>Message</Label>
-						<Textarea className="mt-1" rows={6} />
+						<Textarea className="mt-1" rows={6} {...register("message")} />
 					</label>
 
 					<ButtonPrimary type="submit">Envoyer</ButtonPrimary>

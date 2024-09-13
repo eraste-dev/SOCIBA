@@ -1,16 +1,10 @@
 import React, { useEffect } from "react";
 import SectionSliderPosts from "./SectionSliderPosts";
-import { DEMO_CATEGORIES } from "data/taxonomies";
 import { DEMO_POSTS } from "data/posts";
 import { Helmet } from "react-helmet";
-import SectionLatestPosts from "./SectionLatestPosts";
-import SectionGridCategoryBox from "components/SectionGridCategoryBox/SectionGridCategoryBox";
 import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import SectionHeroSlider from "components/SectionHero/SectionHeroSlider";
-import SectionGridCitiesBox from "components/SectionGridCitiesBox/SectionGridCitiesBox";
 import SectionSliderCities from "./SectionSliderCities";
-import SectionSliderNewCategories from "components/SectionSliderNewCategories/SectionSliderNewCategories";
-import SectionGridCitiesBoxTwo from "components/SectionGridCitiesBox/SectionGridCitiesBoxTwo";
 import ListProducts from "./ListProducts";
 
 // DEMO DATA
@@ -93,7 +87,7 @@ const Home: React.FC = () => {
 
 				<ListProducts
 					postCardName="card11"
-					gridClass="grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+					gridClass="grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
 					className="pb-16 lg:pb-28"
 				/>
 				{/* === SECTION LATEST POSTS === */}

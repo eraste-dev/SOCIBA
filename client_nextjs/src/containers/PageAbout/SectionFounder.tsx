@@ -1,7 +1,12 @@
 import Heading from "components/Heading/Heading";
 import NcImage from "components/NcImage/NcImage";
-import React from "react";
+import React, { useEffect } from "react";
 import { ABOUT_TEXT } from "./PageAbout";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "app/hooks";
+import { SettingsAction } from "app/reducer/settings/settings.";
+import Loading from "components/UI/Loading";
+import { fetchDefaultSettings } from "app/axios/actions/api.settings.action";
 
 export interface People {
 	id: string;
@@ -38,9 +43,30 @@ const FOUNDER_DEMO: People[] = [
 ];
 
 const SectionFounder = () => {
+	const dispatch = useDispatch();
+	const setting = useAppSelector(SettingsAction.data)?.default?.get;
+	const loading = useAppSelector(SettingsAction.data)?.default?.loading;
+
+	useEffect(() => {
+		if (!loading && !setting) {
+			dispatch(fetchDefaultSettings());
+		}
+	}, [dispatch, fetchDefaultSettings, loading, setting]);
+
+	if (loading) {
+		return (
+			<>
+				<Loading />
+			</>
+		);
+	}
+
 	return (
 		<div className="nc-SectionFounder relative">
-			<Heading desc={ABOUT_TEXT.DESCRIPTION}>Qui somme nous ?</Heading>
+			{/* <Heading descHtml={setting?.about_us}>Qui somme nous ?</Heading> */}
+
+			<div className="text-neutral-700 dark:text-neutral-300 mb-12"  dangerouslySetInnerHTML={{ __html: setting?.about_us ?? "" }}></div>
+
 			<div className="grid sm:grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4 xl:gap-x-8">
 				{false &&
 					FOUNDER_DEMO.map((item) => (
@@ -50,8 +76,12 @@ const SectionFounder = () => {
 								className="absolute inset-0 object-cover"
 								src={item.avatar}
 							/>
-							<h3 className="text-lg font-semibold text-neutral-900 mt-4 md:text-xl dark:text-neutral-200">{item.name}</h3>
-							<span className="block text-sm text-neutral-500 sm:text-base dark:text-neutral-400">{item.job}</span>
+							<h3 className="text-lg font-semibold text-neutral-900 mt-4 md:text-xl dark:text-neutral-200">
+								{item.name}
+							</h3>
+							<span className="block text-sm text-neutral-500 sm:text-base dark:text-neutral-400">
+								{item.job}
+							</span>
 						</div>
 					))}
 			</div>

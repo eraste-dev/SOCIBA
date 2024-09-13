@@ -7,6 +7,7 @@ import DashboardUsers from "containers/PageDashboard/DashboardUsers";
 import DashboardSliders from "containers/PageDashboard/Sliders/DashboardSliders";
 import DashboardUserRequest from "containers/PageDashboard/Users/userRequest/DashboardUserRequest";
 import { ComponentType } from "react";
+import DashboardSettings from "containers/PageDashboard/Settings/DashboardSettings";
 
 export interface DashboardLocationState {
 	// "/root"?: {};
@@ -84,10 +85,10 @@ export const ADMIN_SUB_PAGES: DashboardPage[] = [
 		emoij: "  ",
 		pageName: "Demandes de démenagement",
 	},
-	// {
-	// 	sPath: "/settings",
-	// 	component: DashboardSetting,
-	// 	emoij: "  ",
-	// 	pageName: "Paramètres",
-	// },
+	{
+		sPath: "/settings",
+		component: DashboardSettings,
+		emoij: "  ",
+		pageName: "Paramètres",
+	},
 ];

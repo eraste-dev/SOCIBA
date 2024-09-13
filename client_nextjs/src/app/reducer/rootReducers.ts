@@ -13,9 +13,11 @@ import productReducer from "./products/product";
 import usersReducer from "./users/users";
 import metaReducer from "./meta/meta";
 import authReducer from "./auth/auth";
+import settingsReducer from "./settings/settings.";
 import locationReducer from "./locations/locations";
 
 const rootReducers = {
+	settings: settingsReducer,
 	bookmark: bookmarkReducer,
 	postLike: postLikesReducer,
 	darkmode: darkmodeReducer,

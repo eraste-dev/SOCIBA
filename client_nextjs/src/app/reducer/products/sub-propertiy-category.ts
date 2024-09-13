@@ -7,6 +7,7 @@ export interface IPropertySubCategory {
 	id: number;
 	name: string;
 	allow: string[];
+	allow_type: IProductType | "*";
 	uuid: string;
 	// can_delete: boolean;
 	// can_upload_image: boolean;

@@ -14,6 +14,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MetaController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRequestController;
 use App\Http\Middleware\JwtMiddleware;
@@ -56,6 +58,12 @@ Route::group(['prefix' => 'v1'], function () {
 
     // ! PROTECTED ROUTE
     Route::group(['middleware' => [JwtMiddleware::class]], function () {
+        // ? SETTINGS ROUTES
+        Route::group(['prefix' => '/settings'], function () {
+            Route::get('/', [SettingsController::class, 'index']);
+            Route::post('update', [SettingsController::class, 'store']);
+        });
+
         // ? PROTECTED PRODUCTS ROUTES
         Route::group(['prefix' => '/admin'], function () {
             Route::post('sliders', [SliderController::class, 'store']);
