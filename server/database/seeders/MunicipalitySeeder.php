@@ -51,12 +51,12 @@ class MunicipalitySeeder extends Seeder
                 'popularity_rate' =>  98
             ],
             [
-                'name' => 'Kouamassi',
-                'slug' => 'kouamassi',
+                'name' => 'Koumassi',
+                'slug' => 'koumassi',
                 'city_id' => 1,
                 'iso3' => '',
                 'iso2' => '',
-                'description' => 'Commune de Kouamassi',
+                'description' => 'Commune de Koumassi',
                 'lat' => '5.295000',
                 'long' => '-3.975000',
                 'thumbnail' => '/images/municipalities/kouamassi.jpeg',

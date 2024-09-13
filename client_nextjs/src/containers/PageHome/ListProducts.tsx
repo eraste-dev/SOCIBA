@@ -139,6 +139,7 @@ const ListProducts: FC<ListProductsProps> = ({
 						toggleFilter={toggleFilter}
 						fetchAll={fetchAll}
 						noFloating={true}
+						linear={false}
 					/>
 				</div>
 

@@ -35,6 +35,7 @@ import Loading from "components/UI/Loading";
 import { IPropertySubCategory } from "app/reducer/products/sub-propertiy-category";
 import {
 	AUTRE_KEY,
+	BUREAU_KEY,
 	CATEGORIES_SUB,
 	DUPLEX_KEY,
 	MAISON_KEY,
@@ -161,11 +162,14 @@ const DashboardSubmitPost = () => {
 		console.log("SubmitHandler", data);
 		console.log("SubmitHandler imageFiles", imageFiles);
 		const formData = new FormData(); // initialize form data
+		const defaultType =
+			data.home_type ??
+			(SUB_CATEGORIES().length > 0 && Object.values(SUB_CATEGORIES())[0].code);
 
 		// ! FIX DEFAULT VALUE
 		data.images = images;
 		data.type = data.type ?? PRODUCT_TYPE[0];
-		data.home_type = data.home_type ?? Object.values(SUB_CATEGORIES())[0];
+		data.home_type = defaultType ?? "";
 		data.jacuzzi = data.jacuzzi ? 1 : 0;
 		data.bath = data.bath ? 1 : 0;
 		data.pool = data.pool ? 1 : 0;
@@ -254,14 +258,15 @@ const DashboardSubmitPost = () => {
 	};
 
 	const GET_PERIODICITY = () => {
-		switch (getValues("type")) {
-			case PRODUCT_TYPE[0]:
+		const type = getValues("type") ?? PRODUCT_TYPE[0];
+		switch (type) {
+			case PRODUCT_TYPE[TYPE_LOCATION_KEY]:
 				return PERIODICITY_LIST;
 
-			case PRODUCT_TYPE[1]:
+			case PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY]:
 				return PERIODICITY_LIST;
 
-			case PRODUCT_TYPE[2]:
+			case PRODUCT_TYPE[TYPE_RESERVATION_KEY]:
 				return PERIODICITY_RESERVATION_LIST;
 
 			default:
@@ -298,7 +303,7 @@ const DashboardSubmitPost = () => {
 		let data: ISubCategoryType[] = [];
 
 		const _cat_id: number | undefined =
-			getValues("category_id") ?? (categories && categories[0].id);
+			getValues("category_id") ?? (categories && categories[0] && categories[0].id);
 
 		const _type = (getValues("type") as IProductType) ?? (PRODUCT_TYPE[0] as IProductType);
 		const _cat: IPropertyCategory | undefined =
@@ -321,13 +326,25 @@ const DashboardSubmitPost = () => {
 		return data;
 	};
 
-	const hasOtherKey = (): boolean => {
+	const showNumberOfRooms = (): boolean => {
 		const homeType = _hasOtherKey ?? getValues("home_type");
-		console.log("hasOtherKey", homeType);
-		return (
-			[AUTRE_KEY, VILLA_KEY, DUPLEX_KEY, TRIPLEX_KEY, TERRAIN_KEY].includes(homeType) &&
-			SUB_CATEGORIES().length > 0
-		);
+		const otherType = _hasOtherKey ?? getValues("category_id");
+		const cat = GET_CATEGORIES()?.find((c) => c.id === parseInt(otherType));
+		const conditionOne: boolean = [
+			AUTRE_KEY,
+			VILLA_KEY,
+			DUPLEX_KEY,
+			TRIPLEX_KEY,
+			TERRAIN_KEY,
+			BUREAU_KEY,
+		].includes(homeType);
+
+		const conditionTwo: boolean =
+			(cat && cat.uuid == ProductcategoryUUID.MAISON.children.BUREAU) ?? false;
+
+		console.log("hasOtherKey", conditionOne, conditionTwo);
+
+		return (conditionOne && SUB_CATEGORIES().length > 0) || conditionTwo;
 	};
 
 	const canShowOtherInput = (): boolean => {
@@ -373,7 +390,7 @@ const DashboardSubmitPost = () => {
 		return true; // output
 	};
 
-	const initForm = (value: ProductRequest) => {
+	const useFormSetDefault = (value: ProductRequest) => {
 		setValue("id", value.id);
 		setValue("category_id", value.category_id);
 		setValue("location_id", value.location_id);
@@ -395,6 +412,7 @@ const DashboardSubmitPost = () => {
 		setValue("WiFi", value.WiFi);
 		setValue("bathrooms", value.bathrooms);
 		setValue("area", value.area);
+		setValue("area_unit", value.area_unit);
 		// setValue("images", value.images);
 		// setDefaultValue(value);
 		// setPreviewUrls(value.images ? value.images.map((item: any) => URL.createObjectURL(item)) : []);
@@ -438,52 +456,56 @@ const DashboardSubmitPost = () => {
 			setDefaultValue(value);
 			setImages(product.images.map((image) => image.image));
 			setImageFiles([]);
-			initForm(value);
+			useFormSetDefault(value);
 
 			if (categories && categories.length > 0) {
 				setCategorySelected(
 					categories?.filter((_cat) => _cat.id === product.category?.id)[0] || null
 				);
 			}
-			setInitialize(true);
 		} else {
 			setDefaultValue(PRODUCT_REQUEST_EMPTY);
-			initForm(PRODUCT_REQUEST_EMPTY);
+			useFormSetDefault(PRODUCT_REQUEST_EMPTY);
 		}
 	};
 
-	useEffect(() => {
-		if (!product && productId) {
-			dispatch(fetchSingleProperties({ id: productId }));
-		}
-	}, [product, productId, fetchSingleProperties, dispatch]);
+	const showCaution = (): boolean => {
+		const condition: boolean =
+			getValues("type") === PRODUCT_TYPE[0] || product?.type === "LOCATION";
 
-	// *INIT
-	useEffect(() => {
-		if (product && productId && defaultValue == null && !initialize) {
-			initializeForm(product);
-		} else if (!product && !productId) {
-			// initializeForm(undefined);
-			setInitialize(true);
-		}
-		dispatch(initProductState());
+		const cat: IPropertyCategory | null =
+			GET_CATEGORIES()?.find((c) => c.id === getValues("category_id")) ?? null;
 
-		console.log(">>> SET_DEFAULT", initialize);
-		// dispatch(initProductState());
-	}, [
-		setDefaultValue,
-		initForm,
-		dispatch,
-		fetchSingleProperties,
-		initProductState,
-		initializeForm,
-		product,
-		productId,
-		defaultValue,
-		categories,
-		loading,
-		initialize,
-	]);
+		// const conditionTwo: boolean =
+		// 	(cat &&
+		// 		[
+		// 			ProductcategoryUUID.MAISON.key,
+		// 			ProductcategoryUUID.MAISON.children.APPARTEMENT,
+		// 		].includes(cat.uuid)) ??
+		// 	false;
+
+		return condition;
+	};
+
+	const getTypeValue = (): IProductType => {
+		const type = getValues("type") ?? PRODUCT_TYPE[0];
+		return type as IProductType;
+	};
+
+	const getPriceLabel = (): string => {
+		const type: IProductType = getTypeValue();
+
+		switch (type) {
+			case "RESERVATION":
+				return "Prix de réservation";
+
+			case "BIEN EN VENTE":
+				return "Prix de vente";
+
+			default:
+				return "Prix de location";
+		}
+	};
 
 	// FETCH_CATEGORIES
 	useEffect(() => {
@@ -502,619 +524,721 @@ const DashboardSubmitPost = () => {
 	// SUBMIT_ERROR
 	useEffect(() => {
 		if (errorMessage) {
-			snackbar.enqueueSnackbar(errorMessage, { variant: "error", autoHideDuration: 3000 });
+			snackbar.enqueueSnackbar(errorMessage, { variant: "error", autoHideDuration: 1000 });
 		}
 	}, [errorMessage, snackbar]);
+
+	// fetch product if not exist and productId is not null
+	useEffect(() => {
+		if (!loading && !categoriesLoading && !locationLoading && categories && locations) {
+			if (productId != null && product == undefined) {
+				console.warn(">>> FETCH_PRODUCT", productId);
+				// dispatch(fetchSingleProperties({ id: productId }));
+			}
+		}
+	}, [
+		// dispatch,
+		loading,
+		categoriesLoading,
+		locationLoading,
+		categories,
+		locations,
+		productId,
+		product,
+	]);
+
+	useEffect(() => {
+		dispatch(initProductState());
+		if (product && productId != null && defaultValue == null && !initialize) {
+			initializeForm(product);
+		} else if (!product && !productId) {
+			// initializeForm(undefined);
+		}
+		setInitialize(true);
+
+		console.log(">>> SET_DEFAULT", initialize);
+		// dispatch(initProductState());
+	}, [
+		dispatch,
+		initProductState,
+		initializeForm,
+		setInitialize,
+		product,
+		productId,
+		defaultValue,
+		initialize,
+	]);
 
 	// SUBMIT_SUCCESS
 	useEffect(() => {
 		if (success && !loading) {
 			snackbar.enqueueSnackbar("Annonce publiee avec succes", {
 				variant: "success",
-				autoHideDuration: 3000,
+				autoHideDuration: 1000,
 			});
 			history.push(route("dashboard"));
 		}
 	}, [snackbar, success, loading, history]);
 
-	if ((initialize === false || defaultValue == null) && productId)
+	if ((initialize === false || defaultValue == null) && productId) {
 		return (
 			<div className="flex justify-center justify-self-center" style={{ height: "100vh" }}>
 				<Loading />
 			</div>
 		);
+	}
+
+	if (loading || categoriesLoading || locationLoading) {
+		return (
+			<div className="flex justify-center justify-self-center" style={{ height: "100vh" }}>
+				<Loading />
+			</div>
+		);
+	}
 
 	return (
 		<div className="md:p-6">
 			<h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-200 mb-5">
 				Rédigez votre annonce
 			</h3>
-			{/* grid md:grid-cols-2 gap-6 */}
 			<form className="" onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-				{/* SECTION 02 */}
-				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
-					<div className="grid md:grid-cols-2 gap-6 mb-5">
-						{/* TYPE */}
-						<label className="block">
-							<Label>
-								Type d'offre <span className="text-red-500">*</span>
-							</Label>
-
-							<SelectProductType
-								options={PRODUCT_TYPE}
-								onChangeOption={(value) => {
-									setValue("type", value);
-									if (GET_CATEGORIES()[0].id) {
-										setValue("category_id", GET_CATEGORIES()[0].id);
-										settmpcatId(GET_CATEGORIES()[0].id);
-									}
-									console.log({
-										category_id: getValues("category_id"),
-										type: getValues("type"),
-										hasResidence: hasResidence(),
-									});
-								}}
-								selected={watch("type") ?? PRODUCT_TYPE[0]}
-							/>
-							<ErrorMessage
-								errors={errorArray}
-								error="type"
-								customMessage="Veuillez choisir un type d'offre"
-							/>
-						</label>
-						{/* CATEGORY */}
-						<label className="block md:col-span-2">
-							<div className="grid grid-cols-1 gap-6">
-								<div>
-									<Label>
-										Type de bien <span className="text-red-500">*</span>
-										{/* {defaultValue?.category_id} */}
-									</Label>
-
-									<div className="block md:col-span-2 p-2">
-										<Select
-											name="category_id"
-											onChange={(event) => {
-												settmpcatId(parseInt(event.target.value));
-
-												event.target.value &&
-													setValue(
-														"category_id",
-														parseInt(event.target.value)
-													);
-
-												set_hasOtherKey(event.target.value);
-
-												console.log(
-													"category_id",
-													event.target.value,
-													getValues("category_id"),
-													tmpcatId
-												);
-											}}
-										>
-											<option>Choix du type de bien</option>
-
-											{GET_CATEGORIES() &&
-												GET_CATEGORIES().map((category) => (
-													<option
-														key={category.id}
-														value={category.id}
-														selected={isCategorySelected(category)}
-													>
-														{category.name}
-													</option>
-												))}
-										</Select>
-									</div>
-								</div>
-							</div>
-							<div>
-								<ErrorMessage
-									errors={errorArray}
-									error="category_id"
-									customMessage="Veuillez choisir un type de bien"
-								/>
-							</div>
-						</label>
-
-						{/* DETAIL CATEGORY */}
-						{/* hasResidence() && */}
-						{
-							<label className="block md:col-span-2">
-								<div className="grid grid-cols-1 gap-6">
-									<div>
+				{/* GRID CONTAINER */}
+				<div className="grid md:grid-cols-5 gap-6">
+					{/* #1 */}
+					<div className="col-span-6 lg:col-span-3">
+						{/* SECTION 01 */}
+						<div className="bg-white dark:bg-neutral-900">
+							<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
+								<div className="grid md:grid-cols-2 gap-6 mb-5">
+									{/* TYPE */}
+									<label className="block col-span-4">
 										<Label>
-											{getTypeDeteailLabel()}
-
-											{/* <span className="text-red-500">*</span> */}
+											Type d'offre <span className="text-red-500">*</span>
 										</Label>
 
-										<div className="block md:col-span-2 p-2">
-											{/* SELECT_HOME_TYPE */}
-											{SUB_CATEGORIES() &&
-												SUB_CATEGORIES().length > 0 &&
-												!canShowOtherInput() && (
-													<Select
-														onChange={(event) => {
-															event.target.value &&
+										<SelectProductType
+											options={PRODUCT_TYPE}
+											onChangeOption={(value) => {
+												setValue("type", value);
+												if (GET_CATEGORIES()[0].id) {
+													setValue("category_id", GET_CATEGORIES()[0].id);
+													settmpcatId(GET_CATEGORIES()[0].id);
+												}
+												console.log({
+													category_id: getValues("category_id"),
+													type: getValues("type"),
+													hasResidence: hasResidence(),
+												});
+											}}
+											selected={watch("type") ?? PRODUCT_TYPE[0]}
+										/>
+										<ErrorMessage
+											errors={errorArray}
+											error="type"
+											customMessage="Veuillez choisir un type d'offre"
+										/>
+									</label>
+
+									{/* CATEGORY */}
+									<label className="block col-span-4">
+										<div>
+											<Label>
+												Type de bien <span className="text-red-500">*</span>
+												{/* {defaultValue?.category_id} */}
+											</Label>
+
+											<div className="block md:col-span-2 p-2">
+												<Select
+													name="category_id"
+													onChange={(event) => {
+														settmpcatId(parseInt(event.target.value));
+
+														event.target.value &&
+															setValue(
+																"category_id",
+																parseInt(event.target.value)
+															);
+
+														set_hasOtherKey(event.target.value);
+
+														console.log(
+															"category_id",
+															event.target.value,
+															getValues("category_id"),
+															tmpcatId
+														);
+													}}
+												>
+													<option>Choix du type de bien</option>
+
+													{GET_CATEGORIES() &&
+														GET_CATEGORIES().map((category) => (
+															<option
+																key={category.id}
+																value={category.id}
+																selected={isCategorySelected(
+																	category
+																)}
+															>
+																{category.name}
+															</option>
+														))}
+												</Select>
+											</div>
+										</div>
+										<div>
+											<ErrorMessage
+												errors={errorArray}
+												error="category_id"
+												customMessage="Veuillez choisir un type de bien"
+											/>
+										</div>
+									</label>
+
+									{/* DETAIL CATEGORY */}
+									{/* hasResidence() && */}
+									<label className="block col-span-4">
+										<div className="grid grid-cols-1 gap-6">
+											<div>
+												<Label>
+													{getTypeDeteailLabel()}
+
+													{/* <span className="text-red-500">*</span> */}
+												</Label>
+
+												<div className="block md:col-span-2 p-2">
+													{/* SELECT_HOME_TYPE */}
+													{SUB_CATEGORIES() &&
+														SUB_CATEGORIES().length > 0 &&
+														!canShowOtherInput() && (
+															<Select
+																onChange={(event) => {
+																	event.target.value &&
+																		setValue(
+																			"home_type",
+																			event.target.value
+																		);
+
+																	set_hasOtherKey(
+																		event.target.value
+																	);
+																}}
+															>
+																<option>Choix</option>
+																{SUB_CATEGORIES() &&
+																	SUB_CATEGORIES().map((c) => (
+																		<option
+																			key={c.code}
+																			value={c.name}
+																			selected={
+																				c.name ===
+																				getValues(
+																					"home_type"
+																				)
+																			}
+																		>
+																			{c.name}
+																		</option>
+																	))}
+															</Select>
+														)}
+
+													{/* INPUT_HOME_TYPE */}
+													{canShowOtherInput() && (
+														<Input
+															autoComplete="on"
+															name="home_type"
+															maxLength={20}
+															onChange={(e) => {
 																setValue(
 																	"home_type",
-																	event.target.value
+																	e.target.value
 																);
+																set_hasOtherKey(e.target.value);
+															}}
+														/>
+													)}
+												</div>
+											</div>
+										</div>
+										<div>
+											<ErrorMessage
+												errors={errorArray}
+												error="category_id"
+												customMessage="Veuillez choisir un type de bien"
+											/>
+										</div>
+									</label>
 
-															set_hasOtherKey(event.target.value);
-														}}
+									{/* NOMBRE DE PIECE */}
+									{showNumberOfRooms() && (
+										<label className="block col-span-4">
+											<div className="grid grid-cols-1 gap-6">
+												<div>
+													<Label>Nombre de pièces</Label>
+
+													<div className="block md:col-span-2 p-2">
+														<Input
+															name="area_count"
+															autoComplete="on"
+															onChange={(event) => {
+																event.target.value &&
+																	setValue(
+																		"area_count",
+																		parseInt(event.target.value)
+																	);
+															}}
+														></Input>
+													</div>
+												</div>
+											</div>
+											<div>
+												<ErrorMessage
+													errors={errorArray}
+													error="category_id"
+													customMessage="Veuillez choisir un type de bien"
+												/>
+											</div>
+										</label>
+									)}
+
+									{/* DETAIL CATEGORY */}
+									{getValues("type") === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
+										<label className="block col-span-4">
+											<div className="grid grid-cols-1 gap-6">
+												<div>
+													<Label>
+														Nombre de terrain{" "}
+														<span className="text-red-500">*</span>
+													</Label>
+
+													<div className="block md:col-span-2 p-2">
+														<Input
+															name="area_count"
+															autoComplete="on"
+															onChange={(event) => {
+																event.target.value &&
+																	setValue(
+																		"area_count",
+																		parseInt(event.target.value)
+																	);
+															}}
+														></Input>
+													</div>
+												</div>
+											</div>
+											<div>
+												<ErrorMessage
+													errors={errorArray}
+													error="category_id"
+													customMessage="Veuillez choisir un type de bien"
+												/>
+											</div>
+										</label>
+									)}
+
+									{/* VILLE - COUNTRY - STATE */}
+									<label className="block md:col-span-2">
+										<div className="grid grid-cols-2 gap-6">
+											<div>
+												<Label>
+													Commune <span className="text-red-500">*</span>
+												</Label>
+
+												<div className="block md:col-span-2 p-2">
+													<Select
+														name="location_id"
+														required
+														onChange={(event) =>
+															setValue(
+																"location_id",
+																event.target.value
+															)
+														}
 													>
-														<option>Choix</option>
-														{SUB_CATEGORIES() &&
-															SUB_CATEGORIES().map((c) => (
+														{locations &&
+															locations.map((location) => (
 																<option
-																	key={c.code}
-																	value={c.name}
-																	selected={
-																		c.name ===
-																		getValues("home_type")
-																	}
+																	key={location.id}
+																	value={location.id}
+																	selected={isLocationSelected(
+																		location
+																	)}
 																>
-																	{c.name}
+																	{location.name}
 																</option>
 															))}
 													</Select>
-												)}
+													<ErrorMessage
+														errors={errorArray}
+														error="location_id"
+														customMessage="Veuillez choisir une ville"
+													/>
+												</div>
+											</div>
 
-											{/* INPUT_HOME_TYPE */}
-											{canShowOtherInput() && (
-												<Input
-													autoComplete="on"
-													name="home_type"
-													maxLength={20}
-													onChange={(e) => {
-														setValue("home_type", e.target.value);
-														set_hasOtherKey(e.target.value);
-													}}
-												/>
-											)}
-										</div>
-									</div>
-								</div>
-								<div>
-									<ErrorMessage
-										errors={errorArray}
-										error="category_id"
-										customMessage="Veuillez choisir un type de bien"
-									/>
-								</div>
-							</label>
-						}
-
-						{/* NOMBRE DE PIECE */}
-						{hasOtherKey() && (
-							<label className="block md:col-span-2">
-								<div className="grid grid-cols-1 gap-6">
-									<div>
-										<Label>Nombre de pièces</Label>
-
-										<div className="block md:col-span-2 p-2">
-											<Input
-												name="area_count"
-												autoComplete="on"
-												onChange={(event) => {
-													event.target.value &&
-														setValue(
-															"area_count",
-															parseInt(event.target.value)
-														);
-												}}
-											></Input>
-										</div>
-									</div>
-								</div>
-								<div>
-									<ErrorMessage
-										errors={errorArray}
-										error="category_id"
-										customMessage="Veuillez choisir un type de bien"
-									/>
-								</div>
-							</label>
-						)}
-
-						{/* DETAIL CATEGORY */}
-						{getValues("type") === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
-							<label className="block md:col-span-2">
-								<div className="grid grid-cols-1 gap-6">
-									<div>
-										<Label>
-											Nombre de terrain{" "}
-											<span className="text-red-500">*</span>
-										</Label>
-
-										<div className="block md:col-span-2 p-2">
-											<Input
-												name="area_count"
-												autoComplete="on"
-												onChange={(event) => {
-													event.target.value &&
-														setValue(
-															"area_count",
-															parseInt(event.target.value)
-														);
-												}}
-											></Input>
-										</div>
-									</div>
-								</div>
-								<div>
-									<ErrorMessage
-										errors={errorArray}
-										error="category_id"
-										customMessage="Veuillez choisir un type de bien"
-									/>
-								</div>
-							</label>
-						)}
-
-						{/* VILLE - COUNTRY - STATE */}
-						<label className="block md:col-span-2">
-							<div className="grid grid-cols-2 gap-6">
-								<div>
-									<Label>
-										Commune <span className="text-red-500">*</span>
-									</Label>
-
-									<div className="block md:col-span-2 p-2">
-										<Select
-											name="location_id"
-											required
-											onChange={(event) =>
-												setValue("location_id", event.target.value)
-											}
-										>
-											{locations &&
-												locations.map((location) => (
-													<option
-														key={location.id}
-														value={location.id}
-														selected={isLocationSelected(location)}
-													>
-														{location.name}
-													</option>
-												))}
-										</Select>
-										<ErrorMessage
-											errors={errorArray}
-											error="location_id"
-											customMessage="Veuillez choisir une ville"
-										/>
-									</div>
-								</div>
-
-								<div>
-									<label className="block md:col-span-2">
-										<Label>
-											Quartier <span className="text-red-500">*</span>
-										</Label>
-										<Input
-											type="text"
-											className="mt-1"
-											defaultValue={product && product.location_description}
-											{...register("location_description", {
-												required: true,
-											})}
-										/>
-										<ErrorMessage
-											errors={errorArray}
-											error="location_description"
-											customMessage="Veuillez saisir un quartier"
-										/>
-									</label>
-								</div>
-							</div>
-						</label>
-					</div>
-
-					<DetailBien
-						errorArray={errorArray}
-						register={register}
-						product={product}
-						setValue={setValue}
-						getValues={getValues}
-						typeDeBien={
-							(getValues("type") as IProductType) ?? (PRODUCT_TYPE[0] as IProductType)
-						}
-					/>
-
-					<DetailBienTwo
-						errorArray={errorArray}
-						register={register}
-						product={product}
-						setValue={setValue}
-						getValues={getValues}
-						typeDeBien={
-							(getValues("type") as IProductType) ?? (PRODUCT_TYPE[0] as IProductType)
-						}
-					/>
-				</div>
-
-				{/* SECTION 01 */}
-				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6  mb-5">
-					<div className="grid md:grid-cols-2 gap-6">
-						{/* TITLE */}
-						{false && (
-							<label className="block md:col-span-2">
-								<Label>Titre</Label>
-								<Input
-									type="text"
-									className="mt-1"
-									// { required: true }
-									{...register("title")}
-									// defaultValue={(defaultValue && defaultValue.title) ?? ""}
-								/>
-								<ErrorMessage
-									errors={errorArray}
-									error="title"
-									customMessage="Veuillez choisir un titre"
-								/>
-							</label>
-						)}
-
-						{/* PRICE - DEPOSIT PRICE */}
-						<label className="block md:col-span-2">
-							<div className="grid grid-cols-4 gap-6">
-								<div className="col-span-2">
-									<Label>
-										Prix <span className="text-red-500">*</span>
-										<div className="flex items-center">
-											<Input
-												type="number"
-												className="mt-1"
-												defaultValue={product && product.price}
-												{...register("price", { required: true })}
-											/>
-
-											{/* <span className="text-lg ml-2 text-neutral-300">
-												{formatPrice(product && product.price)} {CURRENCY}
-											</span> */}
-											<span className="text-lg ml-2 text-neutral-300">
-												{CURRENCY}{" "}
-											</span>
-										</div>
-									</Label>
-									<ErrorMessage
-										errors={errorArray}
-										error="price"
-										customMessage="Veuillez saisir un prix"
-									/>
-								</div>
-
-								<div>
-									{getValues("type") !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
-										<div className="block md:col-span-2 p-2">
-											<Select
-												name="periodicity"
-												className="mt-4"
-												onChange={(event) =>
-													setValue(
-														"periodicity",
-														event.target.value as
-															| "DAY"
-															| "WEEK"
-															| "MONTH"
-															| "YEAR"
-													)
-												}
-											>
-												<option value="">Choisir une périodicité</option>
-												{GET_PERIODICITY().map((p) => (
-													<option
-														key={p.id}
-														value={p.id}
-														selected={
-															product && product.periodicity === p.id
-														}
-													>
-														{p.name}
-													</option>
-												))}
-											</Select>
-										</div>
-									)}
-
-									{getValues("type") === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
-										<div className="block md:col-span-2 p-2">
-											<Select
-												name="periodicity"
-												className="mt-4"
-												onChange={(event) =>
-													setValue(
-														"periodicity",
-														event.target.value as
-															| "DAY"
-															| "WEEK"
-															| "MONTH"
-															| "YEAR"
-													)
-												}
-											>
-												{PRODUCT_AREA_UNIT.map((u) => (
-													<option
-														key={u.id}
-														value={u.id}
-														selected={
-															product && product.area_unit === u.id
-														}
-														defaultValue={
-															!getValues("area_unit") ? u.id : ""
-														}
-													>
-														{u.name}
-													</option>
-												))}
-											</Select>
-										</div>
-									)}
-
-									{false && (
-										<>
-											<label className="block md:col-span-2">
-												Caution <span className="text-red-500">*</span>
-												<div className="flex items-center">
+											<div>
+												<label className="block md:col-span-2">
+													<Label>
+														Quartier{" "}
+														<span className="text-red-500">*</span>
+													</Label>
 													<Input
-														type="number"
-														// defaultValue={
-														// 	product && product.deposit_price
-														// }
+														type="text"
 														className="mt-1"
-														{...register("deposit_price", {
+														defaultValue={
+															product && product.location_description
+														}
+														{...register("location_description", {
 															required: true,
 														})}
 													/>
-													<span className="text-lg ml-2 text-neutral-300">
-														{" "}
-														{CURRENCY}{" "}
-													</span>
-												</div>
-											</label>
-											<ErrorMessage
-												errors={errorArray}
-												error="deposit_price"
-												customMessage="Veuillez saisir une caution"
-											/>
-										</>
-									)}
-								</div>
-							</div>
-
-							{(getValues("type") === PRODUCT_TYPE[0] ||
-								product?.type === "LOCATION") && (
-								<div className="grid grid-cols-4 gap-6 mt-3">
-									<div className="col-span-4">
-										<Label>
-											Caution (Nombre de mois)
-											<div className="flex items-center">
-												<Input
-													type="number"
-													className="mt-1"
-													min={0}
-													defaultValue={product && product.count_monthly}
-													{...register("count_monthly")}
-												/>
-											</div>
-										</Label>
-										<ErrorMessage
-											errors={errorArray}
-											error="price"
-											customMessage="Veuillez saisir un prix"
-										/>
-									</div>
-
-									{false && (
-										<div className="col-span-6">
-											<Label>
-												Mois d'avance
-												<div className="flex items-center">
-													<Input
-														type="number"
-														className="mt-1"
-														min={0}
-														defaultValue={product!.count_advance ?? 0}
-														{...register("count_advance")}
+													<ErrorMessage
+														errors={errorArray}
+														error="location_description"
+														customMessage="Veuillez saisir un quartier"
 													/>
-												</div>
-											</Label>
-											<ErrorMessage
-												errors={errorArray}
-												error="price"
-												customMessage="Veuillez saisir un prix"
-											/>
+												</label>
+											</div>
 										</div>
-									)}
+									</label>
 								</div>
-							)}
-						</label>
-					</div>
-				</div>
 
-				{/* SECTION 03 */}
-				{/* getValues("type") !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY]  */}
-				{allowImage() && (
-					<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
-						<div className="grid md:grid-cols-2 gap-6 ">
-							{/* IMAGE */}
-							<div className="block md:col-span-2">
-								<ImageUploader
-									initialImages={images}
-									maxImages={5}
-									images={images}
-									setImages={setImages}
-									imageFiles={imageFiles}
-									setImageFiles={setImageFiles}
+								<DetailBien
+									errorArray={errorArray}
+									register={register}
+									product={product}
+									setValue={setValue}
+									getValues={getValues}
+									typeDeBien={
+										(getValues("type") as IProductType) ??
+										(PRODUCT_TYPE[0] as IProductType)
+									}
+								/>
+
+								<DetailBienTwo
+									errorArray={errorArray}
+									register={register}
+									product={product}
+									setValue={setValue}
+									getValues={getValues}
+									typeDeBien={
+										(getValues("type") as IProductType) ??
+										(PRODUCT_TYPE[0] as IProductType)
+									}
 								/>
 							</div>
 						</div>
 					</div>
-				)}
 
-				{/* SECTION 04 */}
-				<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
-					<div className="grid md:grid-cols-2 gap-6 ">
-						{/* ! NOT USED */}
-						{false && (
-							<>
-								{/* EXCERPT */}
-								<label className="block md:col-span-2">
-									<Label>Description</Label>
-									<Textarea
-										className="mt-1"
-										rows={4}
-										maxLength={250}
-										// defaultValue={product && product.excerpt}
-										{...register("excerpt")}
-									/>
-									<p className="mt-1 text-sm text-neutral-500">
-										Donnez une description détaillée de votre article.
-										N’indiquez pas vos coordonnées (e-mail, téléphones, …) dans
-										la description.
-									</p>
-									{watch("excerpt") && (
-										<span
-											className={
-												((watch("excerpt") && watch("excerpt")!.length) ??
-													0) == 250
-													? "text-red-500"
-													: "text-neutral-500"
-											}
-										>
-											{watch("excerpt") && watch("excerpt")!.length} / 250
-										</span>
+					{/* 2 */}
+					<div className="col-span-6 lg:col-span-2">
+						<div className="bg-white dark:bg-neutral-900">
+							{/* SECTION 02  */}
+							<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6  mb-5">
+								<div className="grid md:grid-cols-2 gap-6">
+									{/* TITLE */}
+									{false && (
+										<label className="block md:col-span-2">
+											<Label>Titre</Label>
+											<Input
+												type="text"
+												className="mt-1"
+												// { required: true }
+												{...register("title")}
+												// defaultValue={(defaultValue && defaultValue.title) ?? ""}
+											/>
+											<ErrorMessage
+												errors={errorArray}
+												error="title"
+												customMessage="Veuillez choisir un titre"
+											/>
+										</label>
 									)}
-									<ErrorMessage
-										errors={errorArray}
-										error="excerpt"
-										customMessage="Veuillez ajouter une description"
-									/>
-								</label>
-							</>
-						)}
 
-						{/* CONTENT */}
-						<label className="block md:col-span-2">
-							<Label> Detail de l'annonce</Label>
-							<EditorText
-								onEditorChange={(content: string) => setValue("content", content)}
-								initialValue={defaultValue?.content}
-							/>
-							<ErrorMessage
-								errors={errorArray}
-								error="content"
-								customMessage="Veuillez ajouter du contenu"
-							/>
-						</label>
+									{/* PRICE - DEPOSIT PRICE */}
+									<label className="block md:col-span-2">
+										<div className="grid grid-cols-4 gap-6">
+											<div className="col-span-4 xl:col-span-2">
+												<Label>
+													{getPriceLabel()}
+													<span className="text-red-500">*</span>
+													<div className="flex items-center">
+														<Input
+															type="number"
+															className="mt-1"
+															defaultValue={product && product.price}
+															{...register("price", {
+																required: true,
+															})}
+														/>
+
+														<span className="text-lg ml-2 text-neutral-300">
+															{CURRENCY}{" "}
+														</span>
+													</div>
+												</Label>
+												<ErrorMessage
+													errors={errorArray}
+													error="price"
+													customMessage="Veuillez saisir un prix"
+												/>
+											</div>
+
+											<div className="col-span-2">
+												{getValues("type") !==
+													PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
+													<div className="block p-2">
+														<Select
+															name="periodicity"
+															className="mt-4 w-full"
+															onChange={(event) =>
+																setValue(
+																	"periodicity",
+																	event.target.value as
+																		| "DAY"
+																		| "WEEK"
+																		| "MONTH"
+																		| "YEAR"
+																)
+															}
+														>
+															{false && (
+																<option value="">
+																	Choisir une périodicité
+																</option>
+															)}
+															{GET_PERIODICITY().map((p) => (
+																<option
+																	key={p.id}
+																	value={p.id}
+																	selected={
+																		product &&
+																		product.periodicity === p.id
+																	}
+																>
+																	{p.name}
+																</option>
+															))}
+														</Select>
+													</div>
+												)}
+
+												{getValues("type") ===
+													PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
+													<div className="block md:col-span-2 p-2">
+														<Select
+															name="periodicity"
+															className="mt-4"
+															onChange={(event) =>
+																setValue(
+																	"periodicity",
+																	event.target.value as
+																		| "DAY"
+																		| "WEEK"
+																		| "MONTH"
+																		| "YEAR"
+																)
+															}
+														>
+															{PRODUCT_AREA_UNIT.map((u) => (
+																<option
+																	key={u.id}
+																	value={u.id}
+																	selected={
+																		product &&
+																		product.area_unit === u.id
+																	}
+																	defaultValue={
+																		!getValues("area_unit")
+																			? u.id
+																			: ""
+																	}
+																>
+																	{u.name}
+																</option>
+															))}
+														</Select>
+													</div>
+												)}
+
+												{false && (
+													<>
+														<label className="block md:col-span-2">
+															Caution{" "}
+															<span className="text-red-500">*</span>
+															<div className="flex items-center">
+																<Input
+																	type="number"
+																	// defaultValue={
+																	// 	product && product.deposit_price
+																	// }
+																	className="mt-1"
+																	{...register("deposit_price", {
+																		required: true,
+																	})}
+																/>
+																<span className="text-lg ml-2 text-neutral-300">
+																	{" "}
+																	{CURRENCY}{" "}
+																</span>
+															</div>
+														</label>
+														<ErrorMessage
+															errors={errorArray}
+															error="deposit_price"
+															customMessage="Veuillez saisir une caution"
+														/>
+													</>
+												)}
+											</div>
+										</div>
+
+										{showCaution() && (
+											<div className="grid grid-cols-4 gap-6 mt-3">
+												<div className="col-span-4">
+													<Label>
+														Caution (Nombre de mois)
+														<div className="flex items-center">
+															<Input
+																type="number"
+																className="mt-1"
+																min={0}
+																defaultValue={
+																	product && product.count_monthly
+																}
+																{...register("count_monthly")}
+															/>
+														</div>
+													</Label>
+													<ErrorMessage
+														errors={errorArray}
+														error="price"
+														customMessage="Veuillez saisir un prix"
+													/>
+												</div>
+
+												{false && (
+													<div className="col-span-6">
+														<Label>
+															Mois d'avance
+															<div className="flex items-center">
+																<Input
+																	type="number"
+																	className="mt-1"
+																	min={0}
+																	defaultValue={
+																		product!.count_advance ?? 0
+																	}
+																	{...register("count_advance")}
+																/>
+															</div>
+														</Label>
+														<ErrorMessage
+															errors={errorArray}
+															error="price"
+															customMessage="Veuillez saisir un prix"
+														/>
+													</div>
+												)}
+											</div>
+										)}
+									</label>
+								</div>
+							</div>
+						</div>
+
+						{/* SECTION 03 */}
+						{/* getValues("type") !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY]  */}
+						{allowImage() && (
+							<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 mb-5">
+								<div className="grid md:grid-cols-2 gap-6 ">
+									{/* IMAGE */}
+									<div className="block md:col-span-2">
+										<ImageUploader
+											initialImages={images}
+											maxImages={5}
+											images={images}
+											setImages={setImages}
+											imageFiles={imageFiles}
+											setImageFiles={setImageFiles}
+										/>
+									</div>
+								</div>
+							</div>
+						)}
 					</div>
 				</div>
 
-				{/* VILLE - COUNTRY - STATE */}
+				{/* 3 */}
+				<div className="grid md:grid-cols-5 gap-6">
+					<div className="col-span-6 lg:col-span-3">
+						<div className="bg-white dark:bg-neutral-900">
+							{/* SECTION 04 */}
+							<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
+								<div className="grid md:grid-cols-2 gap-6 ">
+									{/* ! NOT USED */}
+									{false && (
+										<>
+											{/* EXCERPT */}
+											<label className="block md:col-span-2">
+												<Label>Description</Label>
+												<Textarea
+													className="mt-1"
+													rows={4}
+													maxLength={250}
+													// defaultValue={product && product.excerpt}
+													{...register("excerpt")}
+												/>
+												<p className="mt-1 text-sm text-neutral-500">
+													Donnez une description détaillée de votre
+													article. N’indiquez pas vos coordonnées (e-mail,
+													téléphones, …) dans la description.
+												</p>
+												{watch("excerpt") && (
+													<span
+														className={
+															((watch("excerpt") &&
+																watch("excerpt")!.length) ??
+																0) == 250
+																? "text-red-500"
+																: "text-neutral-500"
+														}
+													>
+														{watch("excerpt") &&
+															watch("excerpt")!.length}{" "}
+														/ 250
+													</span>
+												)}
+												<ErrorMessage
+													errors={errorArray}
+													error="excerpt"
+													customMessage="Veuillez ajouter une description"
+												/>
+											</label>
+										</>
+									)}
+
+									{/* CONTENT */}
+									<label className="block md:col-span-2">
+										<Label> Detail de l'annonce</Label>
+										<EditorText
+											onEditorChange={(content: string) =>
+												setValue("content", content)
+											}
+											initialValue={defaultValue?.content}
+										/>
+										<ErrorMessage
+											errors={errorArray}
+											error="content"
+											customMessage="Veuillez ajouter du contenu"
+										/>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
 				{/* SUBMIT */}
 				{/* disabled={!isValid} */}

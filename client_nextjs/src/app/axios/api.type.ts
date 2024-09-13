@@ -108,26 +108,26 @@ export interface ProductRequest {
 	deposit_price?: number;
 	images?: FileList | string[] | null;
 	// details
-	bathrooms: number | null;
-	bedrooms: number | null;
-	garages: number | null;
-	kitchens: number | null;
-	rooms: number | null;
-	area: number | null;
-	area_unit: IPRODUCT_AREA_UNIT_KEY;
-	count_advance: number | null;
-	count_monthly: number | null;
-	jacuzzi: number;
-	bath: number;
-	WiFi: number;
-	pool: number;
-	air_conditioning: number;
-	acd: number;
-	home_type: string;
-	security: string;
-	purchase_power: string;
-	accessibility: string;
-	area_count: number;
+	bathrooms?: number | null;
+	bedrooms?: number | null;
+	garages?: number | null;
+	kitchens?: number | null;
+	rooms?: number | null;
+	area?: number | null;
+	area_unit?: IPRODUCT_AREA_UNIT_KEY;
+	count_advance?: number | null;
+	count_monthly?: number | null;
+	jacuzzi?: number;
+	bath?: number;
+	WiFi?: number;
+	pool?: number;
+	air_conditioning?: number;
+	acd?: number;
+	home_type?: string;
+	security?: string;
+	purchase_power?: string;
+	accessibility?: string;
+	area_count?: number;
 }
 
 export const PRODUCT_REQUEST_EMPTY: ProductRequest = {

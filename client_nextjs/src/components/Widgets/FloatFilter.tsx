@@ -12,6 +12,7 @@ export interface FloatFilterProps {
 	fetchAll?: () => void;
 	useStateFilter?: IPropertyFilter;
 	setUseStateFilter: any;
+	linear: boolean;
 }
 
 const FloatFilter: FC<FloatFilterProps> = ({
@@ -22,6 +23,7 @@ const FloatFilter: FC<FloatFilterProps> = ({
 	useStateFilter,
 	setUseStateFilter,
 	noFloating,
+	linear = false,
 }) => {
 	if (!useStateFilter)
 		return (
@@ -37,6 +39,7 @@ const FloatFilter: FC<FloatFilterProps> = ({
 				fetchAll={fetchAll}
 				useStateFilter={useStateFilter as IPropertyFilter}
 				setUseStateFilter={setUseStateFilter}
+				linear={linear}
 			/>
 		);
 	}
@@ -55,7 +58,7 @@ const FloatFilter: FC<FloatFilterProps> = ({
 			)}
 
 			{showFilter && (
-				<div className="bg-white p-8 absolute z-50 top-0 right-0 ">
+				<div className={!linear ? "bg-white p-8 absolute z-50 top-0 right-0 " : ""}>
 					{toggleFilter && (
 						<div className="mb-5 flex justify-end">
 							<button onClick={toggleFilter}>

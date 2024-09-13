@@ -22,9 +22,9 @@ const CategoryPropertyBadgeOne: FC<CategoryPropertyBadgeOneProps> = ({
 			data-nc-id="CategoryPropertyBadgeOne"
 		>
 			<div className="flex justify-between w-full">
-				{category &&
+				{/* {category &&
 					category.uuid !== ProductcategoryUUID.RESERVATION.children.RESIDENCE &&
-					!category.parent && <span></span>}
+					!category.parent && <span></span>} */}
 
 				{category &&
 				category.uuid === ProductcategoryUUID.RESERVATION.children.RESIDENCE ? (
@@ -45,7 +45,7 @@ const CategoryPropertyBadgeOne: FC<CategoryPropertyBadgeOneProps> = ({
 					)
 				)}
 
-				<Badge className={itemClass} name={"SOCIBA"} color="red" />
+				<Badge className={itemClass} name={"SOCIBA"} color="indigo" />
 			</div>
 		</div>
 	);

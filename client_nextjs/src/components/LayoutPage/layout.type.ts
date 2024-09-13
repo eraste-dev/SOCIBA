@@ -41,7 +41,7 @@ export const USER_SUB_PAGES: DashboardPage[] = [
 		emoij: "✍",
 		pageName: "Publier une annonce",
 	},
-	{ sPath: "/posts", component: DashboardPosts, emoij: "📕", pageName: "Mes annonces" },
+	{ sPath: "/posts", component: DashboardPosts, emoij: "📕", pageName: "Annonces" },
 	{
 		sPath: "/edit-profile",
 		component: DashboardEditProfile,

@@ -41,6 +41,23 @@ class NotificationService
         }
     }
 
+    public static function afterRegistration(User $user)
+    {
+        NotificationService::notify(
+            $user,
+            'Merci de vous être inscrit',
+            'Merci de faire confiance à SOCIBA, vous pouvez publier votre première annonce',
+            [
+                'title'   => 'Nouvel utilisateur',
+                'message' => 'Nouvel utilisateur enregisté : ' . $user->name . ' ' . $user->last_name
+            ],
+            [
+                'title'   => 'Nouvel utilisateur',
+                'message' => 'Nouvel utilisateur enregisté : ' . $user->name . ' ' . $user->last_name
+            ]
+        );
+    }
+
     public static function afterUpdatePost(Property $product)
     {
         if (auth()->user()->type === "USER") {

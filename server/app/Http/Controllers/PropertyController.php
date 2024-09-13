@@ -37,6 +37,19 @@ class PropertyController extends Controller
         );
     }
 
+    public function getUserPost(Request $request)
+    {
+        $paginationService = new ProudctPaginationService;
+        $products = PropertyService::search(Property::requestSearch());
+        // dd($products);
+
+        return ResponseService::success(
+            $products,
+            Response::HTTP_OK,
+            $paginationService->paginate($products, $request->limit ?? $this->limit_product, $request->page ?? 1, null, null),
+        );
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -128,7 +141,7 @@ class PropertyController extends Controller
             $product->rooms                = isset($validatedData['rooms']) ? $validatedData['rooms'] : null;
             $product->area                 = isset($validatedData['area']) ? $validatedData['area'] : null;
             $product->area_count           = isset($validatedData['area_count']) ? $validatedData['area_count'] : null;
-            $product->area_unit            = (!isset($validatedData['area_unit']) || $validatedData['area_unit'] == 0 || !in_array(['LOT', 'M'], $validatedData['area_unit'])) ? null :  $validatedData['area_unit'];
+            $product->area_unit            = (!isset($validatedData['area_unit']) || $validatedData['area_unit'] == 0 || !in_array($validatedData['area_unit'], ['LOT', 'M'])) ? null :  $validatedData['area_unit'];
             $product->count_advance        = isset($validatedData['count_advance']) ? $validatedData['count_advance'] : null;
             $product->count_monthly        = isset($validatedData['count_monthly']) ? $validatedData['count_monthly'] : null;
             $product->jacuzzi              = isset($validatedData['jacuzzi']) ? $validatedData['jacuzzi'] : null;

@@ -81,15 +81,7 @@ class AuthController extends Controller
 
         // send notification
         try {
-            NotificationService::notify(
-                $user,
-                'Merci de vous être inscrit',
-                'Merci de faire confiance à SOCIBA, vous pouvez publier votre première annonce',
-                [
-                    'title'   => 'Nouvel utilisateur',
-                    'message' => 'Nouvel utilisateur enregisté : ' . $user->name . ' ' . $user->last_name
-                ]
-            );
+            NotificationService::afterRegistration($user);
         } catch (\Throwable $th) {
             //throw $th;
         }

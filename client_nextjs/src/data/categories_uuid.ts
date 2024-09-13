@@ -3,6 +3,10 @@ type ProductCategory<T> = {
 	children: T;
 };
 
+type ProductCategoryType = {
+	key: string;
+};
+
 type ProductCategoryUUIDType = {
 	MAISON: ProductCategory<{
 		APPARTEMENT: string;

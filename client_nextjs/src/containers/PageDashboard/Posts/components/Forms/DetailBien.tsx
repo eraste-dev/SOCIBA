@@ -13,10 +13,7 @@ import {
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
 } from "../../DashboardSubmitPost";
-import {
-	KitchenSharp,
-	PhotoSizeSelectSmallTwoTone,
-} from "@mui/icons-material";
+import { KitchenSharp, PhotoSizeSelectSmallTwoTone } from "@mui/icons-material";
 
 export interface DetailBienProps {
 	register: UseFormRegister<ProductRequest>;
@@ -200,7 +197,7 @@ const DetailBien: FC<DetailBienProps> = ({
 								<Input
 									type="number"
 									className="mt-1"
-									defaultValue={product!.area ?? 0}
+									defaultValue={(product && product.area && product.area) ?? 0}
 									{...register("area_unit")}
 								/>
 							</div>

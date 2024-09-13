@@ -13,7 +13,6 @@ import {
 	IPRODUCT_PERIODICITY,
 	PERIODICITY_LIST,
 	PERIODICITY_RESERVATION_LIST,
-	PRODUCT_TYPE,
 } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
 import Card11Price from "./Card11Price";
@@ -28,24 +27,9 @@ export interface Card11Props {
 const Card11: FC<Card11Props> = ({
 	className = "h-full",
 	post,
-	hiddenAuthor = false,
 	ratio = "aspect-w-4 aspect-h-3",
 }) => {
-	const {
-		title,
-		href,
-		price,
-		deposit_price,
-		category,
-		updated_at,
-		location,
-		location_description,
-		periodicity,
-		count_advance,
-		count_monthly,
-		type,
-		home_type,
-	} = post;
+	const { title, href, category, updated_at, location, location_description } = post;
 	const [isHover, setIsHover] = useState(false);
 	const dispatch = useAppDispatch();
 	const history = useHistory();
@@ -53,13 +37,6 @@ const Card11: FC<Card11Props> = ({
 	const handleSingleClick = () => {
 		dispatch(setSingleProduct(post));
 		history.push(post.href);
-	};
-
-	const GET_PERIODICITY = (): IPRODUCT_PERIODICITY[] => {
-		let data: IPRODUCT_PERIODICITY[] = [];
-		data = [...PERIODICITY_LIST, ...PERIODICITY_RESERVATION_LIST];
-
-		return data;
 	};
 
 	return (
