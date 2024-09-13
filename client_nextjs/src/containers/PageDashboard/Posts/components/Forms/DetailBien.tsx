@@ -13,7 +13,11 @@ import {
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
 } from "../../DashboardSubmitPost";
-import { KitchenSharp, PhotoSizeSelectSmallTwoTone } from "@mui/icons-material";
+import { FoodBankOutlined, FoodBankTwoTone, InfoOutlined, KitchenSharp, LunchDining, PhotoSizeSelectSmallTwoTone } from "@mui/icons-material";
+import { Tooltip } from "@mui/material";
+import { useSelector } from "react-redux";
+import { CategoryAction } from "app/reducer/products/propertiy-category";
+import { ProductcategoryUUID } from "data/categories_uuid";
 
 export interface DetailBienProps {
 	register: UseFormRegister<ProductRequest>;
@@ -33,6 +37,21 @@ const DetailBien: FC<DetailBienProps> = ({
 	typeDeBien,
 }) => {
 	const iconSize = 38;
+	const categories = useSelector(CategoryAction.data);
+
+	const canShowACDCheckbox = (): boolean => {
+		const type = getValues("type");
+		const category_id = getValues("category_id");
+		const categorySelected = categories?.find((category) => category.id === category_id);
+		return (
+			type === TYPE_BIEN_EN_VENTE_KEY &&
+			[
+				ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN,
+				ProductcategoryUUID.BIEN_EN_VENTE.children.AUTRES,
+			].includes(categorySelected?.uuid ?? "")
+		);
+	};
+
 	const Detaillocation = () => {
 		return (
 			<>
@@ -85,7 +104,7 @@ const DetailBien: FC<DetailBienProps> = ({
 						<div className="block md:col-span-2 p-2">
 							<div className="flex  " style={{ alignItems: "center" }}>
 								{/* <Kitchen className="mr-2" /> */}
-								<KitchenSharp className="mr-2" />
+								<LunchDining className="mr-2" />
 								<Input
 									type="number"
 									className="mt-1"
@@ -198,7 +217,7 @@ const DetailBien: FC<DetailBienProps> = ({
 									type="number"
 									className="mt-1"
 									defaultValue={(product && product.area && product.area) ?? 0}
-									{...register("area_unit")}
+									{...register("area")}
 								/>
 							</div>
 							<ErrorMessage
@@ -210,18 +229,27 @@ const DetailBien: FC<DetailBienProps> = ({
 					</div>
 
 					{/* ACD */}
-					<div className="flex items-center" style={{ alignItems: "center" }}>
-						<div className="mt-3">
-							{/* <PoolSharp className="mr-2" /> */}
-							<input
-								type="checkbox"
-								className="mx-2"
-								// checked={(product && product.jacuzzi && product.jacuzzi) ?? false}
-								{...register("acd")}
-							/>
-							<Label>ACD</Label>
+					{canShowACDCheckbox() && (
+						<div className="flex items-center" style={{ alignItems: "center" }}>
+							<div className="mt-3">
+								{/* <PoolSharp className="mr-2" /> */}
+								<input
+									type="checkbox"
+									className="mx-2"
+									// checked={(product && product.jacuzzi && product.jacuzzi) ?? false}
+									{...register("acd")}
+								/>
+								<Tooltip title="Cochez cette case si vous avez une ACD">
+									<Label>
+										ACD
+										<span className="ml-2 text-gray-600">
+											<InfoOutlined />
+										</span>
+									</Label>
+								</Tooltip>
+							</div>
 						</div>
-					</div>
+					)}
 				</div>
 			</>
 		);

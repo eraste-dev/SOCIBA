@@ -17,10 +17,13 @@ import FloatFilter from "components/Widgets/FloatFilter";
 import { fetchAllProperties } from "app/axios/actions/api.action";
 import { getParams } from "containers/PageHome/ListProducts";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
+import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
+import NoDataMessage from "components/NoDataMessage";
 
 const DashboardPosts = () => {
 	const dispatch = useDispatch();
 	const products = useSelector(PropertyAction.data)?.user;
+	const loading = useSelector(PropertyAction.data)?.user?.loading;
 	const auth = useSelector(AuthAction.data);
 
 	const [useStateFilter, setUseStateFilter] = useState<IPropertyFilter>({});
@@ -28,15 +31,10 @@ const DashboardPosts = () => {
 	const toggleFilter = () => setShowFilter(!showFilter);
 
 	useEffect(() => {
-		if (
-			!products?.loading &&
-			isLogged(auth) &&
-			(!products || !products?.get) &&
-			!products?.error
-		) {
+		if (!loading && isLogged(auth) && (!products || !products?.get) && !products?.error) {
 			dispatch(fetchUserProduct({ ...getParams(), created_by: auth?.user?.id, status: "*" }));
 		}
-	}, [dispatch, fetchUserProduct, products, auth, isLogged]);
+	}, [dispatch, fetchUserProduct, products, loading, auth, isLogged]);
 
 	if (!auth?.user) {
 		return <div className="text-red-900">Vous devez vous connecter pour voir cette page</div>;
@@ -93,34 +91,46 @@ const DashboardPosts = () => {
 						Annonce(s)
 					</h3>
 
-					<div className="my-2">
-						<div className="flex justify-between">
-							<CountByStatue />
+					{loading && <LoadingSpinner />}
 
-							<Tooltip title="Actualiser">
-								<ButtonPrimary className="rounded-sm" onClick={handleRefresh}>
-									<FaRedoAlt className="mr-2" />
-									{/* Actualiser */}
-								</ButtonPrimary>
-							</Tooltip>
-						</div>
+					{!loading && (
+						<div className="my-2">
+							<div className="flex justify-between">
+								<CountByStatue />
 
-						<div className="bg-white dark:bg-neutral-800">
-							<FloatFilter
-								useStateFilter={useStateFilter}
-								setUseStateFilter={setUseStateFilter}
-								showFilter={showFilter}
-								toggleFilter={toggleFilter}
-								fetchAll={fetchAll}
-								noFloating={true}
-								linear={true}
-							/>
-						</div>
+								<Tooltip title="Actualiser">
+									<ButtonPrimary className="rounded-sm" onClick={handleRefresh}>
+										<FaRedoAlt className="mr-2" />
+										{/* Actualiser */}
+									</ButtonPrimary>
+								</Tooltip>
+							</div>
 
-						<div className="mt-12 border border-neutral-200 dark:border dark:border-neutral-800 overflow-hidden sm:rounded-lg">
-							{products && <ProductTable rows={products!.get ?? []} />}
+							<div className="bg-white dark:bg-neutral-800 my-5">
+								<FloatFilter
+									useStateFilter={useStateFilter}
+									setUseStateFilter={setUseStateFilter}
+									showFilter={showFilter}
+									toggleFilter={toggleFilter}
+									fetchAll={fetchAll}
+									noFloating={true}
+									linear={true}
+								/>
+							</div>
+
+							{products && products.get && products.get.length === 0 && (
+								<div className="mt-12 bg-white dark:bg-neutral-800 overflow-hidden sm:rounded-lg h-52">
+									<NoDataMessage />
+								</div>
+							)}
+
+							{products && products.get && products.get.length > 0 && (
+								<div className="mt-12 border border-neutral-200 dark:border dark:border-neutral-800 overflow-hidden sm:rounded-lg">
+									<ProductTable rows={products!.get} />
+								</div>
+							)}
 						</div>
-					</div>
+					)}
 				</div>
 			</div>
 		</div>

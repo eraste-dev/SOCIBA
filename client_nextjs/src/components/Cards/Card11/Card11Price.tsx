@@ -32,7 +32,7 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item }) => {
 	};
 
 	return (
-		<div className=" grid grid-cols-subgrid lg:col-span-4 text-justify col-span-6">
+		<div className="">
 			{/* SHOW PRICE *********************************************************************** */}
 			<div className="w-full flex lg:justify-end justify-start mt-2 lg:mt-0 ">
 				<span className="nc-card-title block font-bold text-primary-800 dark:text-neutral-100 md:text-base text-xs ">

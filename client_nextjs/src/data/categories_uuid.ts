@@ -32,6 +32,7 @@ type ProductCategoryUUIDType = {
 		TERRAIN: string;
 		ENTREPOT: string;
 		MAGASIN: string;
+		AUTRES: string;
 	}>;
 };
 
@@ -74,6 +75,7 @@ export const ProductcategoryUUID: ProductCategoryUUIDType = {
 			TERRAIN: "BIEN_EN_VENTE__TERRAIN",
 			ENTREPOT: "BIEN_EN_VENTE__ENTREPÔT",
 			MAGASIN: "BIEN_EN_VENTE__MAGASIN",
+			AUTRES: "BIEN_EN_VENTE__AUTRE_BIEN_IMMOBILIER"
 		},
 	},
 };

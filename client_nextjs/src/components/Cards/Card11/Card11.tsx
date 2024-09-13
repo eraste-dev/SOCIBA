@@ -62,26 +62,33 @@ const Card11: FC<Card11Props> = ({
 				<CategoryPropertyBadgeOne category={category} />
 			</span>
 
-			<div className="p-4 flex flex-col flex-grow space-y-3">
+			<div className="p-2 px-4 flex flex-col flex-grow space-y-2">
 				<span className="text-xs text-neutral-500">{updated_at}</span>
 
-				<div className="grid grid-cols-6">
-					<div className="grid grid-cols-subgrid lg:col-span-2 col-span-6">
+				<div className="grid grid-cols-3">
+					<div className="grid col-span-1">
 						<CategoryPropertyBadgeTwo className="text-xs md:text-md" item={post} />
-						<p className="mt-2 text-xs font-semibold text-secondary-900 dark:text-neutral-100 ">
-							{false && (
-								<span className="text-xs text-neutral-500 flex justify-items-center ">
-									<FaMapMarkerAlt className="mr-1" />
-								</span>
-							)}
-							{location.name} <br />
-							{location_description}
-							{/* , {location.city?.name} */}
-						</p>
 					</div>
 
-					<Card11Price item={post} />
+					{/* grid lg:col-span-4 col-span-6 */}
+					{/* "grid-cols-2 md:grid-cols-3 lg:grid-cols-4" */}
+					<div className="flex justify-start col-span-3 sm:col-span-2 sm:justify-end">
+						{/*  grid grid-cols-subgrid lg:col-span-4 text-justify col-span-6 */}
+						<Card11Price item={post} />
+					</div>
 				</div>
+
+				<p className="relative sm:bottom-3 mt-2 text-xs font-semibold text-secondary-900 dark:text-neutral-100 ">
+					<span className="text-xs text-neutral-500 flex justify-items-center ">
+						{/* <FaMapMarkerAlt className="mr-1" /> */}
+						{location.name}
+					</span>
+					{/*  style={{ marginLeft: "15px" }} */}
+					<span className="text-xs text-neutral-500">
+						{location_description}
+					</span>
+					{/* , {location.city?.name} */}
+				</p>
 
 				{false && (
 					<p className="nc-card-title block text-md sm:text-xs font-semibold text-neutral-900 dark:text-neutral-100 ">

@@ -726,78 +726,82 @@ const DashboardSubmitPost = () => {
 
 									{/* DETAIL CATEGORY */}
 									{/* hasResidence() && */}
-									<label className="block col-span-4">
-										<div className="grid grid-cols-1 gap-6">
-											<div>
-												<Label>
-													{getTypeDeteailLabel()}
+									{getValues("category_id") != undefined && (
+										<label className="block col-span-4">
+											<div className="grid grid-cols-1 gap-6">
+												<div>
+													<Label>
+														{getTypeDeteailLabel()}
 
-													{/* <span className="text-red-500">*</span> */}
-												</Label>
+														{/* <span className="text-red-500">*</span> */}
+													</Label>
 
-												<div className="block md:col-span-2 p-2">
-													{/* SELECT_HOME_TYPE */}
-													{/* canShowOtherInput() &&  */}
-													{SUB_CATEGORIES() &&
-														SUB_CATEGORIES().length > 0 && (
-															<Select
-																onChange={(event) => {
-																	event.target.value &&
-																		setValue(
-																			"home_type",
+													<div className="block md:col-span-2 p-2">
+														{/* SELECT_HOME_TYPE */}
+														{/* canShowOtherInput() &&  */}
+														{SUB_CATEGORIES() &&
+															SUB_CATEGORIES().length > 0 && (
+																<Select
+																	onChange={(event) => {
+																		event.target.value &&
+																			setValue(
+																				"home_type",
+																				event.target.value
+																			);
+
+																		set_hasOtherKey(
 																			event.target.value
 																		);
+																	}}
+																>
+																	<option>Choix</option>
+																	{SUB_CATEGORIES() &&
+																		SUB_CATEGORIES().map(
+																			(c) => (
+																				<option
+																					key={c.code}
+																					value={c.name}
+																					selected={
+																						c.name ===
+																						getValues(
+																							"home_type"
+																						)
+																					}
+																				>
+																					{c.name}
+																				</option>
+																			)
+																		)}
+																</Select>
+															)}
 
-																	set_hasOtherKey(
-																		event.target.value
+														{/* INPUT_HOME_TYPE */}
+														{canShowOtherInput() && (
+															<Input
+																autoComplete="on"
+																name="home_type"
+																maxLength={20}
+																onChange={(e) => {
+																	setValue(
+																		"home_type",
+																		e.target.value
 																	);
+																	set_hasOtherKey(e.target.value);
 																}}
-															>
-																<option>Choix</option>
-																{SUB_CATEGORIES() &&
-																	SUB_CATEGORIES().map((c) => (
-																		<option
-																			key={c.code}
-																			value={c.name}
-																			selected={
-																				c.name ===
-																				getValues(
-																					"home_type"
-																				)
-																			}
-																		>
-																			{c.name}
-																		</option>
-																	))}
-															</Select>
+															/>
 														)}
-
-													{/* INPUT_HOME_TYPE */}
-													{canShowOtherInput() && (
-														<Input
-															autoComplete="on"
-															name="home_type"
-															maxLength={20}
-															onChange={(e) => {
-																setValue(
-																	"home_type",
-																	e.target.value
-																);
-																set_hasOtherKey(e.target.value);
-															}}
-														/>
-													)}
+													</div>
 												</div>
 											</div>
-										</div>
-										<div>
-											<ErrorMessage
-												errors={errorArray}
-												error="category_id"
-												customMessage="Veuillez choisir un type de bien"
-											/>
-										</div>
-									</label>
+											<div>
+												<ErrorMessage
+													errors={errorArray}
+													error="category_id"
+													customMessage="Veuillez choisir un type de bien"
+												/>
+											</div>
+										</label>
+									)}
 
 									{/* NOMBRE DE PIECE */}
 									{showNumberOfRooms() && (
@@ -846,6 +850,9 @@ const DashboardSubmitPost = () => {
 															<Input
 																name="area_count"
 																autoComplete="on"
+																defaultValue={
+																	defaultValue?.area_count ?? 0
+																}
 																onChange={(event) => {
 																	event.target.value &&
 																		setValue(
@@ -1274,7 +1281,7 @@ const DashboardSubmitPost = () => {
 
 				{/* SUBMIT */}
 				{/* disabled={!isValid} */}
-				<ButtonPrimary className="md:col-span-2" type="submit">
+				<ButtonPrimary className="w-full" type="submit">
 					Publier Maintenant
 				</ButtonPrimary>
 			</form>

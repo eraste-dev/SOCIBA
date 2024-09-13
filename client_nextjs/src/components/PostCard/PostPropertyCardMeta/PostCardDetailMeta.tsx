@@ -2,6 +2,7 @@ import { FC } from "react";
 import { IProduct } from "app/reducer/products/product";
 import { FaBath, FaFirstOrderAlt } from "react-icons/fa";
 import {
+	Apps,
 	Cancel,
 	Fastfood,
 	FoodBankOutlined,
@@ -17,8 +18,9 @@ import {
 	TYPE_RESERVATION_KEY,
 } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import ItemChecked from "./ItemCheck";
-import { CheckCircleIcon } from "@heroicons/react/solid";
+import { CheckCircleIcon, HomeIcon } from "@heroicons/react/solid";
 import { Tooltip } from "@mui/material";
+import { ProductcategoryUUID } from "data/categories_uuid";
 
 export interface PostCardDetailMetaProps {
 	className?: string;
@@ -34,27 +36,34 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 	size = "normal",
 }) => {
 	const iconSize: number = 18;
-	const { type, area, bathrooms, kitchens } = meta;
+	const { type, home_type, area, area_count, area_unit, bathrooms, kitchens } = meta;
+
+	const getAreaUnit = (): string => {
+		return area_unit ? area_unit : " m²";
+	};
 
 	const LocationMeta = () => {
 		if (type === PRODUCT_TYPE[0]) {
 			return (
 				<div className="grid grid-cols-3 gap-6">
 					{/* Superficie */}
-					{area && (
+					{area && area != 0 && (
 						<div className="flex items-center justify-center" title="Superficie">
 							{/* <Tooltip title="Superficie"> */}
 							<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
-							{`${area} / m²`}
+							{`${area} / ${getAreaUnit()}`}
+							{/* {`${area} / m²`} */}
 							{/* </Tooltip> */}
 						</div>
 					)}
+
 					{bathrooms && (
 						<div className="flex items-center justify-center">
 							<FaBath size={iconSize} className="mb-1 mr-1" />
 							{bathrooms}
 						</div>
 					)}
+					
 					{kitchens && (
 						<Tooltip title="Cuisine">
 							<div className="flex items-center justify-center">
@@ -109,13 +118,22 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 
 		return (
 			<>
+				{/* {home_type === ProductcategoryUUID.MAISON.key && <LocationMeta />} */}
+
 				<div className="grid grid-cols-2 gap-0 mt-3">
-					<div className="flex items-center justify-center mr-2" title="Superficie">
-						{/* <Tooltip title="Superficie"> */}
-						<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
-						{`${area} / m²`}
-						{/* </Tooltip> */}
-					</div>
+					{area && area > 0 && (
+						<div className="flex items-center justify-center mr-2" title="Superficie">
+							<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
+							{`${area} / ${getAreaUnit()}`}
+						</div>
+					)}
+
+					{area_count && (
+						<div className="flex items-center justify-center mr-2" title="Superficie">
+							<Apps width={iconSize} className="mb-1 mr-2" />
+							{`${area_count} pèce${area_count > 1 ? "s" : ""}`}
+						</div>
+					)}
 
 					{/* ACD */}
 					{meta.acd && (

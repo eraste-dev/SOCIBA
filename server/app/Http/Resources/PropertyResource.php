@@ -63,7 +63,7 @@ class PropertyResource extends JsonResource
             "garages"          => $this->garages,
             "kitchens"         => $this->kitchens,
             "rooms"            => $this->rooms,
-            "area"             => $this->area,
+            "area"             => intval($this->area),
             "area_unit"        => $this->area_unit,
             "area_count"       => $this->area_count,
             "count_advance"    => $this->count_advance,
