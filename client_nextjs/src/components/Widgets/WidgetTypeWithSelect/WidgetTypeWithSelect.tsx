@@ -2,14 +2,11 @@ import { setFilters } from "app/axios/actions/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import WidgetHeading1 from "components/Widgets/WidgetHeading1/WidgetHeading1";
 import { FC, useEffect } from "react";
-import ProductSortOption from "../WidgetSort/ProductSortOption";
-import { FaPlusCircle } from "react-icons/fa";
-import { IPropertyFilter, PropertyAction } from "app/reducer/products/product";
-import { ILocation, LocationAction } from "app/reducer/locations/locations";
+import { IPropertyFilter } from "app/reducer/products/product";
+import { LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import { updateParamsUrl } from "utils/utils";
 import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "../WidgetSort/ListBoxSelectFilter";
-import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import { PRODUCT_TYPE } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 
 export interface WidgetTypeWithSelectProps {
@@ -31,7 +28,6 @@ const WidgetTypeWithSelect: FC<WidgetTypeWithSelectProps> = ({
 
 	const locations = useAppSelector(LocationAction.data);
 	const loading = useAppSelector(LocationAction.loading);
-	const filters = useAppSelector(PropertyAction.data)?.filters;
 
 	function LOCATION_OPTION(): IListBoxSelectFilterWidget[] {
 		let data: IListBoxSelectFilterWidget[] = [
@@ -69,10 +65,7 @@ const WidgetTypeWithSelect: FC<WidgetTypeWithSelectProps> = ({
 	}, [dispatch, fetchLocation, locations, loading]);
 
 	return (
-		<div
-			className={!groupFilter ? `${className}` : ""}
-			// style={{ maxHeight: "300px", height: "300px", overflow: "auto" }}
-		>
+		<div className={!groupFilter ? `${className}` : ""}>
 			<div
 				className={
 					!groupFilter
@@ -86,7 +79,7 @@ const WidgetTypeWithSelect: FC<WidgetTypeWithSelectProps> = ({
 					<ListBoxSelectFilter
 						onChange={handleChange}
 						options={LOCATION_OPTION()}
-						label="COMMUNE"
+						label="Type d'offre"
 						labelID="location"
 					/>
 				</div>

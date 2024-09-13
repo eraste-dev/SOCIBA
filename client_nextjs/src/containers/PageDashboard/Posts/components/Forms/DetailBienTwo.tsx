@@ -48,9 +48,6 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 	const DetailTwoLocation = () => {
 		return (
 			<>
-				{/* security */}
-				{/* purchase_power */}
-				{/* accessibility */}
 				<div className="grid grid-cols-3 gap-6 mt-3">
 					{/* SECURITY */}
 					<div>
@@ -64,7 +61,9 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 											setValue("security", event.target.value);
 									}}
 								>
-									<option>Choix de la sécurité</option>
+									<option value={""} onClick={() => setValue("security", null)}>
+										Choix de la sécurité
+									</option>
 									{securities.map((security) => (
 										<option
 											value={security.value}

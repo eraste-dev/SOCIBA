@@ -45,34 +45,67 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 	const LocationMeta = () => {
 		if (type === PRODUCT_TYPE[0]) {
 			return (
-				<div className="grid grid-cols-3 gap-6">
-					{/* Superficie */}
-					{area && area != 0 && (
-						<div className="flex items-center justify-center" title="Superficie">
-							{/* <Tooltip title="Superficie"> */}
-							<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
-							{`${area} / ${getAreaUnit()}`}
-							{/* {`${area} / m²`} */}
-							{/* </Tooltip> */}
-						</div>
-					)}
-
-					{bathrooms && (
-						<div className="flex items-center justify-center">
-							<FaBath size={iconSize} className="mb-1 mr-1" />
-							{bathrooms}
-						</div>
-					)}
-					
-					{kitchens && (
-						<Tooltip title="Cuisine">
-							<div className="flex items-center justify-center">
-								{/* <Kitchen className="mb-1 mr-1" /> */}
-								<Fastfood className="mb-1 mr-1" />
-								{kitchens}
+				<div>
+					<div className="grid grid-cols-3 gap-6">
+						{/* Superficie */}
+						{area && area != 0 ? (
+							<div className="flex items-center justify-center" title="Superficie">
+								{/* <Tooltip title="Superficie"> */}
+								<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
+								{`${area} / ${getAreaUnit()}`}
+								{/* {`${area} / m²`} */}
+								{/* </Tooltip> */}
 							</div>
-						</Tooltip>
-					)}
+						) : null}
+
+						{bathrooms && (
+							<div className="flex items-center justify-center">
+								<FaBath size={iconSize} className="mb-1 mr-1" />
+								{bathrooms}
+							</div>
+						)}
+
+						{kitchens && (
+							<Tooltip title="Cuisine">
+								<div className="flex items-center justify-center">
+									{/* <Kitchen className="mb-1 mr-1" /> */}
+									<Fastfood className="mb-1 mr-1" />
+									{kitchens}
+								</div>
+							</Tooltip>
+						)}
+					</div>
+
+					<div className="grid grid-cols-3 gap-6 mt-3">
+						{/* SECURITY */}
+						{meta.security && meta.security == "WITH_GUARD" ? (
+							<ItemChecked
+								name="Avec virgile"
+								condition={meta.security == "WITH_GUARD"}
+								className="justify-self-start"
+							/>
+						) : null}
+
+						{/* ACCESSIBILITY */}
+						{meta.accessibility && meta.accessibility == "NOT_FAR_FROM_THE_TAR" ? (
+							<ItemChecked
+								name="Accès facile"
+								condition={meta.accessibility == "NOT_FAR_FROM_THE_TAR"}
+								className="justify-self-start"
+							/>
+						) : null}
+
+						{/* PURCHASE_POWER */}
+						{false &&
+						meta.purchase_power &&
+						meta.purchase_power == "NOT_FAR_FROM_THE_TAR" ? (
+							<ItemChecked
+								name="Accès facile"
+								condition={meta.purchase_power == "NOT_FAR_FROM_THE_TAR"}
+								className="justify-self-start"
+							/>
+						) : null}
+					</div>
 				</div>
 			);
 		}

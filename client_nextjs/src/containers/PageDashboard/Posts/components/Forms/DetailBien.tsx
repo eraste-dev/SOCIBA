@@ -44,6 +44,7 @@ const DetailBien: FC<DetailBienProps> = ({
 	typeDeBien,
 }) => {
 	const iconSize = 38;
+	const checkBoxStyle = { width: "10px", height: "10px" };
 	const categories = useSelector(CategoryAction.data);
 
 	const canShowACDCheckbox = (): boolean => {
@@ -107,15 +108,9 @@ const DetailBien: FC<DetailBienProps> = ({
 
 					{/* CUISINE */}
 					<div>
-						<div
-							id="tooltip-light"
-							role="tooltip"
-							className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 tooltip"
-						>
-							Tooltip content
-							<div className="tooltip-arrow" data-popper-arrow></div>
-						</div>
-						{/* <Label>Nombre de cuisine</Label> */}
+						<Tooltip title="Nombre de cuisine">
+							<Label>Nombre de cuisine</Label>
+						</Tooltip>
 						<div className="block md:col-span-2 p-2">
 							<div className="flex  " style={{ alignItems: "center" }}>
 								{/* <Kitchen className="mr-2" /> */}
@@ -145,72 +140,82 @@ const DetailBien: FC<DetailBienProps> = ({
 				<div className="grid grid-cols-4 gap-6 mt-3">
 					{/* JACUZZI */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div>
+						<div className="flex justify-center align-middle">
 							{/* <PoolSharp className="mr-2" /> */}
-							<input
+							<Input
+								id="jacuzzi"
 								type="checkbox"
-								className="mx-2"
-								checked={product?.jacuzzi ?? false}
+								className="mx-2 text-base"
+								style={checkBoxStyle}
+								defaultChecked={product?.jacuzzi}
 								{...register("jacuzzi")}
 							/>
-							<Label>Jacuzzi</Label>
+							<label htmlFor="jacuzzi">Jacuzzi</label>
 						</div>
 					</div>
 
 					{/* BATH */}
-					<div className="flex  " style={{ alignItems: "center" }}>
-						<div>
+					<div className="flex" style={{ alignItems: "center" }}>
+						<div className="flex justify-center align-middle">
 							{/* <PoolSharp className="mr-2" /> */}
-							<input
+							<Input
+								id="bath"
 								type="checkbox"
 								className="mx-2"
+								style={checkBoxStyle}
+								defaultChecked={product?.bath}
 								{...register("bath")}
 								name="bath"
-								// checked={(product && product.bath && product.bath) ?? false}
 							/>
-							<Label>Baignoire</Label>
+							<label htmlFor="bath">Baignoire</label>
 						</div>
 					</div>
 
 					{/* WIFI */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div>
+						<div className="flex justify-center align-middle">
 							{/* <PoolSharp className="mr-2" /> */}
-							<input
+							<Input
+								id="wifi"
 								type="checkbox"
 								className="mx-2"
+								style={checkBoxStyle}
+								defaultChecked={product?.WiFi}
 								{...register("WiFi")}
-								// checked={(product && product.bath && product.bath) ?? false}
 							/>
-							<Label>WIFI</Label>
+							<label htmlFor="wifi">WIFI</label>
 						</div>
 					</div>
 
 					{/* PICINE */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div>
+						<div className="flex justify-center align-middle">
 							{/* <PoolSharp className="mr-2" /> */}
-							<input
+							<Input
+								id="pool"
 								type="checkbox"
 								className="mx-2"
+								style={checkBoxStyle}
 								{...register("pool")}
-								// checked={(product && product.bath && product.bath) ?? false}
+								defaultChecked={product?.pool}
 							/>
-							<Label>Piscine</Label>
+							<label htmlFor="pool">Piscine</label>
 						</div>
 					</div>
 
 					{/* CLIMATISATION */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div>
+						<div className="flex justify-center align-middle">
 							{/* <PoolSharp className="mr-2" /> */}
-							<input
+							<Input
+								id="air_conditioning"
 								type="checkbox"
 								className="mx-2"
+								style={checkBoxStyle}
 								{...register("air_conditioning")}
-								// checked={(product && product.bath && product.bath) ?? false}
+								defaultChecked={product?.air_conditioning}
 							/>
-							<Label>Climatisation</Label>
+							<label htmlFor="air_conditioning">Climatisation</label>
 						</div>
 					</div>
 				</div>

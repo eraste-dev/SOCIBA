@@ -109,6 +109,11 @@ class User extends Authenticatable implements JWTSubject
         }
     }
 
+    public function rating(): int
+    {
+        return 5.0; // TODO : fix
+    }
+
     /**
      * Retrieves the published products created by the user.
      *

@@ -183,6 +183,8 @@ const DashboardSubmitPost = () => {
 		data.kitchens = data.kitchens ?? 0;
 		data.area = data.area ?? 0;
 		data.area_unit = getAreaUnitValue(data);
+		data.count_monthly = data.count_monthly ?? 0;
+		// data.security = data.security;
 
 		if (!data.category_id) {
 			if (tmpcatId) {
@@ -206,7 +208,11 @@ const DashboardSubmitPost = () => {
 
 		// Convert data to FormData
 		for (const key in data) {
-			if (data.hasOwnProperty(key) && data[key as keyof ProductRequest] !== undefined) {
+			if (
+				data.hasOwnProperty(key) &&
+				data[key as keyof ProductRequest] !== undefined &&
+				data[key as keyof ProductRequest] !== null
+			) {
 				if (key === "images" && data.images) {
 					if (Array.isArray(imageFiles)) {
 						imageFiles.forEach((image) => {
@@ -319,15 +325,19 @@ const DashboardSubmitPost = () => {
 		const _cat_id: number | undefined =
 			getValues("category_id") ?? (categories && categories[0] && categories[0].id);
 
-		const _type = (getValues("type") as IProductType) ?? (PRODUCT_TYPE[0] as IProductType);
-		const _cat: IPropertyCategory | undefined =
+		// const _type = (getValues("type") as IProductType) ?? (PRODUCT_TYPE[0] as IProductType);
+		const cat: IPropertyCategory | undefined =
 			_findCat(_cat_id) && _findCat(_cat_id).length > 0 ? _findCat(_cat_id)[0] : undefined;
 
 		try {
 			// ? for locations
-			if (_cat && _cat.name && _type === "LOCATION") {
+			// ? for reservation
+			if (
+				(cat && cat.name && currentType() === "LOCATION") ||
+				currentType() === "RESERVATION"
+			) {
 				sub_categories.forEach((c) => {
-					if (c.allow.includes(_cat?.name)) {
+					if (c.allow.includes(cat?.name ?? "")) {
 						data.push({
 							code: c.uuid,
 							name: c.name,
@@ -337,10 +347,9 @@ const DashboardSubmitPost = () => {
 			}
 
 			// ? for bien en location
-			if (_cat && _cat.name && _type === "BIEN EN VENTE") {
+			if (cat && cat.name && currentType() === "BIEN EN VENTE") {
 				sub_categories.forEach((c) => {
-					console.log(">>> _cat :: maison", c.allow_type);
-					if (c.allow.includes(_cat?.name) && c.allow_type !== "LOCATION") {
+					if (c.allow.includes(cat?.name) && c.allow_type !== "LOCATION") {
 						data.push({
 							code: c.uuid,
 							name: c.name,
@@ -349,7 +358,7 @@ const DashboardSubmitPost = () => {
 				});
 			}
 		} catch (error) {
-			console.error(">>> _cat", error);
+			console.error(">>> error in SUB_CATEGORIES", error);
 		}
 
 		return data;
@@ -381,13 +390,18 @@ const DashboardSubmitPost = () => {
 	};
 
 	const canShowOtherInput = (): boolean => {
-		const _type = getValues("type") ?? PRODUCT_TYPE[0]; // product?.type ??
 		const cat: IPropertyCategory | null =
 			GET_CATEGORIES()?.find((c) => c.id === getValues("category_id")) ?? null;
 		console.log("canShowOtherInput", SUB_CATEGORIES());
-		const typeCondition: boolean = _type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY];
+		const typeCondition: boolean = currentType() === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY];
 
+		// currentType() !== "RESERVATION"
 		return SUB_CATEGORIES() && SUB_CATEGORIES().length === 0;
+	};
+
+	const currentType = (): IProductType => {
+		const _type = getValues("type") ?? PRODUCT_TYPE[0];
+		return _type as IProductType;
 	};
 
 	const getVenteCountLabel = () => {
@@ -435,18 +449,21 @@ const DashboardSubmitPost = () => {
 
 	const useFormSetDefault = (value: ProductRequest) => {
 		setValue("id", value.id);
+		setValue("type", product?.type ?? PRODUCT_TYPE[0]);
 		setValue("category_id", value.category_id);
+		setValue("home_type", value.home_type);
+
 		setValue("location_id", value.location_id);
+		setValue("location_description", value.location_description);
+
 		setValue("title", value.title);
 		setValue("excerpt", value.excerpt);
 		setValue("content", value.content);
-		// setValue("type", value.type);
-		setValue("type", product?.type ?? PRODUCT_TYPE[0]);
-		setValue("location_description", value.location_description);
+
 		setValue("price", value.price);
 		setValue("deposit_price", value.deposit_price);
 		setValue("periodicity", value.periodicity);
-		setValue("home_type", value.home_type);
+
 		setValue("jacuzzi", value.jacuzzi);
 		setValue("bath", value.bath);
 		setValue("air_conditioning", value.air_conditioning);
@@ -454,10 +471,15 @@ const DashboardSubmitPost = () => {
 		setValue("pool", value.pool);
 		setValue("WiFi", value.WiFi);
 		setValue("bathrooms", value.bathrooms);
+
 		setValue("area", value.area);
 		setValue("area_unit", value.area_unit);
+		setValue("count_monthly", value.count_monthly);
+
+		setValue("security", value.security);
+		setValue("accessibility", value.accessibility);
+		setValue("purchase_power", value.purchase_power);
 		// setValue("images", value.images);
-		// setDefaultValue(value);
 		// setPreviewUrls(value.images ? value.images.map((item: any) => URL.createObjectURL(item)) : []);
 	};
 
@@ -645,7 +667,7 @@ const DashboardSubmitPost = () => {
 				Rédigez votre annonce
 			</h3>
 			<form className="" onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-				<div className="relative overflow-auto" style={{ height: "calc(80vh - 60px)" }}>
+				<div className="relative overflow-auto p-2" style={{ height: "calc(80vh - 60px)" }}>
 					{/* GRID CONTAINER */}
 					<div className="grid md:grid-cols-5 gap-6">
 						{/* #1 */}
@@ -695,7 +717,7 @@ const DashboardSubmitPost = () => {
 													{/* {defaultValue?.category_id} */}
 												</Label>
 
-												<div className="block md:col-span-2 p-2">
+												<div className="block md:col-span-2 ">
 													<Select
 														name="category_id"
 														onChange={(event) => {
@@ -757,10 +779,10 @@ const DashboardSubmitPost = () => {
 															{/* <span className="text-red-500">*</span> */}
 														</Label>
 
-														<div className="block md:col-span-2 p-2">
+														<div className="block md:col-span-2 ">
 															{/* SELECT_HOME_TYPE */}
-															{/* canShowOtherInput() &&  */}
-															{SUB_CATEGORIES() &&
+															{!canShowOtherInput() &&
+																SUB_CATEGORIES() &&
 																SUB_CATEGORIES().length > 0 && (
 																	<Select
 																		onChange={(event) => {
@@ -800,21 +822,24 @@ const DashboardSubmitPost = () => {
 																)}
 
 															{/* INPUT_HOME_TYPE */}
+															{}
 															{canShowOtherInput() && (
-																<Input
-																	autoComplete="on"
-																	name="home_type"
-																	maxLength={20}
-																	onChange={(e) => {
-																		setValue(
-																			"home_type",
-																			e.target.value
-																		);
-																		set_hasOtherKey(
-																			e.target.value
-																		);
-																	}}
-																/>
+																<>
+																	<Input
+																		autoComplete="on"
+																		name="home_type"
+																		maxLength={20}
+																		onChange={(e) => {
+																			setValue(
+																				"home_type",
+																				e.target.value
+																			);
+																			set_hasOtherKey(
+																				e.target.value
+																			);
+																		}}
+																	/>
+																</>
 															)}
 														</div>
 													</div>
@@ -836,7 +861,7 @@ const DashboardSubmitPost = () => {
 													<div>
 														<Label>Nombre de pièces</Label>
 
-														<div className="block md:col-span-2 p-2">
+														<div className="block md:col-span-2 ">
 															<Input
 																name="area_count"
 																autoComplete="on"
@@ -877,7 +902,7 @@ const DashboardSubmitPost = () => {
 																</span>
 															</Label>
 
-															<div className="block md:col-span-2 p-2">
+															<div className="block md:col-span-2 ">
 																<Input
 																	name="area_count"
 																	autoComplete="on"
@@ -910,15 +935,15 @@ const DashboardSubmitPost = () => {
 											)}
 
 										{/* VILLE - COUNTRY - STATE */}
-										<label className="block md:col-span-2">
+										<label className="block col-span-4">
 											<div className="grid grid-cols-2 gap-6">
-												<div>
+												<div className="col-span-1">
 													<Label>
 														Commune{" "}
 														<span className="text-red-500">*</span>
 													</Label>
 
-													<div className="block md:col-span-2 p-2">
+													<div className="block ">
 														<Select
 															name="location_id"
 															required
@@ -950,8 +975,8 @@ const DashboardSubmitPost = () => {
 													</div>
 												</div>
 
-												<div>
-													<label className="block md:col-span-2">
+												<div className="col-span-1">
+													<label className="block ">
 														<Label>
 															Quartier{" "}
 															<span className="text-red-500">*</span>
@@ -1032,12 +1057,12 @@ const DashboardSubmitPost = () => {
 
 										{/* PRICE - DEPOSIT PRICE */}
 										<label className="block md:col-span-2">
-											<div className="grid grid-cols-4 gap-6">
-												<div className="col-span-4 xl:col-span-4">
+											<div className="grid grid-cols-3 gap-6">
+												<div className="col-span-2">
 													<Label>
 														{getPriceLabel()}
 														<span className="text-red-500">*</span>
-														<div className="flex items-center relative">
+														<div className="flex items-center relative mt-2">
 															<CurrencyInput
 																id="input-currency"
 																className="w-full rounded-md "
@@ -1096,14 +1121,16 @@ const DashboardSubmitPost = () => {
 													/>
 												</div>
 
-												<div className="col-span-4">
+												<div className="col-span-1">
 													{getValues("type") !==
 														PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
-														<div className="block p-2">
-															<Label>Périodicité</Label>
+														<div className="block ">
+															<Label className="my-0">
+																Périodicité
+															</Label>
 															<Select
 																name="periodicity"
-																className="mt-4 w-full"
+																className="w-full"
 																onChange={(event) =>
 																	setValue(
 																		"periodicity",
@@ -1139,7 +1166,7 @@ const DashboardSubmitPost = () => {
 
 													{getValues("type") ===
 														PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
-														<div className="block md:col-span-2 p-2">
+														<div className="block md:col-span-2 ">
 															<Select
 																name="periodicity"
 																className="mt-4"
@@ -1215,7 +1242,7 @@ const DashboardSubmitPost = () => {
 
 											{showCaution() && (
 												<div className="grid grid-cols-4 gap-6 mt-3">
-													<div className="col-span-4">
+													<div className="col-span-4 mt-3">
 														<Label>
 															Caution (Nombre de mois)
 															<div className="flex items-center">

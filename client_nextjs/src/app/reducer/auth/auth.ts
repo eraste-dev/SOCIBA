@@ -1,6 +1,7 @@
 import { IStoreAction, IStoreDataState } from "../../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "app/reducer/store";
+import { ILocation } from "../locations/locations";
 
 export interface IUser {
 	id: number;
@@ -11,7 +12,9 @@ export interface IUser {
 	phone_whatsapp: string;
 	href: string;
 	avatar: string;
+	rating: number;
 	fonction: string;
+	influence_zone: ILocation;
 	status: "ACTIVE" | "INACTIVE" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED";
 	type: "ADMIN" | "USER" | "GUEST" | "AGENT";
 	count_products: number;

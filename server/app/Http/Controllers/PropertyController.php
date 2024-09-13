@@ -80,15 +80,15 @@ class PropertyController extends Controller
             'pool'                 => 'nullable|numeric', // |boolean
             'area_count'           => 'nullable|numeric', // |boolean
             'air_conditioning'     => 'nullable', // |boolean
-            'security'             => 'nullable|string|in:WITH_GUARD,WITHOUT_GUARD',
-            'purchase_power'       => 'nullable|string|in:LESS_EXPENSIVE,EQUAL_EXPENSIVE,MORE_EXPENSIVE',
-            'accessibility'        => 'nullable|string|in:NOT_FAR_FROM_THE_TAR,A_LITTLE_FAR_FROM_THE_TAR,FAR_FROM_THE_TAR',
+            'security'             => 'nullable|in:WITH_GUARD,WITHOUT_GUARD',
+            'purchase_power'       => 'nullable|in:LESS_EXPENSIVE,EQUAL_EXPENSIVE,MORE_EXPENSIVE',
+            'accessibility'        => 'nullable|in:NOT_FAR_FROM_THE_TAR,A_LITTLE_FAR_FROM_THE_TAR,FAR_FROM_THE_TAR',
             'images.*'             => 'required|file|max:10048',
             // 'excerpt'           => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
-            return ResponseService::error("Erreur d'enregistrement : " . $validator->errors()->first(), 422, $validator->errors());
+            return ResponseService::error($validator->errors()->first(), 422, $validator->errors());
         }
 
         // Enregistrer les données dans la base de données

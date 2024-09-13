@@ -15,9 +15,10 @@ import { _f } from "utils/money-format";
 
 interface Card11PriceProps {
 	item: IProduct;
+	className?: string;
 }
 
-const Card11Price: React.FC<Card11PriceProps> = ({ item }) => {
+const Card11Price: React.FC<Card11PriceProps> = ({ item, className }) => {
 	const GET_PERIODICITY = (): IPRODUCT_PERIODICITY[] => {
 		let data: IPRODUCT_PERIODICITY[] = [];
 		data = [...PERIODICITY_LIST, ...PERIODICITY_RESERVATION_LIST];
@@ -32,10 +33,16 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item }) => {
 	};
 
 	return (
-		<div className="">
+		<div className={`nc-Card11Price ${className}`} data-nc-id="Card11Price">
 			{/* SHOW PRICE *********************************************************************** */}
 			<div className="w-full flex lg:justify-end justify-start mt-2 lg:mt-0 ">
-				<span className="nc-card-title block font-bold text-primary-800 dark:text-neutral-100 md:text-base text-xs ">
+				<span
+					className={
+						className
+							? className
+							: "nc-card-title block font-bold text-primary-800 dark:text-neutral-100 md:text-base text-xs"
+					}
+				>
 					{_f(item.price)}
 					{/* // PERIODICITY */}
 					{item.type !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] &&
@@ -62,7 +69,13 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item }) => {
 			{/* ! DEAD CODE *************************************************** */}
 			<div className="w-full flex lg:justify-end justify-start ">
 				{item.deposit_price && false && (
-					<p className="nc-card-title block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs ">
+					<p
+						className={
+							className
+								? className
+								: "nc-card-title block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs "
+						}
+					>
 						{_f(item.deposit_price)}
 					</p>
 				)}
@@ -72,13 +85,19 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item }) => {
 			{item.type && item.type === PRODUCT_TYPE[0] && (
 				<>
 					{/* MOIS DE LOYER *************************************************** */}
-					{item.count_monthly && (
+					{item.count_monthly && item.count_monthly !== 0 ? (
 						<div className="w-full flex lg:justify-end justify-start ">
-							<p className="block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs ">
+							<p
+								className={
+									className
+										? className
+										: "block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs"
+								}
+							>
 								{`Caution: ${item.count_monthly} mois`}
 							</p>
 						</div>
-					)}
+					) : null}
 					{/* MOIS DE LOYER *************************************************** */}
 
 					{/* MOIS D'AVANCE *************************************************** */}

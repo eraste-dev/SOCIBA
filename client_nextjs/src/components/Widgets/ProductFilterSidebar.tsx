@@ -98,7 +98,7 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 						/>
 					</div>
 
-					{false && (
+					{true && (
 						<div className="mr-2">
 							<WidgetTypeWithSelect
 								handleFetch={fetchAll}
