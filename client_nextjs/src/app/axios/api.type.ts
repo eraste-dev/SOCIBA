@@ -92,6 +92,7 @@ export type UpdateUserRequest = {
 	avatar?: File | null;
 };
 
+
 export type PeriodicityType = "DAY" | "WEEK" | "MONTH" | "YEAR" | "VISIT";
 
 export interface ProductRequest {
