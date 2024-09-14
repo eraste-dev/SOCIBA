@@ -24,6 +24,9 @@ use App\Http\Middleware\JwtMiddleware;
 
 Route::group(['prefix' => 'v1'], function () {
     Route::get('/', [HomeController::class, 'index']);
+    Route::group(['prefix' => '/settings'], function () {
+        Route::get('/', [SettingsController::class, 'index']);
+    });
 
     // ? PUBLIC ROUTE
     Route::group(['prefix' => ''], function () {
@@ -60,7 +63,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => [JwtMiddleware::class]], function () {
         // ? SETTINGS ROUTES
         Route::group(['prefix' => '/settings'], function () {
-            Route::get('/', [SettingsController::class, 'index']);
             Route::post('update', [SettingsController::class, 'store']);
         });
 

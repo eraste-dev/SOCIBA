@@ -103,12 +103,12 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 				{/* SINGLE HEADER */}
 				<div className="container">
 					<header className="rounded-xl">
-						{single && (
+						{single ? (
 							<SingleHeader metaActionStyle="style2" hiddenDesc pageData={single} />
-						)}
+						) : null}
 					</header>
 
-					<div className="mt-5" style={{ height: "50vh" }}>
+					<div className="mt-5" style={{ height: "70vh" }}>
 						<div
 							className={`nc-Card11 relative flex flex-col group h-full w-auto `}
 							data-nc-id="Card11"

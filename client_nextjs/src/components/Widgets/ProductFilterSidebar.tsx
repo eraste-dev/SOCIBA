@@ -13,6 +13,7 @@ import WidgetTypeWithSelect from "./WidgetTypeWithSelect/WidgetTypeWithSelect";
 import WidgetCategoryDetailWithSelect from "./WidgetCategories/WidgetCategoryDetailWithSelect";
 import { useHistory } from "react-router-dom";
 import ButtonSecondary from "components/Button/ButtonSecondary";
+import WidgetSearchWithInput from "./WidgetCategories/WidgetSearchWithInput";
 
 export interface ProductFilterSidebarProps {
 	fetchAll?: () => void;
@@ -68,28 +69,41 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 				}
 			>
 				{/* bgcolor: "background.paper", */}
-				<div className={!linear ? "grid grid-cols-1 gap-6" : "grid grid-cols-5"}>
-					<div className="mr-2">
+
+				<div className={!linear ? "grid grid-cols-1 gap-0" : "grid grid-cols-4 gap-2"}>
+					{true ? (
+						<div>
+							<WidgetTypeWithSelect
+								handleFetch={fetchAll}
+								useStateFilter={useStateFilter}
+								setUseStateFilter={setUseStateFilter}
+								groupFilter={groupFilter}
+							/>
+						</div>
+					) : null}
+
+					<div>
 						<WidgetCategoryBooking handleFetch={fetchAll} groupFilter={groupFilter} />
 					</div>
 
-					{categorySlugSelected &&
-						["residence", "hotel", "maison"].includes(categorySlugSelected) && (
-							<div className="mr-2">
-								<WidgetCategoryDetailWithSelect
-									handleFetch={fetchAll}
-									useStateFilter={useStateFilter}
-									setUseStateFilter={setUseStateFilter}
-									groupFilter={groupFilter}
-								/>
-							</div>
-						)}
+					{categorySlugSelected
+						? ["residence", "hotel", "maison"].includes(categorySlugSelected) && (
+								<div>
+									<WidgetCategoryDetailWithSelect
+										handleFetch={fetchAll}
+										useStateFilter={useStateFilter}
+										setUseStateFilter={setUseStateFilter}
+										groupFilter={groupFilter}
+									/>
+								</div>
+						  )
+						: null}
 
-					<div className="mr-2">
+					<div>
 						<WidgetSort handleFetch={fetchAll} groupFilter={groupFilter} />
 					</div>
 
-					<div className="mr-2">
+					<div>
 						<WidgetLocationWithSelect
 							handleFetch={fetchAll}
 							useStateFilter={useStateFilter}
@@ -98,35 +112,33 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 						/>
 					</div>
 
-					{true && (
-						<div className="mr-2">
-							<WidgetTypeWithSelect
+					<div className={linear ? "col-span-6" : ""}>
+						{linear ? (
+							<WidgetSearchWithInput
 								handleFetch={fetchAll}
 								useStateFilter={useStateFilter}
-								setUseStateFilter={setUseStateFilter}
 								groupFilter={groupFilter}
 							/>
-						</div>
-					)}
-
-					<div className="mr-2">
-						<WidgetLocationWithInput
-							handleFetch={fetchAll}
-							useStateFilter={useStateFilter}
-							groupFilter={groupFilter}
-						/>
+						) : (
+							<WidgetLocationWithInput
+								handleFetch={fetchAll}
+								useStateFilter={useStateFilter}
+								groupFilter={groupFilter}
+							/>
+						)}
 					</div>
 
 					{!linear && (
 						<>
-							<div className={!linear ? "mr-2" : "col-span-1"}>
-								<ButtonPrimary onClick={fetchAll} sizeClass="px-4 py-2 sm:px-5">
+							<div className={!linear ? "mr-2 mb-2" : "col-span-1"}>
+								<ButtonPrimary className="w-full" onClick={fetchAll} sizeClass="px-4 py-2 sm:px-5">
 									Rechercher
 								</ButtonPrimary>
 							</div>
 
-							<div className={!linear ? "mr-2" : "col-span-1 mr-2"}>
+							<div className={!linear ? "mr-2 mb-2" : "col-span-1 mr-2"}>
 								<ButtonSecondary
+								className="w-full"
 									onClick={removeQueryParams}
 									sizeClass="px-4 py-2 sm:px-5"
 								>

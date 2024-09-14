@@ -9,12 +9,14 @@ export interface CategoryPropertyBadgeThreeProps {
 	className?: string;
 	itemClass?: string;
 	category: IPropertyCategory;
+	rightText?: string;
 }
 
 const CategoryPropertyBadgeThree: FC<CategoryPropertyBadgeThreeProps> = ({
 	className = "flex flex-wrap space-x-2",
 	itemClass,
 	category,
+	rightText = "SOCIBA",
 }) => {
 	return (
 		<div
@@ -40,8 +42,11 @@ const CategoryPropertyBadgeThree: FC<CategoryPropertyBadgeThreeProps> = ({
 						/>
 					)
 				)}
-
-				<Badge className={itemClass} name={"SOCIBA"} color="indigo" />
+				{rightText !== "SOCIBA" ? (
+					<span>{ rightText }</span>
+				) : (
+					<Badge className={itemClass} name={rightText} color="indigo" />
+				)}
 			</div>
 		</div>
 	);

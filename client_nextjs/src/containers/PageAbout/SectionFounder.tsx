@@ -46,9 +46,10 @@ const SectionFounder = () => {
 	const dispatch = useDispatch();
 	const setting = useAppSelector(SettingsAction.data)?.default?.get;
 	const loading = useAppSelector(SettingsAction.data)?.default?.loading;
+	const error = useAppSelector(SettingsAction.data)?.default?.error;
 
 	useEffect(() => {
-		if (!loading && !setting) {
+		if (!loading && !setting && !error) {
 			dispatch(fetchDefaultSettings());
 		}
 	}, [dispatch, fetchDefaultSettings, loading, setting]);
@@ -65,7 +66,8 @@ const SectionFounder = () => {
 		<div className="nc-SectionFounder relative">
 			{/* <Heading descHtml={setting?.about_us}>Qui somme nous ?</Heading> */}
 
-			<div className="text-neutral-700 dark:text-neutral-300 mb-12"  dangerouslySetInnerHTML={{ __html: setting?.about_us ?? "" }}></div>
+			{/* className="text-neutral-700 dark:text-neutral-300 mb-12" */}
+			<div dangerouslySetInnerHTML={{ __html: setting?.about_us ?? "" }}></div>
 
 			<div className="grid sm:grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4 xl:gap-x-8">
 				{false &&

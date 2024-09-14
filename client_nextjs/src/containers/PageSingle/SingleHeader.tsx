@@ -33,6 +33,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({
 		location_description,
 		price,
 		deposit_price,
+		created_at,
 	} = pageData as IProduct;
 
 	return (
@@ -56,7 +57,11 @@ const SingleHeader: FC<SingleHeaderProps> = ({
 						</>
 					)}
 
-					<CategoryPropertyBadgeThree itemClass="text-2xl" category={category} />
+					<CategoryPropertyBadgeThree
+						itemClass="text-2xl"
+						category={category}
+						rightText={created_at.toString() ?? ""}
+					/>
 
 					<SingleAuthor author={pageData.author} />
 					{/* {category && <CategoryPropertyBadgeList category={category} />} */}

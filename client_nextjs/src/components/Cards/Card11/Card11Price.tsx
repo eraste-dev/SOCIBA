@@ -40,7 +40,7 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className }) => {
 					className={
 						className
 							? className
-							: "nc-card-title block font-bold text-primary-800 dark:text-neutral-100 md:text-base text-xs"
+							: "nc-card-title block font-bold text-primary-800 dark:text-neutral-100 text-sm text-clip overflow-hidden text-end"
 					}
 				>
 					{_f(item.price)}

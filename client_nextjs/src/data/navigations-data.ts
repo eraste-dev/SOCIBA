@@ -2,6 +2,11 @@ import { MegamenuItem, NavItemType } from "components/Navigation/NavigationItem"
 import { route } from "routers/route";
 import ncNanoId from "utils/ncNanoId";
 import { ProductcategoryUUID } from "./categories_uuid";
+import {
+	PRODUCT_TYPE,
+	TYPE_LOCATION_KEY,
+	TYPE_RESERVATION_KEY,
+} from "containers/PageDashboard/Posts/DashboardSubmitPost";
 
 const createNavItem = (name: string, href: string) => {
 	return {
@@ -11,13 +16,20 @@ const createNavItem = (name: string, href: string) => {
 	};
 };
 
-// const href = (id: string | number, type: IProductType | undefined = undefined) => {
-const href = (uid: string) => {
-	// if (type) {
-	// 	return route("annonces") + "/?category=" + id + "&type=" + type;
-	// }
-	// return route("annonces") + "/?category=" + id;
-	return route("annonces") + "/?category_uuid=" + uid;
+const href = (type: string | undefined = undefined, slug: string | undefined = undefined) => {
+	if (type) {
+		return (
+			route("annonces") +
+			"/?type=" +
+			type +
+			"&category_slug=" +
+			slug +
+			"&category_slug_selected=" +
+			slug
+		);
+	}
+
+	return route("annonces") + "/?category_slug=" + slug + "&category_slug_selected=" + slug;
 };
 
 export const CAT_KEY_ID = {
@@ -39,18 +51,33 @@ export const CAT_KEY_ID = {
 };
 
 const NAV_COLUMN_ONE: NavItemType[] = [
-	createNavItem("Maison à louer", href(ProductcategoryUUID.MAISON.key)),
-	createNavItem("Appartement", href(ProductcategoryUUID.MAISON.children.APPARTEMENT)),
-	createNavItem("Espace à louer", href(ProductcategoryUUID.ENTREPOT.children.ESPACE_A_LOUER)),
-	createNavItem("Magasin à louer", href(ProductcategoryUUID.MAGASIN.key)),
-	createNavItem("Entrepôt à louer", href(ProductcategoryUUID.ENTREPOT.children.ESPACE_A_LOUER)),
-	createNavItem("Bureau à louer", href(ProductcategoryUUID.MAISON.children.BUREAU)),
+	createNavItem(
+		"Maison à louer",
+		href(PRODUCT_TYPE[TYPE_LOCATION_KEY], "maison") // TODO : use constant for scalability
+	),
+	createNavItem(
+		"Appartement",
+		href(PRODUCT_TYPE[TYPE_LOCATION_KEY], "appartement") // TODO : use constant for scalability
+	),
+	createNavItem(
+		"Espace à louer",
+		href(PRODUCT_TYPE[TYPE_LOCATION_KEY], "espace") // TODO : use constant for scalability
+	),
+	createNavItem("Magasin à louer", href(PRODUCT_TYPE[TYPE_LOCATION_KEY], "magasin")),
+	createNavItem(
+		"Salle d'evenement",
+		href(PRODUCT_TYPE[TYPE_LOCATION_KEY], "salle-d-evenement") // TODO : use constant for scalability),
+	),
+	createNavItem(
+		"Bureau à louer",
+		href(PRODUCT_TYPE[TYPE_LOCATION_KEY], "bureau") // TODO : use constant for scalability),
+	),
 	// createNavItem("Autres", href(CAT_KEY_ID.OTHER, "LOCATION")),
 ];
 
 const NAV_COLUMN_TWO: NavItemType[] = [
-	createNavItem("Résidence", href(ProductcategoryUUID.RESERVATION.children.RESIDENCE)),
-	createNavItem("Hôtel", href(ProductcategoryUUID.RESERVATION.children.HOTEL)),
+	createNavItem("Résidence", href(PRODUCT_TYPE[TYPE_RESERVATION_KEY], "residence")),
+	createNavItem("Hôtel", href(PRODUCT_TYPE[TYPE_RESERVATION_KEY], "hotel")),
 ];
 
 const NAV_COLUMN_THREE: NavItemType[] = [

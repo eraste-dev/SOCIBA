@@ -65,7 +65,8 @@ const Card11: FC<Card11Props> = ({
 			<div className="p-2 px-4 flex flex-col flex-grow space-y-2">
 				<span className="text-xs text-neutral-500">{updated_at}</span>
 
-				<div className="grid grid-cols-3">
+				{/* grid grid-cols-3 */}
+				<div className="flex justify-between">
 					<div className="grid col-span-1">
 						<CategoryPropertyBadgeTwo className="text-xs md:text-md" item={post} />
 					</div>
@@ -84,9 +85,7 @@ const Card11: FC<Card11Props> = ({
 						{location.name}
 					</span>
 					{/*  style={{ marginLeft: "15px" }} */}
-					<span className="text-xs text-neutral-500">
-						{location_description}
-					</span>
+					<span className="text-xs text-neutral-500">{location_description}</span>
 					{/* , {location.city?.name} */}
 				</p>
 

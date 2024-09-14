@@ -668,7 +668,10 @@ const DashboardSubmitPost = () => {
 				Rédigez votre annonce
 			</h3>
 			<form className="" onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-				<div className="relative overflow-auto p-2" style={{ height: "calc(80vh - 60px)" }}>
+				<div
+					className="relative overflow-auto p-2"
+					style={{ height: "calc(100vh - 230px)" }}
+				>
 					{/* GRID CONTAINER */}
 					<div className="grid md:grid-cols-5 gap-6">
 						{/* #1 */}
@@ -1393,7 +1396,7 @@ const DashboardSubmitPost = () => {
 							className="w-full bg-blue-500 text-white py-2 px-4 fixed bottom-0 left-0 z-10"
 							type="submit"
 						>
-							Publier Maintenant
+							{productId ? "Mettre à jour" : "Publier Maintenant"}
 						</ButtonPrimary>
 					</div>
 				</div>

@@ -28,13 +28,15 @@ const WidgetTypeWithSelect: FC<WidgetTypeWithSelectProps> = ({
 
 	const locations = useAppSelector(LocationAction.data);
 	const loading = useAppSelector(LocationAction.loading);
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const type = urlSearchParams.get("type");
 
 	function LOCATION_OPTION(): IListBoxSelectFilterWidget[] {
 		let data: IListBoxSelectFilterWidget[] = [
 			{
 				name: "Tous(*)",
 				value: "*",
-				selected: false,
+				selected: !type || type === "*" ? true : false,
 			},
 		];
 
@@ -43,7 +45,7 @@ const WidgetTypeWithSelect: FC<WidgetTypeWithSelectProps> = ({
 				data.push({
 					name: t,
 					value: t.toString(),
-					selected: false,
+					selected: t === type,
 				});
 			});
 		}

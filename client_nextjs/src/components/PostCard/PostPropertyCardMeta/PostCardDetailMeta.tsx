@@ -73,26 +73,29 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 		if (type === PRODUCT_TYPE[TYPE_LOCATION_KEY]) {
 			return (
 				<div>
-					<div className={`grid grid-cols-3 gap-6 ${isSingle && "space-y-8"}`}>
+					{/* grid grid-cols-3 gap-6 */}
+					<div className={`flex justify-between ${isSingle && "space-y-8"}`}>
 						{/* Superficie */}
 						{area && area != 0 ? (
 							<div className={locationItemClassName} title="Superficie">
 								<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
 								{isSingle && <span className="mr-1">Superficie: </span>}
-								{`${area} / ${getAreaUnit()}`}
+								<span className={isSingle ? "text-base" : "text-xs"}>
+									{`${area} / ${getAreaUnit()}`}
+								</span>
 								{/* {`${area} / m²`} */}
 							</div>
 						) : null}
 
-						{bathrooms && (
+						{bathrooms ? (
 							<div className={locationItemClassName}>
 								<FaBath size={iconSize} className="mb-1 mr-1" />
 								{isSingle && <span className="mr-1">Salle de bain : </span>}
 								{bathrooms}
 							</div>
-						)}
+						) : null}
 
-						{kitchens && (
+						{kitchens ? (
 							<Tooltip title="Cuisine">
 								<div className={locationItemClassName}>
 									{/* <Kitchen className="mb-1 mr-1" /> */}
@@ -101,10 +104,11 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 									{kitchens}
 								</div>
 							</Tooltip>
-						)}
+						) : null}
 					</div>
 
-					<div className="grid grid-cols-3 mt-2">
+					{/* grid grid-cols-3 */}
+					<div className="flex justify-between mt-2">
 						{/* SECURITY */}
 						{isSingle && meta.security ? (
 							<ItemChecked
@@ -240,7 +244,8 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 
 		return (
 			<>
-				<div className="grid grid-cols-3 gap-0 mt-3">
+				{/* grid grid-cols-3 gap-0*/}
+				<div className="flex justify-between mt-3">
 					{area && area > 0 && (
 						<div className="flex items-center justify-center mr-2" title="Superficie">
 							<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />

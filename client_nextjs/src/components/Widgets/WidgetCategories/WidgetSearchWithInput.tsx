@@ -6,7 +6,7 @@ import { IPropertyFilter } from "app/reducer/products/product";
 import { updateParamsUrl } from "utils/utils";
 import InputFilter from "../WidgetSort/InputFilter";
 
-export interface WidgetLocationWithSelectProps {
+export interface WidgetSearchWithInputProps {
 	className?: string;
 	handleFetch?: () => void;
 	useStateFilter: IPropertyFilter;
@@ -14,7 +14,7 @@ export interface WidgetLocationWithSelectProps {
 	groupFilter?: boolean;
 }
 
-const WidgetLocationWithInput: FC<WidgetLocationWithSelectProps> = ({
+const WidgetSearchWithInput: FC<WidgetSearchWithInputProps> = ({
 	className = "bg-neutral-100 dark:bg-neutral-800",
 	handleFetch,
 	useStateFilter,
@@ -45,15 +45,12 @@ const WidgetLocationWithInput: FC<WidgetLocationWithSelectProps> = ({
 				data-nc-id="WidgetLocations"
 			>
 				{!groupFilter && <WidgetHeading1 title="Communes" />}
-				<div
-					className="flex flex-col divide-neutral-200 dark:divide-neutral-700 px-1 w-full my-2"
-					style={{ position: "relative", top: "-12px" }}
-				>
-					<InputFilter onChange={handleChange} label="Quartier" value="" />
+				<div className="flex flex-col divide-neutral-200 dark:divide-neutral-700 px-1 w-full mb-5">
+					<InputFilter onChange={handleChange} label="Recherche par texte" value="" />
 				</div>
 			</div>
 		</div>
 	);
 };
 
-export default WidgetLocationWithInput;
+export default WidgetSearchWithInput;
