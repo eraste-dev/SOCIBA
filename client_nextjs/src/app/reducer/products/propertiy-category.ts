@@ -1,6 +1,7 @@
 import { IStoreAction, IStoreDataState } from "../../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "app/reducer/store";
+import { IProductType } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import { TwMainColor } from "data/types";
 
 export interface IPropertyCategory {
@@ -15,6 +16,10 @@ export interface IPropertyCategory {
 	color?: TwMainColor | string;
 	children: IPropertyCategory[];
 	parent: IPropertyCategory | null;
+	type: IProductType[];
+	uuid: string;
+	can_delete: boolean;
+	can_upload_image: boolean;
 }
 
 export interface IStoreDataCategorie {
@@ -52,10 +57,41 @@ export const CategorySlice = createSlice({
 			state.loading = false;
 			state.error = action.payload;
 		},
+
+		updateProductCategoryStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.success = false;
+			state.message = "";
+		},
+
+		updateProductCategorySuccess: (state, action: PayloadAction<IPropertyCategory>) => {
+			state.loading = false;
+			state.error = null;
+			state.success = true;
+			state.message = "";
+			state.data = state.data?.map((item) => {
+				if (item.id === action.payload.id) {
+					return action.payload;
+				}
+				return item;
+			});
+		},
+		updateProductCategoryFailure: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
 	},
 });
 
-export const { fetchCategoriesStart, fetchCategoriesSuccess, fetchCategoriesFailure } = CategorySlice.actions;
+export const {
+	fetchCategoriesStart,
+	fetchCategoriesSuccess,
+	fetchCategoriesFailure,
+	updateProductCategoryStart,
+	updateProductCategorySuccess,
+	updateProductCategoryFailure,
+} = CategorySlice.actions;
 
 export const CategoryAction: IStoreAction<IPropertyCategory[]> = {
 	data: (state: RootState) => state.categories.data,

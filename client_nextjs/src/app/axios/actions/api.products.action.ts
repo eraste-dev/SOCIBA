@@ -1,21 +1,53 @@
 import { serverEndpoints } from "./../api.route";
-import { fetchUserProductFailure, fetchUserProductStart, fetchUserProductSuccess } from "app/reducer/products/product";
+import {
+	fetchUserProductFailure,
+	fetchUserProductStart,
+	fetchUserProductSuccess,
+} from "app/reducer/products/product";
 import { AppDispatch } from "app/reducer/store";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import { axiosRequest } from "../api";
 import { IServerResponse } from "../api.type";
+import { InputsEditCategory } from "components/Dashboard/Products/Categories/EditCategory";
+import {
+	updateProductCategoryFailure,
+	updateProductCategoryStart,
+	updateProductCategorySuccess,
+} from "app/reducer/products/propertiy-category";
 
 export const initializeUserProduct = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchUserProductStart());
 };
 
-export const fetchUserProduct = (query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
-	dispatch(fetchUserProductStart());
+export const fetchUserProduct =
+	(query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
+		dispatch(fetchUserProductStart());
+
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.properties.search(query),
+			});
+			dispatch(
+				fetchUserProductSuccess({
+					data: response.data,
+					pagination: response.pagination || undefined,
+				})
+			);
+		} catch (error: any) {
+			dispatch(fetchUserProductFailure(error.message));
+		}
+	};
+
+export const updateUser = (params: InputsEditCategory) => async (dispatch: AppDispatch) => {
+	dispatch(updateProductCategoryStart());
 
 	try {
-		const response = await axiosRequest<IServerResponse>({ ...serverEndpoints.public.properties.search(query) });
-		dispatch(fetchUserProductSuccess({ data: response.data, pagination: response.pagination || undefined }));
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.properties.editCategory(params),
+			// headers: { "Content-Type": "multipart/form-data" },
+		});
+		dispatch(updateProductCategorySuccess(response.data));
 	} catch (error: any) {
-		dispatch(fetchUserProductFailure(error.message));
+		dispatch(updateProductCategoryFailure(error.message));
 	}
 };

@@ -42,6 +42,7 @@ import Home from "containers/PageHome/Home";
 import Single from "containers/Product/Single/Single";
 import ListProduct from "containers/Product/List";
 import FooterLoggedIn from "components/Footer/FooterLoggedIn";
+import PageMovingRequest from "containers/PageMovingRequest/PageMovingRequest";
 // import { isAdminPage } from "utils/utils";
 
 export const pages: Page[] = [
@@ -78,6 +79,7 @@ export const pages: Page[] = [
 	{ path: "/search", component: PageSearch },
 	{ path: "/search-v2", component: PageSearchV2 },
 	{ path: "/about", component: PageAbout },
+	{ path: "/moving", component: PageMovingRequest },
 	{ path: "/contact", component: PageContact },
 	{ path: "/page404", component: Page404 },
 	{ path: "/login", component: PageLogin },

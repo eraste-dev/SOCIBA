@@ -6,6 +6,7 @@ use App\Http\Resources\Collection;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImages;
+use App\Services\NotificationService;
 use App\Services\ProudctPaginationService;
 use App\Services\PropertyService;
 use App\Services\ResponseService;
@@ -14,6 +15,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class PropertyController extends Controller
 {
@@ -41,18 +43,38 @@ class PropertyController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id'                  => 'nullable|integer|exists:properties,id',
+            'id'                   => 'nullable|integer|exists:properties,id',
             'title'                => 'nullable|string',
             'category_id'          => 'nullable|integer|exists:property_categories,id',
-            'excerpt'              => 'nullable|string',
             'content'              => 'nullable|string',
-            'type'                 => 'nullable|string|in:ACHAT,VENTE,LOCATION,AUTRE',
-            'status'              => 'nullable|string', // TODO : definie in : xxx, xxx, xx
+            'type'                 => 'nullable|string|in:LOCATION,BIEN EN VENTE,RESERVATION,AUTRE"',
+            'status'               => 'nullable|string',
             'location_id'          => 'nullable|string|exists:municipalities,id',
             'location_description' => 'nullable|string',
             'price'                => 'nullable|numeric',
-            'deposit_price'        => 'nullable|numeric',
-            'images.*'             => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validation pour les images
+            'periodicity'          => 'nullable|string',
+            'bathrooms'            => 'nullable|numeric',
+            'bedrooms'             => 'nullable|numeric',
+            'garages'              => 'nullable|numeric',
+            'kitchens'             => 'nullable|numeric',
+            'rooms'                => 'nullable|numeric',
+            'area'                 => 'nullable|numeric',
+            'area_unit'            => 'nullable', // string|in:M,LOT
+            'acd'                  => 'nullable|numeric',
+            'count_advance'        => 'nullable|numeric',
+            'count_monthly'        => 'nullable|numeric',
+            'home_type'     => 'nullable|string',
+            'jacuzzi'              => 'nullable|numeric', // |boolean
+            'bath'                 => 'nullable|numeric', // |boolean
+            'WiFi'                 => 'nullable|numeric', // |boolean
+            'pool'                 => 'nullable|numeric', // |boolean
+            'area_count'           => 'nullable|numeric', // |boolean
+            'air_conditioning'     => 'nullable', // |boolean
+            'security'             => 'nullable|string|in:WITH_GUARD,WITHOUT_GUARD',
+            'purchase_power'       => 'nullable|string|in:LESS_EXPENSIVE,EQUAL_EXPENSIVE,MORE_EXPENSIVE',
+            'accessibility'        => 'nullable|string|in:NOT_FAR_FROM_THE_TAR,A_LITTLE_FAR_FROM_THE_TAR,FAR_FROM_THE_TAR',
+            'images.*'             => 'required|file|max:10048',
+            // 'excerpt'           => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -67,38 +89,85 @@ class PropertyController extends Controller
             $product = Property::find($validatedData['id']);
             $product->status = $validatedData['status'] ?? $product->status;
             $product->updated_by = auth()->user()->id;
-            if (isset($validatedData['title'])) $product->slug = Str::slug($validatedData['title']);
+
+            if (isset($validatedData['title'])) {
+                $product->slug = Str::slug($validatedData['title']);
+            } else {
+                if (isset($validatedData['type'])) {
+                    $product->slug = Str::slug($validatedData['type'] . '-' . $product->id);
+                }
+            }
 
             $product->update($validatedData);
+            NotificationService::afterUpdatePost($product);
         } else {
             // ? CREATION
-            $product = new Property();
-            $product->status = 'PENDING';
-            $product->slug                 = Str::slug($validatedData['title']);
+            $product                       = new Property();
+
+            // 
+            $product->status               = 'PENDING';
+            $product->slug = isset($validatedData['title']) ? Str::slug($validatedData['title']) : Str::slug($validatedData['type'] . '-' . $product->id);
+
+            // $product->slug                 = Str::slug($validatedData['title']);
             $product->created_by           = auth()->user()->id;
-            $product->title                = $validatedData['title'];
+
+            // $product->title                = $validatedData['title'];
             $product->category_id          = $validatedData['category_id'];
-            $product->excerpt              = $validatedData['excerpt'];
-            $product->content              = $validatedData['content'];
+            $product->content              = isset($validatedData['content']) ?? null;
             $product->type                 = $validatedData['type'];
             $product->location_id          = $validatedData['location_id'];
             $product->location_description = $validatedData['location_description'];
             $product->price                = $validatedData['price'];
-            $product->deposit_price        = $validatedData['deposit_price'];
+            $product->periodicity          = isset($validatedData['periodicity']) ? $validatedData['periodicity'] : null;
+
+            // details
+            $product->bathrooms            = isset($validatedData['bathrooms']) ? $validatedData['bathrooms'] : null;
+            $product->bedrooms             = isset($validatedData['bedrooms']) ? $validatedData['bedrooms'] : null;
+            $product->garages              = isset($validatedData['garages']) ? $validatedData['garages'] : null;
+            $product->kitchens             = isset($validatedData['kitchens']) ? $validatedData['kitchens'] : null;
+            $product->rooms                = isset($validatedData['rooms']) ? $validatedData['rooms'] : null;
+            $product->area                 = isset($validatedData['area']) ? $validatedData['area'] : null;
+            $product->area_count           = isset($validatedData['area_count']) ? $validatedData['area_count'] : null;
+            $product->area_unit            = (!isset($validatedData['area_unit']) || $validatedData['area_unit'] == 0 || !in_array(['LOT', 'M'], $validatedData['area_unit'])) ? null :  $validatedData['area_unit'];
+            $product->count_advance        = isset($validatedData['count_advance']) ? $validatedData['count_advance'] : null;
+            $product->count_monthly        = isset($validatedData['count_monthly']) ? $validatedData['count_monthly'] : null;
+            $product->jacuzzi              = isset($validatedData['jacuzzi']) ? $validatedData['jacuzzi'] : null;
+            $product->bath                 = isset($validatedData['bath']) ? $validatedData['bath'] : null;
+            $product->WiFi                 = isset($validatedData['WiFi']) ? $validatedData['WiFi'] : null;
+            $product->pool                 = isset($validatedData['pool']) ? $validatedData['pool'] : null;
+            $product->air_conditioning     = isset($validatedData['air_conditioning']) ? boolval($validatedData['air_conditioning']) : null;
+            $product->home_type     = isset($validatedData['home_type']) ? ($validatedData['home_type']) : null;
+            $product->security             = isset($validatedData['security']) ? $validatedData['security'] : null;
+            $product->purchase_power       = isset($validatedData['purchase_power']) ? $validatedData['purchase_power'] : null;
+            $product->accessibility        = isset($validatedData['accessibility']) ? $validatedData['accessibility'] : null;
+
+
+            // $product->deposit_price        = $validatedData['deposit_price'];
+            // $product->excerpt              = $validatedData['excerpt'];
 
             $product->save();
+            NotificationService::afterInsertPost();
         }
 
-        if (isset($validatedData['images']) && isset($request->images)) {
-            // $product->images()->delete();
-            $images = $validatedData['images'] ?? $request->images;
-            foreach ($images as $key => $image) {
-                $filetomove = $image->getClientOriginalName() . "-" . time() . "." . $image->getClientOriginalExtension();
-                PropertyImages::create([
-                    'property_id' => $product->id,
-                    'image' => "/images/products/" . $filetomove
-                ]);
+        try {
+            if (isset($request->images)) {
+                PropertyImages::clearImage($product->id);
+                $images = $request->images;
+                foreach ($images as $key => $image) {
+                    // $filetomove = $image->getClientOriginalName() . "-" . time() . "." . $image->getClientOriginalExtension();
+                    $filetomove = $product->id . "__" . time() . "__image" . "__" . $key . "__"  . "." . $image->getClientOriginalExtension();
+
+                    $destinationPath = public_path('assets/images/products');
+                    $image->move($destinationPath, $filetomove);
+
+                    PropertyImages::create([
+                        'property_id' => $product->id,
+                        'image'       => "/images/products/" . $filetomove
+                    ]);
+                }
             }
+        } catch (\Throwable $th) {
+            return ResponseService::error("Product created successfully", 500,);
         }
 
 
@@ -121,6 +190,13 @@ class PropertyController extends Controller
         $product = Property::find($request->id);
         $product->status  = Utils::STATE_DELETED();
         $product->save();
+
+        $images = PropertyImages::where('property_id', $request->id)->get();
+        foreach ($images as $key => $image) {
+            // $image->delete();
+            $image->property_id = null;
+            $image->save();
+        }
         // $proudct->delete();
         return ResponseService::success(
             PropertyService::search(Property::requestSearch()),

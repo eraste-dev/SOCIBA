@@ -21,3 +21,16 @@ export const updateParamsUrl = (search: string, value: string) => {
 };
 
 export const PROD_URL = "https://api.eebtp-ci.com";
+
+/**
+ * Formats a given price by adding spaces as thousand separators.
+ *
+ * @param {number | null | undefined} price - The price to be formatted
+ * @return {string} The formatted price as a string
+ */
+export const formatPrice = (price: number | null | undefined): string => {
+	if (price === null || price === undefined) return "";
+	if (typeof price !== "number")
+		throw new TypeError(`Expected a number but received ${typeof price}`);
+	return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+};

@@ -7,6 +7,7 @@ import LoadingLinear from "components/UI/Loading/LoadingLinear";
 export interface FloatFilterProps {
 	className?: string;
 	showFilter?: boolean;
+	noFloating?: boolean;
 	toggleFilter?: () => void;
 	fetchAll?: () => void;
 	useStateFilter?: IPropertyFilter;
@@ -20,6 +21,7 @@ const FloatFilter: FC<FloatFilterProps> = ({
 	fetchAll,
 	useStateFilter,
 	setUseStateFilter,
+	noFloating,
 }) => {
 	if (!useStateFilter)
 		return (
@@ -27,6 +29,17 @@ const FloatFilter: FC<FloatFilterProps> = ({
 				<LoadingLinear />
 			</div>
 		);
+
+	if (noFloating) {
+		return (
+			<ProductFilterSidebar
+				groupFilter={true}
+				fetchAll={fetchAll}
+				useStateFilter={useStateFilter as IPropertyFilter}
+				setUseStateFilter={setUseStateFilter}
+			/>
+		);
+	}
 
 	return (
 		<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6">

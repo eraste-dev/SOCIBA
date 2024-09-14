@@ -15,6 +15,7 @@ use App\Http\Controllers\MetaController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserRequestController;
 use App\Http\Middleware\JwtMiddleware;
 
 // Route::get('/', [HomeController::class, 'index']);
@@ -36,6 +37,11 @@ Route::group(['prefix' => 'v1'], function () {
         // ? META
         Route::get('meta/{key}', [MetaController::class, 'getByKey']);
         // Route::resource('meta', MetaController::class);
+
+        // ? USER REQUEST
+        Route::group(['prefix' => 'user'], function () {
+            Route::post('send-request', [UserRequestController::class, 'store']);
+        });
     });
 
     // * AUTH ROUTE
@@ -52,6 +58,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => [JwtMiddleware::class]], function () {
         // ? PROTECTED PRODUCTS ROUTES
         Route::group(['prefix' => '/admin'], function () {
+            Route::post('sliders', [SliderController::class, 'store']);
+            Route::delete('sliders', [SliderController::class, 'destroy']);
+
             Route::group(['prefix' => 'products'], function () {
                 Route::post('/',   [PropertyController::class, 'store'])->name('admin.products.store');
                 Route::delete('/', [PropertyController::class, 'delete'])->name('admin.products.delete');
@@ -70,6 +79,9 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead']);
             Route::delete('/notifications/{id}',            [NotificationController::class, 'destroy']);
             Route::post('/notifications/mark-all-as-read',  [NotificationController::class, 'markAllAsRead']);
+
+            // ? USER REQUEST
+            Route::get('user-request', [UserRequestController::class, 'index']);
         });
     });
 });

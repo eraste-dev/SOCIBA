@@ -5,14 +5,13 @@ import Card11 from "components/Cards/Card11/Card11";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
-import { fetchAllProperties, inittializePropertyList } from "app/axios/actions/api.action";
-import ProductFilterSidebar from "components/Widgets/ProductFilterSidebar";
+import { fetchAllProperties } from "app/axios/actions/api.action";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 import { IGetSearchPropertiesParams, searchParamsFromRedux } from "utils/query-builder.utils";
 import { useHistory } from "react-router-dom";
 import NoDataMessage from "components/NoDataMessage";
-import { FaArrowAltCircleRight, FaSortAlphaDown, FaSortDown, FaTimesCircle } from "react-icons/fa";
 import FloatFilter from "components/Widgets/FloatFilter";
+import ListProducts, { getParams } from "./ListProducts";
 
 // THIS IS DEMO FOR MAIN DEMO
 // OTHER DEMO WILL PASS PROPS
@@ -31,7 +30,7 @@ export interface SectionLatestPostsProps {
 }
 
 const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
-	heading = "Dernières Annonces",
+	heading = "Publiées récements",
 	gridClass = "",
 	className = "",
 }) => {
@@ -53,7 +52,8 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 	useEffect(() => {
 		if (!data && !loading && !error && filters) {
 			const params: IGetSearchPropertiesParams = searchParamsFromRedux(filters);
-			dispatch(fetchAllProperties(params));
+			// TODO : fetch all properties
+			// dispatch(fetchAllProperties(params));
 		}
 	}, [dispatch, fetchAllProperties, data, loading, error]);
 
@@ -71,7 +71,8 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 				console.log(params, "update searchParamsFromURL()");
 				setIsFetched(useStateFilter);
 				previousFilterRef.current = useStateFilter;
-				await dispatch(fetchAllProperties(params));
+				// TODO : fetch all properties
+				// await dispatch(fetchAllProperties(params));
 			}
 		};
 
@@ -81,10 +82,11 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 			// Function cleanup or unsubscribe logic here
 		};
 	}, [dispatch, data, useStateFilter, previousFilterRef, searchParamsFromRedux]);
+
 	const fetchAll = () => {
 		if (useStateFilter) {
-			const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
-			console.log(params, "searchParamsFromURL()");
+			const params: IGetSearchPropertiesParams = getParams();
+			// TODO : fetch all properties
 			return dispatch(fetchAllProperties(params));
 		}
 	};
@@ -95,34 +97,12 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 
 	return (
 		<div className={`nc-SectionLatestPosts relative ${className}`}>
-			<div className="">
-				<Heading>{heading}</Heading>
-			</div>
-
-			<FloatFilter
-				useStateFilter={useStateFilter}
-				setUseStateFilter={setUseStateFilter}
-				showFilter={showFilter}
-				toggleFilter={toggleFilter}
-				fetchAll={fetchAll}
-			/>
-
-			<div className="flex flex-col lg:flex-row">
-				<div className="w-full lg:w-4/4 xl:w-5/5 lg:pl-7">
-					{loading && loading ? (
-						<CardSkeleton arrayLength={8} />
-					) : (
-						<div className={`grid gap-6 md:gap-8 ${gridClass}`}>
-							{data && data && data.map((post) => renderCard(post))}
-						</div>
-					)}
-
-					{data && data.length === 0 && <NoDataMessage />}
-					<div className="flex flex-col mt-12 md:mt-20 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-center sm:items-center">
-						{/* <Pagination /> */}
-						{/* <ButtonPrimary>Show me more</ButtonPrimary> */}
-					</div>
-				</div>
+			<div className="nc-SectionLatestPosts__grid">
+				<ListProducts
+					postCardName="card11"
+					gridClass="grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+					className="pb-16 lg:pb-28"
+				/>
 			</div>
 		</div>
 	);

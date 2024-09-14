@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
 import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeaturedMedia";
 import { IProduct } from "app/reducer/products/product";
 import PostPropertyCardMetaV2 from "components/PostCard/PostPropertyCardMeta/PostCardMetaV2";
@@ -9,9 +8,15 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { setSingleProduct } from "app/axios/actions/api.action";
 import { useAppDispatch } from "app/hooks";
 import CategoryPropertyBadgeOne from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeOne";
-import PostCardLikeAndComment from "components/PostCard/PostCardLikeAndComment/PostCardLikeAndComment";
-import PostCardSaveAction from "components/PostCard/PostCardSaveAction/PostCardSaveAction";
 import CategoryPropertyBadgeTwo from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeTwo";
+import {
+	IPRODUCT_PERIODICITY,
+	PERIODICITY_LIST,
+	PERIODICITY_RESERVATION_LIST,
+	PRODUCT_TYPE,
+} from "containers/PageDashboard/Posts/DashboardSubmitPost";
+import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
+import Card11Price from "./Card11Price";
 
 export interface Card11Props {
 	className?: string;
@@ -35,6 +40,11 @@ const Card11: FC<Card11Props> = ({
 		updated_at,
 		location,
 		location_description,
+		periodicity,
+		count_advance,
+		count_monthly,
+		type,
+		home_type,
 	} = post;
 	const [isHover, setIsHover] = useState(false);
 	const dispatch = useAppDispatch();
@@ -43,6 +53,13 @@ const Card11: FC<Card11Props> = ({
 	const handleSingleClick = () => {
 		dispatch(setSingleProduct(post));
 		history.push(post.href);
+	};
+
+	const GET_PERIODICITY = (): IPRODUCT_PERIODICITY[] => {
+		let data: IPRODUCT_PERIODICITY[] = [];
+		data = [...PERIODICITY_LIST, ...PERIODICITY_RESERVATION_LIST];
+
+		return data;
 	};
 
 	return (
@@ -72,9 +89,9 @@ const Card11: FC<Card11Props> = ({
 				<span className="text-xs text-neutral-500">{updated_at}</span>
 
 				<div className="grid grid-cols-6">
-					<div className="grid grid-cols-subgrid col-span-2">
-						<CategoryPropertyBadgeTwo category={category} />
-						<p className="mt-2 text-base font-semibold text-secondary-900 dark:text-neutral-100 ">
+					<div className="grid grid-cols-subgrid lg:col-span-2 col-span-6">
+						<CategoryPropertyBadgeTwo className="text-xs md:text-md" item={post} />
+						<p className="mt-2 text-xs font-semibold text-secondary-900 dark:text-neutral-100 ">
 							{false && (
 								<span className="text-xs text-neutral-500 flex justify-items-center ">
 									<FaMapMarkerAlt className="mr-1" />
@@ -86,33 +103,21 @@ const Card11: FC<Card11Props> = ({
 						</p>
 					</div>
 
-					<div className=" grid grid-cols-subgrid col-span-4 text-justify">
-						<div className="w-full flex justify-end ">
-							<h1 className="nc-card-title block text-base font-bold text-primary-800 dark:text-neutral-100 ">
-								{_f(price)}
-							</h1>
-						</div>
-
-						<div className="w-full flex justify-end ">
-							{deposit_price && (
-								<h3 className="nc-card-title block text-base font-bold text-primary-800 dark:text-neutral-100 ">
-									{_f(deposit_price)}
-								</h3>
-							)}
-						</div>
-					</div>
+					<Card11Price item={post} />
 				</div>
 
-				<h2 className="nc-card-title block text-base font-semibold text-neutral-900 dark:text-neutral-100 ">
-					<Link
-						onClick={handleSingleClick}
-						to={href}
-						title={title}
-						className="line-clamp-2"
-					>
-						{title}
-					</Link>
-				</h2>
+				{false && (
+					<p className="nc-card-title block text-md sm:text-xs font-semibold text-neutral-900 dark:text-neutral-100 ">
+						<Link
+							onClick={handleSingleClick}
+							to={href}
+							title={title}
+							className="line-clamp-2 text-xs md:text-md"
+						>
+							{title}
+						</Link>
+					</p>
+				)}
 
 				{false && (
 					<div className="flex items-end justify-between mt-auto">
@@ -121,6 +126,7 @@ const Card11: FC<Card11Props> = ({
 					</div>
 				)}
 
+				{post && <PostCardDetailMeta meta={post} />}
 
 				{post && post.author && post.author.href && <PostPropertyCardMetaV2 meta={post} />}
 			</div>

@@ -25,6 +25,7 @@ const SingleContent: FC<SingleContentProps> = ({ data }) => {
 		if (location.hash !== "#comment") {
 			return;
 		}
+
 		//
 		if (location.hash === "#comment") {
 			setTimeout(() => {
@@ -38,7 +39,10 @@ const SingleContent: FC<SingleContentProps> = ({ data }) => {
 	return (
 		<div className="nc-SingleContent space-y-10">
 			{/* ENTRY CONTENT */}
-			<div id="single-entry-content" className="prose prose-sm !max-w-screen-md sm:prose lg:prose-lg mx-auto dark:prose-invert">
+			<div
+				id="single-entry-content"
+				className="mx-0 dark:prose-invert"
+			>
 				{/* THIS IS THE DEMP CONTENT */}
 				<SingleContentDemo content={data.content} />
 			</div>
@@ -60,8 +64,13 @@ const SingleContent: FC<SingleContentProps> = ({ data }) => {
 			{false && (
 				<>
 					<div id="comment" ref={commentRef} className="max-w-screen-md mx-auto pt-5">
-						<h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Responses ({commentCount})</h3>
-						<SingleCommentForm onClickSubmit={(id) => console.log(id)} onClickCancel={(id) => console.log(id)} />
+						<h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200">
+							Responses ({commentCount})
+						</h3>
+						<SingleCommentForm
+							onClickSubmit={(id) => console.log(id)}
+							onClickCancel={(id) => console.log(id)}
+						/>
 					</div>
 
 					{/* COMMENTS LIST */}

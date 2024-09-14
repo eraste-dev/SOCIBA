@@ -19,9 +19,11 @@ import ChangeUserType from "./Users/ChangeUserType";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
 import ChangeProductType, { STATUS_LABEL } from "./Products/ChangeProductType";
 import ChangeProductTypeTableHeader from "./Products/ChangeProductTypeTableHeader";
+import { _f } from "utils/money-format";
+import { PERIODICITY_LIST } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 
 export interface ColumnProductTable {
-	id: "id" | "title" | "excerpt" | "content" | "actions" | "type" | "status";
+	id: "id" | "title" | "price" | "excerpt" | "content" | "actions" | "type" | "status";
 	label: string;
 	minWidth?: number;
 	align?: "right";
@@ -49,7 +51,9 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 	const [openDelete, setOpenDelete] = React.useState(false);
 	const [rowSelected, setRowSelected]: any = React.useState(null);
 	const [page, setPage] = React.useState(0);
-	const [filterTableHeader, setFilterTableHeader] = React.useState<{ status: STATUS_LABEL | null }>({ status: null });
+	const [filterTableHeader, setFilterTableHeader] = React.useState<{
+		status: STATUS_LABEL | null;
+	}>({ status: null });
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
 	const handleChangePage = (event: unknown, newPage: number) => {
@@ -72,10 +76,11 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 	const columns: ColumnProductTable[] = [
 		// { id: "id", label: "ID", minWidth: 170 },
 		{ id: "title", label: "Title", minWidth: 100 },
+		// { id: "pice", label: "Prix", minWidth: 100 },
 		// { id: "excerpt", label: "Excerpt", minWidth: 100 },
 		// { id: "content", label: "Content", minWidth: 100 },
-		{ id: "type", label: "Type de bien & Catégorie", minWidth: 100 },
-		{ id: "status", label: "Status", minWidth: 100 },
+		{ id: "type", label: "Prix", minWidth: 100 },
+		{ id: "status", label: "Status", minWidth: 50 },
 		{ id: "actions", label: "Actions" },
 	];
 
@@ -118,7 +123,11 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 					<TableHead className="bg-gray-500">
 						<TableRow>
 							{columns.map((column) => (
-								<TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+								<TableCell
+									key={column.id}
+									align={column.align}
+									style={{ maxWidth: column.minWidth }}
+								>
 									{column.label}
 									{column.id === "status" && (
 										<>
@@ -135,58 +144,102 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-							const { id, title, description, category, status, images, location, location_description } = row;
-							return (
-								<TableRow hover role="checkbox" tabIndex={-1} key={id}>
-									{/* align={column.align} */}
-									{/* {column.format && typeof value === "number" ? column.format(value) : value} */}
-									<TableCell>
-										<div className="flex justify-start items-center p-2 cursor-pointer  ">
-											<div className="flex items-center post-image-container mr-2" style={{ width: 200, height: 200 }}>
-												<img src={getFeatureImage(images)} alt="image" style={{ width: "auto", height: "100%" }} />
-											</div>
-											<div>
-												<h4 className="text-xl">{title}</h4>
-												<p>{description}</p>
-												<p>{`${location_description}, ${location.name}, ${location.city && location.city.name}`}</p>
+						{rows
+							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+							.map((row) => {
+								const {
+									id,
+									title,
+									description,
+									category,
+									status,
+									images,
+									location,
+									location_description,
+									price,
+									periodicity,
+								} = row;
+								return (
+									<TableRow hover role="checkbox" tabIndex={-1} key={id}>
+										{/* align={column.align} */}
+										{/* {column.format && typeof value === "number" ? column.format(value) : value} */}
+										<TableCell>
+											<div className="flex justify-start items-center p-2 cursor-pointer  ">
+												<div
+													className="flex items-center post-image-container mr-2"
+													style={{ width: 200, height: 200 }}
+												>
+													<img
+														src={getFeatureImage(images)}
+														alt="image"
+														style={{ width: "auto", height: "100%" }}
+													/>
+												</div>
+												<div>
+													<h4 className="text-xl">{title}</h4>
+													<p>{description}</p>
+													<p>{`${location_description}, ${
+														location.name
+													}, ${location.city && location.city.name}`}</p>
 
-												<div className="m2-2">{getStatus(status as STATUS_TEXT)}</div>
+													<div className="m2-2">
+														{getStatus(status as STATUS_TEXT)}
+													</div>
+												</div>
 											</div>
-										</div>
-									</TableCell>
-									<TableCell>
-										<div className="flex">
-											{category.parent && (
-												<>
-													<span className="mr- 2">{category.parent?.name}</span>
-													{" , "}
-												</>
-											)}
-											<span className="mr- 2">{category.name}</span>
-										</div>
-									</TableCell>
+										</TableCell>
 
-									<TableCell>
-										<ChangeProductType
-											lists={LIST_STATUS}
-											selectedIndex={LIST_STATUS.findIndex((item) => item.name === row.status)}
-											handleChange={(row: IProduct, status: STATUS_LABEL) => handleChangeStatus(row, status)}
-											row={row}
-										/>
-									</TableCell>
-									<TableCell>
-										<ProductTableAction
-											row={row}
-											handleOpenDelete={() => {
-												setOpenDelete(true);
-												setRowSelected(row);
-											}}
-										/>
-									</TableCell>
-								</TableRow>
-							);
-						})}
+										<TableCell>
+											<div className="flex">
+												<span className="mr- 2">{_f(price)}</span>
+												<span>
+													{PERIODICITY_LIST.find(
+														(p) => p.id === periodicity
+													)?.name &&
+														"/ " +
+															PERIODICITY_LIST.find(
+																(p) => p.id === periodicity
+															)?.name}
+												</span>
+											</div>
+										</TableCell>
+
+										<TableCell>
+											<div className="flex">
+												{/* <>
+													<span className="mr- 2">{category.name}</span>
+												</> */}
+												{category && (
+													<span className="mr- 2">{category.name}</span>
+												)}
+											</div>
+										</TableCell>
+
+										<TableCell>
+											<ChangeProductType
+												lists={LIST_STATUS}
+												selectedIndex={LIST_STATUS.findIndex(
+													(item) => item.name === row.status
+												)}
+												handleChange={(
+													row: IProduct,
+													status: STATUS_LABEL
+												) => handleChangeStatus(row, status)}
+												row={row}
+											/>
+										</TableCell>
+										<TableCell>
+											<ProductTableAction
+												row={row}
+												handleOpenDelete={() => {
+													setOpenDelete(true);
+													setRowSelected(row);
+												}}
+											/>
+										</TableCell>
+									</TableRow>
+								);
+							})}
 					</TableBody>
 				</Table>
 			</TableContainer>
@@ -199,7 +252,11 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 				onPageChange={handleChangePage}
 				onRowsPerPageChange={handleChangeRowsPerPage}
 			/>
-			<ConfirmDialog handleClose={() => setOpenDelete(false)} open={openDelete} row={rowSelected} />
+			<ConfirmDialog
+				handleClose={() => setOpenDelete(false)}
+				open={openDelete}
+				row={rowSelected}
+			/>
 		</Paper>
 	);
 };

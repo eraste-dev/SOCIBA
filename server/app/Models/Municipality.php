@@ -20,6 +20,7 @@ class Municipality extends Model
         'lat',
         'long',
         'thumbnail',
+        'popularity_rate'
     ];
 
     public function getCity()

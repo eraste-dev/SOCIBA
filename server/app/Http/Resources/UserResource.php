@@ -25,6 +25,7 @@ class UserResource extends JsonResource
             "email"          => $this->email,
             "phone"          => $this->phone,
             "fonction"       => $this->fonction,
+            "influence_zone" => $this->getInfluenceZone($this->influence_zone_id),
             "phone_whatsapp" => $this->phone_whatsapp,
             'avatar'         => $this->avatar != null ? ImageService::getImage($this->avatar) : null,
             "type"           => $this->type,

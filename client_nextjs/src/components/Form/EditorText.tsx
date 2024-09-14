@@ -15,6 +15,7 @@ const EditorText: FC<EditorTextProps> = ({ onEditorChange, initialValue }) => {
 			init={{
 				height: 500,
 				menubar: true,
+				language: "fr_FR",
 				plugins: [
 					"advlist autolink lists link image charmap print preview anchor",
 					"searchreplace visualblocks code fullscreen",

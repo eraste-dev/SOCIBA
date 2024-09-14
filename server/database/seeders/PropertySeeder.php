@@ -43,10 +43,9 @@ class PropertySeeder extends Seeder
                 ",
                 'address' => 'Cocody',
                 'client_address' => 'Cocody',
-                'type' => $faker->randomElement(['ACHAT', 'VENTE', 'LOCATION', 'AUTRE']),
-                'price' => $faker->numberBetween(500000, 90000000),
-                'deposit_price' => $faker->numberBetween(70000, 2000000),
-                // 'post_type' => $faker->randomElement(POST_TYPE),
+                'type' => 'LOCATION',
+                'price' => $faker->numberBetween(50000, 200000),
+                // 'deposit_price' => $faker->numberBetween(70000, 2000000),
                 'location_id' => $faker->numberBetween(1, 10),
                 'location_description' => 'Cocody Riviera Attoban',
                 'video_link' =>  null,
@@ -54,25 +53,26 @@ class PropertySeeder extends Seeder
                 'longitude' => $faker->longitude,
                 'created_by' => $faker->numberBetween(1, 2),
                 'updated_by' => $faker->numberBetween(1, 2),
-                'status' => Utils::STATE_PUBLISH(), // Assuming PROPERTY_STATUS contains these values
+                'status' => Utils::STATE_PUBLISH(),
                 'total_click' => $faker->numberBetween(500, 5000),
             ],
         ];
 
+
         $data = [
             [
-                'category_id' => 3,
-                'title' => 'Vente villa duplex 5 pièces - Cocody Riviera Attoban',
-                'slug' => 'vente-villa-duplex-5-pièces-cocody-riviera-attoban',
+                'category_id' => 2,
+                'title' => 'Villa duplex 5 pièces - Cocody Riviera Attoban',
+                'slug' => 'villa-duplex-5-pièces-cocody-riviera-attoban',
                 'excerpt' => 'À vendre une très belle duplex de 5 pièces situé à cocody riviera attoban. elle est composé de: ',
                 'content' => "
                 À vendre une très belle duplex de 5 pièces situé à cocody riviera attoban. elle est composé de: 3 chambres non autonomes une très grande cuisine un grand salon ⁠toilette centrale pour les 3 chambres une chambre principale autonome + un balcon une dépendance autonome toilette visiteur un garage de 2 véhicules cour avant, cour arrière superficie : 300m2 prix : 170 millions document : cpf
                 ",
                 'address' => 'Cocody',
                 'client_address' => 'Cocody',
-                'type' => 'VENTE',
-                'price' => 17000000,
-                'deposit_price' => 1200000,
+                'type' => 'LOCATION',
+                'price' => 170000,
+                // 'deposit_price' => 1200000,
                 'location_id' => 7,
                 'location_description' => 'Cocody Riviera Attoban',
                 'video_link' => null,
@@ -82,9 +82,17 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1200,
+                'periodicity' => 'MONTH',
+                'bathrooms' => 1,
+                'kitchens' => 1,
+                'area' => 300,
+                'count_advance' => 5,
+                'count_monthly' => 5,
+                'security' => 'WITH_GUARD',
+                "purchase_power"=>"MORE_EXPENSIVE"
             ],
             [
-                'category_id' => 2,
+                'category_id' => 17,
                 'title' => 'Location villa 4 pièces - Yopougon',
                 'slug' => 'location-villa-4-pièces-yopougon',
                 'excerpt' => 'À louer une belle villa de 4 pièces situé à Yopougon. elle est composé de: ',
@@ -93,10 +101,9 @@ class PropertySeeder extends Seeder
                 ",
                 'address' => 'Yopougon',
                 'client_address' => 'Yopougon',
-                'type' => 'LOCATION',
-                'price' => 1500000,
-                'deposit_price' => 1000000,
-                'location_id' => 5,
+                'type' => 'RESERVATION',
+                'price' => 15000,
+                'location_id' => 13,
                 'location_description' => 'Yopougon',
                 'video_link' => null,
                 'latitude' => 5.3211,
@@ -105,6 +112,13 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 800,
+                'periodicity' => 'DAY',
+                'jacuzzi' =>  true,
+                'bath' => true,
+                'WiFi' => true,
+                'pool' =>  true,
+                'home_type' => '2 pièces'
+                // 'deposit_price' => 1000000,
             ],
             [
                 'category_id' => 1,
@@ -116,7 +130,7 @@ class PropertySeeder extends Seeder
                 ",
                 'address' => 'Marcory',
                 'client_address' => 'Marcory',
-                'type' => 'ACHAT',
+                'type' => 'LOCATION',
                 'price' => 12000000,
                 'deposit_price' => 800000,
                 'location_id' => 3,
@@ -128,6 +142,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1500,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 4,
@@ -139,9 +154,9 @@ class PropertySeeder extends Seeder
                 ",
                 'address' => 'Cocody',
                 'client_address' => 'Cocody',
-                'type' => 'VENTE',
-                'price' => 25000000,
-                'deposit_price' => 1500000,
+                'type' => 'RESERVATION',
+                'price' => 25000,
+                // 'deposit_price' => 1500000,
                 'location_id' => 9,
                 'location_description' => 'Cocody',
                 'video_link' => null,
@@ -151,20 +166,27 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 2000,
+                'periodicity' => 'VISIT',
+                'jacuzzi' =>  false,
+                'bath' => false,
+                'WiFi' => true,
+                'air_conditioning' => true,
+                'pool' =>  false,
             ],
             [
-                'category_id' => 5,
-                'title' => 'Location villa 3 pièces - Abobo',
-                'slug' => 'location-villa-3-pièces-abobo',
+                'category_id' => 21,
+                'title' => 'Vente de villa 3 pièces - Abobo',
+                'slug' => 'vente-villa-3-pièces-abobo',
                 'excerpt' => 'À louer une belle villa de 3 pièces situé à Abobo. elle est composé de: ',
                 'content' => "
-                À louer une belle villa de 3 pièces situé à Abobo. elle est composé de: 2 chambres non autonomes une cuisine équipée un grand salon ⁠toilette centrale pour les 2 chambres une chambre principale autonome + un balcon une dépendance autonome toilette visiteur un garage de 1 véhicule cour avant, cour arrière superficie : 200m2 prix : 1.2 millions par mois document : cpf
+                En vente une belle villa de 3 pièces situé à Abobo. elle est composé de: 2 chambres non autonomes une cuisine équipée un grand salon ⁠toilette centrale pour les 2 chambres une chambre principale autonome + un balcon une dépendance autonome toilette visiteur un garage de 1 véhicule cour avant, cour arrière superficie : 200m2 prix : 1.2 millions par mois document : cpf
                 ",
                 'address' => 'Abobo',
                 'client_address' => 'Abobo',
-                'type' => 'LOCATION',
-                'price' => 1200000,
-                'deposit_price' => 800000,
+                'type' => 'BIEN EN VENTE',
+                'area_count' => 3,
+                'price' => 3500000,
+                // 'deposit_price' => 800000,
                 'location_id' => 2,
                 'location_description' => 'Abobo',
                 'video_link' => null,
@@ -174,6 +196,9 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1000,
+                'area' => 500,
+                'area_unit' => 'M',
+                'acd' => false,
             ],
             [
                 'category_id' => 3,
@@ -187,7 +212,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Plateau',
                 'type' => 'VENTE',
                 'price' => 20000000,
-                'deposit_price' => 1200000,
+                // 'deposit_price' => 1200000,
                 'location_id' => 8,
                 'location_description' => 'Plateau',
                 'video_link' => null,
@@ -197,6 +222,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1800,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 2,
@@ -210,7 +236,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Treichville',
                 'type' => 'LOCATION',
                 'price' => 1800000,
-                'deposit_price' => 1200000,
+                // 'deposit_price' => 1200000,
                 'location_id' => 6,
                 'location_description' => 'Treichville',
                 'video_link' => null,
@@ -220,6 +246,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 1,
@@ -233,7 +260,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Koumassi',
                 'type' => 'ACHAT',
                 'price' => 10000000,
-                'deposit_price' => 600000,
+                // 'deposit_price' => 600000,
                 'location_id' => 4,
                 'location_description' => 'Koumassi',
                 'video_link' => null,
@@ -243,6 +270,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1500,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 4,
@@ -256,7 +284,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Riviera',
                 'type' => 'VENTE',
                 'price' => 28000000,
-                'deposit_price' => 1800000,
+                // 'deposit_price' => 1800000,
                 'location_id' => 10,
                 'location_description' => 'Riviera',
                 'video_link' => null,
@@ -266,6 +294,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 2200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 5,
@@ -279,7 +308,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Bingerville',
                 'type' => 'LOCATION',
                 'price' => 1500000,
-                'deposit_price' => 1000000,
+                // 'deposit_price' => 1000000,
                 'location_id' => 1,
                 'location_description' => 'Bingerville',
                 'video_link' => null,
@@ -289,6 +318,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1000,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 3,
@@ -302,7 +332,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Cocody',
                 'type' => 'VENTE',
                 'price' => 17000000,
-                'deposit_price' => 1200000,
+                // 'deposit_price' => 1200000,
                 'location_id' => 7,
                 'location_description' => 'Cocody Riviera Attoban',
                 'video_link' => null,
@@ -312,6 +342,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 2,
@@ -325,7 +356,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Yopougon',
                 'type' => 'LOCATION',
                 'price' => 1500000,
-                'deposit_price' => 1000000,
+                // 'deposit_price' => 1000000,
                 'location_id' => 5,
                 'location_description' => 'Yopougon',
                 'video_link' => null,
@@ -335,6 +366,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 800,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 1,
@@ -348,7 +380,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Marcory',
                 'type' => 'ACHAT',
                 'price' => 12000000,
-                'deposit_price' => 800000,
+                // 'deposit_price' => 800000,
                 'location_id' => 3,
                 'location_description' => 'Marcory',
                 'video_link' => null,
@@ -358,6 +390,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1500,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 4,
@@ -371,7 +404,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Cocody',
                 'type' => 'VENTE',
                 'price' => 25000000,
-                'deposit_price' => 1500000,
+                // 'deposit_price' => 1500000,
                 'location_id' => 9,
                 'location_description' => 'Cocody',
                 'video_link' => null,
@@ -381,6 +414,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 2000,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 5,
@@ -394,7 +428,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Abobo',
                 'type' => 'LOCATION',
                 'price' => 1200000,
-                'deposit_price' => 800000,
+                // 'deposit_price' => 800000,
                 'location_id' => 2,
                 'location_description' => 'Abobo',
                 'video_link' => null,
@@ -404,6 +438,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1000,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 3,
@@ -417,7 +452,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Plateau',
                 'type' => 'VENTE',
                 'price' => 20000000,
-                'deposit_price' => 1200000,
+                // 'deposit_price' => 1200000,
                 'location_id' => 8,
                 'location_description' => 'Plateau',
                 'video_link' => null,
@@ -427,6 +462,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1800,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 2,
@@ -440,7 +476,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Treichville',
                 'type' => 'LOCATION',
                 'price' => 1800000,
-                'deposit_price' => 1200000,
+                // 'deposit_price' => 1200000,
                 'location_id' => 6,
                 'location_description' => 'Treichville',
                 'video_link' => null,
@@ -450,6 +486,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 1,
@@ -463,7 +500,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Koumassi',
                 'type' => 'ACHAT',
                 'price' => 10000000,
-                'deposit_price' => 600000,
+                // 'deposit_price' => 600000,
                 'location_id' => 4,
                 'location_description' => 'Koumassi',
                 'video_link' => null,
@@ -473,6 +510,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1500,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 4,
@@ -486,7 +524,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Riviera',
                 'type' => 'VENTE',
                 'price' => 28000000,
-                'deposit_price' => 1800000,
+                // 'deposit_price' => 1800000,
                 'location_id' => 10,
                 'location_description' => 'Riviera',
                 'video_link' => null,
@@ -496,6 +534,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 2200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 5,
@@ -509,7 +548,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Bingerville',
                 'type' => 'LOCATION',
                 'price' => 1500000,
-                'deposit_price' => 1000000,
+                // 'deposit_price' => 1000000,
                 'location_id' => 1,
                 'location_description' => 'Bingerville',
                 'video_link' => null,
@@ -519,6 +558,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1000,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 3,
@@ -546,7 +586,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Cocody',
                 'type' => 'VENTE',
                 'price' => 17000000,
-                'deposit_price' => 1200000,
+                // 'deposit_price' => 1200000,
                 'location_id' => 7,
                 'location_description' => 'Cocody Riviera Attoban',
                 'video_link' => null,
@@ -556,6 +596,7 @@ class PropertySeeder extends Seeder
                 'updated_by' => 1,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 1200,
+                'periodicity' => 'MONTH'
             ],
             [
                 'category_id' => 4,
@@ -583,7 +624,7 @@ class PropertySeeder extends Seeder
                 'client_address' => 'Cocody',
                 'type' => 'VENTE',
                 'price' => 28000000,
-                'deposit_price' => 1800000,
+                // 'deposit_price' => 1800000,
                 'location_id' => 9,
                 'location_description' => 'Cocody Angré',
                 'video_link' => null,
@@ -593,11 +634,22 @@ class PropertySeeder extends Seeder
                 'updated_by' => 2,
                 'status' => Utils::STATE_PUBLISH(),
                 'total_click' => 2000,
+                'periodicity' => 'MONTH'
             ],
         ];
 
         foreach ($data as $key => $value) {
-            Property::create($value);
+            // Property::create($value);
+        }
+
+        // Property::create($data[0]);
+        // Property::create($data[1]);
+        // Property::create($data[2]);
+        // Property::create($data[3]);
+        // Property::create($data[4]);
+
+        for ($i = 0; $i < 5; $i++) {
+            Property::create($data[$i]);
         }
     }
 }

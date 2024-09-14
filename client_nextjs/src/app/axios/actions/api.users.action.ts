@@ -16,6 +16,23 @@ import {
 	deleteUserFailure,
 } from "app/reducer/users/users";
 
+import { MovingRequestInputs } from "containers/PageMovingRequest/SectionContact";
+import {
+	fetchALlUserRequestsFailure,
+	fetchALlUserRequestsStart,
+	fetchALlUserRequestsSuccess,
+	postuserRequestsFailure,
+	postuserRequestsInitial,
+	postuserRequestsStart,
+	postuserRequestsSuccess,
+} from "app/reducer/userRequest/userRequest";
+
+/**
+ * Fetches all users from the server and dispatches corresponding actions.
+ *
+ * @param {AppDispatch} dispatch - The Redux dispatch function.
+ * @return {Promise<void>} A Promise that resolves when the function is complete.
+ */
 export const fetchAllUser = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchAllUsersStart());
 
@@ -29,6 +46,12 @@ export const fetchAllUser = () => async (dispatch: AppDispatch) => {
 	}
 };
 
+/**
+ * Deletes a user based on the provided payload.
+ *
+ * @param {number} payload - The ID of the user to delete.
+ * @return {Promise<void>} A Promise that resolves when the user is deleted successfully.
+ */
 export const deleteUser = (payload: number) => async (dispatch: AppDispatch) => {
 	dispatch(deleteUserStart());
 
@@ -40,5 +63,44 @@ export const deleteUser = (payload: number) => async (dispatch: AppDispatch) => 
 	} catch (error: any) {
 		console.log(error);
 		dispatch(deleteUserFailure(error.message));
+	}
+};
+
+/**
+ * Sends a user request with the given payload.
+ *
+ * @param {MovingRequestInputs} payload - The data for the user request.
+ * @param {AppDispatch} dispatch - The Redux dispatch function.
+ * @return {Promise<void>} A Promise that resolves when the request is sent successfully.
+ */
+export const sendUserRequest = (payload: MovingRequestInputs) => async (dispatch: AppDispatch) => {
+	dispatch(postuserRequestsStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.users.sendUserRequest(payload),
+		});
+		dispatch(postuserRequestsSuccess(response));
+	} catch (error: any) {
+		console.log(error);
+		dispatch(postuserRequestsFailure(error.message));
+	}
+};
+
+export const initUserRequest = () => async (dispatch: AppDispatch) => {
+	dispatch(postuserRequestsInitial());
+};
+
+export const fetchAllUserRequest = () => async (dispatch: AppDispatch) => {
+	dispatch(fetchALlUserRequestsStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.users.getAllUserRequest,
+		});
+		dispatch(fetchALlUserRequestsSuccess(response.data));
+	} catch (error: any) {
+		console.log(error);
+		dispatch(fetchALlUserRequestsFailure(error.message));
 	}
 };

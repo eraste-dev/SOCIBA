@@ -9,6 +9,8 @@ import { Grid } from "@mui/material";
 import Button from "components/Button/Button";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import WidgetCategoryBooking from "./WidgetSort/WidgetCategoryBooking";
+import WidgetTypeWithSelect from "./WidgetTypeWithSelect/WidgetTypeWithSelect";
+import WidgetCategoryDetailWithSelect from "./WidgetCategories/WidgetCategoryDetailWithSelect";
 
 export interface ProductFilterSidebarProps {
 	fetchAll?: () => void;
@@ -24,6 +26,10 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 	groupFilter = false,
 }) => {
 	const [showFilter, setShowFilter] = useState(true);
+
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const categorySlugSelected = urlSearchParams.get("category_slug_selected");
+
 	const handleShowFilter = () => {
 		setShowFilter(!showFilter);
 	};
@@ -39,10 +45,23 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 			)}
 
 			<div className={showFilter ? "block sm:p-2 max-w-md" : "hidden"}>
-				<Grid container spacing={2}>
+				{/* bgcolor: "background.paper", */}
+				<Grid container spacing={2} sx={{ py: 5, px: 1 }}>
 					<Grid xs={12} lg={12}>
 						<WidgetCategoryBooking handleFetch={fetchAll} groupFilter={groupFilter} />
 					</Grid>
+
+					{categorySlugSelected &&
+						["residence", "hotel", "maison"].includes(categorySlugSelected) && (
+							<Grid xs={12} lg={12}>
+								<WidgetCategoryDetailWithSelect
+									handleFetch={fetchAll}
+									useStateFilter={useStateFilter}
+									setUseStateFilter={setUseStateFilter}
+									groupFilter={groupFilter}
+								/>
+							</Grid>
+						)}
 
 					<Grid xs={12} lg={12}>
 						<WidgetSort handleFetch={fetchAll} groupFilter={groupFilter} />
@@ -56,6 +75,17 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 							groupFilter={groupFilter}
 						/>
 					</Grid>
+
+					{false && (
+						<Grid xs={12} lg={12}>
+							<WidgetTypeWithSelect
+								handleFetch={fetchAll}
+								useStateFilter={useStateFilter}
+								setUseStateFilter={setUseStateFilter}
+								groupFilter={groupFilter}
+							/>
+						</Grid>
+					)}
 
 					<Grid xs={12} lg={12}>
 						<WidgetLocationWithInput

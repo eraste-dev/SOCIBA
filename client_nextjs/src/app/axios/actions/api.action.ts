@@ -8,6 +8,9 @@ import {
 	fetchSlidersFailure,
 	fetchSlidersStart,
 	fetchSlidersSuccess,
+	postSlidersFailure,
+	postSlidersStart,
+	postSlidersSuccess,
 } from "app/reducer/sliders/sliders";
 import { AppDispatch } from "app/reducer/store";
 import { IServerResponse, ProductRequest, RegisterRequest, UpdateUserRequest } from "../api.type";
@@ -44,6 +47,11 @@ import {
 	fetchSimilarsSuccess,
 	fetchSimilarsFailure,
 	fetchSimilarsStart,
+	searchPropertiesStart,
+	searchPropertiesFailure,
+	searchPropertiesSuccess,
+	initFetchAllProperties,
+	postProductInit,
 } from "app/reducer/products/product";
 import { IGetQueryParams, IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import {
@@ -57,6 +65,7 @@ import {
 	registerStart,
 	registerSuccess,
 } from "app/reducer/auth/auth";
+import { InputsEditSlider } from "containers/PageDashboard/Sliders/EditSlider";
 
 export const fetchSliders = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchSlidersStart());
@@ -68,6 +77,44 @@ export const fetchSliders = () => async (dispatch: AppDispatch) => {
 		dispatch(fetchSlidersSuccess(response.data));
 	} catch (error: any) {
 		dispatch(fetchSlidersFailure(error.message));
+	}
+};
+
+export const initEditSliders = () => async (dispatch: AppDispatch) => {
+	dispatch(postSlidersStart());
+};
+
+export const editSliders =
+	(payload: InputsEditSlider | FormData) => async (dispatch: AppDispatch) => {
+		dispatch(postSlidersStart());
+
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.sliders.post(payload),
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+				data: payload,
+			});
+			dispatch(postSlidersSuccess(response.data));
+		} catch (error: any) {
+			console.log(error);
+			dispatch(postSlidersFailure({ error: error.message, errors: error.errors }));
+		}
+	};
+
+export const deleteSliders = (payload: { id: number }) => async (dispatch: AppDispatch) => {
+	dispatch(postSlidersStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.sliders.delete(payload),
+			data: payload,
+		});
+		dispatch(postSlidersSuccess(response.data));
+	} catch (error: any) {
+		console.log(error);
+		dispatch(postSlidersFailure({ error: error.message, errors: error.errors }));
 	}
 };
 
@@ -117,8 +164,31 @@ export const fetchAllProperties =
 		}
 	};
 
+export const searchProperties =
+	(query: IGetSearchPropertiesParams) => async (dispatch: AppDispatch) => {
+		dispatch(searchPropertiesStart());
+
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.properties.search(query),
+			});
+			dispatch(
+				searchPropertiesSuccess({
+					data: response.data,
+					pagination: response.pagination || undefined,
+				})
+			);
+		} catch (error: any) {
+			dispatch(searchPropertiesFailure(error.message));
+		}
+	};
+
 export const inittializePropertyList = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchAllPropertiesStart());
+};
+
+export const inittPropertyList = () => async (dispatch: AppDispatch) => {
+	dispatch(initFetchAllProperties());
 };
 
 /**
@@ -195,7 +265,7 @@ export const resetFilters = () => async (dispatch: AppDispatch) => {
 
 export const postProduct =
 	(payload: ProductRequest | FormData) => async (dispatch: AppDispatch) => {
-		console.log(">>> payload >postProduct ", payload);
+		console.log(">>> payload >> postProduct ", payload);
 
 		dispatch(postProductStart());
 
@@ -228,8 +298,9 @@ export const deleteProduct = (payload: number) => async (dispatch: AppDispatch) 
 	}
 };
 
+
 export const initProductState = () => async (dispatch: AppDispatch) => {
-	dispatch(postProductStart());
+	dispatch(postProductInit());
 };
 
 // ----------------------------------------

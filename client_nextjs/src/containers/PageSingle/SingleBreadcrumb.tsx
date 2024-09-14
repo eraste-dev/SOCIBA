@@ -21,7 +21,7 @@ const SingleBreadcrumb: FC<SingleBreadcrumbProps> = ({ meta }) => {
 					<li className="text-primary-500 dark:text-white mr-2">
 						<Link to={meta.href} className="flex justify-center items-center">
 							<FaAngleRight className="text-primary-200 dark:text-white" />
-							{category.name}
+							{category && category.name}
 							<FaAngleRight className="text-primary-100 dark:text-white" />
 						</Link>
 					</li>

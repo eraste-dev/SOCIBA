@@ -1,8 +1,18 @@
-import { Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from "@mui/material";
+import {
+	MenuItem,
+	Select as MUISelect,
+	FormControl,
+	InputLabel,
+	SelectChangeEvent,
+} from "@mui/material";
+import Label from "components/Form/Label/Label";
+import Select from "components/Form/Select/Select";
+import { useState } from "react";
 
 export interface IListBoxSelectFilterWidget {
 	name: string;
 	value: string;
+	uuid?: string[];
 	selected?: boolean;
 }
 
@@ -19,34 +29,69 @@ const ListBoxSelectFilter: React.FC<IListBoxSelectFilterProps> = ({
 	label = "",
 	labelID = "select-filter",
 }) => {
+	const [currentValue, setcurrentValue]: any = useState({ current: null, key: labelID });
+
 	const handleChange = (event: SelectChangeEvent<string>) => {
 		const selectedValue = event.target.value;
 		const selectedItem = options.find((item) => item.value === selectedValue);
-		if (selectedItem) {
+
+		console.log("selectedItem :: ", selectedItem, currentValue);
+		console.log("selectedItem :: currentValue ", currentValue);
+
+		if (selectedItem && selectedItem.value) {
 			onChange(selectedItem);
 		}
 	};
 
 	return (
-		<FormControl className="mb-2" sx={{ mb: 1, minWidth: "100%", maxWidth: "100%" }}>
-			<InputLabel id="select-filter-label"> {label} </InputLabel>
-			<Select
-				fullWidth
-				labelId="select-filter-label"
-				id="select-filter"
-				onChange={handleChange}
-			>
-				{options.map((item) => (
-					<MenuItem
-						key={`menu-item-${label}-${item.value}`}
-						value={item.value}
-						selected={item.selected && item.selected}
+		<>
+			{false && (
+				<FormControl className="mb-2" sx={{ mb: 1, minWidth: "100%", maxWidth: "100%" }}>
+					<InputLabel id="select-filter-label"> {label} </InputLabel>
+					<MUISelect
+						fullWidth
+						labelId="select-filter-label"
+						id="select-filter"
+						onChange={(e) => {
+							console.log("LixBox :: ", e.target.value);
+							handleChange(e as any);
+						}}
 					>
-						{item.name}
-					</MenuItem>
-				))}
-			</Select>
-		</FormControl>
+						{options.map((item) => (
+							<MenuItem
+								key={`menu-item-${label}-${item.value}`}
+								value={item.value}
+								selected={item.selected && item.selected}
+							>
+								{item.name}
+							</MenuItem>
+						))}
+					</MUISelect>
+				</FormControl>
+			)}
+
+			<div className="mb-4" style={{ minWidth: "100%", maxWidth: "100%" }}>
+				<Label> {label} </Label>
+				<Select
+					onChange={(e) => {
+						console.log("LixBox :: ### ", e.target.value);
+						handleChange(e as any);
+					}}
+					style={{ cursor: "pointer", width: "100%", minWidth: "100%" }}
+				>
+					{options.map((item) => (
+						<option
+							key={`menu-item-${label}-${item.value}`}
+							value={item.value}
+							selected={item.selected}
+							onClick={() => setcurrentValue({ ...currentValue, current: item })}
+						>
+							{item.name}
+						</option>
+					))}
+				</Select>
+			</div>
+		</>
 	);
 };
 

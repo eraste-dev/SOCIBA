@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Http\Resources\MunicipalityResource;
 use App\Http\Resources\PropertyResource;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,10 +26,13 @@ class User extends Authenticatable implements JWTSubject
         'last_name',
         'email',
         'phone',
+        'phone_whatsapp',
         'password',
         'type',
         'status',
         'fonction',
+        "influence_zone_id",
+        "email_verified_at"
     ];
 
     /**
@@ -88,6 +92,21 @@ class User extends Authenticatable implements JWTSubject
     {
         return Property::where(['created_by' => $this->id])->whereNotIn('status', ['DELETED'])->count();
         // return $this->hasMany(Property::class)->count();
+    }
+
+    /**
+     * Retrieves the influence zone of the user.
+     *
+     * @return MunicipalityResource|null The influence zone of the user, or null if it doesn't exist.
+     */
+    public function getInfluenceZone(): ?MunicipalityResource
+    {
+        try {
+            $influenceZone = Municipality::findOrFail($this->influence_zone_id);
+            return new MunicipalityResource($influenceZone);
+        } catch (\Throwable $th) {
+            return null;
+        }
     }
 
     /**

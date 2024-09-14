@@ -26,6 +26,7 @@ class Property extends Model
         'client_address',
         'price',
         'deposit_price',
+        'periodicity',
         'location_id',
         'location_description', // communes
         'status',
@@ -38,6 +39,28 @@ class Property extends Model
         'facebook_link',
         'video_link',
         // 'post_type',
+
+        'bathrooms',
+        'bedrooms',
+        'garages',
+        'kitchens',
+        'rooms',
+        'area',
+        'area_unit',
+        'area_count',
+        'count_advance',
+        'count_monthly',
+
+        'jacuzzi',
+        'bath',
+        'WiFi',
+        'pool',
+        'air_conditioning',
+        'home_type',
+        'security',
+        'purchase_power',
+        'accessibility',
+
         'created_by',
         'updated_by',
     ];
@@ -131,19 +154,27 @@ class Property extends Model
     public static function requestSearch(): array
     {
         $payload = [
-            'id'         => request()->id ?? null,
-            'slug'       => request()->slug ?? null,
-            'category'   => request()->category ?? null,
-            'categories' => request()->categories ?? null,
-            'location_id' => request()->location_id ?? null,
-            'locations' => request()->locations ?? null,
-            'location' => request()->location ?? null,
-            'top_seed'   => request()->top ?? false,
-            'limit'      => request()->limit ?? 84,
-            'created_by' => request()->created_by ?? null,
-            'page'       => request()->page ?? 1,
-            'price_sort' => request()->price_sort ?? null,
-            'deposit_price_sort' => request()->deposit_price_sort ?? null
+            'searchText'             => request()->searchText ?? null,
+            'id'                     => request()->id ?? null,
+            'slug'                   => request()->slug ?? null,
+            'category'               => request()->category ?? null,
+            'category_slug'          => request()->category_slug ?? null,
+            'home_type'              => request()->home_type ?? null,
+            'category_slug_selected' => request()->category_slug_selected ?? null,
+            'home_type'              => request()->home_type ?? null,
+            'category_uuid'          => request()->category_uuid ?? null,
+            'categories'             => request()->categories ?? null,
+            'location_id'            => request()->location_id ?? null,
+            'locations'              => request()->locations ?? null,
+            'location'               => request()->location ?? null,
+            'top_seed'               => request()->top ?? false,
+            'limit'                  => request()->limit ?? 84,
+            'created_by'             => request()->created_by ?? null,
+            'page'                   => request()->page ?? 1,
+            'price_sort'             => request()->price_sort ?? null,
+            'deposit_price_sort'     => request()->deposit_price_sort ?? null,
+            'status'                 => request()->status ?? null,
+            'type'                   => request()->type ?? null,
         ];
 
         return $payload;

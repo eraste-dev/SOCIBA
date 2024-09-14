@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import FooterLoggedIn from "./FooterLoggedIn";
 import { useHistory } from "react-router-dom";
+import { route } from "routers/route";
 
 export interface WidgetFooterMenu {
 	id: string;
@@ -19,7 +20,7 @@ const widgetMenus: WidgetFooterMenu[] = [
 		id: "1",
 		title: "A propos",
 		menus: [
-			{ href: "#", label: "Qui nous sommes ?" },
+			{ href: route("about"), label: "Qui nous sommes ?" },
 			{ href: "#", label: "Nous rejoindre" },
 			{ href: "#", label: "Alerte e-mail" },
 			// { href: "#", label: "Entrepôt à louer etc…" },

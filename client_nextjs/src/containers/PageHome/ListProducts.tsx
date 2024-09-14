@@ -1,20 +1,78 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import Heading from "components/Heading/Heading";
 import Card11 from "components/Cards/Card11/Card11";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { IProduct, PropertyAction } from "app/reducer/products/product";
+import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
 import { fetchAllProperties } from "app/axios/actions/api.action";
 import { useHistory, useLocation } from "react-router-dom";
-import { IGetSearchPropertiesParams, searchParamsFromRedux } from "utils/query-builder.utils";
+import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import Loading from "components/UI/Loading";
-import ProductFilterSidebar from "components/Widgets/ProductFilterSidebar";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
+import FloatFilter from "components/Widgets/FloatFilter";
+import { CategoryAction } from "app/reducer/products/propertiy-category";
+import NoDataMessage from "components/NoDataMessage";
 
-// THIS IS DEMO FOR MAIN DEMO
-// OTHER DEMO WILL PASS PROPS
+export const getParams = (): IGetSearchPropertiesParams => {
+	const params: IGetSearchPropertiesParams = {};
 
-//
+	// const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const price_sort = urlSearchParams.get("price_sort");
+	const location = urlSearchParams.get("location");
+	const neighborhood = urlSearchParams.get("neighborhood");
+	const category_slug = urlSearchParams.get("category_slug");
+	const type = urlSearchParams.get("type");
+	const category_uuid = urlSearchParams.get("category_uuid");
+	const home_type = urlSearchParams.get("home_type");
+	const category_slug_selected = urlSearchParams.get("category_slug_selected");
+
+	console.log("urlSearchParams", {
+		price_sort: price_sort,
+		location: location,
+		searchText: neighborhood,
+		category_slug: category_slug,
+		type: type,
+		category_uuid: category_uuid,
+		home_type: home_type,
+		category_slug_selected: category_slug_selected,
+	});
+
+	if (price_sort) {
+		params.price_sort = price_sort as "asc" | "desc";
+	}
+
+	if (location) {
+		params.location = location;
+	}
+
+	if (neighborhood) {
+		params.searchText = neighborhood;
+	}
+
+	if (category_slug) {
+		params.category_slug = category_slug;
+	}
+
+	if (type) {
+		params.type = type;
+	}
+
+	if (category_uuid) {
+		params.category_uuid = category_uuid;
+	}
+
+	if (home_type) {
+		params.home_type = home_type;
+	}
+
+	if (category_slug_selected) {
+		params.category_slug_selected = category_slug_selected;
+	}
+
+	return params;
+};
+
 export interface ListProductsProps {
 	gridClass?: string;
 	className?: string;
@@ -22,11 +80,16 @@ export interface ListProductsProps {
 	postCardName?: "card3" | "card4" | "card7" | "card9" | "card10" | "card11" | "card14";
 }
 
-const ListProducts: FC<ListProductsProps> = ({ heading = "Annonces", gridClass = "", className = "" }) => {
+const ListProducts: FC<ListProductsProps> = ({
+	heading = "Annonces",
+	gridClass = "",
+	className = "",
+}) => {
 	const dispatch = useAppDispatch();
 	const history = useHistory();
 
 	const products = useAppSelector(PropertyAction.data)?.all?.get;
+	const categories = useAppSelector(CategoryAction.data);
 	const filters = useAppSelector(PropertyAction.data)?.filters;
 	const loading = useSelector(PropertyAction.data)?.all?.loading;
 
@@ -34,28 +97,28 @@ const ListProducts: FC<ListProductsProps> = ({ heading = "Annonces", gridClass =
 	const searchParams = new URLSearchParams(location.search);
 	const paramLocation = searchParams.get("location_id");
 
-	useEffect(() => {
-		if (!products && !loading) {
-			const payload: IGetSearchPropertiesParams = {};
-			if (paramLocation) {
-				payload.location = paramLocation;
-			}
-			dispatch(fetchAllProperties(payload));
-		}
-	}, [dispatch, fetchAllProperties, products, loading]);
+	const [useStateFilter, setUseStateFilter] = useState<IPropertyFilter>({});
+	const [isFetched, setIsFetched] = useState<IPropertyFilter>({});
+	const [showFilter, setShowFilter] = useState(false);
+	const toggleFilter = () => setShowFilter(!showFilter);
 
 	const fetchAll = () => {
-		if (filters) {
-			const params: IGetSearchPropertiesParams = searchParamsFromRedux(filters);
-			console.log(params, history.location, "searchParamsFromURL()");
-			// return dispatch(fetchAllProperties(searchParamsFromURL()));
-			return dispatch(fetchAllProperties(params));
-		}
+		return dispatch(fetchAllProperties(getParams()));
 	};
 
 	const renderCard = (post: IProduct) => {
 		return <Card11 key={post.id} post={post} />;
 	};
+
+	useEffect(() => {
+		// Check if there is a 'get' parameter
+		const hasGetParameter = getParams().hasOwnProperty("get");
+
+		if (!products && !loading) {
+			// TODO : fetch all properties
+			dispatch(fetchAllProperties(getParams()));
+		}
+	}, [dispatch, fetchAllProperties, getParams, products, loading]);
 
 	if (loading) {
 		<Loading />;
@@ -66,17 +129,31 @@ const ListProducts: FC<ListProductsProps> = ({ heading = "Annonces", gridClass =
 			<div className="mt-5">
 				<Heading>{heading}</Heading>
 			</div>
-			<div className="flex flex-col lg:flex-row">
-				<div className="w-full space-y-7 mt-24 lg:mt-0 lg:w-1/4 lg:pl-10 xl:pl-0 xl:w-1/6 ">
-					<ProductFilterSidebar fetchAll={fetchAll} />
+
+			<div className="flex flex-row xl:flex-row">
+				<div className="w-1/5 sm:w-1/8 lg:w-1/4 xl:w-1/5">
+					<FloatFilter
+						useStateFilter={useStateFilter}
+						setUseStateFilter={setUseStateFilter}
+						showFilter={showFilter}
+						toggleFilter={toggleFilter}
+						fetchAll={fetchAll}
+						noFloating={true}
+					/>
 				</div>
 
-				<div className="w-full lg:w-3/4 xl:w-5/6 xl:pl-14 lg:pl-7">
+				{/*  xl:pl-14 lg:pl-7 */}
+				<div className="w-4/5 sm:w-6/8 lg:w-3/4 xl:w-4/5 lg:pl-7">
 					{loading && loading ? (
 						<CardSkeleton arrayLength={8} />
 					) : (
-						<div className={`grid gap-6 md:gap-8 ${gridClass}`}>{products && products.map((post) => renderCard(post))}</div>
+						<div className={`grid gap-6 md:gap-8 ${gridClass}`}>
+							{products && products.map((post) => renderCard(post))}
+						</div>
 					)}
+
+					{products?.length === 0 && <NoDataMessage />}
+
 					<div className="flex flex-col mt-12 md:mt-20 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-center sm:items-center">
 						{/* <Pagination /> */}
 						{/* <ButtonPrimary>Show me more</ButtonPrimary> */}

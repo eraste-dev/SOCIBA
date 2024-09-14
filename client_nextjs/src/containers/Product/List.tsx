@@ -13,7 +13,8 @@ const ListProduct: React.FC = () => {
 	useEffect(() => {
 		const $body = document.querySelector("body");
 		if ($body) {
-			$body.className = "theme-fuchsia-blueGrey";
+			// $body.className = "theme-fuchsia-blueGrey";
+			$body.className = "theme-cyan-blueGrey";
 		}
 		return () => {
 			if ($body) {
@@ -42,7 +43,7 @@ const ListProduct: React.FC = () => {
 				<div className="mt-3">
 					<ListProducts
 						postCardName="card11"
-						gridClass="sm:grid-cols-2 lg:grid-cols-4"
+						gridClass="grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
 						className="pb-16 lg:pb-28"
 					/>
 				</div>
