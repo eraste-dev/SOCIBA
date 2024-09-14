@@ -123,7 +123,7 @@ class PropertyController extends Controller
 
             // $product->title                = $validatedData['title'];
             $product->category_id          = $validatedData['category_id'];
-            $product->content              = isset($validatedData['content']) ?? null;
+            $product->content              = isset($validatedData['content']) && $validatedData['content'] !==  0 && $validatedData['content'] !== 1 ? $validatedData['content'] : null;
             $product->type                 = $validatedData['type'];
             $product->location_id          = $validatedData['location_id'];
             $product->location_description = $validatedData['location_description'];
@@ -145,8 +145,9 @@ class PropertyController extends Controller
             $product->bath                 = isset($validatedData['bath']) ? $validatedData['bath'] : null;
             $product->WiFi                 = isset($validatedData['WiFi']) ? $validatedData['WiFi'] : null;
             $product->pool                 = isset($validatedData['pool']) ? $validatedData['pool'] : null;
+            $product->acd                  = isset($validatedData['acd']) ? $validatedData['acd'] : null;
             $product->air_conditioning     = isset($validatedData['air_conditioning']) ? boolval($validatedData['air_conditioning']) : null;
-            $product->home_type     = isset($validatedData['home_type']) ? ($validatedData['home_type']) : null;
+            $product->home_type            = isset($validatedData['home_type']) ? ($validatedData['home_type']) : null;
             $product->security             = isset($validatedData['security']) ? $validatedData['security'] : null;
             $product->purchase_power       = isset($validatedData['purchase_power']) ? $validatedData['purchase_power'] : null;
             $product->accessibility        = isset($validatedData['accessibility']) ? $validatedData['accessibility'] : null;

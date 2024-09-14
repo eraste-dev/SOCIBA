@@ -14,7 +14,7 @@ export interface IUser {
 	avatar: string;
 	rating: number;
 	fonction: string;
-	influence_zone: ILocation;
+	influence_zone: ILocation | null;
 	status: "ACTIVE" | "INACTIVE" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED";
 	type: "ADMIN" | "USER" | "GUEST" | "AGENT";
 	count_products: number;

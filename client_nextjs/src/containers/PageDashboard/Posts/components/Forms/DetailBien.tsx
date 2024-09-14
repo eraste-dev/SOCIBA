@@ -51,13 +51,14 @@ const DetailBien: FC<DetailBienProps> = ({
 		const type = getValues("type");
 		const category_id = getValues("category_id");
 		const categorySelected = categories?.find((category) => category.id === category_id);
-		return (
-			type === TYPE_BIEN_EN_VENTE_KEY &&
-			[
-				ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN,
-				ProductcategoryUUID.BIEN_EN_VENTE.children.AUTRES,
-			].includes(categorySelected?.uuid ?? "")
-		);
+		// const conditionType = type === TYPE_BIEN_EN_VENTE_KEY;
+
+		console.log("check uuid cat", { categorySelected: categorySelected?.uuid, category_id });
+
+		return [
+			ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN,
+			ProductcategoryUUID.BIEN_EN_VENTE.children.AUTRES,
+		].includes(categorySelected?.uuid ?? "");
 	};
 
 	const Detaillocation = () => {
@@ -250,23 +251,17 @@ const DetailBien: FC<DetailBienProps> = ({
 
 					{/* ACD */}
 					{canShowACDCheckbox() && (
-						<div className="flex items-center" style={{ alignItems: "center" }}>
-							<div className="mt-3">
-								{/* <PoolSharp className="mr-2" /> */}
-								<input
+						<div className="mt-5 flex items-center" style={{ alignItems: "center" }}>
+							<div className="flex justify-center align-middle">
+								<Input
+									id="acd"
 									type="checkbox"
 									className="mx-2"
-									// checked={(product && product.jacuzzi && product.jacuzzi) ?? false}
+									style={checkBoxStyle}
+									defaultChecked={product?.acd}
 									{...register("acd")}
 								/>
-								<Tooltip title="Cochez cette case si vous avez une ACD">
-									<Label>
-										ACD
-										<span className="ml-2 text-gray-600">
-											<InfoOutlined />
-										</span>
-									</Label>
-								</Tooltip>
+								<label htmlFor="acd">ACD</label>
 							</div>
 						</div>
 					)}

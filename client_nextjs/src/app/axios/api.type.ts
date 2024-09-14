@@ -92,7 +92,8 @@ export type UpdateUserRequest = {
 	avatar?: File | null;
 };
 
-export type PeriodicityType = "DAY" | "WEEK" | "MONTH" | "YEAR";
+export type PeriodicityType = "DAY" | "WEEK" | "MONTH" | "YEAR" | "VISIT";
+
 export interface ProductRequest {
 	id?: number;
 	title?: string;
@@ -167,6 +168,8 @@ const EMPTY_AUTHOR: IUser = {
 	phone_whatsapp: "",
 	status: "PENDING",
 	type: "USER",
+	influence_zone: null,
+	rating: 0,
 };
 
 const EMPTY_CATEGORY: IPropertyCategory = {

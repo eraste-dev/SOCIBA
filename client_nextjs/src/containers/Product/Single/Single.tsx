@@ -23,6 +23,7 @@ import SingleAuthor from "containers/PageSingle/SingleAuthor";
 import CategoryPropertyBadgeTwo from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeTwo";
 import Card11Price from "components/Cards/Card11/Card11Price";
 import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeaturedMedia";
+import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
 
 export interface SingleProps {
 	className?: string;
@@ -145,7 +146,12 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 
 						<div className="col-span-3">
 							<div className="w-full flex justify-end ">
-								{single && <Card11Price item={single} className="text-primary-6000 dark:text-neutral-500 font-semibold text-2xl flex flex-col justify-end text-right " />}
+								{single && (
+									<Card11Price
+										item={single}
+										className="text-primary-6000 dark:text-neutral-500 font-semibold text-2xl flex flex-col justify-end text-right "
+									/>
+								)}
 							</div>
 						</div>
 					</div>
@@ -161,6 +167,8 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 					)}
 
 					{/* SINGLE MAIN CONTENT */}
+
+					{single && <PostCardDetailMeta meta={single} isSingle={true} />}
 
 					{single && (
 						<div className="">

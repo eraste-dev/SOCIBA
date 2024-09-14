@@ -34,3 +34,25 @@ export const formatPrice = (price: number | null | undefined): string => {
 		throw new TypeError(`Expected a number but received ${typeof price}`);
 	return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 };
+
+export const getAccessibilityText = (text: string): string => {
+	let label = "";
+
+	if (text === "NOT_FAR_FROM_THE_TAR") {
+		label = "Non loin du goudron";
+	}
+	return label;
+};
+
+export const getSecurityLabel = (text: string): string => {
+	let label = "";
+
+	switch (text) {
+		case "WITH_GUARD":
+			return "Avec virgile";
+
+		case "WITHOUT_GUARD":
+		default:
+			return "Sans virgile";
+	}
+};

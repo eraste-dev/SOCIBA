@@ -73,6 +73,7 @@ class PropertyResource extends JsonResource
             "bath"             => boolval($this->bath),
             "WiFi"             => boolval($this->WiFi),
             "pool"             => boolval($this->pool),
+            "acd"               => boolval($this->acd),
             "air_conditioning" => boolval($this->air_conditioning),
             "security"         => $this->security,
             "purchase_power"   => $this->purchase_power,

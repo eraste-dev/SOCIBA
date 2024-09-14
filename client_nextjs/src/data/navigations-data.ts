@@ -56,8 +56,8 @@ const NAV_COLUMN_TWO: NavItemType[] = [
 const NAV_COLUMN_THREE: NavItemType[] = [
 	createNavItem("Maison", href(ProductcategoryUUID.BIEN_EN_VENTE.children.MAISON)),
 	createNavItem("Terrain", href(ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN)),
-	createNavItem("Entrepôt", href(ProductcategoryUUID.BIEN_EN_VENTE.children.ENTREPOT)),
-	createNavItem("Magasin", href(ProductcategoryUUID.BIEN_EN_VENTE.children.MAGASIN)),
+	createNavItem("Autre bien immobilier", href(ProductcategoryUUID.BIEN_EN_VENTE.children.AUTRES)),
+	// createNavItem("Magasin", href(ProductcategoryUUID.BIEN_EN_VENTE.children.MAGASIN)),
 ];
 
 const NAV_COLUMN_FOUR: NavItemType[] = [

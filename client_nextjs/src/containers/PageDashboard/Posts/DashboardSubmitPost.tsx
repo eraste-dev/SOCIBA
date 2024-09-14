@@ -178,7 +178,7 @@ const DashboardSubmitPost = () => {
 		data.pool = data.pool ? 1 : 0;
 		data.WiFi = data.WiFi ? 1 : 0;
 		data.acd = data.acd ? 1 : 0;
-		data.acd = data.air_conditioning ? 1 : 0;
+		data.air_conditioning = data.air_conditioning ? 1 : 0;
 		data.bathrooms = data.bathrooms ?? 0;
 		data.kitchens = data.kitchens ?? 0;
 		data.area = data.area ?? 0;
@@ -465,6 +465,7 @@ const DashboardSubmitPost = () => {
 		setValue("periodicity", value.periodicity);
 
 		setValue("jacuzzi", value.jacuzzi);
+		setValue("acd", value.acd);
 		setValue("bath", value.bath);
 		setValue("air_conditioning", value.air_conditioning);
 		setValue("kitchens", value.kitchens);
@@ -1134,11 +1135,8 @@ const DashboardSubmitPost = () => {
 																onChange={(event) =>
 																	setValue(
 																		"periodicity",
-																		event.target.value as
-																			| "DAY"
-																			| "WEEK"
-																			| "MONTH"
-																			| "YEAR"
+																		event.target
+																			.value as PeriodicityType
 																	)
 																}
 															>
@@ -1152,9 +1150,8 @@ const DashboardSubmitPost = () => {
 																		key={p.id}
 																		value={p.id}
 																		selected={
-																			product &&
-																			product.periodicity ===
-																				p.id
+																			defaultValue?.periodicity ===
+																			p.id
 																		}
 																	>
 																		{p.name}
@@ -1173,11 +1170,8 @@ const DashboardSubmitPost = () => {
 																onChange={(event) =>
 																	setValue(
 																		"periodicity",
-																		event.target.value as
-																			| "DAY"
-																			| "WEEK"
-																			| "MONTH"
-																			| "YEAR"
+																		event.target
+																			.value as PeriodicityType
 																	)
 																}
 															>
