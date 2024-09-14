@@ -52,7 +52,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 	isSingle = false,
 }) => {
 	const iconSize: number = 18;
-	const { type, home_type, area, area_count, area_unit, bathrooms, kitchens } = meta;
+	const { type, category, home_type, area, area_count, area_unit, bathrooms, kitchens } = meta;
 	const locationItemClassName = isSingle
 		? "flex items-center justify-start"
 		: "flex items-center justify-center";
@@ -246,6 +246,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 			<>
 				{/* grid grid-cols-3 gap-0*/}
 				<div className="flex justify-between mt-3">
+					{/* *SUPERFICIE */}
 					{area && area > 0 && (
 						<div className="flex items-center justify-center mr-2" title="Superficie">
 							<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
@@ -253,10 +254,25 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 						</div>
 					)}
 
+					{/* nombre de pièce ou terrain */}
 					{area_count && (
 						<div className="flex items-center justify-center mr-2" title="Superficie">
-							<Apps width={iconSize} className="mb-1 mr-2" />
-							{`${area_count} pèce${area_count > 1 ? "s" : ""}`}
+							{type === "BIEN EN VENTE" &&
+							category.uuid === ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN &&
+							area_count < 0 ? (
+								<Apps width={iconSize} className="mb-1 mr-2" />
+							) : null}
+
+							{type === "BIEN EN VENTE" &&
+							category.uuid === ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN ? (
+								<span>
+									{area_count > 1 ? (
+										<>{`${area_count} terrain${area_count > 1 ? "s" : ""}`}</>
+									) : null}
+								</span>
+							) : (
+								<span> {`${area_count} pièce${area_count > 1 ? "s" : ""}`}</span>
+							)}
 						</div>
 					)}
 

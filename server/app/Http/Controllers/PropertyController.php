@@ -62,6 +62,7 @@ class PropertyController extends Controller
             'location_id'          => 'nullable|string|exists:municipalities,id',
             'location_description' => 'nullable|string',
             'price'                => 'nullable|numeric',
+            'price_second'         => 'nullable|numeric',
             'periodicity'          => 'nullable|string',
             'bathrooms'            => 'nullable|numeric',
             'bedrooms'             => 'nullable|numeric',
@@ -128,6 +129,7 @@ class PropertyController extends Controller
             $product->location_id          = $validatedData['location_id'];
             $product->location_description = $validatedData['location_description'];
             $product->price                = $validatedData['price'];
+            $product->price_second         =  isset($validatedData['price_second']) ? $validatedData['price'] : null;
             $product->periodicity          = isset($validatedData['periodicity']) ? $validatedData['periodicity'] : null;
 
             // details

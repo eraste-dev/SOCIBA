@@ -35,7 +35,7 @@ const widgetMenus: WidgetFooterMenu[] = [
 const Footer: React.FC = () => {
 	const renderWidgetMenuItem = (menu: WidgetFooterMenu, index: number) => {
 		return (
-			<div key={index} className="text-sm">
+			<div key={index} className=" col-span-1 text-sm">
 				<h2 className="font-semibold text-neutral-700 dark:text-neutral-200">
 					{menu.title}
 				</h2>
@@ -58,17 +58,30 @@ const Footer: React.FC = () => {
 	};
 
 	return (
-		<div className="nc-Footer relative py-16 lg:py-28 border-t border-neutral-200 dark:border-neutral-700">
-			<div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-3 lg:gap-x-10 ">
-				<div className="grid grid-cols-4 gap-5 col-span-2 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
-					<div className="col-span-2 md:col-span-1">
-						<Logo />
+		<div className="nc-Footer border-t border-neutral-200 dark:border-neutral-700">
+			<div className="container py-12 ">
+				{/* gap-y-10 gap-x-5 sm:gap-x-8 lg:gap-x-10 */}
+				<div className="grid grid-cols-3 gap-y-10 gap-x-8">
+					<div className="col-span-3 md:col-span-1">
+						<div className="grid grid-cols-1">
+							<div className="col-span-1 mb-5">
+								<Logo />
+							</div>
+
+							<div className="col-span-2 ">
+								<div className="grid grid-cols-2">
+									<SocialsList1 className="flex items-center space-x-3 lg:space-x-0 lg:flex-col lg:space-y-2.5 lg:items-start" />
+								</div>
+							</div>
+						</div>
 					</div>
-					<div className="col-span-2 flex items-center md:col-span-3">
-						<SocialsList1 className="flex items-center space-x-3 lg:space-x-0 lg:flex-col lg:space-y-2.5 lg:items-start" />
+
+					<div className="col-span-3 md:col-span-2">
+						<div className="grid grid-cols-2">
+							{widgetMenus.map(renderWidgetMenuItem)}
+						</div>
 					</div>
 				</div>
-				{widgetMenus.map(renderWidgetMenuItem)}
 			</div>
 		</div>
 	);

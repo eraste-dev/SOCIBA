@@ -34,7 +34,7 @@ const PostPropertyCardMetaV2: FC<PostPropertyCardMetaV2Props> = ({
 				{/* author.href */}
 				<Link to={""} className="relative flex items-center space-x-2">
 					{/* ! DEAD CODE **************************************************** */}
-					{!hiddenAvatar && false && (
+					{!hiddenAvatar && (
 						<Avatar
 							radius="rounded-full"
 							sizeClass={

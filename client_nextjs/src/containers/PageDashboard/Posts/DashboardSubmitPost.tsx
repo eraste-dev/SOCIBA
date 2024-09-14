@@ -127,6 +127,13 @@ export const SUB_HOTEL_DETAIL: ISubCategoryType[] = [
 	{ code: "SUITE", name: "Suite" },
 ];
 
+export const SUB_APPARTEMENT_DETAIL: ISubCategoryType[] = [
+	{ code: "TWO_PIECE", name: "2 pièces" },
+	{ code: "THREE_PIECE", name: "3 pièces" },
+	{ code: "FOUR_PIECE", name: "4 pièces" },
+	{ code: "AUTRE", name: "Autre" },
+];
+
 const DashboardSubmitPost = () => {
 	const CURRENCY: string = "FCFA";
 
@@ -167,10 +174,14 @@ const DashboardSubmitPost = () => {
 			(SUB_CATEGORIES().length > 0 ? Object.values(SUB_CATEGORIES())[0].code : "");
 
 		const priceString: string = data.price.toString().replace(/\s/g, "");
+		const priceSecondString: string | null = data.price_second
+			? data.price_second.toString().replace(/\s/g, "")
+			: null;
 
 		// ! FIX DEFAULT VALUE
 		data.images = images;
 		data.price = parseInt(priceString);
+		data.price_second = priceSecondString ? parseInt(priceSecondString) : null;
 		data.type = data.type ?? PRODUCT_TYPE[0];
 		data.home_type = defaultType;
 		data.jacuzzi = data.jacuzzi ? 1 : 0;
@@ -270,6 +281,15 @@ const DashboardSubmitPost = () => {
 			}
 		}
 		return label;
+	};
+
+	const hasVenteTerrain = () => {
+		const type = currentType();
+		const cat = currentCategory();
+		return (
+			type === "BIEN EN VENTE" &&
+			cat?.uuid === ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN
+		);
 	};
 
 	const isLocationSelected = (location: ILocation) => {
@@ -404,6 +424,12 @@ const DashboardSubmitPost = () => {
 		return _type as IProductType;
 	};
 
+	const currentCategory = (): IPropertyCategory | null => {
+		const _cat_id =
+			getValues("category_id") ?? (categories && categories[0] && categories[0].id);
+		return _findCat(_cat_id) && _findCat(_cat_id).length > 0 ? _findCat(_cat_id)[0] : null;
+	};
+
 	const getVenteCountLabel = () => {
 		let label: "Nombre de terrain" | "Nombre de pièces" = "Nombre de terrain";
 
@@ -461,6 +487,7 @@ const DashboardSubmitPost = () => {
 		setValue("content", value.content);
 
 		setValue("price", value.price);
+		setValue("price_second", value.price_second);
 		setValue("deposit_price", value.deposit_price);
 		setValue("periodicity", value.periodicity);
 
@@ -496,6 +523,7 @@ const DashboardSubmitPost = () => {
 				location_id: product.location.id.toString(),
 				location_description: product.location_description,
 				price: product.price,
+				price_second: product.price_second,
 				deposit_price: product.deposit_price,
 				area: product.area,
 				area_unit: product.area_unit,
@@ -773,90 +801,94 @@ const DashboardSubmitPost = () => {
 
 										{/* DETAIL CATEGORY */}
 										{/* hasResidence() && */}
-										{getValues("category_id") != undefined && (
-											<label className="block col-span-4">
-												<div className="grid grid-cols-1 gap-6">
-													<div>
-														<Label>
-															{getTypeDeteailLabel()}
+										{getValues("category_id") != undefined &&
+											!hasVenteTerrain() && (
+												<label className="block col-span-4">
+													<div className="grid grid-cols-1 gap-6">
+														<div>
+															<Label>
+																{getTypeDeteailLabel()}
+																{/* <span className="text-red-500">*</span> */}
+															</Label>
 
-															{/* <span className="text-red-500">*</span> */}
-														</Label>
+															<div className="block md:col-span-2 ">
+																{/* SELECT_HOME_TYPE */}
+																{!canShowOtherInput() &&
+																	SUB_CATEGORIES() &&
+																	SUB_CATEGORIES().length > 0 && (
+																		<Select
+																			onChange={(event) => {
+																				event.target
+																					.value &&
+																					setValue(
+																						"home_type",
+																						event.target
+																							.value
+																					);
 
-														<div className="block md:col-span-2 ">
-															{/* SELECT_HOME_TYPE */}
-															{!canShowOtherInput() &&
-																SUB_CATEGORIES() &&
-																SUB_CATEGORIES().length > 0 && (
-																	<Select
-																		onChange={(event) => {
-																			event.target.value &&
-																				setValue(
-																					"home_type",
+																				set_hasOtherKey(
 																					event.target
 																						.value
 																				);
+																			}}
+																		>
+																			<option>Choix</option>
+																			{SUB_CATEGORIES() &&
+																				SUB_CATEGORIES().map(
+																					(c) => (
+																						<option
+																							key={
+																								c.code
+																							}
+																							value={
+																								c.name
+																							}
+																							selected={
+																								c.name ===
+																								getValues(
+																									"home_type"
+																								)
+																							}
+																						>
+																							{c.name}
+																						</option>
+																					)
+																				)}
+																		</Select>
+																	)}
 
-																			set_hasOtherKey(
-																				event.target.value
-																			);
-																		}}
-																	>
-																		<option>Choix</option>
-																		{SUB_CATEGORIES() &&
-																			SUB_CATEGORIES().map(
-																				(c) => (
-																					<option
-																						key={c.code}
-																						value={
-																							c.name
-																						}
-																						selected={
-																							c.name ===
-																							getValues(
-																								"home_type"
-																							)
-																						}
-																					>
-																						{c.name}
-																					</option>
-																				)
-																			)}
-																	</Select>
+																{/* INPUT_HOME_TYPE */}
+																{}
+																{canShowOtherInput() && (
+																	<>
+																		<Input
+																			autoComplete="on"
+																			name="home_type"
+																			maxLength={20}
+																			onChange={(e) => {
+																				setValue(
+																					"home_type",
+																					e.target.value
+																				);
+																				set_hasOtherKey(
+																					e.target.value
+																				);
+																			}}
+																		/>
+																	</>
 																)}
-
-															{/* INPUT_HOME_TYPE */}
-															{}
-															{canShowOtherInput() && (
-																<>
-																	<Input
-																		autoComplete="on"
-																		name="home_type"
-																		maxLength={20}
-																		onChange={(e) => {
-																			setValue(
-																				"home_type",
-																				e.target.value
-																			);
-																			set_hasOtherKey(
-																				e.target.value
-																			);
-																		}}
-																	/>
-																</>
-															)}
+															</div>
 														</div>
 													</div>
-												</div>
-												<div>
-													<ErrorMessage
-														errors={errorArray}
-														error="category_id"
-														customMessage="Veuillez choisir un type de bien"
-													/>
-												</div>
-											</label>
-										)}
+													<div>
+														<ErrorMessage
+															errors={errorArray}
+															error="category_id"
+															customMessage="Veuillez choisir un type de bien"
+														/>
+													</div>
+												</label>
+											)}
 
 										{/* NOMBRE DE PIECE */}
 										{showNumberOfRooms() && (
@@ -1059,182 +1091,218 @@ const DashboardSubmitPost = () => {
 											</label>
 										)}
 
-										{/* PRICE - DEPOSIT PRICE */}
-										<label className="block md:col-span-2">
+										{/* PRICE - PRICE_SECOND  */}
+										<div className="block md:col-span-2">
 											<div className="grid grid-cols-3 gap-6">
-												<div className="col-span-2">
-													<Label>
-														{getPriceLabel()}
-														<span className="text-red-500">*</span>
-														<div className="flex items-center relative mt-2">
-															<CurrencyInput
-																id="input-currency"
-																className="w-full rounded-md "
-																placeholder="Entrer le montant"
-																defaultValue={
-																	product && product.price
-																}
-																min={0}
-																decimalsLimit={2}
-																groupSeparator=" "
-																onValueChange={(
-																	value,
-																	name,
-																	values
-																) =>
-																	// setValue("price", value)
-																	console.log({
+												{/* PRICE */}
+												{true ? (
+													<div
+														className={
+															currentType() === "BIEN EN VENTE" &&
+															currentCategory() &&
+															currentCategory()?.uuid !==
+																ProductcategoryUUID.MAISON.key
+																? "col-span-3"
+																: "col-span-2"
+														}
+													>
+														<Label>
+															{getPriceLabel()}
+															<span className="text-red-500">*</span>
+															<div className="flex items-center relative mt-2">
+																<CurrencyInput
+																	id="input-currency"
+																	className="w-full rounded-md "
+																	placeholder="Entrer le montant"
+																	defaultValue={
+																		product && product.price
+																	}
+																	min={0}
+																	decimalsLimit={2}
+																	groupSeparator=" "
+																	onValueChange={(
 																		value,
 																		name,
-																		values,
-																	})
-																}
-																{...register("price", {
-																	required: true,
-																})}
-															/>
-															<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
-																FCFA
-															</span>
-															{false && (
-																<>
-																	<Input
-																		type="number"
-																		className="mt-1"
-																		defaultValue={
-																			(product &&
-																				product?.price) ??
-																			0
-																		}
-																		{...register("price", {
-																			required: true,
-																		})}
-																	/>
-
-																	<span className="text-lg ml-2 text-neutral-300">
-																		{CURRENCY}{" "}
-																	</span>
-																</>
-															)}
-														</div>
-													</Label>
-													<ErrorMessage
-														errors={errorArray}
-														error="price"
-														customMessage="Veuillez saisir un prix"
-													/>
-												</div>
-
-												<div className="col-span-1">
-													{getValues("type") !==
-														PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
-														<div className="block ">
-															<Label className="my-0">
-																Périodicité
-															</Label>
-															<Select
-																name="periodicity"
-																className="w-full"
-																onChange={(event) =>
-																	setValue(
-																		"periodicity",
-																		event.target
-																			.value as PeriodicityType
-																	)
-																}
-															>
-																{false && (
-																	<option value="">
-																		Choisir une périodicité
-																	</option>
-																)}
-																{GET_PERIODICITY().map((p) => (
-																	<option
-																		key={p.id}
-																		value={p.id}
-																		selected={
-																			defaultValue?.periodicity ===
-																			p.id
-																		}
-																	>
-																		{p.name}
-																	</option>
-																))}
-															</Select>
-														</div>
-													)}
-
-													{getValues("type") ===
-														PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
-														<div className="block md:col-span-2 ">
-															<Select
-																name="periodicity"
-																className="mt-4"
-																onChange={(event) =>
-																	setValue(
-																		"periodicity",
-																		event.target
-																			.value as PeriodicityType
-																	)
-																}
-															>
-																{PRODUCT_AREA_UNIT.map((u) => (
-																	<option
-																		key={u.id}
-																		value={u.id}
-																		selected={
-																			product &&
-																			product.area_unit ===
-																				u.id
-																		}
-																		defaultValue={
-																			!getValues("area_unit")
-																				? u.id
-																				: ""
-																		}
-																	>
-																		{u.name}
-																	</option>
-																))}
-															</Select>
-														</div>
-													)}
-
-													{false && (
-														<>
-															<label className="block md:col-span-2">
-																Caution{" "}
-																<span className="text-red-500">
-																	*
+																		values
+																	) =>
+																		// setValue("price", value)
+																		console.log({
+																			value,
+																			name,
+																			values,
+																		})
+																	}
+																	{...register("price", {
+																		required: true,
+																	})}
+																/>
+																<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
+																	FCFA
 																</span>
-																<div className="flex items-center">
-																	<Input
-																		type="number"
-																		// defaultValue={
-																		// 	product && product.deposit_price
-																		// }
-																		className="mt-1"
-																		{...register(
-																			"deposit_price",
-																			{
-																				required: true,
+															</div>
+														</Label>
+														<ErrorMessage
+															errors={errorArray}
+															error="price"
+															customMessage="Veuillez saisir un prix"
+														/>
+													</div>
+												) : null}
+
+												{/* PRICE BY UNIT */}
+												{currentType() === "BIEN EN VENTE" &&
+												currentCategory() &&
+												currentCategory()?.uuid !==
+													ProductcategoryUUID.MAISON.key ? (
+													<div className="col-span-2">
+														<Label>
+															Prix par unité
+															<span className="text-red-500">*</span>
+															<div className="flex items-center relative mt-2">
+																<CurrencyInput
+																	id="input-currency"
+																	className="w-full rounded-md "
+																	placeholder="Entrer le montant"
+																	defaultValue={
+																		(product &&
+																			product.price_second) ??
+																		0
+																	}
+																	min={0}
+																	decimalsLimit={0}
+																	groupSeparator=" "
+																	{...register("price_second", {
+																		required: true,
+																	})}
+																/>
+																<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
+																	FCFA
+																</span>
+
+																{false && (
+																	<>
+																		<Input
+																			type="number"
+																			className="mt-1"
+																			defaultValue={
+																				(product &&
+																					product?.price) ??
+																				0
 																			}
+																			{...register("price", {
+																				required: true,
+																			})}
+																		/>
+
+																		<span className="text-lg ml-2 text-neutral-300">
+																			{CURRENCY}{" "}
+																		</span>
+																	</>
+																)}
+															</div>
+														</Label>
+														<ErrorMessage
+															errors={errorArray}
+															error="price"
+															customMessage="Veuillez saisir un prix"
+														/>
+													</div>
+												) : null}
+
+												{/* PERIODICITY OR  UNIT */}
+												{true ? (
+													<div className="col-span-1">
+														{getValues("type") !==
+															PRODUCT_TYPE[
+																TYPE_BIEN_EN_VENTE_KEY
+															] && (
+															<div className="block ">
+																<Label className="my-0">
+																	Périodicité
+																</Label>
+																<Select
+																	name="periodicity"
+																	className="w-full"
+																	onChange={(event) =>
+																		setValue(
+																			"periodicity",
+																			event.target
+																				.value as PeriodicityType
+																		)
+																	}
+																>
+																	{false && (
+																		<option value="">
+																			Choisir une périodicité
+																		</option>
+																	)}
+																	{GET_PERIODICITY().map((p) => (
+																		<option
+																			key={p.id}
+																			value={p.id}
+																			selected={
+																				defaultValue?.periodicity ===
+																				p.id
+																			}
+																		>
+																			{p.name}
+																		</option>
+																	))}
+																</Select>
+															</div>
+														)}
+
+														{getValues("type") ===
+															PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] &&
+															currentCategory() &&
+															currentCategory()?.uuid ===
+																ProductcategoryUUID.BIEN_EN_VENTE
+																	.children.TERRAIN && (
+																<div className="block md:col-span-2 ">
+																	<Label className="">
+																		Unité
+																		<span>
+																			{" (m² / LOT)".toUpperCase()}{" "}
+																		</span>
+																	</Label>
+																	<Select
+																		name="periodicity"
+																		className="mt-2"
+																		onChange={(event) =>
+																			setValue(
+																				"periodicity",
+																				event.target
+																					.value as PeriodicityType
+																			)
+																		}
+																	>
+																		{PRODUCT_AREA_UNIT.map(
+																			(u) => (
+																				<option
+																					key={u.id}
+																					value={u.id}
+																					selected={
+																						product &&
+																						product.area_unit ===
+																							u.id
+																					}
+																					defaultValue={
+																						!getValues(
+																							"area_unit"
+																						)
+																							? u.id
+																							: ""
+																					}
+																				>
+																					{u.name}
+																				</option>
+																			)
 																		)}
-																	/>
-																	<span className="text-lg ml-2 text-neutral-300">
-																		{" "}
-																		{CURRENCY}{" "}
-																	</span>
+																	</Select>
 																</div>
-															</label>
-															<ErrorMessage
-																errors={errorArray}
-																error="deposit_price"
-																customMessage="Veuillez saisir une caution"
-															/>
-														</>
-													)}
-												</div>
+															)}
+													</div>
+												) : null}
 											</div>
 
 											{showCaution() && (
@@ -1290,7 +1358,7 @@ const DashboardSubmitPost = () => {
 													)}
 												</div>
 											)}
-										</label>
+										</div>
 									</div>
 								</div>
 							</div>

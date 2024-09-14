@@ -92,8 +92,7 @@ export type UpdateUserRequest = {
 	avatar?: File | null;
 };
 
-
-export type PeriodicityType = "DAY" | "WEEK" | "MONTH" | "YEAR" | "VISIT";
+export type PeriodicityType = "DAY" | "WEEK" | "MONTH" | "YEAR" | "VISIT";
 
 export interface ProductRequest {
 	id?: number;
@@ -107,6 +106,7 @@ export interface ProductRequest {
 	location_id?: string;
 	location_description?: string; // detail commune location
 	price: number;
+	price_second: number | null;
 	deposit_price?: number;
 	images?: FileList | string[] | null;
 	// details
@@ -134,6 +134,7 @@ export interface ProductRequest {
 
 export const PRODUCT_REQUEST_EMPTY: ProductRequest = {
 	price: 0,
+	price_second: null,
 	bathrooms: null,
 	bedrooms: null,
 	garages: null,
@@ -217,6 +218,7 @@ export const EMPTY_PRODUCT: IProduct = {
 	address: "",
 	client_address: "",
 	price: 0,
+	price_second: null,
 	deposit_price: 0,
 	location_description: "",
 	location: EMPTY_LOCATION,

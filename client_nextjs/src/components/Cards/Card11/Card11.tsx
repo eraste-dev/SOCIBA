@@ -67,8 +67,18 @@ const Card11: FC<Card11Props> = ({
 
 				{/* grid grid-cols-3 */}
 				<div className="flex justify-between">
-					<div className="grid col-span-1">
+					<div className="grid col-span-1 text-ellipsis truncate " style={{ minWidth: "70px", maxWidth: "75px" }}>
 						<CategoryPropertyBadgeTwo className="text-xs md:text-md" item={post} />
+
+						<p className="relative sm:bottom-3 mt-2 text-xs font-semibold text-secondary-900 dark:text-neutral-100 ">
+							<span className="text-xs text-neutral-500 flex justify-items-center ">
+								{/* <FaMapMarkerAlt className="mr-1" /> */}
+								{location.name}
+							</span>
+							{/*  style={{ marginLeft: "15px" }} */}
+							<span className="text-xs text-neutral-500">{location_description}</span>
+							{/* , {location.city?.name} */}
+						</p>
 					</div>
 
 					{/* grid lg:col-span-4 col-span-6 */}
@@ -78,16 +88,6 @@ const Card11: FC<Card11Props> = ({
 						<Card11Price item={post} />
 					</div>
 				</div>
-
-				<p className="relative sm:bottom-3 mt-2 text-xs font-semibold text-secondary-900 dark:text-neutral-100 ">
-					<span className="text-xs text-neutral-500 flex justify-items-center ">
-						{/* <FaMapMarkerAlt className="mr-1" /> */}
-						{location.name}
-					</span>
-					{/*  style={{ marginLeft: "15px" }} */}
-					<span className="text-xs text-neutral-500">{location_description}</span>
-					{/* , {location.city?.name} */}
-				</p>
 
 				{false && (
 					<p className="nc-card-title block text-md sm:text-xs font-semibold text-neutral-900 dark:text-neutral-100 ">

@@ -17,6 +17,7 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 
 	const [useStateFilter, setUseStateFilter] = useState<IPropertyFilter>({});
 	const [searchText, setSearchText] = useState<string>("");
+	const [open, setopen] = useState(false);
 
 	const fetchAll = (params: IGetSearchPropertiesParams) => {
 		if (useStateFilter) {
@@ -25,6 +26,13 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 			console.log(_params, "searchParamsFromURL()");
 			return dispatch(searchProperties(_params));
 		}
+	};
+
+	const handleChange = (value: string) => {
+		const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
+		setUseStateFilter((prev) => ({ ...prev, textSearch: value }));
+		setSearchText(value);
+		fetchAll(params);
 	};
 
 	return (
@@ -36,16 +44,12 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 					className="pr-10 w-full"
 					sizeClass="h-[42px] pl-4 py-3"
 					onChange={(e) => {
-						const params: IGetSearchPropertiesParams =
-							searchParamsFromRedux(useStateFilter);
-						setUseStateFilter((prev) => ({ ...prev, textSearch: e.target.value }));
-						setSearchText(e.target.value);
-						fetchAll(params);
+						handleChange(e.target.value);
+						setopen(true);
 					}}
 					onBlur={() => {
-						const params: IGetSearchPropertiesParams =
-							searchParamsFromRedux(useStateFilter);
-						fetchAll(params);
+						handleChange(searchText);
+						setopen(false);
 					}}
 				/>
 				<span className="absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500">
@@ -74,9 +78,11 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 				<input type="submit" hidden value="" />
 			</form>
 
-			{searchText && searchText.length >= 2 && (
+			{/* searchText && searchText.length >= 2 */}
+			{/* w-11/12 md:w-1/3 lg:w-1/3 */}
+			{open && (
 				<div
-					className="relative bg-white dark:bg-neutral-400 shadow-md w-11/12 md:w-1/3 lg:w-1/3 p-4 overflow-auto"
+					className="relative bg-white dark:bg-neutral-400 shadow-sm w-11/12 md:w-1/3 lg:w-1/3 p-4 overflow-auto"
 					style={{
 						minHeight: "200px",
 						maxHeight: "450px",
@@ -90,8 +96,16 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 						</div>
 					)}
 
+					{searchText == "" && (
+						<div className="w-full flex justify-center text-sm text-neutral-200 dark:text-neutral-800">
+							{" "}
+							Aucun résultat{" "}
+						</div>
+					)}
+
 					<ul className="w-full">
-						{productSearched &&
+						{searchText != "" &&
+							productSearched &&
 							productSearched.get &&
 							productSearched.get?.length > 0 &&
 							productSearched.get?.map((item) => (
@@ -103,8 +117,21 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 										setSearchText("");
 									}}
 								>
-									<span>{item.title}</span> <br />
-									<span> {_f(item.price)} FCFA </span>
+									<span>
+										<span className="font-semibold">
+											{item.category && item.category.name}
+										</span>{" "}
+										{item.home_type && item.home_type != item.category.name
+											? item.home_type
+											: ""}{" "}
+									</span>
+									<br />
+									<span>
+										{`Commune : ${item.location.name}`} {" , "}
+										<span>{`quartier : ${item.location_description}`}</span>
+									</span>{" "}
+									<br />
+									<span> {_f(item.price)} </span>
 								</li>
 							))}
 					</ul>

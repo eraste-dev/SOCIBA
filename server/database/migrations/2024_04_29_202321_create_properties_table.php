@@ -24,6 +24,7 @@ return new class extends Migration
             $table->enum('type', ['BIEN EN VENTE', 'RESERVATION', 'LOCATION', 'AUTRE'])->nullable();
             $table->double('price')->nullable();
             $table->double('deposit_price')->nullable();
+            $table->double('price_second')->nullable();
             // $table->string('post_type')->nullable()->comment('ADMIN :admin CUSTOMER:customer');
             $table->string('location_id')->nullable(); // municipalities id
             $table->string('location_description')->nullable();

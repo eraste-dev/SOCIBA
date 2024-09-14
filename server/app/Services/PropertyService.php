@@ -2,13 +2,11 @@
 
 namespace App\Services;
 
-use App\Http\Middleware\JwtMiddleware;
-use App\Http\Resources\Collection;
+
 use App\Http\Resources\PropertyResource;
 use App\Models\Municipality;
 use App\Models\Property;
 use App\Models\PropertyCategory;
-use App\Models\Slider;
 use App\Utils\Utils;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -52,6 +50,12 @@ class PropertyService
 
             $query->orWhere(
                 'price',
+                'like',
+                '%' . $payload['searchText'] . '%'
+            );
+
+            $query->orWhere(
+                'home_type',
                 'like',
                 '%' . $payload['searchText'] . '%'
             );

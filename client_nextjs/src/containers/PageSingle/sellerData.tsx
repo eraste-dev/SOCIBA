@@ -45,21 +45,21 @@ const ContactSeller: FC<ContactSellerProps> = ({ productLink }) => {
 				</a>
 
 				<a
+					href={handleSMS()}
+					className={`bg-blue-500 hover:bg-blue-600 ${classNameItem}`}
+					target="_blank"
+				>
+					<FaSms size={iconSize} />
+					<span className="ml-2">SMS</span>
+				</a>
+
+				<a
 					href={handleWhatsApp()}
 					className={`bg-blue-500 hover:bg-blue-6000 ${classNameItem}`}
 					target="_blank"
 				>
 					<FaWhatsapp size={iconSize} />
 					<span className="ml-2">WhatsApp</span>
-				</a>
-
-				<a
-					href={handleSMS()}
-					className={`bg-orange-500 hover:bg-orange-600 ${classNameItem}`}
-					target="_blank"
-				>
-					<FaSms size={iconSize} />
-					<span className="ml-2">SMS</span>
 				</a>
 			</div>
 		</div>

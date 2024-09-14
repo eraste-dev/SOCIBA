@@ -44,6 +44,7 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className }) => {
 					}
 				>
 					{_f(item.price)}
+
 					{/* // PERIODICITY */}
 					{item.type !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] &&
 						item.periodicity &&
@@ -53,18 +54,37 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className }) => {
 									GET_PERIODICITY().find((p) => p.id === item.periodicity)?.name}
 							</>
 						)}
-
-					{/* // AREA UNIT FOR (VENTE) */}
-					{item.type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] &&
-						item.area_unit &&
-						GET_AREA_UNIT().find((u) => u.id === item.area_unit) && (
-							<>
-								{` / ` + GET_AREA_UNIT().find((u) => u.id === item.area_unit)?.name}
-							</>
-						)}
 				</span>
 			</div>
 			{/* SHOW PRICE *********************************************************************** */}
+
+			{/*  SHOW SECOND PRICE  ************************************************************** */}
+
+			{item.price_second != null && item.type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] ? (
+				<div className="w-full flex lg:justify-end justify-start mt-2 lg:mt-0 ">
+					<span
+						className={
+							className
+								? className
+								: "nc-card-title block font-bold text-primary-800 dark:text-neutral-100 text-sm text-clip overflow-hidden text-end"
+						}
+					>
+						{_f(item.price_second)}
+
+						{/* // AREA UNIT FOR (VENTE) */}
+						{item.type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] &&
+							item.area_unit &&
+							GET_AREA_UNIT().find((u) => u.id === item.area_unit) && (
+								<>
+									{` / ` +
+										GET_AREA_UNIT().find((u) => u.id === item.area_unit)?.name}
+								</>
+							)}
+					</span>
+				</div>
+			) : null}
+
+			{/*  SHOW SECOND PRICE  ************************************************************** */}
 
 			{/* ! DEAD CODE *************************************************** */}
 			<div className="w-full flex lg:justify-end justify-start ">

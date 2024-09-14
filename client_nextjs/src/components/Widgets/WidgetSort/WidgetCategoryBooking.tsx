@@ -9,7 +9,7 @@ import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "./ListBoxSelect
 import { useSelector } from "react-redux";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 
-export const SIMPLIFY_LIST_CAT = [
+export const SIMPLIFY_LIST_CAT: IListBoxSelectFilterWidget[] = [
 	{ name: "Tous(*)", value: "*" },
 	{
 		name: "Residence",
@@ -90,17 +90,25 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 	 * @return {IListBoxSelectFilterWidget[]} The list of IListBoxSelectFilterWidget items
 	 */
 	function CATEGORIES(): IListBoxSelectFilterWidget[] {
-		let data: IListBoxSelectFilterWidget[] = SIMPLIFY_LIST_CAT;
+		let data: IListBoxSelectFilterWidget[] = [];
 
 		console.log("categories", category_uuid, data);
-		// http://localhost:3000/annonces/?type=LOCATION&category_uuid=LOCATION__MAISON
-		// http://localhost:3000/?category_slug=residence&category_slug_selected=residence
 
-		data = data.map((item) => {
-			item.selected = item.value === category_slug;
-			return item;
-		});
+		// data = data.map((item) => {
+		// 	item.selected = item.value === category_slug;
+		// 	return item;
+		// });
 
+		data =
+			(categories &&
+				categories.map((item) => ({
+					name: item.name,
+					value: item.slug,
+					selected: item.slug === category_slug_selected,
+				}))) ??
+			SIMPLIFY_LIST_CAT;
+
+		data.unshift({ name: "Tous(*)", value: "*" });
 		return data;
 	}
 

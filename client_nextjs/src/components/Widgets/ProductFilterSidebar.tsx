@@ -68,8 +68,6 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 					showFilter ? (!linear ? "block sm:p-2 max-w-md" : "block sm:p-2") : "hidden"
 				}
 			>
-				{/* bgcolor: "background.paper", */}
-
 				<div className={!linear ? "grid grid-cols-1 gap-0" : "grid grid-cols-4 gap-2"}>
 					{true ? (
 						<div>
@@ -87,7 +85,9 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 					</div>
 
 					{categorySlugSelected
-						? ["residence", "hotel", "maison"].includes(categorySlugSelected) && (
+						? ["residence", "hotel", "maison", "appartement"].includes(
+								categorySlugSelected
+						  ) && (
 								<div>
 									<WidgetCategoryDetailWithSelect
 										handleFetch={fetchAll}
@@ -131,14 +131,18 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 					{!linear && (
 						<>
 							<div className={!linear ? "mr-2 mb-2" : "col-span-1"}>
-								<ButtonPrimary className="w-full" onClick={fetchAll} sizeClass="px-4 py-2 sm:px-5">
+								<ButtonPrimary
+									className="w-full"
+									onClick={fetchAll}
+									sizeClass="px-4 py-2 sm:px-5"
+								>
 									Rechercher
 								</ButtonPrimary>
 							</div>
 
 							<div className={!linear ? "mr-2 mb-2" : "col-span-1 mr-2"}>
 								<ButtonSecondary
-								className="w-full"
+									className="w-full"
 									onClick={removeQueryParams}
 									sizeClass="px-4 py-2 sm:px-5"
 								>

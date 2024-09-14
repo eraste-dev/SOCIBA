@@ -30,6 +30,7 @@ export interface IProduct {
 	address: string;
 	client_address: string;
 	price: number;
+	price_second: number | null;
 	deposit_price: number;
 	location_description: string;
 	location: ILocation;

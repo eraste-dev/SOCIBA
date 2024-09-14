@@ -4,6 +4,7 @@ import ncNanoId from "utils/ncNanoId";
 import { ProductcategoryUUID } from "./categories_uuid";
 import {
 	PRODUCT_TYPE,
+	TYPE_BIEN_EN_VENTE_KEY,
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
 } from "containers/PageDashboard/Posts/DashboardSubmitPost";
@@ -81,9 +82,18 @@ const NAV_COLUMN_TWO: NavItemType[] = [
 ];
 
 const NAV_COLUMN_THREE: NavItemType[] = [
-	createNavItem("Maison", href(ProductcategoryUUID.BIEN_EN_VENTE.children.MAISON)),
-	createNavItem("Terrain", href(ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN)),
-	createNavItem("Autre bien immobilier", href(ProductcategoryUUID.BIEN_EN_VENTE.children.AUTRES)),
+	createNavItem(
+		"Maison",
+		href(PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY], "maison") // TODO : use constant for scalability
+	),
+	createNavItem(
+		"Terrain",
+		href(PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY], "terrain") // TODO : use constant for scalability
+	),
+	createNavItem(
+		"Autre bien immobilier",
+		href(PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY], "autre-bien-immobilier") // TODO : use constant for scalability
+	),
 	// createNavItem("Magasin", href(ProductcategoryUUID.BIEN_EN_VENTE.children.MAGASIN)),
 ];
 

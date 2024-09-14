@@ -129,7 +129,7 @@ const MainNav2: FC<MainNav2Props> = () => {
 			</div>
 
 			{!isDashboard() && (
-				<div className="container pb-2 relative flex justify-between items-center mt-5 ">
+				<div className="container pb-2 relative flex justify-between items-center">
 					<div className="hidden sm:flex justify-between">
 						<Navigation navigations={NAVIGATION_SHORT_DEMO} />
 					</div>
