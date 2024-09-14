@@ -298,7 +298,6 @@ export const deleteProduct = (payload: number) => async (dispatch: AppDispatch) 
 	}
 };
 
-
 export const initProductState = () => async (dispatch: AppDispatch) => {
 	dispatch(postProductInit());
 };
