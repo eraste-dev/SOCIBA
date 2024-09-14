@@ -55,6 +55,7 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 						<div className="block md:col-span-2 p-2">
 							<div className="flex  " style={{ alignItems: "center" }}>
 								{/* <Security className="mr-2" /> */}
+								
 								<Select
 									onChange={(event) => {
 										event.target.value &&
