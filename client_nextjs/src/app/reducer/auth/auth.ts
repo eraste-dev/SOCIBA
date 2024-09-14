@@ -18,6 +18,7 @@ export interface IUser {
 	status: "ACTIVE" | "INACTIVE" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED";
 	type: "ADMIN" | "USER" | "GUEST" | "AGENT";
 	count_products: number;
+	
 }
 
 export interface IAuth {
