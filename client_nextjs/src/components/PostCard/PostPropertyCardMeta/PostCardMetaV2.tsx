@@ -47,7 +47,7 @@ const PostPropertyCardMetaV2: FC<PostPropertyCardMetaV2Props> = ({
 					{/* ! DEAD CODE **************************************************** */}
 
 					<div className="lg:flex flex-col text-xs md:text-md">
-						<div className="lg:flex block items-center align-middle text-xs md:text-md">
+						<div className="flex items-center align-middle text-xs md:text-md">
 							{"Annonceur : "}
 							<strong className="ml-1">
 								<span className="line-clamp-1 text-xs md:text-md">{` ${author.name} ${author.last_name}`}</span>{" "}

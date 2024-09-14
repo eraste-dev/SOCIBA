@@ -45,7 +45,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 
 	return (
 		<div className="p-4 bg-white rounded-lg shadow-md">
-			<label className="block text-sm font-medium text-gray-700">Ajoutez des photos*</label>
+			<label className="block text-sm font-medium text-gray-700">Images</label>
 			<p className="text-xs text-gray-500">
 				Ajoutez plusieurs photos pour augmenter vos chances d'être contacté
 			</p>
@@ -68,9 +68,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 					</div>
 				))}
 				{images.length < maxImages && (
-					<div className="w-64 h-64 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
+					<div className="w-full h-64 border-2 border-dashed border-primary-300 rounded flex items-center justify-center">
 						<label className="flex flex-col items-center cursor-pointer justify-center text-center">
-							<span className="text-gray-500">Ajouter une photo</span>
+							<span className="text-primary-500">Ajouter une photo</span>
 							<input
 								type="file"
 								accept="image/*"

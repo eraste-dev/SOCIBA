@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Collection;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImages;
@@ -12,10 +11,8 @@ use App\Services\PropertyService;
 use App\Services\ResponseService;
 use App\Utils\Utils;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
-use Intervention\Image\Facades\Image;
 
 class PropertyController extends Controller
 {
@@ -25,6 +22,19 @@ class PropertyController extends Controller
      * Display a listing of the resource.
      */
     public function get(Request $request)
+    {
+        $paginationService = new ProudctPaginationService;
+        $products = PropertyService::search(Property::requestSearch());
+        // dd($products);
+
+        return ResponseService::success(
+            $products,
+            Response::HTTP_OK,
+            $paginationService->paginate($products, $request->limit ?? $this->limit_product, $request->page ?? 1, null, null),
+        );
+    }
+
+    public function getUserPost(Request $request)
     {
         $paginationService = new ProudctPaginationService;
         $products = PropertyService::search(Property::requestSearch());
@@ -70,15 +80,15 @@ class PropertyController extends Controller
             'pool'                 => 'nullable|numeric', // |boolean
             'area_count'           => 'nullable|numeric', // |boolean
             'air_conditioning'     => 'nullable', // |boolean
-            'security'             => 'nullable|string|in:WITH_GUARD,WITHOUT_GUARD',
-            'purchase_power'       => 'nullable|string|in:LESS_EXPENSIVE,EQUAL_EXPENSIVE,MORE_EXPENSIVE',
-            'accessibility'        => 'nullable|string|in:NOT_FAR_FROM_THE_TAR,A_LITTLE_FAR_FROM_THE_TAR,FAR_FROM_THE_TAR',
+            'security'             => 'nullable|in:WITH_GUARD,WITHOUT_GUARD',
+            'purchase_power'       => 'nullable|in:LESS_EXPENSIVE,EQUAL_EXPENSIVE,MORE_EXPENSIVE',
+            'accessibility'        => 'nullable|in:NOT_FAR_FROM_THE_TAR,A_LITTLE_FAR_FROM_THE_TAR,FAR_FROM_THE_TAR',
             'images.*'             => 'required|file|max:10048',
             // 'excerpt'           => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
-            return ResponseService::error("Erreur d'enregistrement", 422, $validator->errors());
+            return ResponseService::error($validator->errors()->first(), 422, $validator->errors());
         }
 
         // Enregistrer les données dans la base de données
@@ -113,7 +123,7 @@ class PropertyController extends Controller
 
             // $product->title                = $validatedData['title'];
             $product->category_id          = $validatedData['category_id'];
-            $product->content              = isset($validatedData['content']) ?? null;
+            $product->content              = isset($validatedData['content']) && $validatedData['content'] !==  0 && $validatedData['content'] !== 1 ? $validatedData['content'] : null;
             $product->type                 = $validatedData['type'];
             $product->location_id          = $validatedData['location_id'];
             $product->location_description = $validatedData['location_description'];
@@ -128,15 +138,16 @@ class PropertyController extends Controller
             $product->rooms                = isset($validatedData['rooms']) ? $validatedData['rooms'] : null;
             $product->area                 = isset($validatedData['area']) ? $validatedData['area'] : null;
             $product->area_count           = isset($validatedData['area_count']) ? $validatedData['area_count'] : null;
-            $product->area_unit            = (!isset($validatedData['area_unit']) || $validatedData['area_unit'] == 0 || !in_array(['LOT', 'M'], $validatedData['area_unit'])) ? null :  $validatedData['area_unit'];
+            $product->area_unit            = (!isset($validatedData['area_unit']) || $validatedData['area_unit'] == 0 || !in_array($validatedData['area_unit'], ['LOT', 'M'])) ? null :  $validatedData['area_unit'];
             $product->count_advance        = isset($validatedData['count_advance']) ? $validatedData['count_advance'] : null;
             $product->count_monthly        = isset($validatedData['count_monthly']) ? $validatedData['count_monthly'] : null;
             $product->jacuzzi              = isset($validatedData['jacuzzi']) ? $validatedData['jacuzzi'] : null;
             $product->bath                 = isset($validatedData['bath']) ? $validatedData['bath'] : null;
             $product->WiFi                 = isset($validatedData['WiFi']) ? $validatedData['WiFi'] : null;
             $product->pool                 = isset($validatedData['pool']) ? $validatedData['pool'] : null;
+            $product->acd                  = isset($validatedData['acd']) ? $validatedData['acd'] : null;
             $product->air_conditioning     = isset($validatedData['air_conditioning']) ? boolval($validatedData['air_conditioning']) : null;
-            $product->home_type     = isset($validatedData['home_type']) ? ($validatedData['home_type']) : null;
+            $product->home_type            = isset($validatedData['home_type']) ? ($validatedData['home_type']) : null;
             $product->security             = isset($validatedData['security']) ? $validatedData['security'] : null;
             $product->purchase_power       = isset($validatedData['purchase_power']) ? $validatedData['purchase_power'] : null;
             $product->accessibility        = isset($validatedData['accessibility']) ? $validatedData['accessibility'] : null;

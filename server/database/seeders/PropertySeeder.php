@@ -649,7 +649,7 @@ class PropertySeeder extends Seeder
         // Property::create($data[4]);
 
         for ($i = 0; $i < 5; $i++) {
-            Property::create($data[$i]);
+            // Property::create($data[$i]);
         }
     }
 }

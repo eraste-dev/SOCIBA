@@ -1,9 +1,5 @@
 import { FC } from "react";
-import SectionFounder from "./SectionFounder";
-import SectionStatistic from "./SectionStatistic";
 import { Helmet } from "react-helmet";
-import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
-import BackgroundSection from "components/BackgroundSection/BackgroundSection";
 import SectionContact from "./SectionContact";
 
 export interface PageMovingRequestProps {

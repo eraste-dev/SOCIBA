@@ -1,16 +1,13 @@
 import { IUser } from "app/reducer/auth/auth";
-import DashboardBillingAddress from "containers/PageDashboard/DashboardBillingAddress";
 import DashboardEditProfile from "containers/PageDashboard/DashboardEditProfile";
 import DashboardPostCategories from "containers/PageDashboard/DashboardPostCategories";
 import DashboardPosts from "containers/PageDashboard/DashboardPosts";
-import DashboardRoot from "containers/PageDashboard/DashboardRoot";
-import DashboardSubcription from "containers/PageDashboard/DashboardSubcription";
 import DashboardSubmitPost from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import DashboardUsers from "containers/PageDashboard/DashboardUsers";
-import DashboardSetting from "containers/PageDashboard/settings/DashboardSetting";
 import DashboardSliders from "containers/PageDashboard/Sliders/DashboardSliders";
-import DashboardUserRequest from "containers/PageDashboard/userRequest/DashboardUserRequest";
+import DashboardUserRequest from "containers/PageDashboard/Users/userRequest/DashboardUserRequest";
 import { ComponentType } from "react";
+import DashboardSettings from "containers/PageDashboard/Settings/DashboardSettings";
 
 export interface DashboardLocationState {
 	// "/root"?: {};
@@ -45,7 +42,7 @@ export const USER_SUB_PAGES: DashboardPage[] = [
 		emoij: "✍",
 		pageName: "Publier une annonce",
 	},
-	{ sPath: "/posts", component: DashboardPosts, emoij: "📕", pageName: "Mes annonces" },
+	{ sPath: "/posts", component: DashboardPosts, emoij: "📕", pageName: "Annonces" },
 	{
 		sPath: "/edit-profile",
 		component: DashboardEditProfile,
@@ -88,10 +85,10 @@ export const ADMIN_SUB_PAGES: DashboardPage[] = [
 		emoij: "  ",
 		pageName: "Demandes de démenagement",
 	},
-	// {
-	// 	sPath: "/settings",
-	// 	component: DashboardSetting,
-	// 	emoij: "  ",
-	// 	pageName: "Paramètres",
-	// },
+	{
+		sPath: "/settings",
+		component: DashboardSettings,
+		emoij: "  ",
+		pageName: "Paramètres",
+	},
 ];

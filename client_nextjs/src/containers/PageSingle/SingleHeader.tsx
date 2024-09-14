@@ -1,13 +1,13 @@
-import CategoryBadgeList from "components/CategoryBadgeList/CategoryBadgeList";
-import React, { FC } from "react";
+import { FC } from "react";
 import SingleTitle from "./SingleTitle";
-import { SinglePageType } from "./PageSingleTemp3Sidebar";
 import PostMeta2 from "components/PostCard/PostMeta2/PostMeta2";
-import SingleMetaAction2 from "./SingleMetaAction2";
 import { Helmet } from "react-helmet";
 import { IProduct } from "app/reducer/products/product";
 import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import CategoryPropertyBadgeOne from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeOne";
+import CategoryPropertyBadgeThree from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeThree";
+import SingleAuthor from "./SingleAuthor";
 
 export interface SingleHeaderProps {
 	pageData: IProduct;
@@ -24,13 +24,24 @@ const SingleHeader: FC<SingleHeaderProps> = ({
 	className = "",
 	metaActionStyle = "style1",
 }) => {
-	const { category, description, title, location, location_description, price, deposit_price } =
-		pageData as IProduct;
+	const {
+		category,
+		home_type,
+		description,
+		title,
+		location,
+		location_description,
+		price,
+		deposit_price,
+		created_at,
+	} = pageData as IProduct;
 
 	return (
 		<>
 			<Helmet>
-				<title>{title ? title : `${category.name} | ${location}`}</title>
+				<title>
+					{category && category.name} {" , "} {home_type && home_type}
+				</title>
 			</Helmet>
 
 			<div className={`nc-SingleHeader ${className}`}>
@@ -46,7 +57,14 @@ const SingleHeader: FC<SingleHeaderProps> = ({
 						</>
 					)}
 
-					{category && <CategoryPropertyBadgeList category={category} />}
+					<CategoryPropertyBadgeThree
+						itemClass="text-2xl"
+						category={category}
+						rightText={created_at.toString() ?? ""}
+					/>
+
+					<SingleAuthor author={pageData.author} />
+					{/* {category && <CategoryPropertyBadgeList category={category} />} */}
 
 					{pageData && false && (
 						<div className="flex flex-col sm:flex-row justify-between sm:items-end space-y-5 sm:space-y-0 sm:space-x-5">
@@ -61,19 +79,6 @@ const SingleHeader: FC<SingleHeaderProps> = ({
 							{/* <SingleMetaAction2 meta={pageData} /> */}
 						</div>
 					)}
-
-					<div className="flex flex-col justify-start items-start space-x-3">
-						<FaMapMarkerAlt />
-
-						<span className="text-5xl text-primary-700 md:text-lg dark:text-neutral-400">
-							{/* | ${location.city?.name} */}
-							{`Quatier: ${location_description} `}
-						</span>
-
-						<span className="text-5xl text-primary-700 md:text-lg dark:text-neutral-400">
-							{`Commune :  ${location.name}`}
-						</span>
-					</div>
 
 					{!!description && !hiddenDesc && (
 						<span className="block text-base text-neutral-500 md:text-lg dark:text-neutral-400 pb-1">

@@ -18,6 +18,8 @@ import { route } from "routers/route";
 import { useHistory } from "react-router-dom";
 import LoginDropdown from "./LoginDropdown";
 import SearchHeader from "./SearchHeader";
+import { initProductState, setSingleProduct } from "app/axios/actions/api.action";
+import { EMPTY_PRODUCT } from "app/axios/api.type";
 
 export interface MainNav2Props {}
 
@@ -60,7 +62,12 @@ const MainNav2: FC<MainNav2Props> = () => {
 							{user && (
 								<div className="flex items-center">
 									<ButtonPrimary
-										href={route("add_post")}
+										onClick={() => {
+											dispatch(initProductState());
+											dispatch(setSingleProduct(EMPTY_PRODUCT));
+											history.push(route("add_post"));
+										}}
+										// href={route("add_post")}
 										sizeClass="px-4 py-2 sm:px-5"
 										className="mx-2"
 									>

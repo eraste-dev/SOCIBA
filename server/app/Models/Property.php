@@ -50,6 +50,7 @@ class Property extends Model
         'area_count',
         'count_advance',
         'count_monthly',
+        'acd',
 
         'jacuzzi',
         'bath',

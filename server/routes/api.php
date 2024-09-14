@@ -14,6 +14,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MetaController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRequestController;
 use App\Http\Middleware\JwtMiddleware;
@@ -22,6 +24,9 @@ use App\Http\Middleware\JwtMiddleware;
 
 Route::group(['prefix' => 'v1'], function () {
     Route::get('/', [HomeController::class, 'index']);
+    Route::group(['prefix' => '/settings'], function () {
+        Route::get('/', [SettingsController::class, 'index']);
+    });
 
     // ? PUBLIC ROUTE
     Route::group(['prefix' => ''], function () {
@@ -56,6 +61,11 @@ Route::group(['prefix' => 'v1'], function () {
 
     // ! PROTECTED ROUTE
     Route::group(['middleware' => [JwtMiddleware::class]], function () {
+        // ? SETTINGS ROUTES
+        Route::group(['prefix' => '/settings'], function () {
+            Route::post('update', [SettingsController::class, 'store']);
+        });
+
         // ? PROTECTED PRODUCTS ROUTES
         Route::group(['prefix' => '/admin'], function () {
             Route::post('sliders', [SliderController::class, 'store']);
@@ -69,6 +79,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         // ? PROTECTED USER ROUTES
         Route::group(['prefix' => '/user'], function () {
+            // posts
+            Route::get('/user-posts', [PropertyController::class, 'getUserPost']);
+
             Route::put('update-profile',   [AuthController::class, 'updateUser'])->name('user.update-profile');
             Route::get('list',             [UserController::class, 'listUsers'])->name('user.list');
             Route::delete('delete',             [UserController::class, 'delete'])->name('user.delete');

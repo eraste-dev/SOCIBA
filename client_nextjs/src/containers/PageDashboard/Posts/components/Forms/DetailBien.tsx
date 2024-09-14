@@ -1,27 +1,30 @@
 import { ProductRequest } from "app/axios/api.type";
-import { ILocation } from "app/reducer/locations/locations";
 import { IProduct } from "app/reducer/products/product";
 import ErrorMessage from "components/Form/ErrorMessage";
 import Input from "components/Form/Input/Input";
 import Label from "components/Form/Label/Label";
-import Select from "components/Form/Select/Select";
-import React, { FC } from "react";
+import { FC } from "react";
 import { UseFormRegister } from "react-hook-form";
-import { FaAdjust, FaBath, FaRecycle } from "react-icons/fa";
+import { FaBath } from "react-icons/fa";
 import {
 	IProductType,
 	PRODUCT_TYPE,
 	TYPE_BIEN_EN_VENTE_KEY,
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
-} from "../Posts/DashboardSubmitPost";
+} from "../../DashboardSubmitPost";
 import {
-	Fastfood,
-	Kitchen,
+	FoodBankOutlined,
+	FoodBankTwoTone,
+	InfoOutlined,
 	KitchenSharp,
+	LunchDining,
 	PhotoSizeSelectSmallTwoTone,
-	PoolSharp,
 } from "@mui/icons-material";
+import { Tooltip } from "@mui/material";
+import { useSelector } from "react-redux";
+import { CategoryAction } from "app/reducer/products/propertiy-category";
+import { ProductcategoryUUID } from "data/categories_uuid";
 
 export interface DetailBienProps {
 	register: UseFormRegister<ProductRequest>;
@@ -41,6 +44,23 @@ const DetailBien: FC<DetailBienProps> = ({
 	typeDeBien,
 }) => {
 	const iconSize = 38;
+	const checkBoxStyle = { width: "10px", height: "10px" };
+	const categories = useSelector(CategoryAction.data);
+
+	const canShowACDCheckbox = (): boolean => {
+		const type = getValues("type");
+		const category_id = getValues("category_id");
+		const categorySelected = categories?.find((category) => category.id === category_id);
+		// const conditionType = type === TYPE_BIEN_EN_VENTE_KEY;
+
+		console.log("check uuid cat", { categorySelected: categorySelected?.uuid, category_id });
+
+		return [
+			ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN,
+			ProductcategoryUUID.BIEN_EN_VENTE.children.AUTRES,
+		].includes(categorySelected?.uuid ?? "");
+	};
+
 	const Detaillocation = () => {
 		return (
 			<>
@@ -89,11 +109,13 @@ const DetailBien: FC<DetailBienProps> = ({
 
 					{/* CUISINE */}
 					<div>
-						<Label>Nombre de cuisine</Label>
+						<Tooltip title="Nombre de cuisine">
+							<Label>Nombre de cuisine</Label>
+						</Tooltip>
 						<div className="block md:col-span-2 p-2">
 							<div className="flex  " style={{ alignItems: "center" }}>
 								{/* <Kitchen className="mr-2" /> */}
-								<KitchenSharp className="mr-2" />
+								<LunchDining className="mr-2" />
 								<Input
 									type="number"
 									className="mt-1"
@@ -119,72 +141,82 @@ const DetailBien: FC<DetailBienProps> = ({
 				<div className="grid grid-cols-4 gap-6 mt-3">
 					{/* JACUZZI */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div>
+						<div className="flex justify-center align-middle">
 							{/* <PoolSharp className="mr-2" /> */}
-							<input
+							<Input
+								id="jacuzzi"
 								type="checkbox"
-								className="mx-2"
-								checked={product?.jacuzzi ?? false}
+								className="mx-2 text-base"
+								style={checkBoxStyle}
+								defaultChecked={product?.jacuzzi}
 								{...register("jacuzzi")}
 							/>
-							<Label>Jacuzzi</Label>
+							<label htmlFor="jacuzzi">Jacuzzi</label>
 						</div>
 					</div>
 
 					{/* BATH */}
-					<div className="flex  " style={{ alignItems: "center" }}>
-						<div>
+					<div className="flex" style={{ alignItems: "center" }}>
+						<div className="flex justify-center align-middle">
 							{/* <PoolSharp className="mr-2" /> */}
-							<input
+							<Input
+								id="bath"
 								type="checkbox"
 								className="mx-2"
+								style={checkBoxStyle}
+								defaultChecked={product?.bath}
 								{...register("bath")}
 								name="bath"
-								// checked={(product && product.bath && product.bath) ?? false}
 							/>
-							<Label>Baignoire</Label>
+							<label htmlFor="bath">Baignoire</label>
 						</div>
 					</div>
 
 					{/* WIFI */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div>
+						<div className="flex justify-center align-middle">
 							{/* <PoolSharp className="mr-2" /> */}
-							<input
+							<Input
+								id="wifi"
 								type="checkbox"
 								className="mx-2"
+								style={checkBoxStyle}
+								defaultChecked={product?.WiFi}
 								{...register("WiFi")}
-								// checked={(product && product.bath && product.bath) ?? false}
 							/>
-							<Label>WIFI</Label>
+							<label htmlFor="wifi">WIFI</label>
 						</div>
 					</div>
 
 					{/* PICINE */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div>
+						<div className="flex justify-center align-middle">
 							{/* <PoolSharp className="mr-2" /> */}
-							<input
+							<Input
+								id="pool"
 								type="checkbox"
 								className="mx-2"
+								style={checkBoxStyle}
 								{...register("pool")}
-								// checked={(product && product.bath && product.bath) ?? false}
+								defaultChecked={product?.pool}
 							/>
-							<Label>Piscine</Label>
+							<label htmlFor="pool">Piscine</label>
 						</div>
 					</div>
 
 					{/* CLIMATISATION */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div>
+						<div className="flex justify-center align-middle">
 							{/* <PoolSharp className="mr-2" /> */}
-							<input
+							<Input
+								id="air_conditioning"
 								type="checkbox"
 								className="mx-2"
+								style={checkBoxStyle}
 								{...register("air_conditioning")}
-								// checked={(product && product.bath && product.bath) ?? false}
+								defaultChecked={product?.air_conditioning}
 							/>
-							<Label>Climatisation</Label>
+							<label htmlFor="air_conditioning">Climatisation</label>
 						</div>
 					</div>
 				</div>
@@ -205,8 +237,8 @@ const DetailBien: FC<DetailBienProps> = ({
 								<Input
 									type="number"
 									className="mt-1"
-									defaultValue={product!.area ?? 0}
-									{...register("area_unit")}
+									defaultValue={(product && product.area && product.area) ?? 0}
+									{...register("area")}
 								/>
 							</div>
 							<ErrorMessage
@@ -218,18 +250,21 @@ const DetailBien: FC<DetailBienProps> = ({
 					</div>
 
 					{/* ACD */}
-					<div className="flex items-center" style={{ alignItems: "center" }}>
-						<div className="mt-3">
-							{/* <PoolSharp className="mr-2" /> */}
-							<input
-								type="checkbox"
-								className="mx-2"
-								// checked={(product && product.jacuzzi && product.jacuzzi) ?? false}
-								{...register("acd")}
-							/>
-							<Label>ACD</Label>
+					{canShowACDCheckbox() && (
+						<div className="mt-5 flex items-center" style={{ alignItems: "center" }}>
+							<div className="flex justify-center align-middle">
+								<Input
+									id="acd"
+									type="checkbox"
+									className="mx-2"
+									style={checkBoxStyle}
+									defaultChecked={product?.acd}
+									{...register("acd")}
+								/>
+								<label htmlFor="acd">ACD</label>
+							</div>
 						</div>
-					</div>
+					)}
 				</div>
 			</>
 		);

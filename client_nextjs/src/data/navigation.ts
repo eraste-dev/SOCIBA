@@ -6,14 +6,13 @@ import {
 	MEGA_MENU1,
 	MEGA_MENU2,
 	MEGA_MENU3,
-	MEGA_MENU4,
-	MEGA_MENU5,
 	NAV_COLUMN_FOUR,
 	NAV_COLUMN_ONE,
 	NAV_COLUMN_THREE,
 	NAV_COLUMN_TWO,
 } from "./navigations-data";
 import { IProductType } from "containers/PageDashboard/Posts/DashboardSubmitPost";
+import logoImgTwo from "images/logo/logo-alt-2.png";
 
 export const linkByType = (type: IProductType) => {
 	return route("annonces") + "/?type=" + type;
@@ -79,7 +78,7 @@ const megaMenuDemo: MegamenuItem[] = [
 const megaMenu3ItemDemo: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
-		image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
+		image: logoImgTwo,
 		title: "location",
 		items: NAV_COLUMN_ONE.map((i) => i),
 	},

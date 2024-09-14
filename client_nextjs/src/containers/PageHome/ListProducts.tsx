@@ -5,12 +5,11 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
 import { fetchAllProperties } from "app/axios/actions/api.action";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import Loading from "components/UI/Loading";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 import FloatFilter from "components/Widgets/FloatFilter";
-import { CategoryAction } from "app/reducer/products/propertiy-category";
 import NoDataMessage from "components/NoDataMessage";
 
 export const getParams = (): IGetSearchPropertiesParams => {
@@ -86,19 +85,11 @@ const ListProducts: FC<ListProductsProps> = ({
 	className = "",
 }) => {
 	const dispatch = useAppDispatch();
-	const history = useHistory();
 
 	const products = useAppSelector(PropertyAction.data)?.all?.get;
-	const categories = useAppSelector(CategoryAction.data);
-	const filters = useAppSelector(PropertyAction.data)?.filters;
 	const loading = useSelector(PropertyAction.data)?.all?.loading;
 
-	const location = useLocation();
-	const searchParams = new URLSearchParams(location.search);
-	const paramLocation = searchParams.get("location_id");
-
 	const [useStateFilter, setUseStateFilter] = useState<IPropertyFilter>({});
-	const [isFetched, setIsFetched] = useState<IPropertyFilter>({});
 	const [showFilter, setShowFilter] = useState(false);
 	const toggleFilter = () => setShowFilter(!showFilter);
 
@@ -111,9 +102,6 @@ const ListProducts: FC<ListProductsProps> = ({
 	};
 
 	useEffect(() => {
-		// Check if there is a 'get' parameter
-		const hasGetParameter = getParams().hasOwnProperty("get");
-
 		if (!products && !loading) {
 			// TODO : fetch all properties
 			dispatch(fetchAllProperties(getParams()));
@@ -131,7 +119,7 @@ const ListProducts: FC<ListProductsProps> = ({
 			</div>
 
 			<div className="flex flex-row xl:flex-row">
-				<div className="w-1/5 sm:w-1/8 lg:w-1/4 xl:w-1/5">
+				<div className="hidden md:block w-1/5 sm:w-1/8 lg:w-1/4 xl:w-1/5">
 					<FloatFilter
 						useStateFilter={useStateFilter}
 						setUseStateFilter={setUseStateFilter}
@@ -139,11 +127,12 @@ const ListProducts: FC<ListProductsProps> = ({
 						toggleFilter={toggleFilter}
 						fetchAll={fetchAll}
 						noFloating={true}
+						linear={false}
 					/>
 				</div>
 
 				{/*  xl:pl-14 lg:pl-7 */}
-				<div className="w-4/5 sm:w-6/8 lg:w-3/4 xl:w-4/5 lg:pl-7">
+				<div className="w-full sm:w-6/8 md:w-4/5 lg:w-3/4 xl:w-4/5 lg:pl-7">
 					{loading && loading ? (
 						<CardSkeleton arrayLength={8} />
 					) : (

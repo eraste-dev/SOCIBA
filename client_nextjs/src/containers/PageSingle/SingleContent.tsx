@@ -55,10 +55,8 @@ const SingleContent: FC<SingleContentProps> = ({ data }) => {
 			</div> */}
 
 			{/* AUTHOR */}
-			<div className="max-w-screen-md mx-auto border-b border-t border-neutral-100 dark:border-neutral-700"></div>
-			<div className="max-w-screen-md mx-auto ">
-				<SingleAuthor author={author} />
-			</div>
+			{/* <div className="max-w-screen-md mx-auto border-b border-t border-neutral-100 dark:border-neutral-700"></div> */}
+	
 
 			{/* COMMENT FORM */}
 			{false && (

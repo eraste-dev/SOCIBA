@@ -39,6 +39,10 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 
 	const categories = useAppSelector(CategoryAction.data);
 	const categoriesLoading = useAppSelector(CategoryAction.loading);
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const category_uuid = urlSearchParams.get("category_uuid");
+	const category_slug = urlSearchParams.get("category_slug");
+	const category_slug_selected = urlSearchParams.get("category_slug_selected");
 
 	const flatCategories = () => {
 		let data: IPropertyCategory[] = [];
@@ -86,35 +90,16 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 	 * @return {IListBoxSelectFilterWidget[]} The list of IListBoxSelectFilterWidget items
 	 */
 	function CATEGORIES(): IListBoxSelectFilterWidget[] {
-		const urlSearchParams = new URLSearchParams(window.location.search);
-		const current = urlSearchParams.get("category_slug_selected");
-		const currentUuid = urlSearchParams.get("category_uuid");
-		// category_slug_selected
-
 		let data: IListBoxSelectFilterWidget[] = SIMPLIFY_LIST_CAT;
 
-		data.forEach((item) => {
-			if (item.value === current || item.uuid?.includes(currentUuid ?? "")) {
-				item.selected = true;
-			} else {
-				data[0].selected = true;
-			}
-		});
+		console.log("categories", category_uuid, data);
+		// http://localhost:3000/annonces/?type=LOCATION&category_uuid=LOCATION__MAISON
+		// http://localhost:3000/?category_slug=residence&category_slug_selected=residence
 
-		// if (categories && categories.length > 0) {
-		// 	categories.forEach((category) => {
-		// 		data.push({ name: category.name, value: category.id.toString(), selected: false });
-		// 		if (category && category.children && category.children.length > 0) {
-		// 			category.children.forEach((child) => {
-		// 				data.push({
-		// 					name: ">>>>>" + child.name,
-		// 					value: child.id.toString(),
-		// 					selected: false,
-		// 				});
-		// 			});
-		// 		}
-		// 	});
-		// }
+		data = data.map((item) => {
+			item.selected = item.value === category_slug;
+			return item;
+		});
 
 		return data;
 	}

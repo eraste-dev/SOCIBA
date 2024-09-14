@@ -5,8 +5,7 @@ import Label from "components/Form/Label/Label";
 import Select from "components/Form/Select/Select";
 import { FC } from "react";
 import { UseFormRegister } from "react-hook-form";
-import { IProductType, PRODUCT_TYPE, TYPE_LOCATION_KEY } from "../Posts/DashboardSubmitPost";
-import { Security } from "@mui/icons-material";
+import { IProductType, PRODUCT_TYPE, TYPE_LOCATION_KEY } from "../../DashboardSubmitPost";
 
 export const securities: { value: string; label: string }[] = [
 	{ value: "WITH_GUARD", label: "Avec vigile" },
@@ -49,9 +48,6 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 	const DetailTwoLocation = () => {
 		return (
 			<>
-				{/* security */}
-				{/* purchase_power */}
-				{/* accessibility */}
 				<div className="grid grid-cols-3 gap-6 mt-3">
 					{/* SECURITY */}
 					<div>
@@ -65,7 +61,9 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 											setValue("security", event.target.value);
 									}}
 								>
-									<option>Choix de la sécurité</option>
+									<option value={""} onClick={() => setValue("security", null)}>
+										Choix de la sécurité
+									</option>
 									{securities.map((security) => (
 										<option
 											value={security.value}

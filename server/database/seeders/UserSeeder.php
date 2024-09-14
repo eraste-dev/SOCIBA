@@ -30,6 +30,7 @@ class UserSeeder extends Seeder
             'remember_token'    => null,
             'type'              => 'ADMIN',
             'fonction'          => 'Agent immobilier',
+            'influence_zone_id' => 1,
             'status' => 'ACTIVE'
         ]);
 
@@ -45,7 +46,8 @@ class UserSeeder extends Seeder
             'remember_token'    => null,
             'type'              => 'USER',
             'fonction'          => 'Démarcheur immobilier',
-            'status' => 'ACTIVE'
+            'influence_zone_id' => 1,
+            'status'            => 'ACTIVE'
         ]);
     }
 }

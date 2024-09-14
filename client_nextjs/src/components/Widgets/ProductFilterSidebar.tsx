@@ -11,12 +11,16 @@ import ButtonPrimary from "components/Button/ButtonPrimary";
 import WidgetCategoryBooking from "./WidgetSort/WidgetCategoryBooking";
 import WidgetTypeWithSelect from "./WidgetTypeWithSelect/WidgetTypeWithSelect";
 import WidgetCategoryDetailWithSelect from "./WidgetCategories/WidgetCategoryDetailWithSelect";
+import { useHistory } from "react-router-dom";
+import ButtonSecondary from "components/Button/ButtonSecondary";
+import WidgetSearchWithInput from "./WidgetCategories/WidgetSearchWithInput";
 
 export interface ProductFilterSidebarProps {
 	fetchAll?: () => void;
 	useStateFilter: IPropertyFilter;
 	setUseStateFilter: any;
 	groupFilter?: boolean;
+	linear?: boolean;
 }
 
 const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
@@ -24,15 +28,30 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 	setUseStateFilter,
 	useStateFilter,
 	groupFilter = false,
+	linear = false,
 }) => {
 	const [showFilter, setShowFilter] = useState(true);
-
 	const urlSearchParams = new URLSearchParams(window.location.search);
 	const categorySlugSelected = urlSearchParams.get("category_slug_selected");
+	const history = useHistory();
 
 	const handleShowFilter = () => {
 		setShowFilter(!showFilter);
 	};
+
+	const removeQueryParams = () => {
+		const urlSearchParams = new URLSearchParams(window.location.search);
+		urlSearchParams.delete("category_slug_selected");
+
+		console.log("history.location ::: ", history.location);
+
+		const { pathname } = history.location;
+		if (window.location.search) {
+			window.history.replaceState({}, document.title, pathname);
+		}
+		fetchAll && fetchAll();
+	};
+
 	return (
 		<>
 			{!setShowFilter && (
@@ -44,67 +63,113 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 				</p>
 			)}
 
-			<div className={showFilter ? "block sm:p-2 max-w-md" : "hidden"}>
+			<div
+				className={
+					showFilter ? (!linear ? "block sm:p-2 max-w-md" : "block sm:p-2") : "hidden"
+				}
+			>
 				{/* bgcolor: "background.paper", */}
-				<Grid container spacing={2} sx={{ py: 5, px: 1 }}>
-					<Grid xs={12} lg={12}>
-						<WidgetCategoryBooking handleFetch={fetchAll} groupFilter={groupFilter} />
-					</Grid>
 
-					{categorySlugSelected &&
-						["residence", "hotel", "maison"].includes(categorySlugSelected) && (
-							<Grid xs={12} lg={12}>
-								<WidgetCategoryDetailWithSelect
-									handleFetch={fetchAll}
-									useStateFilter={useStateFilter}
-									setUseStateFilter={setUseStateFilter}
-									groupFilter={groupFilter}
-								/>
-							</Grid>
-						)}
-
-					<Grid xs={12} lg={12}>
-						<WidgetSort handleFetch={fetchAll} groupFilter={groupFilter} />
-					</Grid>
-
-					<Grid xs={12} lg={12}>
-						<WidgetLocationWithSelect
-							handleFetch={fetchAll}
-							useStateFilter={useStateFilter}
-							setUseStateFilter={setUseStateFilter}
-							groupFilter={groupFilter}
-						/>
-					</Grid>
-
-					{false && (
-						<Grid xs={12} lg={12}>
+				<div className={!linear ? "grid grid-cols-1 gap-0" : "grid grid-cols-4 gap-2"}>
+					{true ? (
+						<div>
 							<WidgetTypeWithSelect
 								handleFetch={fetchAll}
 								useStateFilter={useStateFilter}
 								setUseStateFilter={setUseStateFilter}
 								groupFilter={groupFilter}
 							/>
-						</Grid>
-					)}
+						</div>
+					) : null}
 
-					<Grid xs={12} lg={12}>
-						<WidgetLocationWithInput
+					<div>
+						<WidgetCategoryBooking handleFetch={fetchAll} groupFilter={groupFilter} />
+					</div>
+
+					{categorySlugSelected
+						? ["residence", "hotel", "maison"].includes(categorySlugSelected) && (
+								<div>
+									<WidgetCategoryDetailWithSelect
+										handleFetch={fetchAll}
+										useStateFilter={useStateFilter}
+										setUseStateFilter={setUseStateFilter}
+										groupFilter={groupFilter}
+									/>
+								</div>
+						  )
+						: null}
+
+					<div>
+						<WidgetSort handleFetch={fetchAll} groupFilter={groupFilter} />
+					</div>
+
+					<div>
+						<WidgetLocationWithSelect
 							handleFetch={fetchAll}
 							useStateFilter={useStateFilter}
+							setUseStateFilter={setUseStateFilter}
 							groupFilter={groupFilter}
 						/>
-					</Grid>
+					</div>
 
-					<Grid xs={12} lg={12}>
-						<ButtonPrimary onClick={fetchAll} sizeClass="px-4 py-2 sm:px-5">
-							Rechercher
-						</ButtonPrimary>
-					</Grid>
+					<div className={linear ? "col-span-6" : ""}>
+						{linear ? (
+							<WidgetSearchWithInput
+								handleFetch={fetchAll}
+								useStateFilter={useStateFilter}
+								groupFilter={groupFilter}
+							/>
+						) : (
+							<WidgetLocationWithInput
+								handleFetch={fetchAll}
+								useStateFilter={useStateFilter}
+								groupFilter={groupFilter}
+							/>
+						)}
+					</div>
+
+					{!linear && (
+						<>
+							<div className={!linear ? "mr-2 mb-2" : "col-span-1"}>
+								<ButtonPrimary className="w-full" onClick={fetchAll} sizeClass="px-4 py-2 sm:px-5">
+									Rechercher
+								</ButtonPrimary>
+							</div>
+
+							<div className={!linear ? "mr-2 mb-2" : "col-span-1 mr-2"}>
+								<ButtonSecondary
+								className="w-full"
+									onClick={removeQueryParams}
+									sizeClass="px-4 py-2 sm:px-5"
+								>
+									Réinitialiser
+								</ButtonSecondary>
+							</div>
+						</>
+					)}
 
 					{/* <WidgetCategories handleFetch={fetchAll} /> */}
 					{/* <WidgetLocations handleFetch={fetchAll} /> */}
 					{/* <WidgePrice /> */}
-				</Grid>
+				</div>
+				{linear && (
+					<div className="flex">
+						<div className={!linear ? "mr-2" : "col-span-1 mr-2"}>
+							<ButtonPrimary onClick={fetchAll} sizeClass="px-4 py-2 sm:px-5">
+								Rechercher
+							</ButtonPrimary>
+						</div>
+
+						<div className={!linear ? "mr-2" : "col-span-1 mr-2"}>
+							<ButtonSecondary
+								onClick={removeQueryParams}
+								sizeClass="px-4 py-2 sm:px-5"
+							>
+								Réinitialiser
+							</ButtonSecondary>
+						</div>
+					</div>
+				)}
 			</div>
 		</>
 	);

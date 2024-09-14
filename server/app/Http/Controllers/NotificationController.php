@@ -31,9 +31,10 @@ class NotificationController extends Controller
     public function unread()
     {
         $user = Auth::user();
-        return response()->json([
-            'unread_notifications' => $user->unreadNotifications,
-        ]);
+        return ResponseService::success($user->unreadNotifications, "List of unread notifications");
+        // return response()->json([
+        //     'notifications' => $user->unreadNotifications,
+        // ]);
     }
 
     /**
@@ -79,6 +80,6 @@ class NotificationController extends Controller
     {
         $user = Auth::user();
         $user->unreadNotifications->markAsRead();
-        return ResponseService::success('Notification marked as read');
+        return ResponseService::success($user->unreadNotifications, "List of unread notifications");
     }
 }
