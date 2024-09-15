@@ -9,6 +9,9 @@ import { NAVIGATION_DEMO, NAVIGATION_SHORT_DEMO } from "data/navigation";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import SocialsList from "components/SocialsList/SocialsList";
 import { ChevronDownIcon } from "@heroicons/react/solid";
+import { useAppDispatch } from "app/hooks";
+import { initUserRequest } from "app/axios/actions/api.users.action";
+import { inittPropertyList } from "app/axios/actions/api.action";
 
 export interface NavMobileProps {
 	data?: NavItemType[];
@@ -16,27 +19,50 @@ export interface NavMobileProps {
 }
 
 const NavMobile: React.FC<NavMobileProps> = ({ data = NAVIGATION_SHORT_DEMO, onClickClose }) => {
+	const dispatch = useAppDispatch();
+	const onClickItem = () => {
+		dispatch(initUserRequest());
+		dispatch(inittPropertyList());
+	};
+
 	const _renderMenuChild = (item: NavItemType) => {
 		return (
-			<ul className="nav-mobile-sub-menu pl-6 pb-1 text-base">
+			<ul className="nav-mobile-sub-menu pl-6 pb-1 text-base list-none">
 				{item.children?.map((i, index) => (
 					<Disclosure key={i.href + index} as="li">
 						{i.targetBlank ? (
 							<a
-								href={i.href}
+								// href={i.href}
+								onClick={onClickClose}
 								target="_blank"
 								rel="noreferrer"
 								className="flex px-4 py-2.5 text-neutral-900 dark:text-neutral-200 text-sm font-medium rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 mt-[2px]"
 							>
-								<span className={!i.children ? "block w-full" : ""} onClick={onClickClose}>
+								<span
+									className={!i.children ? "block w-full" : ""}
+									onClick={onClickClose}
+								>
 									{i.name}
-									{i.isNew && <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 leading-none rounded-md ml-2">New!</span>}
+									{i.isNew && (
+										<span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 leading-none rounded-md ml-2">
+											New!
+										</span>
+									)}
 								</span>
 
 								{i.children && (
-									<span className="block flex-grow" onClick={(e) => e.preventDefault()}>
-										<Disclosure.Button as="span" className="flex justify-end flex-grow">
-											<ChevronDownIcon className="ml-2 h-4 w-4 text-neutral-500" aria-hidden="true" />
+									<span
+										className="block flex-grow"
+										onClick={(e) => e.preventDefault()}
+									>
+										<Disclosure.Button
+											as="span"
+											className="flex justify-end flex-grow"
+										>
+											<ChevronDownIcon
+												className="ml-2 h-4 w-4 text-neutral-500"
+												aria-hidden="true"
+											/>
 										</Disclosure.Button>
 									</span>
 								)}
@@ -51,13 +77,25 @@ const NavMobile: React.FC<NavMobileProps> = ({ data = NAVIGATION_SHORT_DEMO, onC
 								className="flex px-4 py-2.5 text-neutral-900 dark:text-neutral-200 text-sm font-medium rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 mt-[2px]"
 								activeClassName="text-secondary"
 							>
-								<span className={!i.children ? "block w-full" : ""} onClick={onClickClose}>
+								<span
+									className={!i.children ? "block w-full" : ""}
+									onClick={onClickClose}
+								>
 									{i.name}
 								</span>
 								{i.children && (
-									<span className="block flex-grow" onClick={(e) => e.preventDefault()}>
-										<Disclosure.Button as="span" className="flex justify-end flex-grow">
-											<ChevronDownIcon className="ml-2 h-4 w-4 text-neutral-500" aria-hidden="true" />
+									<span
+										className="block flex-grow"
+										onClick={(e) => e.preventDefault()}
+									>
+										<Disclosure.Button
+											as="span"
+											className="flex justify-end flex-grow"
+										>
+											<ChevronDownIcon
+												className="ml-2 h-4 w-4 text-neutral-500"
+												aria-hidden="true"
+											/>
 										</Disclosure.Button>
 									</span>
 								)}
@@ -85,10 +123,14 @@ const NavMobile: React.FC<NavMobileProps> = ({ data = NAVIGATION_SHORT_DEMO, onC
 					<span className={!item.children ? "block w-full" : ""} onClick={onClickClose}>
 						{item.name}
 					</span>
+
 					{item.children && (
 						<span className={"block flex-grow"} onClick={(e) => e.preventDefault()}>
 							<Disclosure.Button as="span" className="flex justify-end flex-grow">
-								<ChevronDownIcon className="ml-2 h-4 w-4 text-neutral-500" aria-hidden="true" />
+								<ChevronDownIcon
+									className="ml-2 h-4 w-4 text-neutral-500"
+									aria-hidden="true"
+								/>
 							</Disclosure.Button>
 						</span>
 					)}

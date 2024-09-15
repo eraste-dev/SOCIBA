@@ -11,37 +11,45 @@ const sellerData = {
 
 export interface ContactSellerProps {
 	productLink: string | undefined;
+	phone?: string;
+	whatsapp?: string;
+	sms?: string;
 }
 
-const ContactSeller: FC<ContactSellerProps> = ({ productLink }) => {
+const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, sms }) => {
 	const classNameItem: string =
 		"text-white font-bold py-2 px-4 rounded-lg mr-2 flex items-center justify-center text-center";
-	const iconSize = 35;
+	const iconSize = 24;
 
 	const handleCall = () => {
-		return `tel:${sellerData.phone}`;
+		const phone_call = phone ? phone : sellerData.phone;
+		return `tel:${phone_call}`;
 	};
 
 	const handleWhatsApp = () => {
-		return `https://wa.me/${sellerData.whatsapp}?text=Votre%20annonce%20publi%C3%A9e%20m'int%C3%A9resse.%20Cliquez%20sur%20l'URL%20ci-dessous%3A%0A%0A${productLink}`;
+		const _wh = whatsapp ? whatsapp : sellerData.whatsapp;
+		return `https://wa.me/${_wh}?text=Votre%20annonce%20publi%C3%A9e%20m'int%C3%A9resse.%20Cliquez%20sur%20l'URL%20ci-dessous%3A%0A%0A${productLink}`;
 	};
 
 	const handleSMS = () => {
-		return `sms:${sellerData.phone}`;
+		const _sms = sms ? sms : sellerData.phone;
+		return `sms:${_sms}`;
 	};
 
 	return (
-		<div className="p-6">
+		<div className="mt-8">
 			{/* <h2 className="text-2xl font-bold mb-4">Intéressé(e) ?</h2> */}
 
-			<div className="grid grid-cols-3 gap-6 ">
+			<div className="grid grid-cols-3 gap-1 sm:gap-6 ">
+				{/* bg-green-500 hover:bg-green-600  */}
 				<a
-					className={`bg-green-500 hover:bg-green-600 ${classNameItem}`}
+					className={`hover:bg-green-600 ${classNameItem}`}
+					style={{ background: "#3f8d2f" }}
 					href={handleCall()}
 					target="_blank"
 				>
 					<FaPhoneAlt size={iconSize} />
-					<span className="ml-2">Appel</span>
+					<span className="ml-2">Appeler</span>
 				</a>
 
 				<a
@@ -55,7 +63,7 @@ const ContactSeller: FC<ContactSellerProps> = ({ productLink }) => {
 
 				<a
 					href={handleWhatsApp()}
-					className={`bg-blue-500 hover:bg-blue-6000 ${classNameItem}`}
+					className={`bg-green-500 hover:bg-green-6000 ${classNameItem}`}
 					target="_blank"
 				>
 					<FaWhatsapp size={iconSize} />

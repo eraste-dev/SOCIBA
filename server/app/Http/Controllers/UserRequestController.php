@@ -38,6 +38,7 @@ class UserRequestController extends Controller
             'area' => 'nullable|string|max:100',
             'location' => 'nullable|string|max:100',
             'date' => 'nullable|date',
+            'type' => 'required|in:MOVING,CONTACT_US',
         ]);
 
         $userRequest = UserRequest::create($validatedData);

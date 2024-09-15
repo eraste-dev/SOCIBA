@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
 					{menu.title}
 				</h2>
 
-				<ul className="mt-5 space-y-4">
+				<ul className="mt-5 space-y-4 list-none">
 					{menu.menus.map((item, index) => (
 						<li key={index}>
 							<a

@@ -20,5 +20,6 @@ class UserRequest extends Model
         'area',
         'location',
         'date',
+        'type',
     ];
 }

@@ -21,6 +21,7 @@ import CategoryPropertyBadgeTwo from "components/CategoryPropertyBadgeList/Categ
 import Card11Price from "components/Cards/Card11/Card11Price";
 import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeaturedMedia";
 import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
+import { AuthorLine } from "containers/PageSingle/SingleAuthor";
 
 export interface SingleProps {
 	className?: string;
@@ -48,6 +49,8 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 	const searchParams = new URLSearchParams(location.search);
 	const idParam = searchParams.get("id");
 
+	const className_text = "text-base font-semibold text-green-900 dark:text-neutral-400";
+
 	useEffect(() => {
 		if (!loading && !single && slug) {
 			if (idParam) {
@@ -68,9 +71,9 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 			}
 
 			if (single?.location.id) {
-				payload.location = single?.location.id;
+				// payload.location = single?.location.id;
 			}
-			dispatch(fetchSimilars({ ...payload, limit: 6 }));
+			dispatch(fetchSimilars({ ...payload, limit: 12 }));
 		}
 	}, [related, single, dispatch, fetchSimilars, loading]);
 
@@ -105,38 +108,51 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 						) : null}
 					</header>
 
-					<div className="mt-5" style={{ height: "70vh" }}>
+					<div className="mt-5 h-3/4">
 						<div
 							className={`nc-Card11 relative flex flex-col group h-full w-auto `}
 							data-nc-id="Card11"
 							onMouseEnter={() => setIsHover(true)}
 							onMouseLeave={() => setIsHover(false)}
 						>
-							{single && <PostFeaturedMedia post={single} isHover={isHover} />}
+							{single ? (
+								<PostFeaturedMedia post={single} isHover={isHover} single={true} />
+							) : null}
 						</div>
 					</div>
 
-					{single && <SingleImage meta={single} handleOpenModal={handleOpenModal} />}
+					{single ? (
+						<SingleImage meta={single} handleOpenModal={handleOpenModal} />
+					) : null}
 
-					<div className="grid grid-cols-6 mb-12">
+					<div className="grid grid-cols-6 mb-4">
 						<div className="col-span-3">
-							<div className="flex flex-col justify-start items-start">
+							<div className="w-full">
 								{/* <FaMapMarkerAlt /> */}
 
-								{single ? (
-									<CategoryPropertyBadgeTwo className="text-lg" item={single} />
-								) : null}
-
-								{single?.location_description ? (
-									<span className="text-lg font-semibold text-green-900 dark:text-neutral-400">
-										{`${single.location_description} `}
-									</span>
+								{/* <CategoryPropertyBadgeTwo className="text-lg" item={single} /> */}
+								{single && single.home_type ? (
+									<AuthorLine
+										label={"Détail"}
+										value={`${single?.home_type}`}
+										classNameValue={className_text}
+									/>
 								) : null}
 
 								{single?.location && single.location.name ? (
-									<span className="text-lg font-semibold text-green-900 dark:text-neutral-400">
-										{`${single?.location.name}`}
-									</span>
+									<AuthorLine
+										label={single.location.unlisted ? "Ville" : "Commune"}
+										value={`${single?.location.name}`}
+										classNameValue={className_text}
+									/>
+								) : null}
+
+								{single?.location_description ? (
+									<AuthorLine
+										label={"Quartier"}
+										value={single.location_description}
+										classNameValue={className_text}
+									/>
 								) : null}
 							</div>
 						</div>
@@ -146,7 +162,7 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 								{single && (
 									<Card11Price
 										item={single}
-										className="text-primary-6000 dark:text-neutral-500 font-semibold text-2xl flex flex-col justify-end text-right "
+										className="text-primary-6000 dark:text-neutral-500 font-semibold sm:text-2xl text-lg flex flex-col justify-end text-right "
 									/>
 								)}
 							</div>
@@ -173,7 +189,16 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 						</div>
 					)}
 
-					<ContactSeller productLink={single?.href} />
+					<ContactSeller
+						productLink={single?.href}
+						phone={single!.author!.phone ? single!.author!.phone : undefined}
+						whatsapp={
+							single!.author!.phone_whatsapp
+								? single!.author!.phone_whatsapp
+								: undefined
+						}
+						sms={single!.author!.phone ? single!.author!.phone : undefined}
+					/>
 				</div>
 
 				{/* RELATED POSTS */}

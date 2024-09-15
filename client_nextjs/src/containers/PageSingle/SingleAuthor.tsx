@@ -3,9 +3,17 @@ import Avatar from "components/Avatar/Avatar";
 import { FC } from "react";
 import SingleAuthorRating from "./SingleAuthorRating";
 
-const AuthorLine = ({ value, label }: { value: string; label: string }) => {
+export const AuthorLine = ({
+	value,
+	label,
+	classNameValue,
+}: {
+	value: string;
+	label: string;
+	classNameValue?: string;
+}) => {
 	return (
-		<div className="grid grid-cols-5">
+		<div className="flex md:grid grid-cols-5 ">
 			{/* <div className="col-span-2">{label}</div>
 			<div className="col-span-1 ">:</div>
 			<div className="col-span-9  ">{value}</div> */}
@@ -18,7 +26,7 @@ const AuthorLine = ({ value, label }: { value: string; label: string }) => {
 			</div>
 
 			<div className="col-span-4 sm:col-span-3">
-				<span className="font-semibold">{value}</span>
+				<span className={classNameValue ? classNameValue : "font-semibold"}>{value}</span>
 			</div>
 		</div>
 	);
@@ -63,7 +71,7 @@ const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
 								<Avatar
 									imgUrl={author.avatar}
 									userName={author.name}
-									sizeClass="h-32 w-32 sm:h-24 sm:w-24 "
+									sizeClass="h-16 w-16 sm:h-32 sm:w-32"
 									radius="rounded-xl"
 								/>
 								{/* <Link to={author.href}></Link> */}

@@ -37,12 +37,12 @@ const SingleContent: FC<SingleContentProps> = ({ data }) => {
 	}, [location]);
 
 	return (
-		<div className="nc-SingleContent space-y-10">
+		<div className="nc-SingleContent space-y-2">
+			<p className="mt-4 text-base text-neutral-900 dark:text-neutral-100 font-semibold">
+				Description
+			</p>
 			{/* ENTRY CONTENT */}
-			<div
-				id="single-entry-content"
-				className="mx-0 dark:prose-invert"
-			>
+			<div id="single-entry-content" className="mx-0 dark:prose-invert">
 				{/* THIS IS THE DEMP CONTENT */}
 				<SingleContentDemo content={data.content} />
 			</div>
@@ -56,7 +56,6 @@ const SingleContent: FC<SingleContentProps> = ({ data }) => {
 
 			{/* AUTHOR */}
 			{/* <div className="max-w-screen-md mx-auto border-b border-t border-neutral-100 dark:border-neutral-700"></div> */}
-	
 
 			{/* COMMENT FORM */}
 			{false && (

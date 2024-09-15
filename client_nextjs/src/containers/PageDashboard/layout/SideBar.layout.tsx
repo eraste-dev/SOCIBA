@@ -39,8 +39,8 @@ const SideBarDashbord: FC<SideBarDashbordProps> = ({ className = "", children })
 	};
 
 	return (
-		<div >
-			<ul className="flex flex-col text-sm text-neutral-6000 dark:text-neutral-400">
+		<div>
+			<ul className=" list-none flex flex-col text-sm text-neutral-6000 dark:text-neutral-400">
 				{USER_SUB_PAGES.map(({ sPath, pageName, emoij }, index) => {
 					return (
 						<li key={index}>
@@ -92,7 +92,7 @@ const SideBarDashbord: FC<SideBarDashbordProps> = ({ className = "", children })
 				)}
 			</ul>
 
-			<ul className="flex flex-col text-sm text-neutral-6000 dark:text-neutral-400">
+			<ul className="list-none flex flex-col text-sm text-neutral-6000 dark:text-neutral-400">
 				<li className="py-2.5 font-medium cursor-pointer" onClick={handleHomePage}>
 					<span className="flex">
 						<FaHome className="w-6 mr-2" />

@@ -43,23 +43,26 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className }) => {
 							: "nc-card-title block font-bold text-primary-800 dark:text-neutral-100 text-sm text-clip overflow-hidden text-end"
 					}
 				>
-					{_f(item.price)}
+					<span className="text-xs sm:text-base" >{_f(item.price)}</span>
 
 					{/* // PERIODICITY */}
-					{item.type !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] &&
-						item.periodicity &&
-						GET_PERIODICITY().find((p) => p.id === item.periodicity) && (
-							<>
-								{` / ` +
-									GET_PERIODICITY().find((p) => p.id === item.periodicity)?.name}
-							</>
-						)}
+					{item.type !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] ? (
+						<span className="text-xs" >
+							{item.periodicity &&
+							GET_PERIODICITY().find((p) => p.id === item.periodicity) ? (
+								<>
+									{` / ` +
+										GET_PERIODICITY().find((p) => p.id === item.periodicity)
+											?.name}
+								</>
+							) : null}
+						</span>
+					) : null}
 				</span>
 			</div>
 			{/* SHOW PRICE *********************************************************************** */}
 
 			{/*  SHOW SECOND PRICE  ************************************************************** */}
-
 			{item.price_second != null && item.type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] ? (
 				<div className="w-full flex lg:justify-end justify-start mt-2 lg:mt-0 ">
 					<span

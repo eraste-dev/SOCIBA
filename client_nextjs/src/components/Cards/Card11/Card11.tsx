@@ -62,11 +62,11 @@ const Card11: FC<Card11Props> = ({
 				<CategoryPropertyBadgeOne category={category} />
 			</span>
 
-			<div className="p-2 px-4 flex flex-col flex-grow space-y-2">
+			<div className="px-1 flex flex-col flex-grow space-y-1">
 				<span className="text-xs text-neutral-500">{updated_at}</span>
 
 				{/* grid grid-cols-3 */}
-				<div className="flex justify-between">
+				<div className="grid grid-cols-1 sm:flex justify-between">
 					<div className="grid col-span-1 text-ellipsis truncate " style={{ minWidth: "70px", maxWidth: "75px" }}>
 						<CategoryPropertyBadgeTwo className="text-xs md:text-md" item={post} />
 
@@ -83,6 +83,7 @@ const Card11: FC<Card11Props> = ({
 
 					{/* grid lg:col-span-4 col-span-6 */}
 					{/* "grid-cols-2 md:grid-cols-3 lg:grid-cols-4" */}
+					{/* order-1 sm:order-1 */}
 					<div className="flex justify-start col-span-3 sm:col-span-2 sm:justify-end">
 						{/*  grid grid-cols-subgrid lg:col-span-4 text-justify col-span-6 */}
 						<Card11Price item={post} />

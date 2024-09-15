@@ -7,6 +7,7 @@ import { useAppSelector } from "app/hooks";
 import { SettingsAction } from "app/reducer/settings/settings.";
 import Loading from "components/UI/Loading";
 import { fetchDefaultSettings } from "app/axios/actions/api.settings.action";
+import SectionFounderStatic from "./SectionFounderStatic";
 
 export interface People {
 	id: string;
@@ -67,7 +68,9 @@ const SectionFounder = () => {
 			{/* <Heading descHtml={setting?.about_us}>Qui somme nous ?</Heading> */}
 
 			{/* className="text-neutral-700 dark:text-neutral-300 mb-12" */}
-			<div dangerouslySetInnerHTML={{ __html: setting?.about_us ?? "" }}></div>
+			{false && <div dangerouslySetInnerHTML={{ __html: setting?.about_us ?? "" }}></div>}
+
+			<SectionFounderStatic />
 
 			<div className="grid sm:grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4 xl:gap-x-8">
 				{false &&

@@ -55,7 +55,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({
 					)}
 
 					<CategoryPropertyBadgeThree
-						itemClass="text-2xl"
+						itemClass="text-base"
 						category={category}
 						rightText={created_at.toString() ?? ""}
 					/>

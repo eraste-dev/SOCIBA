@@ -1101,14 +1101,11 @@ const DashboardSubmitPost = () => {
 													<div className="col-span-1">
 														<label className="block ">
 															<Label>Nom de la ville </Label>
+															{/* {product?.location.id} */}
 															<Input
 																type="text"
 																className="mt-1"
-																defaultValue={
-																	product &&
-																	product.unlisted_city &&
-																	product.unlisted_city?.name
-																}
+																defaultValue={``}
 																{...register("unlisted_city")}
 															/>
 															<ErrorMessage

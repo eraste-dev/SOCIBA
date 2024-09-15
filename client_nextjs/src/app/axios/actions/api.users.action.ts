@@ -30,6 +30,7 @@ import {
 	fetchALlNotificationFailure,
 	fetchALlNotificationStart,
 	fetchALlNotificationSuccess,
+	initFetchNotificationStart,
 	markAsReadNotificationFailure,
 	markAsReadNotificationStart,
 	markAsReadNotificationSuccess,

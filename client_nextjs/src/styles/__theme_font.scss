@@ -4,21 +4,25 @@
   font-weight: 300;
   src: url("../fonts/Inter/static/Inter-Light.ttf");
 }
+
 @font-face {
   font-family: Inter;
   font-weight: 400;
   src: url("../fonts/Inter/static/Inter-Regular.ttf");
 }
+
 @font-face {
   font-family: Inter;
   font-weight: 500;
   src: url("../fonts/Inter/static/Inter-Medium.ttf");
 }
+
 @font-face {
   font-family: Inter;
   font-weight: 600;
   src: url("../fonts/Inter/static/Inter-SemiBold.ttf");
 }
+
 @font-face {
   font-family: Inter;
   font-weight: 700;
@@ -37,25 +41,60 @@
   font-weight: 300;
   src: url("../fonts/Poppins/Poppins-Light.ttf");
 }
+
 @font-face {
   font-family: Poppins;
   font-weight: 400;
   src: url("../fonts/Poppins/Poppins-Regular.ttf");
 }
+
 @font-face {
   font-family: Poppins;
   font-weight: 500;
   src: url("../fonts/Poppins/Poppins-Medium.ttf");
 }
+
 @font-face {
   font-family: Poppins;
   font-weight: 600;
   src: url("../fonts/Poppins/Poppins-SemiBold.ttf");
 }
+
 @font-face {
   font-family: Poppins;
   font-weight: 700;
   src: url("../fonts/Poppins/Poppins-Bold.ttf");
+}
+
+// ROBOTO
+@font-face {
+  font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 300;
+  src: url("../fonts/Roboto/Roboto-Light.ttf");
+}
+
+@font-face {
+  font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  src: url("../fonts/Roboto/Roboto-Regular.ttf");
+}
+
+@font-face {
+  font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+  src: url("../fonts/Roboto/Roboto-Medium.ttf");
+}
+
+@font-face {
+  font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+  src: url("../fonts/Roboto/Roboto-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 700;
+  src: url("../fonts/Roboto/Roboto-Bold.ttf");
 }
 
 //
@@ -71,26 +110,26 @@ h4 {
 }
 
 :root {
-  --font-display: Poppins;
-  --font-body: Poppins;
+  --font-display: Roboto;
+  --font-body: Roboto; // Poppins
 }
 
 .theme-animals {
-  --font-display: Inter;
-  --font-body: Inter;
+  --font-display: Roboto; // Inter
+  --font-body: Roboto;
 }
 
 .theme-demo-5 {
-  --font-display: Courgette;
-  --font-body: Courgette;
+  --font-display: Roboto; // Courgette
+  --font-body: Roboto;
 }
 
 .theme-demo-6 {
-  --font-display: "PT Sans";
-  --font-body: "Rubik";
+  --font-display: Roboto; // "PT Sans" 
+  --font-body: Roboto; // "Rubik"
 }
 
 .theme-demo-7 {
-  --font-display: "Noto Sans Arabic";
-  --font-body: "Noto Sans Arabic";
+  --font-display: Roboto; // "Noto Sans Arabic"
+  --font-body: Roboto; // "Noto Sans Arabic"
 }

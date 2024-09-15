@@ -112,20 +112,22 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 						/>
 					</div>
 
-					<div className={linear ? "col-span-6" : ""}>
-						{linear ? (
-							<WidgetSearchWithInput
-								handleFetch={fetchAll}
-								useStateFilter={useStateFilter}
-								groupFilter={groupFilter}
-							/>
-						) : (
+					{false && (
+						<div className={linear ? "col-span-6" : ""}>
 							<WidgetLocationWithInput
 								handleFetch={fetchAll}
 								useStateFilter={useStateFilter}
 								groupFilter={groupFilter}
 							/>
-						)}
+						</div>
+					)}
+
+					<div className={linear ? "col-span-6" : ""}>
+						<WidgetSearchWithInput
+							handleFetch={fetchAll}
+							useStateFilter={useStateFilter}
+							groupFilter={groupFilter}
+						/>
 					</div>
 
 					{!linear && (

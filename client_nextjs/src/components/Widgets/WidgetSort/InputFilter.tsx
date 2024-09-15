@@ -10,12 +10,22 @@ interface IFreeInputProps {
 
 const InputFilter: React.FC<IFreeInputProps> = ({ label, value, onChange }) => {
 	const [valueInput, setValueInput] = React.useState<string>("");
+	const [updated, setUpdated] = React.useState<boolean>(false);
+
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const searchText = urlSearchParams.get("searchText");
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const inputValue = event.target.value;
 		setValueInput(inputValue);
 		onChange(inputValue);
 	};
+
+	React.useEffect(() => {
+		if (searchText && searchText != valueInput && !updated) {
+			setValueInput(searchText ?? "");
+		}
+	}, [searchText, valueInput, updated, setValueInput]);
 
 	return (
 		<>
@@ -29,7 +39,14 @@ const InputFilter: React.FC<IFreeInputProps> = ({ label, value, onChange }) => {
 			/> */}
 
 			<label>{label}</label>
-			<Input value={valueInput} onChange={handleChange} className="rounded-sm" />
+			{/* {searchText} */}
+			<Input
+				value={valueInput}
+				onChange={handleChange}
+				onKeyUp={() => setUpdated(true)}
+				className="rounded-sm"
+				defaultValue={searchText ?? ""}
+			/>
 		</>
 	);
 };

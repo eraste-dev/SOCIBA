@@ -1,4 +1,4 @@
-import { MegamenuItem, NavItemType } from "components/Navigation/NavigationItem";
+import { convertMegamenuItemsToNavItems, MegamenuItem, NavItemType } from "components/Navigation/NavigationItem";
 import ncNanoId from "utils/ncNanoId";
 import __megamenu from "./jsons/__megamenu.json";
 import { route } from "routers/route";
@@ -411,6 +411,7 @@ export const NAVIGATION_SHORT_DEMO: NavItemType[] = [
 		name: "Location",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU1,
+		children: NAV_COLUMN_ONE,
 	},
 	{
 		id: ncNanoId(),
@@ -418,6 +419,7 @@ export const NAVIGATION_SHORT_DEMO: NavItemType[] = [
 		name: "Réservation",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU2,
+		children: NAV_COLUMN_TWO,
 	},
 	{
 		id: ncNanoId(),
@@ -425,6 +427,7 @@ export const NAVIGATION_SHORT_DEMO: NavItemType[] = [
 		name: "Bien en vente",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU3,
+		children: NAV_COLUMN_THREE,
 	},
 	{
 		id: ncNanoId(),
@@ -438,6 +441,6 @@ export const NAVIGATION_SHORT_DEMO: NavItemType[] = [
 		href: "/about",
 		name: "A propose de nous",
 		type: "none",
-		// megaMenu: MEGA_MENU5,	
+		// megaMenu: MEGA_MENU5,
 	},
 ];

@@ -53,9 +53,13 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 }) => {
 	const iconSize: number = 18;
 	const { type, category, home_type, area, area_count, area_unit, bathrooms, kitchens } = meta;
+	const gridThree = "grid grid-cols-2 sm:grid-cols-3 gap-1";
+	const gridThreeAlt = isSingle
+		? "grid grid-cols-1 sm:grid-cols-3 gap-1"
+		: "grid grid-cols-1 sm:grid-cols-2 gap-1";
 	const locationItemClassName = isSingle
-		? "flex items-center justify-start"
-		: "flex items-center justify-center";
+		? "flex items-center justify-start bg-red-100"
+		: "flex items-center justify-start sm:justify-center bg-yellow-100";
 
 	const getAreaUnit = (): string => {
 		let unit = " m²";
@@ -73,8 +77,8 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 		if (type === PRODUCT_TYPE[TYPE_LOCATION_KEY]) {
 			return (
 				<div>
-					{/* grid grid-cols-3 gap-6 */}
-					<div className={`flex justify-between ${isSingle && "space-y-8"}`}>
+					{/*  */}
+					<div className={`${gridThree} ${isSingle ? "space-y-8" : ""}`}>
 						{/* Superficie */}
 						{area && area != 0 ? (
 							<div className={locationItemClassName} title="Superficie">
@@ -83,7 +87,6 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 								<span className={isSingle ? "text-base" : "text-xs"}>
 									{`${area} / ${getAreaUnit()}`}
 								</span>
-								{/* {`${area} / m²`} */}
 							</div>
 						) : null}
 
@@ -108,7 +111,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 					</div>
 
 					{/* grid grid-cols-3 */}
-					<div className="flex justify-between mt-2">
+					<div className={`${gridThreeAlt} mt-2`}>
 						{/* SECURITY */}
 						{isSingle && meta.security ? (
 							<ItemChecked
@@ -191,7 +194,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 						) : meta.purchase_power &&
 						  ["LESS_EXPENSIVE", , "EQUAL_EXPENSIVE"].includes(meta.purchase_power) ? (
 							<ItemChecked
-								name="Accès facile"
+								name="Zone à pouvoir d'achat"
 								condition={["LESS_EXPENSIVE", , "EQUAL_EXPENSIVE"].includes(
 									meta.purchase_power
 								)}
@@ -211,29 +214,29 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 
 		return (
 			<>
-				<div className={`grid gap-0 mt-3  ${isSingle ? "grid-cols-5" : "grid-cols-2"}`}>
+				<div className={`grid gap-2 sm:gap-0 mt-3  ${isSingle ? "grid-cols-3 sm:grid-cols-5 " : "grid-cols-2"}`}>
 					{/* JACUZZI */}
-					{meta.jacuzzi && (
+					{meta.jacuzzi ? (
 						<ItemChecked
 							name="Jacuzzi"
 							condition={meta.jacuzzi}
 							className="justify-self-start"
 						/>
-					)}
+					) : null}
 
 					{/* BATH */}
-					{meta.bath && <ItemChecked name="Baignoire" condition={meta.bath} />}
+					{meta.bath ? <ItemChecked name="Baignoire" condition={meta.bath} /> : null}
 
 					{/* WIFI */}
-					{meta.WiFi && <ItemChecked name="WIFI" condition={meta.WiFi} />}
+					{meta.WiFi ? <ItemChecked name="WIFI" condition={meta.WiFi} /> : null}
 
 					{/* PICINE */}
-					{meta.pool && <ItemChecked name="Piscine" condition={meta.pool} />}
+					{meta.pool ? <ItemChecked name="Piscine" condition={meta.pool} /> : null}
 
 					{/* CLIMATISATION */}
-					{meta.air_conditioning && (
+					{meta.air_conditioning ? (
 						<ItemChecked name="Climatisation" condition={meta.air_conditioning} />
-					)}
+					) : null}
 				</div>
 			</>
 		);
@@ -247,15 +250,15 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 				{/* grid grid-cols-3 gap-0*/}
 				<div className="flex justify-between mt-3">
 					{/* *SUPERFICIE */}
-					{area && area > 0 && (
+					{area && area > 0 ? (
 						<div className="flex items-center justify-center mr-2" title="Superficie">
 							<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
 							{`${area} / ${getAreaUnit()}`}
 						</div>
-					)}
+					) : null}
 
 					{/* nombre de pièce ou terrain */}
-					{area_count && (
+					{area_count ? (
 						<div className="flex items-center justify-center mr-2" title="Superficie">
 							{type === "BIEN EN VENTE" &&
 							category.uuid === ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN &&
@@ -274,10 +277,10 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 								<span> {`${area_count} pièce${area_count > 1 ? "s" : ""}`}</span>
 							)}
 						</div>
-					)}
+					) : null}
 
 					{/* ACD */}
-					{meta.acd && (
+					{meta.acd ? (
 						<ItemChecked
 							name="ACD"
 							condition={true}
@@ -291,7 +294,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 								/>
 							}
 						/>
-					)}
+					) : null}
 				</div>
 			</>
 		);
@@ -303,17 +306,17 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 		<>
 			<div
 				className={
-					isSingle ? "bg-gray-100 dark:bg-neutral-800 rounded-md px-2 py-5 mb-5" : ""
+					isSingle ? "bg-gray-100 dark:bg-neutral-800 rounded-md px-2 py-2 mb-2" : ""
 				}
 			>
-				{isSingle && (
+				{isSingle ? (
 					<>
-						<p className="text-lg text-neutral-900 dark:text-neutral-100 font-semibold">
+						<p className="text-base text-neutral-900 dark:text-neutral-100 font-semibold">
 							Caractéristiques et commodités
 						</p>
 						<hr className="border-b border-neutral-200 dark:border-neutral-700 my-4" />
 					</>
-				)}
+				) : null}
 
 				<div
 					className={`text-neutral-800 dark:text-neutral-200 ${

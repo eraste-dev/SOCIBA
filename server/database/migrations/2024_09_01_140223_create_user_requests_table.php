@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_requests', function (Blueprint $table) {
             $table->id();
+            $table->enum('type', ['MOVING', 'CONTACT_US'])->default('CONTACT_US');
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->text('message')->nullable();

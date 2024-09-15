@@ -13,22 +13,22 @@ const SingleBreadcrumb: FC<SingleBreadcrumbProps> = ({ meta }) => {
 
 	return (
 		<div className="nc-SingleBreadcrumb container">
-			<nav className="bg-gray-200 dark:bg-neutral-800 p-4 rounded-md">
+			<nav className=" p-2 rounded-md">
 				<ol className="list-none flex">
 					<li className="text-primary-500 dark:text-white mr-2">
 						<Link to={route("home")}>Acceuil</Link>{" "}
 					</li>
 					<li className="text-primary-500 dark:text-white mr-2">
-						<Link to={meta.href} className="flex justify-center items-center">
+						<span className="flex justify-center items-center">
 							<FaAngleRight className="text-primary-200 dark:text-white" />
 							{category && category.name}
 							<FaAngleRight className="text-primary-100 dark:text-white" />
-						</Link>
+						</span>
 					</li>
 					<li className="text-primary-500 dark:text-white mr-2">
-						<Link to={meta.href} className="flex justify-center items-center underline">
-							{meta.title}
-						</Link>
+						<span className="flex justify-center items-center underline">
+							{meta.home_type}
+						</span>
 					</li>
 				</ol>
 			</nav>
