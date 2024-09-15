@@ -6,9 +6,10 @@ import ncNanoId from "utils/ncNanoId";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { useSelector } from "react-redux";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
-import { LocationAction } from "app/reducer/locations/locations";
+import { ILocation, LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import CardCities1 from "components/Cards/CardCities1/CardCities1";
+import { buildLocationItem } from "utils/utils";
 
 export interface SectionSliderCitiesProps {
 	className?: string;
@@ -38,10 +39,26 @@ const SectionSliderCities: FC<SectionSliderCitiesProps> = ({
 	const success = useSelector(LocationAction.success);
 
 	useEffect(() => {
-		if (!cities && !loading) {
+		if (!cities && !loading && !error) {
 			dispatch(fetchLocation());
 		}
 	}, [dispatch, fetchLocation, cities, loading]);
+
+	const get_cities = (): ILocation[] => {
+		let data: ILocation[] = [];
+
+		if (cities && cities.length > 0) {
+			for (const c of cities) {
+				data.push(c);
+			}
+		}
+
+		data.push(buildLocationItem("Autres Villes")); // push
+
+		console.log("get_cities", data);
+
+		return data;
+	};
 
 	const MY_GLIDE = new Glide(`.${UNIQUE_CLASS}`, {
 		// @ts-ignore
@@ -97,21 +114,20 @@ const SectionSliderCities: FC<SectionSliderCitiesProps> = ({
 
 				<div className="glide__track" data-glide-el="track">
 					<ul className="glide__slides">
-						{cities &&
-							cities.map((item, index) => (
-								<li
-									key={index}
-									className={`glide__slide h-auto  ${
-										sliderStype === "style2" ? "pb-12 xl:pb-16" : ""
-									}`}
-								>
-									<CardComponentName
-										index={index < 3 ? `#${index + 1}` : undefined}
-										key={item.id}
-										city={item}
-									/>
-								</li>
-							))}
+						{get_cities().map((item, index) => (
+							<li
+								key={index}
+								className={`glide__slide h-auto  ${
+									sliderStype === "style2" ? "pb-12 xl:pb-16" : ""
+								}`}
+							>
+								<CardComponentName
+									index={index < 3 ? `#${index + 1}` : undefined}
+									key={item.id}
+									city={item}
+								/>
+							</li>
+						))}
 					</ul>
 				</div>
 				{sliderStype === "style2" && (

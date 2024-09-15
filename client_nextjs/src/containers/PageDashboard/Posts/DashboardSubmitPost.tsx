@@ -46,6 +46,7 @@ import {
 import DetailBien from "./components/Forms/DetailBien";
 import DetailBienTwo from "./components/Forms/DetailBienTwo";
 import CurrencyInput from "react-currency-input-field";
+import { buildLocationItem } from "utils/utils";
 
 export type IProductType = "LOCATION" | "BIEN EN VENTE" | "RESERVATION"; // | "AUTRE"
 
@@ -151,6 +152,9 @@ const DashboardSubmitPost = () => {
 
 	const categories = useSelector(CategoryAction.data);
 	const [_hasOtherKey, set_hasOtherKey] = useState("");
+	const [resfreshLocaionSelected, setresfreshLocaionSelected] = useState("");
+	const [reshrehPrice, setreshrehPrice] = useState("");
+	const [reshrehPriceSecond, setreshrehPriceSecond] = useState("");
 	const sub_categories: IPropertySubCategory[] = CATEGORIES_SUB; //useSelector(CategorySubAction.data);
 	const categoriesLoading = useAppSelector(CategoryAction.loading);
 
@@ -198,6 +202,7 @@ const DashboardSubmitPost = () => {
 		data.count_monthly = data.count_monthly ?? 0;
 		// data.security = data.security;
 
+		// set category_id
 		if (!data.category_id) {
 			if (tmpcatId) {
 				data.category_id = tmpcatId;
@@ -210,12 +215,16 @@ const DashboardSubmitPost = () => {
 			}
 		}
 
-		if (!data.location_id) {
+		// set location value
+		if (!hasUnlistedLocation()) {
 			if (defaultValue) {
 				data.location_id = defaultValue.location_id;
 			} else if (locations && locations.length > 0) {
 				data.location_id = locations[0].id.toString();
 			}
+		} else {
+			data.location_id = undefined;
+			data.unlisted_city = data.unlisted_city;
 		}
 
 		// Convert data to FormData
@@ -425,6 +434,17 @@ const DashboardSubmitPost = () => {
 		return _type as IProductType;
 	};
 
+	const currentLocation = (): ILocation | undefined => {
+		const location_id: string = getValues("location_id") ?? resfreshLocaionSelected;
+		console.log("location_id :::: ", location_id);
+
+		let location: ILocation | undefined;
+		if (location_id && location_id != "") {
+			location = get_location().find((l) => l.id.toString() === location_id);
+		}
+		return location;
+	};
+
 	const currentCategory = (): IPropertyCategory | null => {
 		const _cat_id =
 			getValues("category_id") ?? (categories && categories[0] && categories[0].id);
@@ -495,6 +515,7 @@ const DashboardSubmitPost = () => {
 		setValue("home_type_more", value.home_type_more);
 
 		setValue("location_id", value.location_id);
+		setValue("unlisted_city", value.unlisted_city);
 		setValue("location_description", value.location_description);
 
 		setValue("title", value.title);
@@ -536,6 +557,7 @@ const DashboardSubmitPost = () => {
 				content: product.content,
 				type: product.type ?? PRODUCT_TYPE[0],
 				location_id: product.location.id.toString(),
+				unlisted_city: product && product.unlisted_city ? product.unlisted_city.name : "",
 				location_description: product.location_description,
 				price: product.price,
 				price_second: product.price_second,
@@ -615,6 +637,33 @@ const DashboardSubmitPost = () => {
 			default:
 				return "Prix de location";
 		}
+	};
+
+	const canShowDetailCategory = (): boolean => {
+		const condition = getValues("category_id") != undefined && !hasVenteTerrain();
+		return condition;
+	};
+
+	const get_location = (): ILocation[] => {
+		let data: ILocation[] = [];
+		if (locations && locations.length > 0) {
+			for (const l of locations) {
+				data.push(l);
+			}
+			data.push(buildLocationItem("Autres", true));
+		}
+		return data;
+	};
+
+	const hasUnlistedLocation = (): boolean => {
+		let output: boolean = false;
+		console.table(currentLocation());
+
+		if (currentLocation() && currentLocation()?.unlisted) {
+			output = true;
+		}
+
+		return output;
 	};
 
 	// FETCH_CATEGORIES
@@ -816,95 +865,89 @@ const DashboardSubmitPost = () => {
 										</label>
 
 										{/* DETAIL CATEGORY */}
-										{/* hasResidence() && */}
-										{getValues("category_id") != undefined &&
-											!hasVenteTerrain() && (
-												<label className="block col-span-4">
-													<div className="grid grid-cols-1 gap-6">
-														<div>
-															<Label>
-																{getTypeDeteailLabel()}
-																{/* <span className="text-red-500">*</span> */}
-															</Label>
+										{canShowDetailCategory() && (
+											<label className="block col-span-4">
+												<div className="grid grid-cols-1 gap-6">
+													<div>
+														<Label>
+															{getTypeDeteailLabel()}
+															{/* <span className="text-red-500">*</span> */}
+														</Label>
 
-															<div className="block md:col-span-2 ">
-																{/* SELECT_HOME_TYPE */}
-																{!canShowOtherInput() &&
-																	SUB_CATEGORIES() &&
-																	SUB_CATEGORIES().length > 0 && (
-																		<Select
-																			onChange={(event) => {
-																				event.target
-																					.value &&
-																					setValue(
-																						"home_type",
-																						event.target
-																							.value
-																					);
-
-																				set_hasOtherKey(
+														<div className="block md:col-span-2 ">
+															{/* SELECT_HOME_TYPE */}
+															{!canShowOtherInput() &&
+																SUB_CATEGORIES() &&
+																SUB_CATEGORIES().length > 0 && (
+																	<Select
+																		onChange={(event) => {
+																			event.target.value &&
+																				setValue(
+																					"home_type",
 																					event.target
 																						.value
 																				);
-																			}}
-																		>
-																			<option>Choix</option>
-																			{SUB_CATEGORIES() &&
-																				SUB_CATEGORIES().map(
-																					(c) => (
-																						<option
-																							key={
-																								c.code
-																							}
-																							value={
-																								c.name
-																							}
-																							selected={
-																								c.name ===
-																								getValues(
-																									"home_type"
-																								)
-																							}
-																						>
-																							{c.name}
-																						</option>
-																					)
-																				)}
-																		</Select>
-																	)}
 
-																{/* INPUT_HOME_TYPE */}
-																{}
-																{canShowOtherInput() && (
-																	<>
-																		<Input
-																			autoComplete="on"
-																			name="home_type"
-																			maxLength={20}
-																			onChange={(e) => {
-																				setValue(
-																					"home_type",
-																					e.target.value
-																				);
-																				set_hasOtherKey(
-																					e.target.value
-																				);
-																			}}
-																		/>
-																	</>
+																			set_hasOtherKey(
+																				event.target.value
+																			);
+																		}}
+																	>
+																		<option>Choix</option>
+																		{SUB_CATEGORIES() &&
+																			SUB_CATEGORIES().map(
+																				(c) => (
+																					<option
+																						key={c.code}
+																						value={
+																							c.name
+																						}
+																						selected={
+																							c.name ===
+																							getValues(
+																								"home_type"
+																							)
+																						}
+																					>
+																						{c.name}
+																					</option>
+																				)
+																			)}
+																	</Select>
 																)}
-															</div>
+
+															{/* INPUT_HOME_TYPE */}
+															{}
+															{canShowOtherInput() && (
+																<>
+																	<Input
+																		autoComplete="on"
+																		name="home_type"
+																		maxLength={20}
+																		onChange={(e) => {
+																			setValue(
+																				"home_type",
+																				e.target.value
+																			);
+																			set_hasOtherKey(
+																				e.target.value
+																			);
+																		}}
+																	/>
+																</>
+															)}
 														</div>
 													</div>
-													<div>
-														<ErrorMessage
-															errors={errorArray}
-															error="category_id"
-															customMessage="Veuillez choisir un type de bien"
-														/>
-													</div>
-												</label>
-											)}
+												</div>
+												<div>
+													<ErrorMessage
+														errors={errorArray}
+														error="category_id"
+														customMessage="Veuillez choisir un type de bien"
+													/>
+												</div>
+											</label>
+										)}
 
 										{/* NOMBRE DE PIECE */}
 										{showNumberOfRooms() && (
@@ -1008,7 +1051,13 @@ const DashboardSubmitPost = () => {
 										{/* VILLE - COUNTRY - STATE */}
 										<label className="block col-span-4">
 											<div className="grid grid-cols-2 gap-6">
-												<div className="col-span-1">
+												<div
+													className={
+														hasUnlistedLocation()
+															? "col-span-2"
+															: "col-span-1"
+													}
+												>
 													<Label>
 														Commune{" "}
 														<span className="text-red-500">*</span>
@@ -1018,25 +1067,27 @@ const DashboardSubmitPost = () => {
 														<Select
 															name="location_id"
 															required
-															onChange={(event) =>
+															onChange={(event) => {
 																setValue(
 																	"location_id",
 																	event.target.value
-																)
-															}
+																);
+																setresfreshLocaionSelected(
+																	event.target.value
+																);
+															}}
 														>
-															{locations &&
-																locations.map((location) => (
-																	<option
-																		key={location.id}
-																		value={location.id}
-																		selected={isLocationSelected(
-																			location
-																		)}
-																	>
-																		{location.name}
-																	</option>
-																))}
+															{get_location().map((location) => (
+																<option
+																	key={location.id}
+																	value={location.id}
+																	selected={isLocationSelected(
+																		location
+																	)}
+																>
+																	{location.name}
+																</option>
+															))}
 														</Select>
 														<ErrorMessage
 															errors={errorArray}
@@ -1045,6 +1096,29 @@ const DashboardSubmitPost = () => {
 														/>
 													</div>
 												</div>
+
+												{hasUnlistedLocation() ? (
+													<div className="col-span-1">
+														<label className="block ">
+															<Label>Nom de la ville </Label>
+															<Input
+																type="text"
+																className="mt-1"
+																defaultValue={
+																	product &&
+																	product.unlisted_city &&
+																	product.unlisted_city?.name
+																}
+																{...register("unlisted_city")}
+															/>
+															<ErrorMessage
+																errors={errorArray}
+																error="location_description"
+																customMessage="Veuillez saisir un quartier"
+															/>
+														</label>
+													</div>
+												) : null}
 
 												<div className="col-span-1">
 													<label className="block ">
@@ -1157,18 +1231,21 @@ const DashboardSubmitPost = () => {
 																	min={0}
 																	decimalsLimit={2}
 																	groupSeparator=" "
+																	value={reshrehPrice}
 																	onValueChange={(
 																		value,
 																		name,
 																		values
-																	) =>
+																	) => {
 																		// setValue("price", value)
-																		console.log({
-																			value,
-																			name,
-																			values,
-																		})
-																	}
+																		// console.log({
+																		// 	value,
+																		// 	name,
+																		// 	values,
+																		// });
+																		value &&
+																			setreshrehPrice(value);
+																	}}
 																	{...register("price", {
 																		required: true,
 																	})}
@@ -1207,8 +1284,19 @@ const DashboardSubmitPost = () => {
 																		0
 																	}
 																	min={0}
+																	value={reshrehPriceSecond}
 																	decimalsLimit={0}
 																	groupSeparator=" "
+																	onValueChange={(
+																		value,
+																		name,
+																		values
+																	) => {
+																		value &&
+																			setreshrehPriceSecond(
+																				value
+																			);
+																	}}
 																	{...register("price_second", {
 																		required: true,
 																	})}

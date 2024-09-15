@@ -66,6 +66,7 @@ import {
 	registerSuccess,
 } from "app/reducer/auth/auth";
 import { InputsEditSlider } from "containers/PageDashboard/Sliders/EditSlider";
+import { initLocations } from "app/reducer/locations/locations";
 
 export const fetchSliders = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchSlidersStart());
@@ -189,6 +190,10 @@ export const inittializePropertyList = () => async (dispatch: AppDispatch) => {
 
 export const inittPropertyList = () => async (dispatch: AppDispatch) => {
 	dispatch(initFetchAllProperties());
+};
+
+export const initCitiesList = () => async (dispatch: AppDispatch) => {
+	dispatch(initLocations());
 };
 
 /**

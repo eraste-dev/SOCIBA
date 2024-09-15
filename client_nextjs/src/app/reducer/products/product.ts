@@ -34,6 +34,7 @@ export interface IProduct {
 	deposit_price: number;
 	location_description: string;
 	location: ILocation;
+	unlisted_city?: ILocation;
 	city: string;
 	status: "PUBLISH" | "DRAFT" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED" | null;
 	total_click: number;
@@ -104,10 +105,11 @@ export interface IPropertyFilter {
 	created_by?: number;
 	city?: string;
 	location?: number | string;
+	unlisted_location?: string;
 	top?: boolean;
 	categories?: number[];
 	locations?: number[];
-	neighborhood?: string;
+	searchText?: string;
 	textSearch?: string;
 	category?: number | "*";
 	date?: "all" | "week" | "month" | "year";

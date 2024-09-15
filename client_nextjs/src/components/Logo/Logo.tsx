@@ -7,7 +7,7 @@ import logoImgTwo from "images/logo/logo-alt-2.png";
 import NcImage from "components/NcImage/NcImage";
 import { route } from "routers/route";
 import { useDispatch, useSelector } from "react-redux";
-import { inittPropertyList } from "app/axios/actions/api.action";
+import { initCitiesList, inittPropertyList } from "app/axios/actions/api.action";
 import { PropertyAction } from "app/reducer/products/product";
 
 export interface LogoProps {}
@@ -18,6 +18,7 @@ const Logo: React.FC<LogoProps> = ({}) => {
 	const filters = useSelector(PropertyAction.data)?.filters;
 
 	const onClickItem = () => {
+		dispatch(initCitiesList());
 		dispatch(inittPropertyList());
 		history.push(route("home"));
 	};

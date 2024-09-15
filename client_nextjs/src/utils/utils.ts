@@ -1,3 +1,7 @@
+import { EMPTY_LOCATION, EMPTY_PRODUCT } from "app/axios/api.type";
+import { ILocation } from "app/reducer/locations/locations";
+import { route } from "routers/route";
+
 export function isAdminPage___() {
 	const currentUrl = window.location.href;
 	console.log(currentUrl);
@@ -6,7 +10,7 @@ export function isAdminPage___() {
 	return false;
 }
 
-export const updateParamsUrl = (search: string, value: string) => {
+export const updateParamsUrl = (search: string, value?: string) => {
 	const urlSearchParams = new URLSearchParams(window.location.search);
 
 	if (value) {
@@ -55,4 +59,14 @@ export const getSecurityLabel = (text: string): string => {
 		default:
 			return "Sans virgile";
 	}
+};
+
+export const buildLocationItem = (name_: string, unlisted_: boolean = true): ILocation => {
+	const href: string = route("annonces") + "?unlisted_location=" + true;
+	let location: ILocation = { ...EMPTY_LOCATION, name: name_, unlisted: unlisted_, href: href };
+
+	// ? /annonces/?location=yopougon&location_id=6
+
+	console.log(">>> location :: ", location);
+	return location;
 };

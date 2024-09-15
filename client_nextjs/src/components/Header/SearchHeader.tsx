@@ -1,12 +1,14 @@
 import { FC, useState } from "react";
 import Input from "components/Form/Input/Input";
 import { useDispatch, useSelector } from "react-redux";
-import { IPropertyFilter, PropertyAction } from "app/reducer/products/product";
+import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/product";
 import { useHistory } from "react-router-dom";
 import { IGetSearchPropertiesParams, searchParamsFromRedux } from "utils/query-builder.utils";
 import { fetchAllProperties, searchProperties } from "app/axios/actions/api.action";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 import { _f } from "utils/money-format";
+import { route } from "routers/route";
+import { useForm } from "react-hook-form";
 
 export interface SearchHeaderProps {}
 
@@ -18,8 +20,11 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 	const [useStateFilter, setUseStateFilter] = useState<IPropertyFilter>({});
 	const [searchText, setSearchText] = useState<string>("");
 	const [open, setopen] = useState(false);
+	const { register, handleSubmit, watch, setValue, getValues } = useForm<{
+		searchText: string;
+	}>();
 
-	const fetchAll = (params: IGetSearchPropertiesParams) => {
+	const search = (params: IGetSearchPropertiesParams) => {
 		if (useStateFilter) {
 			// const _params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
 			const _params: IGetSearchPropertiesParams = { searchText };
@@ -28,32 +33,60 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 		}
 	};
 
+	const fetchAll = () => {
+		const _params: IGetSearchPropertiesParams = { searchText };
+		return dispatch(fetchAllProperties(_params));
+	};
+
 	const handleChange = (value: string) => {
 		const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
 		setUseStateFilter((prev) => ({ ...prev, textSearch: value }));
 		setSearchText(value);
-		fetchAll(params);
+		search(params);
+	};
+
+	const onSubmit = () => {
+		const url = route("annonces") + "/?searchText=" + searchText;
+		console.log("onSubmit search", {
+			searchText,
+			url,
+		});
+		history.replace(url);
+		setopen(false);
+		// const params: IGetSearchPropertiesParams = { searchText };
+		fetchAll();
+	};
+
+	const handleClickItem = (item: IProduct) => {
+		setSearchText("");
+		setopen(false);
+		console.log({
+			searchText,
+			item,
+		});
+		const url = route("annonce") + "/" + item.category.slug + "?id=" + item.id;
+		return history.push(url);
 	};
 
 	return (
 		<>
-			<form action="" method="POST" className="relative">
+			<form className="relative" onSubmit={handleSubmit(onSubmit)}>
 				<Input
 					type="search"
 					placeholder="Chercher sur SOCIBA"
 					className="pr-10 w-full"
 					sizeClass="h-[42px] pl-4 py-3"
+					{...(register("searchText"), { required: true })}
 					onChange={(e) => {
 						handleChange(e.target.value);
-						setopen(true);
+						// setopen(true);
 					}}
 					onBlur={() => {
-						// handleChange(searchText);
-						setSearchText("");
-						setopen(false);
+						// setSearchText("");
+						open && setopen(false);
 					}}
 				/>
-				<span className="absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500">
+				<span className="absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500 cursor-pointer">
 					<svg
 						className="h-5 w-5"
 						viewBox="0 0 24 24"
@@ -113,10 +146,7 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 								<li
 									key={item.id}
 									className="w-full items-center p-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
-									onClick={() => {
-										history.push(`${item.href}&?id=${item.id}`);
-										setSearchText("");
-									}}
+									onClick={() => handleClickItem(item)}
 								>
 									<span>
 										<span className="font-semibold">

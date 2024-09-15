@@ -104,6 +104,7 @@ export interface ProductRequest {
 	type?: string;
 	status?: STATUS_LABEL;
 	location_id?: string;
+	unlisted_city?: string;
 	location_description?: string; // detail commune location
 	price: number;
 	price_second: number | null;
@@ -193,7 +194,7 @@ const EMPTY_CATEGORY: IPropertyCategory = {
 	can_upload_image: true,
 };
 
-const EMPTY_LOCATION: ILocation = {
+export const EMPTY_LOCATION: ILocation = {
 	id: 0,
 	name: "",
 	description: null,

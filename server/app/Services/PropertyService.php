@@ -168,6 +168,20 @@ class PropertyService
         // ? location
         if (isset($payload['location']) && $payload['location'] !== '*') {
             $query->where('location_id', $payload['location']);
+        } else if ($payload['location'] == "0") {
+            $query->where('location_id', null); // ? search unlisted location
+        }
+
+        if (isset($payload['unlisted_location']) && !isset($payload['location'])) {
+            $query->where('location_id', null); // ? search unlisted location
+        }
+
+        if (isset($payload['other_location']) && !isset($payload['location'])) {
+            $query->where(
+                'unlisted_city',
+                'like',
+                '%' . $payload['other_location'] . '%'
+            );
         }
 
         // ? type

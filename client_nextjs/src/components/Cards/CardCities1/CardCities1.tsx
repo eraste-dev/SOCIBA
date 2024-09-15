@@ -7,6 +7,9 @@ import { IPropertyCategory } from "app/reducer/products/propertiy-category";
 import { ILocation } from "app/reducer/locations/locations";
 import { useDispatch } from "react-redux";
 import { fetchAllProperties, initProductState } from "app/axios/actions/api.action";
+import { getParams } from "containers/PageHome/ListProducts";
+import { updateParamsUrl } from "utils/utils";
+import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 
 export interface CardCities1Props {
 	className?: string;
@@ -27,9 +30,17 @@ const CardCities1: FC<CardCities1Props> = ({ className = "", taxonomy, city, ind
 	const handleClick = () => {
 		dispatch(initProductState());
 
-		// TODO : fetch all properties
-		dispatch(fetchAllProperties({ location: id }));
-		history.push(href);
+		const params: IGetSearchPropertiesParams = {};
+		if (id !== 0) {
+			params.location = id;
+			updateParamsUrl("location", id.toString());
+		} else {
+			params.unlisted_location = true;
+			updateParamsUrl("unlisted_location", "true");
+		}
+
+		dispatch(fetchAllProperties(params));
+		return history.push(href);
 	};
 
 	return (

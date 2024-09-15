@@ -2,12 +2,10 @@ import { setFilters } from "app/axios/actions/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import WidgetHeading1 from "components/Widgets/WidgetHeading1/WidgetHeading1";
 import { FC, useEffect } from "react";
-import ProductSortOption from "../WidgetSort/ProductSortOption";
-import { FaPlusCircle } from "react-icons/fa";
 import { IPropertyFilter, PropertyAction } from "app/reducer/products/product";
-import { ILocation, LocationAction } from "app/reducer/locations/locations";
+import { LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
-import { updateParamsUrl } from "utils/utils";
+import { buildLocationItem, updateParamsUrl } from "utils/utils";
 import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "../WidgetSort/ListBoxSelectFilter";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 
@@ -30,7 +28,11 @@ const WidgetLocationWithSelect: FC<WidgetLocationWithSelectProps> = ({
 
 	const locations = useAppSelector(LocationAction.data);
 	const loading = useAppSelector(LocationAction.loading);
-	const filters = useAppSelector(PropertyAction.data)?.filters;
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const other = buildLocationItem("Autres Villes");
+
+	const locationId = urlSearchParams.get("location_id");
+	const otherLocation = urlSearchParams.get("unlisted_location");
 
 	function LOCATION_OPTION(): IListBoxSelectFilterWidget[] {
 		let data: IListBoxSelectFilterWidget[] = [
@@ -46,18 +48,47 @@ const WidgetLocationWithSelect: FC<WidgetLocationWithSelectProps> = ({
 				data.push({
 					name: location.name,
 					value: location.id.toString(),
-					selected: false,
+					selected: locationId ? parseInt(locationId) === location.id : false,
 				});
 			});
 		}
-
+		data.push({
+			name: other.name,
+			value: other.id.toString(),
+			selected: !locationId && otherLocation ? true : false,
+		});
 		return data;
 	}
 
 	const handleChange = (item: IListBoxSelectFilterWidget) => {
-		updateParamsUrl("location", item.value);
-		dispatch(setFilters({ location: item.value }));
-		setUseStateFilter && setUseStateFilter({ ...useStateFilter, location: item.value });
+		// const params: IGetSearchPropertiesParams = {};
+		if (item.value !== "0") {
+			// params.location = item.value;
+			updateParamsUrl("location", item.value);
+			updateParamsUrl("unlisted_location");
+			dispatch(setFilters({ location: item.value }));
+			setUseStateFilter &&
+				setUseStateFilter({
+					...useStateFilter,
+					location: item.value,
+					unlisted_location: undefined,
+				});
+		} else {
+			console.log("unlisted_location :: ", item.value);
+
+			// params.unlisted_location = true;
+			updateParamsUrl("location");
+			updateParamsUrl("unlisted_location", "true");
+			dispatch(setFilters({ unlisted_location: "true" }));
+			setUseStateFilter &&
+				setUseStateFilter({
+					...useStateFilter,
+					unlisted_location: "true",
+					location: undefined,
+				});
+		}
+
+		// updateParamsUrl("location", item.value);
 		handleFetch && handleFetch();
 	};
 

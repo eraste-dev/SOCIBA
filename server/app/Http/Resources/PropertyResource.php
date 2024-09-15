@@ -30,6 +30,7 @@ class PropertyResource extends JsonResource
 
 
             'location'             => $this->getLocation(),
+            'unlisted_city'        => $this->getUnlistedCity(),
             'location_description' => $this->location_description,
 
 

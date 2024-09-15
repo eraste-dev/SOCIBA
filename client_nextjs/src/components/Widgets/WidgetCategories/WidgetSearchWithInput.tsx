@@ -24,9 +24,9 @@ const WidgetSearchWithInput: FC<WidgetSearchWithInputProps> = ({
 	const dispatch = useAppDispatch();
 
 	const handleChange = (value: string) => {
-		updateParamsUrl("neighborhood", value);
-		dispatch(setFilters({ neighborhood: value }));
-		setUseStateFilter && setUseStateFilter({ ...useStateFilter, neighborhood: value });
+		updateParamsUrl("searchText", value);
+		dispatch(setFilters({ searchText: value }));
+		setUseStateFilter && setUseStateFilter({ ...useStateFilter, searchText: value });
 		if (value && value.length > 3) {
 			setTimeout(() => {
 				handleFetch && handleFetch();

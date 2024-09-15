@@ -33,6 +33,7 @@ export interface IGetSearchPropertiesParams {
 	range?: { min: number; max: number };
 	limit?: number;
 	location?: number | string;
+	unlisted_location?: boolean;
 	locations?: string;
 	created_by?: number;
 	path?: string;

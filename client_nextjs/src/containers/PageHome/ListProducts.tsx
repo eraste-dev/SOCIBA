@@ -19,7 +19,8 @@ export const getParams = (): IGetSearchPropertiesParams => {
 	const urlSearchParams = new URLSearchParams(window.location.search);
 	const price_sort = urlSearchParams.get("price_sort");
 	const location = urlSearchParams.get("location");
-	const neighborhood = urlSearchParams.get("neighborhood");
+	const unlisted_location = urlSearchParams.get("unlisted_location");
+	const searchText = urlSearchParams.get("searchText");
 	const category_slug = urlSearchParams.get("category_slug");
 	const type = urlSearchParams.get("type");
 	const category_uuid = urlSearchParams.get("category_uuid");
@@ -29,12 +30,13 @@ export const getParams = (): IGetSearchPropertiesParams => {
 	console.log("urlSearchParams", {
 		price_sort: price_sort,
 		location: location,
-		searchText: neighborhood,
+		searchText: searchText,
 		category_slug: category_slug,
 		type: type,
 		category_uuid: category_uuid,
 		home_type: home_type,
 		category_slug_selected: category_slug_selected,
+		unlisted_location: unlisted_location,
 	});
 
 	if (price_sort) {
@@ -45,8 +47,13 @@ export const getParams = (): IGetSearchPropertiesParams => {
 		params.location = location;
 	}
 
-	if (neighborhood) {
-		params.searchText = neighborhood;
+	if (unlisted_location && !params.location) {
+		params.unlisted_location = true;
+		// params.location = undefined;
+	}
+
+	if (searchText) {
+		params.searchText = searchText;
 	}
 
 	if (category_slug) {

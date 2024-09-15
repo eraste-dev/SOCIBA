@@ -29,6 +29,7 @@ class Property extends Model
         'price_second',
         'periodicity',
         'location_id',
+        'unlisted_city',
         'location_description', // communes
         'status',
         'total_click',
@@ -107,7 +108,26 @@ class Property extends Model
     public function getLocation()
     {
         try {
-            return new MunicipalityResource(Municipality::find($this->location_id));
+            // unlisted_city
+            if ($this->location_id != null) {
+                return new MunicipalityResource(Municipality::find($this->location_id));
+            } else {
+                return Municipality::build_unlist_city_resource($this->unlisted_city ?? "");
+            }
+        } catch (\Throwable $th) {
+            return null;
+        }
+    }
+
+    public function getUnlistedCity()
+    {
+        try {
+            // unlisted_city
+            if ($this->$this->unlisted_city != null) {
+                return Municipality::build_unlist_city_resource($this->unlisted_city ?? "");
+            }
+
+            return null;
         } catch (\Throwable $th) {
             return null;
         }
@@ -169,6 +189,8 @@ class Property extends Model
             'location_id'            => request()->location_id ?? null,
             'locations'              => request()->locations ?? null,
             'location'               => request()->location ?? null,
+            'unlisted_location'      => request()->unlisted_location ?? null,
+            'other_location'         => request()->other_location ?? null,
             'top_seed'               => request()->top ?? false,
             'limit'                  => request()->limit ?? 84,
             'created_by'             => request()->created_by ?? null,

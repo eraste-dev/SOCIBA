@@ -27,6 +27,7 @@ return new class extends Migration
             $table->double('price_second')->nullable();
             // $table->string('post_type')->nullable()->comment('ADMIN :admin CUSTOMER:customer');
             $table->string('location_id')->nullable(); // municipalities id
+            $table->string('unlisted_city')->nullable(); // city name
             $table->string('location_description')->nullable();
             $table->string('video_link')->nullable();
             $table->double('latitude')->nullable();
