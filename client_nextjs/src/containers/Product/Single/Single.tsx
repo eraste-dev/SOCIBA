@@ -1,10 +1,8 @@
-import React, { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import { PostDataType, TaxonomyType } from "data/types";
-import NcImage from "components/NcImage/NcImage";
 import { SINGLE_GALLERY } from "data/single";
 import { CommentType } from "components/CommentCard/CommentCard";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { changeCurrentPage } from "app/reducer/pages/pages";
 import SingleContent from "containers/PageSingle/SingleContent";
 import SingleRelatedPosts from "containers/PageSingle/SingleRelatedPosts";
 import SingleHeader from "containers/PageSingle/SingleHeader";
@@ -19,7 +17,6 @@ import { _f, _suffix } from "utils/money-format";
 import Loading from "components/UI/Loading";
 import ContactSeller from "containers/PageSingle/sellerData";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
-import SingleAuthor from "containers/PageSingle/SingleAuthor";
 import CategoryPropertyBadgeTwo from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeTwo";
 import Card11Price from "components/Cards/Card11/Card11Price";
 import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeaturedMedia";
@@ -41,7 +38,7 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 
 	const single = useAppSelector(PropertyAction.data)?.single;
 	const related = useAppSelector(PropertyAction.data)?.similars;
-	const [fetchRelated, setFetchRelated] = useState(false);
+	// const [fetchRelated, setFetchRelated] = useState(false);
 	const loading = useAppSelector(PropertyAction.loading);
 	const [isOpen, setIsOpen] = useState(false);
 	const [openFocusIndex, setOpenFocusIndex] = useState(0);

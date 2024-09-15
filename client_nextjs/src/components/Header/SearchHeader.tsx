@@ -48,7 +48,8 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 						setopen(true);
 					}}
 					onBlur={() => {
-						handleChange(searchText);
+						// handleChange(searchText);
+						setSearchText("");
 						setopen(false);
 					}}
 				/>

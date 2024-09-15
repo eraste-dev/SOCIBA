@@ -3,9 +3,6 @@ import SingleTitle from "./SingleTitle";
 import PostMeta2 from "components/PostCard/PostMeta2/PostMeta2";
 import { Helmet } from "react-helmet";
 import { IProduct } from "app/reducer/products/product";
-import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
-import { FaMapMarkerAlt } from "react-icons/fa";
-import CategoryPropertyBadgeOne from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeOne";
 import CategoryPropertyBadgeThree from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeThree";
 import SingleAuthor from "./SingleAuthor";
 

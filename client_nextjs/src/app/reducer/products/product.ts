@@ -72,6 +72,7 @@ export interface IProduct {
 	pool: boolean;
 	air_conditioning: boolean;
 	home_type: string;
+	home_type_more?: string;
 	acd: boolean;
 	security: string;
 	area_count: number;

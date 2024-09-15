@@ -3,6 +3,27 @@ import Avatar from "components/Avatar/Avatar";
 import { FC } from "react";
 import SingleAuthorRating from "./SingleAuthorRating";
 
+const AuthorLine = ({ value, label }: { value: string; label: string }) => {
+	return (
+		<div className="grid grid-cols-5">
+			{/* <div className="col-span-2">{label}</div>
+			<div className="col-span-1 ">:</div>
+			<div className="col-span-9  ">{value}</div> */}
+
+			<div className="sm:col-span-1 col-span-1">
+				<div className="w-full flex justify-between">
+					<span>{label}</span>
+					<span className="mr-2">:</span>
+				</div>
+			</div>
+
+			<div className="col-span-4 sm:col-span-3">
+				<span className="font-semibold">{value}</span>
+			</div>
+		</div>
+	);
+};
+
 export interface SingleAuthorProps {
 	author: IUser;
 }
@@ -21,30 +42,19 @@ const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
 									</span>
 								)}
 
-								<h2 className="text-lg text-neutral-900 dark:text-neutral-200">
-									<span>Annonceur :</span>{" "}
-									<span className="font-semibold">
-										{author.name} {author.last_name}
-									</span>
-									{/* <Link to={author.href}>{author.name}</Link> */}
-								</h2>
+								<AuthorLine
+									label="Annonceur"
+									value={`${author.name} ${author.last_name}`}
+								/>
 
-								<p>{author.fonction}</p>
+								<AuthorLine label="Statut" value={`${author.fonction}`} />
 
-								{author && author.influence_zone && (
-									<p>Zone : {author.influence_zone.name}</p>
-								)}
+								<AuthorLine
+									label="Commune"
+									value={`${author.influence_zone?.name}`}
+								/>
 
-								<span className="text-lg dark:text-neutral-300">
-									{/* {author.email} */}
-									<span className="font-semibold">{author.phone}</span>
-									{/* <Link
-										className="text-primary-6000 font-medium ml-1"
-										to={author.href}
-									>
-										Voir plus
-									</Link> */}
-								</span>
+								<AuthorLine label="Contact" value={`${author.phone}`} />
 							</div>
 						</div>
 
@@ -60,10 +70,12 @@ const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
 							</div>
 
 							<div className="w-full flex justify-end">
-								<SingleAuthorRating
-									defaultValue={author.rating}
-									onChange={() => {}}
-								/>
+								<div className="mr-4">
+									<SingleAuthorRating
+										defaultValue={author.rating}
+										onChange={() => {}}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>

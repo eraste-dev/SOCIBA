@@ -54,6 +54,7 @@ return new class extends Migration
             $table->boolean('air_conditioning')->nullable();
             $table->boolean('acd')->nullable();
             $table->string('home_type')->nullable();
+            $table->string('home_type_more')->nullable();
             $table->enum('security', [null, 'WITH_GUARD', 'WITHOUT_GUARD'])->default(null)->nullable();
             $table->enum('purchase_power', [null, 'LESS_EXPENSIVE', 'EQUAL_EXPENSIVE', 'MORE_EXPENSIVE'])->default(null)->nullable();
             $table->enum('accessibility', [null, 'NOT_FAR_FROM_THE_TAR', 'A_LITTLE_FAR_FROM_THE_TAR', 'FAR_FROM_THE_TAR'])->default(null)->nullable();

@@ -184,6 +184,7 @@ const DashboardSubmitPost = () => {
 		data.price_second = priceSecondString ? parseInt(priceSecondString) : null;
 		data.type = data.type ?? PRODUCT_TYPE[0];
 		data.home_type = defaultType;
+		data.home_type_more = data.home_type_more;
 		data.jacuzzi = data.jacuzzi ? 1 : 0;
 		data.bath = data.bath ? 1 : 0;
 		data.pool = data.pool ? 1 : 0;
@@ -442,6 +443,19 @@ const DashboardSubmitPost = () => {
 		return label;
 	};
 
+	const hasAutreImmo = (): boolean => {
+		let output: boolean = false;
+
+		if (
+			currentType() === "BIEN EN VENTE" &&
+			currentCategory()?.uuid === ProductcategoryUUID.BIEN_EN_VENTE.children.AUTRES
+		) {
+			output = true;
+		}
+
+		return output;
+	};
+
 	const hasResidence = (): boolean => {
 		let output: boolean = false;
 
@@ -478,6 +492,7 @@ const DashboardSubmitPost = () => {
 		setValue("type", product?.type ?? PRODUCT_TYPE[0]);
 		setValue("category_id", value.category_id);
 		setValue("home_type", value.home_type);
+		setValue("home_type_more", value.home_type_more);
 
 		setValue("location_id", value.location_id);
 		setValue("location_description", value.location_description);
@@ -546,6 +561,7 @@ const DashboardSubmitPost = () => {
 				purchase_power: product.purchase_power,
 				security: product.security,
 				area_count: product.area_count,
+				home_type_more: product.home_type_more,
 			};
 			setDefaultValue(value);
 			setImages(product.images.map((image) => image.image));
@@ -925,50 +941,69 @@ const DashboardSubmitPost = () => {
 										)}
 
 										{/* DETAIL CATEGORY */}
-										{getValues("type") ===
-											PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] &&
+										{currentType() === "BIEN EN VENTE" &&
 											!showNumberOfRooms() && (
-												<label className="block col-span-4">
-													<div className="grid grid-cols-1 gap-6">
-														<div>
-															<Label>
-																{getVenteCountLabel()}
-																<span className="text-red-500">
+												<>
+													{!hasAutreImmo() ? (
+														<label className="block col-span-4">
+															<div className="grid grid-cols-1 gap-6">
+																<div>
+																	<Label>
+																		{getVenteCountLabel()}
+																		{/* <span className="text-red-500">
 																	*
-																</span>
-															</Label>
+																</span> */}
+																	</Label>
 
-															<div className="block md:col-span-2 ">
-																<Input
-																	name="area_count"
-																	autoComplete="on"
-																	defaultValue={
-																		defaultValue?.area_count ??
-																		0
-																	}
-																	onChange={(event) => {
-																		event.target.value &&
-																			setValue(
-																				"area_count",
-																				parseInt(
-																					event.target
-																						.value
-																				)
-																			);
-																	}}
-																></Input>
+																	<div className="block md:col-span-2 ">
+																		<Input
+																			name="area_count"
+																			autoComplete="on"
+																			defaultValue={
+																				defaultValue?.area_count ??
+																				0
+																			}
+																			onChange={(event) => {
+																				event.target
+																					.value &&
+																					setValue(
+																						"area_count",
+																						parseInt(
+																							event
+																								.target
+																								.value
+																						)
+																					);
+																			}}
+																		></Input>
+																	</div>
+																</div>
 															</div>
-														</div>
-													</div>
-													<div>
-														<ErrorMessage
-															errors={errorArray}
-															error="category_id"
-															customMessage="Veuillez choisir un type de bien"
-														/>
-													</div>
-												</label>
+															<div>
+																<ErrorMessage
+																	errors={errorArray}
+																	error="category_id"
+																	customMessage="Veuillez choisir un type de bien"
+																/>
+															</div>
+														</label>
+													) : null}
+												</>
 											)}
+
+										{hasAutreImmo() ? (
+											<div className="col-span-3">
+												<Label>Autre Aspect (Détails)</Label>
+												<Input
+													autoComplete="on"
+													defaultValue={defaultValue?.home_type_more}
+													name="home_type_more"
+													onChange={(e) =>
+														setValue("home_type_more", e.target.value)
+													}
+												/>
+											</div>
+										) : null}
 
 										{/* VILLE - COUNTRY - STATE */}
 										<label className="block col-span-4">
@@ -1039,17 +1074,19 @@ const DashboardSubmitPost = () => {
 										</label>
 									</div>
 
-									<DetailBien
-										errorArray={errorArray}
-										register={register}
-										product={product}
-										setValue={setValue}
-										getValues={getValues}
-										typeDeBien={
-											(getValues("type") as IProductType) ??
-											(PRODUCT_TYPE[0] as IProductType)
-										}
-									/>
+									{!hasAutreImmo() && (
+										<DetailBien
+											errorArray={errorArray}
+											register={register}
+											product={product}
+											setValue={setValue}
+											getValues={getValues}
+											typeDeBien={
+												(getValues("type") as IProductType) ??
+												(PRODUCT_TYPE[0] as IProductType)
+											}
+										/>
+									)}
 
 									<DetailBienTwo
 										errorArray={errorArray}
@@ -1153,7 +1190,8 @@ const DashboardSubmitPost = () => {
 												{currentType() === "BIEN EN VENTE" &&
 												currentCategory() &&
 												currentCategory()?.uuid !==
-													ProductcategoryUUID.MAISON.key ? (
+													ProductcategoryUUID.MAISON.key &&
+												!hasAutreImmo() ? (
 													<div className="col-span-2">
 														<Label>
 															Prix par unité
@@ -1178,27 +1216,6 @@ const DashboardSubmitPost = () => {
 																<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
 																	FCFA
 																</span>
-
-																{false && (
-																	<>
-																		<Input
-																			type="number"
-																			className="mt-1"
-																			defaultValue={
-																				(product &&
-																					product?.price) ??
-																				0
-																			}
-																			{...register("price", {
-																				required: true,
-																			})}
-																		/>
-
-																		<span className="text-lg ml-2 text-neutral-300">
-																			{CURRENCY}{" "}
-																		</span>
-																	</>
-																)}
 															</div>
 														</Label>
 														<ErrorMessage

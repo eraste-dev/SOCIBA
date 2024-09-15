@@ -126,6 +126,7 @@ export interface ProductRequest {
 	air_conditioning?: number;
 	acd?: number;
 	home_type?: string;
+	home_type_more?: string;
 	security?: string;
 	purchase_power?: string;
 	accessibility?: string;
