@@ -100,7 +100,7 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
 			<div className="nc-SectionLatestPosts__grid">
 				<ListProducts
 					postCardName="card11"
-					gridClass="grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+					gridClass="grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
 					className="pb-16 lg:pb-28"
 				/>
 			</div>

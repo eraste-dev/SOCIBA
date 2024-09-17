@@ -17,7 +17,7 @@ export interface SectionSliderPostsProps {
 	subHeading?: string;
 	postCardName?: "card4" | "card7" | "card9" | "card10" | "card10V2" | "card11";
 	sliderStype?: "style1" | "style2";
-	perView?: 2 | 3 | 4;
+	perView?: 2 | 3 | 4 | 6 | 8;
 	uniqueSliderClass: string;
 }
 
@@ -27,7 +27,7 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 	className = "",
 	postCardName = "card4",
 	sliderStype = "style1",
-	perView = 4,
+	perView = 6,
 	uniqueSliderClass,
 }) => {
 	const UNIQUE_CLASS = "SectionSliderPosts_" + ncNanoId(uniqueSliderClass);
@@ -51,8 +51,10 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 		gap: 32,
 		bound: true,
 		breakpoints: {
+			1600: { perView: perView - 1 },
 			1280: { perView: perView - 1 },
 			1023: { perView: perView - 2 || 1.2, gap: 20 },
+			767: { perView: 1.2, gap: 20 },
 		},
 	});
 
@@ -85,9 +87,11 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 	const renderHeading = () => {
 		if (sliderStype === "style1") {
 			return (
-				<Heading desc={subHeading} hasNextPrev>
-					{heading}
-				</Heading>
+				<>
+					<Heading desc={subHeading} hasNextPrev btnTopClassNme="absolute top-56">
+						{heading}
+					</Heading>
+				</>
 			);
 		} else {
 			return (
@@ -111,13 +115,20 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 					<ul className="glide__slides">
 						{data &&
 							data.map((item, index) => (
-								<li key={index} className={`glide__slide h-auto  ${sliderStype === "style2" ? "pb-12 xl:pb-16" : ""}`}>
+								<li
+									key={index}
+									className={`glide__slide h-auto  ${
+										sliderStype === "style2" ? "pb-12 xl:pb-16" : ""
+									}`}
+								>
 									<CardName post={item} />
 								</li>
 							))}
 					</ul>
 				</div>
-				{sliderStype === "style2" && <NextPrev btnClassName="w-12 h-12" containerClassName="justify-center" />}
+				{sliderStype === "style2" && (
+					<NextPrev btnClassName="w-12 h-12" containerClassName="justify-center" />
+				)}
 			</div>
 		</div>
 	);

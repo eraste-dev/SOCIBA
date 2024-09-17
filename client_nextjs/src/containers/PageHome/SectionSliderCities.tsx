@@ -17,7 +17,7 @@ export interface SectionSliderCitiesProps {
 	subHeading?: string;
 	categoryCardType?: "card1" | "card2" | "card3" | "card4" | "card5";
 	sliderStype?: "style1" | "style2";
-	perView?: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+	perView?: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
 	uniqueSliderClass: string;
 }
 
@@ -27,7 +27,7 @@ const SectionSliderCities: FC<SectionSliderCitiesProps> = ({
 	className = "",
 	categoryCardType = "card2",
 	sliderStype = "style1",
-	perView = 8,
+	perView = 10,
 	uniqueSliderClass,
 }) => {
 	const UNIQUE_CLASS = "SectionSliderCities_" + ncNanoId(uniqueSliderClass);
@@ -113,12 +113,12 @@ const SectionSliderCities: FC<SectionSliderCitiesProps> = ({
 				{loading && loading && <CardSkeleton arrayLength={4} />}
 
 				<div className="glide__track" data-glide-el="track">
-					<ul className="glide__slides">
+					<ul className="glide__slides ">
 						{get_cities().map((item, index) => (
 							<li
 								key={index}
-								className={`glide__slide h-auto  ${
-									sliderStype === "style2" ? "pb-12 xl:pb-16" : ""
+								className={`glide__slide h-auto ${
+									sliderStype === "style2" ? "pb-6 xl:pb-8" : ""
 								}`}
 							>
 								<CardComponentName

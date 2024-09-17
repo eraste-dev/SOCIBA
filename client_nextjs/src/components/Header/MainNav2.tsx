@@ -1,25 +1,41 @@
-import { AuthAction } from "app/reducer/auth/auth";
+import { AuthAction, IUser } from "app/reducer/auth/auth";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import ButtonSecondary from "components/Button/ButtonSecondary";
-import Input from "components/Form/Input/Input";
 import Logo from "components/Logo/Logo";
 import MenuBar from "components/MenuBar/MenuBar";
 import Navigation from "components/Navigation/Navigation";
 import DarkModeContainer from "containers/DarkModeContainer/DarkModeContainer";
 import { NAVIGATION_SHORT_DEMO } from "data/navigation";
-import React, { FC } from "react";
+import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { t } from "utils/translation/fr";
 import { __ } from "utils/translation/translation";
 import NotifyDropdown from "./NotifyDropdown";
 import AvatarDropdown from "./AvatarDropdown";
-import Logi from "./LoginDropdown";
 import { route } from "routers/route";
 import { useHistory } from "react-router-dom";
 import LoginDropdown from "./LoginDropdown";
 import SearchHeader from "./SearchHeader";
 import { initProductState, setSingleProduct } from "app/axios/actions/api.action";
 import { EMPTY_PRODUCT } from "app/axios/api.type";
+
+export const NavAuthAction: FC<{ user?: IUser }> = ({ user }) => {
+	if (user) {
+		return null;
+	}
+
+	return (
+		<>
+			<ButtonSecondary href={"/login"} sizeClass="px-4 py-2 sm:px-5 mx-2">
+				Se connecter
+			</ButtonSecondary>
+
+			<ButtonPrimary href={"/signup"} sizeClass="px-4 py-2 sm:px-5">
+				Déposer une annonce
+			</ButtonPrimary>
+		</>
+	);
+};
 
 export interface MainNav2Props {}
 
@@ -79,20 +95,7 @@ const MainNav2: FC<MainNav2Props> = () => {
 								</div>
 							)}
 
-							{!user && (
-								<>
-									<ButtonSecondary
-										href={"/login"}
-										sizeClass="px-4 py-2 sm:px-5 mx-2"
-									>
-										Se connecter
-									</ButtonSecondary>
-
-									<ButtonPrimary href={"/signup"} sizeClass="px-4 py-2 sm:px-5">
-										Déposer une annonce
-									</ButtonPrimary>
-								</>
-							)}
+							{!user && <NavAuthAction user={user} />}
 						</div>
 
 						<DarkModeContainer />
@@ -125,6 +128,9 @@ const MainNav2: FC<MainNav2Props> = () => {
 			</div>
 
 			<div className="lg:hidden md:hidden p-3">
+				<div className="flex justify-between my-2">
+					{/* <NavAuthAction user={user} /> */}
+				</div>
 				<SearchHeader />
 			</div>
 

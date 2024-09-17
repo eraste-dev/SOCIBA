@@ -4,16 +4,10 @@ import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeature
 import { IProduct } from "app/reducer/products/product";
 import PostPropertyCardMetaV2 from "components/PostCard/PostPropertyCardMeta/PostCardMetaV2";
 import { _f } from "utils/money-format";
-import { FaMapMarkerAlt } from "react-icons/fa";
 import { setSingleProduct } from "app/axios/actions/api.action";
 import { useAppDispatch } from "app/hooks";
 import CategoryPropertyBadgeOne from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeOne";
 import CategoryPropertyBadgeTwo from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeTwo";
-import {
-	IPRODUCT_PERIODICITY,
-	PERIODICITY_LIST,
-	PERIODICITY_RESERVATION_LIST,
-} from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
 import Card11Price from "./Card11Price";
 
@@ -41,7 +35,7 @@ const Card11: FC<Card11Props> = ({
 
 	return (
 		<div
-			className={`nc-Card11 relative flex flex-col group [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] ${className}`}
+			className={`nc-Card11 overflow-hidden relative flex flex-col group [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] ${className}`}
 			data-nc-id="Card11"
 			onMouseEnter={() => setIsHover(true)}
 			onMouseLeave={() => setIsHover(false)}
@@ -67,7 +61,10 @@ const Card11: FC<Card11Props> = ({
 
 				{/* grid grid-cols-3 */}
 				<div className="grid grid-cols-1 sm:flex justify-between">
-					<div className="grid col-span-1 text-ellipsis truncate " style={{ minWidth: "70px", maxWidth: "75px" }}>
+					<div
+						className="grid col-span-1 text-ellipsis truncate "
+						style={{ minWidth: "70px", maxWidth: "75px" }}
+					>
 						<CategoryPropertyBadgeTwo className="text-xs md:text-md" item={post} />
 
 						<p className="relative sm:bottom-3 mt-2 text-xs font-semibold text-secondary-900 dark:text-neutral-100 ">

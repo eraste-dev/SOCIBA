@@ -58,8 +58,8 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 		? "grid grid-cols-1 sm:grid-cols-3 gap-1"
 		: "grid grid-cols-1 sm:grid-cols-2 gap-1";
 	const locationItemClassName = isSingle
-		? "flex items-center justify-start bg-red-100"
-		: "flex items-center justify-start sm:justify-center bg-yellow-100";
+		? "flex items-center justify-start"
+		: "flex items-center justify-start sm:justify-center";
 
 	const getAreaUnit = (): string => {
 		let unit = " m²";

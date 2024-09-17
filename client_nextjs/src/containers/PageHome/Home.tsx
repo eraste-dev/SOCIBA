@@ -10,6 +10,9 @@ import ListProducts from "./ListProducts";
 // DEMO DATA
 const POSTS = DEMO_POSTS;
 
+export const LIST_GRID_CLASS: string =
+	"grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5";
+
 const Home: React.FC = () => {
 	useEffect(() => {
 		const $body = document.querySelector("body");
@@ -50,6 +53,7 @@ const Home: React.FC = () => {
 				<SectionSliderCities
 					className="mb-2"
 					categoryCardType="card1"
+					sliderStype="style1"
 					heading=" "
 					subHeading="Ou souhaitez-vous trouver votre logement ?"
 					uniqueSliderClass="slider-top"
@@ -87,7 +91,8 @@ const Home: React.FC = () => {
 
 				<ListProducts
 					postCardName="card11"
-					gridClass="grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+					// gridClass="grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+					gridClass={LIST_GRID_CLASS}
 					className="pb-16 lg:pb-28"
 				/>
 				{/* === SECTION LATEST POSTS === */}

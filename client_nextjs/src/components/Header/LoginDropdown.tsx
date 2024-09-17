@@ -125,7 +125,7 @@ export default function LoginDropdown() {
 											</div>
 											<div className="ml-4">
 												<p className="text-sm font-medium ">
-													{"S'inscrire"}
+													{"Déposer une annonce"}
 												</p>
 											</div>
 										</Link>

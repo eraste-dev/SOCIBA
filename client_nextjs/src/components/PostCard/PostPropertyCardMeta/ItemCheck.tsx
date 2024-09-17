@@ -14,7 +14,7 @@ const ItemChecked: React.FC<ItemCheckedProps> = ({ condition, name, icon, classN
 	const Icon = icon || <CheckCircleIcon className="mr-0 sm:mr-1" width={iconSize} height={iconSize}  color="green" />;
 
 	return (
-		<div className={`flex ${className}`} style={{ alignItems: "center" }}>
+		<div className={`flex ${className}`} style={{ alignItems: "center", fontSize: ".60rem" }}>
 			<div className="flex justify-center">{condition && Icon}</div>
 			<span>{name}</span>
 		</div>
