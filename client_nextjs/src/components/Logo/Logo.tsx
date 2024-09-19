@@ -10,9 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { initCitiesList, inittPropertyList } from "app/axios/actions/api.action";
 import { PropertyAction } from "app/reducer/products/product";
 
-export interface LogoProps {}
+export interface LogoProps {
+	height?: string;
+	width?: string;
+}
 
-const Logo: React.FC<LogoProps> = ({}) => {
+const Logo: React.FC<LogoProps> = ({ height = "55px", width = "auto" }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const filters = useSelector(PropertyAction.data)?.filters;
@@ -33,13 +36,13 @@ const Logo: React.FC<LogoProps> = ({}) => {
 				<NcImage
 					src={logoImgTwo}
 					className="hidden md:blockhidden"
-					style={{ height: 85, width: "auto" }}
+					style={{ height, width }}
 					alt="logo"
 				/>
 				<NcImage
 					src={logoImg}
 					className="block md:block"
-					style={{ height: 55, width: "auto" }}
+					style={{ height, width }}
 					alt="logo"
 				/>
 			</span>

@@ -126,10 +126,8 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 					) : null}
 
 					<div className="grid grid-cols-6 mb-4">
-						<div className="col-span-3">
+						<div className="col-span-4">
 							<div className="w-full">
-								{/* <FaMapMarkerAlt /> */}
-
 								{/* <CategoryPropertyBadgeTwo className="text-lg" item={single} /> */}
 								{single && single.home_type ? (
 									<AuthorLine
@@ -157,7 +155,7 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 							</div>
 						</div>
 
-						<div className="col-span-3">
+						<div className="col-span-2">
 							<div className="w-full flex justify-end ">
 								{single && (
 									<Card11Price

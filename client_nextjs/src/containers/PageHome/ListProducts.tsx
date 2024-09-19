@@ -21,22 +21,26 @@ export const getParams = (): IGetSearchPropertiesParams => {
 	const location = urlSearchParams.get("location");
 	const unlisted_location = urlSearchParams.get("unlisted_location");
 	const searchText = urlSearchParams.get("searchText");
+	const locationDescription = urlSearchParams.get("location_description");
 	const category_slug = urlSearchParams.get("category_slug");
 	const type = urlSearchParams.get("type");
 	const category_uuid = urlSearchParams.get("category_uuid");
 	const home_type = urlSearchParams.get("home_type");
 	const category_slug_selected = urlSearchParams.get("category_slug_selected");
+	const other_location = urlSearchParams.get("other_location");
 
 	console.log("urlSearchParams", {
 		price_sort: price_sort,
 		location: location,
 		searchText: searchText,
+		locationDescription: locationDescription,
 		category_slug: category_slug,
 		type: type,
 		category_uuid: category_uuid,
 		home_type: home_type,
 		category_slug_selected: category_slug_selected,
 		unlisted_location: unlisted_location,
+		other_location: other_location,
 	});
 
 	if (price_sort) {
@@ -54,6 +58,10 @@ export const getParams = (): IGetSearchPropertiesParams => {
 
 	if (searchText) {
 		params.searchText = searchText;
+	}
+
+	if (locationDescription) {
+		params.location_description = locationDescription;
 	}
 
 	if (category_slug) {
@@ -74,6 +82,10 @@ export const getParams = (): IGetSearchPropertiesParams => {
 
 	if (category_slug_selected) {
 		params.category_slug_selected = category_slug_selected;
+	}
+
+	if (other_location) {
+		params.other_location = other_location;
 	}
 
 	return params;
@@ -120,7 +132,7 @@ const ListProducts: FC<ListProductsProps> = ({
 	}
 
 	return (
-		<div className={`nc-ListProducts relative ${className}`}>
+		<div className={`nc-ListProducts relative ${className}`} id="post-list" >
 			<div className="mt-5">
 				<Heading>{heading}</Heading>
 			</div>

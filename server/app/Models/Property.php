@@ -178,6 +178,7 @@ class Property extends Model
     {
         $payload = [
             'searchText'             => request()->searchText ?? null,
+            'location_description'   => request()->location_description ?? null,
             'id'                     => request()->id ?? null,
             'slug'                   => request()->slug ?? null,
             'category'               => request()->category ?? null,
@@ -191,6 +192,7 @@ class Property extends Model
             'location'               => request()->location ?? null,
             'unlisted_location'      => request()->unlisted_location ?? null,
             'other_location'         => request()->other_location ?? null,
+            'other_city'             => request()->other_city ?? null,
             'top_seed'               => request()->top ?? false,
             'limit'                  => request()->limit ?? 84,
             'created_by'             => request()->created_by ?? null,

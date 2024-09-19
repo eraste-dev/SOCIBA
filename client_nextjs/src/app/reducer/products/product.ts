@@ -106,6 +106,7 @@ export interface IPropertyFilter {
 	city?: string;
 	location?: number | string;
 	unlisted_location?: string;
+	citySearch?: string;
 	top?: boolean;
 	categories?: number[];
 	locations?: number[];

@@ -18,8 +18,12 @@ class PropertyController extends Controller
 {
     private $limit_product = 9999999999999;
 
+
     /**
-     * Display a listing of the resource.
+     * Handles the HTTP GET request for retrieving properties.
+     *
+     * @param Request $request The HTTP request object
+     * @return ResponseService::success() A successful HTTP response with paginated properties
      */
     public function get(Request $request)
     {

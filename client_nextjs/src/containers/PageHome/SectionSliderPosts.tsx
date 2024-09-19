@@ -17,7 +17,7 @@ export interface SectionSliderPostsProps {
 	subHeading?: string;
 	postCardName?: "card4" | "card7" | "card9" | "card10" | "card10V2" | "card11";
 	sliderStype?: "style1" | "style2";
-	perView?: 2 | 3 | 4 | 6 | 8;
+	perView?: 2 | 3 | 4 | 6 | 6.2 | 8;
 	uniqueSliderClass: string;
 }
 
@@ -27,7 +27,7 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 	className = "",
 	postCardName = "card4",
 	sliderStype = "style1",
-	perView = 6,
+	perView = 6.2,
 	uniqueSliderClass,
 }) => {
 	const UNIQUE_CLASS = "SectionSliderPosts_" + ncNanoId(uniqueSliderClass);
@@ -35,11 +35,10 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 	const dispatch = useAppDispatch();
 	const data = useAppSelector(PropertyAction.data)?.features?.get;
 	const loading = useSelector(PropertyAction.data)?.features?.loading;
-	// const error = useSelector(PropertyAction.error);
-	// const success = useSelector(PropertyAction.success);
+	const error = useSelector(PropertyAction.error);
 
 	useEffect(() => {
-		if (!data && !loading) {
+		if (!data && !loading && !error) {
 			dispatch(fetchFeatureProperties({ top: true, limit: 8 }));
 		}
 	}, [dispatch, fetchFeatureProperties, data, loading]);
@@ -48,13 +47,13 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 		// @ts-ignore
 		direction: document.querySelector("html")?.getAttribute("dir") === "rtl" ? "rtl" : "ltr",
 		perView: perView,
-		gap: 32,
+		gap: 20,
 		bound: true,
 		breakpoints: {
-			1600: { perView: perView - 1 },
-			1280: { perView: perView - 1 },
-			1023: { perView: perView - 2 || 1.2, gap: 20 },
-			767: { perView: 1.2, gap: 20 },
+			1600: { perView: perView },
+			1280: { perView: 4.2 },
+			1023: { perView: 3.2, gap: 8 },
+			767: { perView: 2.2, gap: 8 },
 		},
 	});
 
@@ -88,7 +87,7 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 		if (sliderStype === "style1") {
 			return (
 				<>
-					<Heading desc={subHeading} hasNextPrev btnTopClassNme="absolute top-56">
+					<Heading desc={subHeading} hasNextPrev className="my-2">
 						{heading}
 					</Heading>
 				</>

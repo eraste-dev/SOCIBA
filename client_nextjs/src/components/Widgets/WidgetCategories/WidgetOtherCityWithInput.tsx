@@ -1,39 +1,21 @@
-import { setFilters } from "app/axios/actions/api.action";
-import { useAppDispatch } from "app/hooks";
 import WidgetHeading1 from "components/Widgets/WidgetHeading1/WidgetHeading1";
 import { FC } from "react";
 import { IPropertyFilter } from "app/reducer/products/product";
-import { updateParamsUrl } from "utils/utils";
 import InputFilter from "../WidgetSort/InputFilter";
 
-export interface WidgetLocationWithSelectProps {
+export interface WidgetOtherCityWithInputProps {
 	className?: string;
-	handleFetch?: () => void;
+	handleChange: (event: string) => void;
 	useStateFilter: IPropertyFilter;
 	setUseStateFilter?: any;
 	groupFilter?: boolean;
 }
 
-const WidgetLocationWithInput: FC<WidgetLocationWithSelectProps> = ({
+const WidgetOtherCityWithInput: FC<WidgetOtherCityWithInputProps> = ({
 	className = "bg-neutral-100 dark:bg-neutral-800",
-	handleFetch,
-	useStateFilter,
-	setUseStateFilter,
+	handleChange,
 	groupFilter,
 }) => {
-	const dispatch = useAppDispatch();
-
-	const handleChange = (value: string) => {
-		updateParamsUrl("location_description", value);
-		// dispatch(setFilters({ location_description: value }));
-		setUseStateFilter && setUseStateFilter({ ...useStateFilter, location_description: value });
-		if (value && value.length > 1) {
-			setTimeout(() => {
-				handleFetch && handleFetch();
-			}, 100);
-		}
-	};
-
 	return (
 		<div className={!groupFilter ? `${className}` : ""}>
 			<div
@@ -49,11 +31,11 @@ const WidgetLocationWithInput: FC<WidgetLocationWithSelectProps> = ({
 					className="flex flex-col divide-neutral-200 dark:divide-neutral-700 px-1 w-full my-2"
 					style={{ position: "relative", top: "-12px" }}
 				>
-					<InputFilter onChange={handleChange} label="Quartier" value="" />
+					<InputFilter onChange={(event) => handleChange(event)} label="Ville" value="" />
 				</div>
 			</div>
 		</div>
 	);
 };
 
-export default WidgetLocationWithInput;
+export default WidgetOtherCityWithInput;

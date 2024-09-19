@@ -18,6 +18,8 @@ import LoginDropdown from "./LoginDropdown";
 import SearchHeader from "./SearchHeader";
 import { initProductState, setSingleProduct } from "app/axios/actions/api.action";
 import { EMPTY_PRODUCT } from "app/axios/api.type";
+import MainNav2Desktop from "./MainNav2Desktop";
+import MainNav2Mobile from "./MainNav2Mobile";
 
 export const NavAuthAction: FC<{ user?: IUser }> = ({ user }) => {
 	if (user) {
@@ -49,98 +51,33 @@ const MainNav2: FC<MainNav2Props> = () => {
 		return history.location.pathname.includes("dashboard");
 	};
 
+	const handleClickAddPost = () => {
+		dispatch(initProductState());
+		dispatch(setSingleProduct(EMPTY_PRODUCT));
+		history.push(route("add_post"));
+	};
+
 	const classNameContainer = isDashboard() ? "px-0" : "container";
 
 	return (
-		<div className={`nc-MainNav nc-MainNav2 relative z-10 ${"notOnTop backdrop-filter "}`}>
-			<div
-				className={`pt-5 pb-2 relative flex justify-between items-center space-x-4 xl:space-x-8 ${classNameContainer}`}
-			>
-				<div className="flex justify-between flex-grow items-center space-x-3 sm:space-x-8 lg:space-x-10">
-					{!isDashboard() && (
-						<>
-							<Logo />
-
-							<div className="hidden sm:block flex-grow max-w-md">
-								<SearchHeader />
-							</div>
-						</>
-					)}
-				</div>
-
-				<div className="flex-shrink-0 flex items-center justify-end text-neutral-700 dark:text-neutral-100 space-x-1">
-					<div className="hidden items-center xl:flex space-x-2">
-						{!isDashboard() && false && (
-							<Navigation navigations={NAVIGATION_SHORT_DEMO} />
-						)}
-
-						<div className="hidden sm:block h-10 border-l border-neutral-300 dark:border-neutral-6000">
-							{user && (
-								<div className="flex items-center">
-									<ButtonPrimary
-										onClick={() => {
-											dispatch(initProductState());
-											dispatch(setSingleProduct(EMPTY_PRODUCT));
-											history.push(route("add_post"));
-										}}
-										// href={route("add_post")}
-										sizeClass="px-4 py-2 sm:px-5"
-										className="mx-2"
-									>
-										{__(t.rs_publish)}
-									</ButtonPrimary>
-
-									<NotifyDropdown />
-									<AvatarDropdown />
-								</div>
-							)}
-
-							{!user && <NavAuthAction user={user} />}
-						</div>
-
-						<DarkModeContainer />
-					</div>
-
-					<div className="flex items-center space-x-1.5 xl:hidden">
-						{user && (
-							<>
-								<NotifyDropdown />
-								<AvatarDropdown />
-							</>
-						)}
-
-						{!user && (
-							<>
-								{/* <ButtonPrimary
-									href={route("add_post")}
-									sizeClass="px-4 py-2 sm:px-5"
-								>
-									{__(t.rs_publish)}
-								</ButtonPrimary> */}
-
-								<LoginDropdown />
-							</>
-						)}
-						<DarkModeContainer />
-						<MenuBar />
-					</div>
-				</div>
+		<div className="main-header-style-one">
+			{/* DESKTOP LG */}
+			<div className="hidden sm:block">
+				<MainNav2Desktop
+					isDashboard={() => isDashboard()}
+					user={user}
+					handleClickAddPost={() => handleClickAddPost}
+				/>
 			</div>
 
-			<div className="lg:hidden md:hidden p-3">
-				<div className="flex justify-between my-2">
-					{/* <NavAuthAction user={user} /> */}
-				</div>
-				<SearchHeader />
+			{/* MOBILE */}
+			<div className="block sm:hidden">
+				<MainNav2Mobile
+					isDashboard={() => isDashboard()}
+					user={user}
+					handleClickAddPost={() => handleClickAddPost}
+				/>
 			</div>
-
-			{!isDashboard() && (
-				<div className="container pb-2 relative flex justify-between items-center">
-					<div className="hidden sm:flex justify-between">
-						<Navigation navigations={NAVIGATION_SHORT_DEMO} />
-					</div>
-				</div>
-			)}
 		</div>
 	);
 };

@@ -1,5 +1,5 @@
-import React, { FC, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { FC, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Slider from "react-slick";
 // import { Spinner } from "react-bootstrap";
 
@@ -20,10 +20,9 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "" }) => {
 	const data = useAppSelector(sliderAction.data);
 	const loading = useSelector(sliderAction.loading);
 	const error = useSelector(sliderAction.error);
-	const success = useSelector(sliderAction.success);
 
 	useEffect(() => {
-		if (!data && !loading) {
+		if (!data && !loading && !error) {
 			dispatch(fetchSliders());
 		}
 	}, [dispatch, fetchSliders, data, loading]);

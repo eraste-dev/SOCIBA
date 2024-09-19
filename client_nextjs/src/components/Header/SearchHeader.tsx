@@ -70,7 +70,7 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 
 	return (
 		<>
-			<form className="relative" onSubmit={handleSubmit(onSubmit)}>
+			<form className="relative w-full my-1" onSubmit={handleSubmit(onSubmit)}>
 				<Input
 					type="search"
 					placeholder="Chercher sur SOCIBA"

@@ -6,6 +6,7 @@ import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import SectionHeroSlider from "components/SectionHero/SectionHeroSlider";
 import SectionSliderCities from "./SectionSliderCities";
 import ListProducts from "./ListProducts";
+import SectionSliderCitiesTwo from "./SectionSliderCitiesTwo";
 
 // DEMO DATA
 const POSTS = DEMO_POSTS;
@@ -50,14 +51,24 @@ const Home: React.FC = () => {
 					className="pb-8 lg:pb-10"
 				/> */}
 
-				<SectionSliderCities
-					className="mb-2"
-					categoryCardType="card1"
-					sliderStype="style1"
-					heading=" "
-					subHeading="Ou souhaitez-vous trouver votre logement ?"
-					uniqueSliderClass="slider-top"
-				/>
+				{true ? (
+					<SectionSliderCitiesTwo
+						className="mb-2"
+						categoryCardType="card1"
+						sliderStype="style1"
+						heading=" "
+						subHeading="Ou souhaitez-vous trouver votre logement ?"
+					/>
+				) : (
+					<SectionSliderCities
+						className="mb-2"
+						categoryCardType="card1"
+						sliderStype="style1"
+						heading=" "
+						subHeading="Ou souhaitez-vous trouver votre logement ?"
+						uniqueSliderClass="slider-top"
+					/>
+				)}
 
 				{/* <SectionGridCitiesBoxTwo
 					className="pb-16 lg:pb-28"
@@ -70,7 +81,7 @@ const Home: React.FC = () => {
 
 				{/* === SECTION TOP POSTS === */}
 				<SectionSliderPosts
-					className="pt-8 pb-5"
+					className="pt-1 pb-1 my-0"
 					postCardName="card11"
 					heading="Les meilleures publications actuellement"
 					subHeading=""

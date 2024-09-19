@@ -78,7 +78,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 			return (
 				<div>
 					{/*  */}
-					<div className={`${gridThree} ${isSingle ? "space-y-8" : ""}`}>
+					<div className={`${gridThree} ${isSingle ? "space-y-1" : ""}`}>
 						{/* Superficie */}
 						{area && area != 0 ? (
 							<div className={locationItemClassName} title="Superficie">
@@ -214,10 +214,15 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 
 		return (
 			<>
-				<div className={`grid gap-2 sm:gap-0 mt-3  ${isSingle ? "grid-cols-3 sm:grid-cols-5 " : "grid-cols-2"}`}>
+				<div
+					className={`grid gap-2 sm:gap-0 mt-3  ${
+						isSingle ? "grid-cols-3 sm:grid-cols-5 " : "grid-cols-2"
+					}`}
+				>
 					{/* JACUZZI */}
 					{meta.jacuzzi ? (
 						<ItemChecked
+							isSingle={true}
 							name="Jacuzzi"
 							condition={meta.jacuzzi}
 							className="justify-self-start"
@@ -225,17 +230,27 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 					) : null}
 
 					{/* BATH */}
-					{meta.bath ? <ItemChecked name="Baignoire" condition={meta.bath} /> : null}
+					{meta.bath ? (
+						<ItemChecked isSingle={true} name="Baignoire" condition={meta.bath} />
+					) : null}
 
 					{/* WIFI */}
-					{meta.WiFi ? <ItemChecked name="WIFI" condition={meta.WiFi} /> : null}
+					{meta.WiFi ? (
+						<ItemChecked isSingle={true} name="WIFI" condition={meta.WiFi} />
+					) : null}
 
 					{/* PICINE */}
-					{meta.pool ? <ItemChecked name="Piscine" condition={meta.pool} /> : null}
+					{meta.pool ? (
+						<ItemChecked isSingle={true} name="Piscine" condition={meta.pool} />
+					) : null}
 
 					{/* CLIMATISATION */}
 					{meta.air_conditioning ? (
-						<ItemChecked name="Climatisation" condition={meta.air_conditioning} />
+						<ItemChecked
+							isSingle={true}
+							name="Climatisation"
+							condition={meta.air_conditioning}
+						/>
 					) : null}
 				</div>
 			</>

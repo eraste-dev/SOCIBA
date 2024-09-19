@@ -13,19 +13,15 @@ export const AuthorLine = ({
 	classNameValue?: string;
 }) => {
 	return (
-		<div className="flex md:grid grid-cols-5 ">
-			{/* <div className="col-span-2">{label}</div>
-			<div className="col-span-1 ">:</div>
-			<div className="col-span-9  ">{value}</div> */}
-
-			<div className="sm:col-span-1 col-span-1">
+		<div className="grid grid-cols-8 sm:grid-cols-5 md:grid-cols-8">
+			<div className="col-span-3 sm:col-span-2 md:col-span-1">
 				<div className="w-full flex justify-between">
 					<span>{label}</span>
 					<span className="mr-2">:</span>
 				</div>
 			</div>
 
-			<div className="col-span-4 sm:col-span-3">
+			<div className="">
 				<span className={classNameValue ? classNameValue : "font-semibold"}>{value}</span>
 			</div>
 		</div>

@@ -6,15 +6,31 @@ interface ItemCheckedProps {
 	name: string;
 	icon?: JSX.Element;
 	className?: string;
+	isSingle?: boolean;
 }
 
-const ItemChecked: React.FC<ItemCheckedProps> = ({ condition, name, icon, className }) => {
+const ItemChecked: React.FC<ItemCheckedProps> = ({
+	condition,
+	name,
+	icon,
+	className,
+	isSingle,
+}) => {
 	const iconSize = 24; // Assurez-vous de définir la taille de l'icône
 
-	const Icon = icon || <CheckCircleIcon className="mr-0 sm:mr-1" width={iconSize} height={iconSize}  color="green" />;
+	const Icon = icon || (
+		<CheckCircleIcon
+			className="mr-0 sm:mr-1"
+			width={iconSize}
+			height={iconSize}
+			color="green"
+		/>
+	);
 
 	return (
-		<div className={`flex ${className}`} style={{ alignItems: "center", fontSize: ".60rem" }}>
+		<div
+			className={`flex overflow-hidden text-sm sm:text-base text-ellipsis ${className}`}
+		>
 			<div className="flex justify-center">{condition && Icon}</div>
 			<span>{name}</span>
 		</div>

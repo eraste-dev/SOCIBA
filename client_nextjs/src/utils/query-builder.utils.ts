@@ -16,11 +16,13 @@ export type IGetParamSTATUS =
 
 export interface IGetSearchPropertiesParams {
 	searchText?: string;
+	location_description?: string;
 	id?: number | string;
 	slug?: string;
 	category?: number | "*";
 	category_slug?: string;
 	type?: string;
+	other_location?: string;
 	category_uuid?: string;
 	home_type?: string;
 	category_slug_selected?: string;

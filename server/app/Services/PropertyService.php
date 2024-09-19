@@ -115,6 +115,15 @@ class PropertyService
             $query->where('category_id', $payload['category']);
         }
 
+        // location_description
+        if ($payload['location_description'] && $payload['location_description'] !== '*') {
+            $query->where(
+                'location_description',
+                'like',
+                '%' . $payload['location_description'] . '%'
+            );
+        }
+
         // ? categories
         if ($payload['categories'] && count(explode(',', $payload['categories'])) > 0) {
             $query->whereIn('category_id', explode(',', $payload['categories']));
@@ -169,11 +178,11 @@ class PropertyService
         if (isset($payload['location']) && $payload['location'] !== '*') {
             $query->where('location_id', $payload['location']);
         } else if ($payload['location'] == "0") {
-            $query->where('location_id', null); // ? search unlisted location
+            $query->where('location_id', null);
         }
 
         if (isset($payload['unlisted_location']) && !isset($payload['location'])) {
-            $query->where('location_id', null); // ? search unlisted location
+            $query->where('location_id', null);
         }
 
         if (isset($payload['other_location']) && !isset($payload['location'])) {

@@ -12,7 +12,7 @@ export interface UserLayoutProps {
 const UserLayout: FC<UserLayoutProps> = ({ className = "", heading, subHeading, headingEmoji, children }) => {
 	return (
 		<div className={`nc-UserLayout relative ${className}`} data-nc-id="UserLayout">
-			<HeadBackgroundCommon />
+			{/* <HeadBackgroundCommon /> */}
 			{/* container relative pt-10 pb-16 lg:pt-20 lg:pb-28 */}
 			<div className="relative ">
 				{/* HEADER */}
