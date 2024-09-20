@@ -14,7 +14,6 @@ import {
 } from "components/Dashboard/Products/ChangeProductType";
 import { Tooltip } from "@mui/material";
 import FloatFilter from "components/Widgets/FloatFilter";
-import { fetchAllProperties } from "app/axios/actions/api.action";
 import { getParams } from "containers/PageHome/ListProducts";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
@@ -50,7 +49,6 @@ const DashboardPosts = () => {
 			param.type = undefined;
 		}
 		return dispatch(fetchUserProduct(getParams()));
-		// return dispatch(fetchAllProperties(getParams()));
 	};
 
 	const CountByStatue = () => {

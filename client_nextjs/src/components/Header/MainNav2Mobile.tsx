@@ -78,7 +78,7 @@ const MainNav2Mobile: FC<MainNav2MobileProps> = ({ isDashboard, user, handleClic
 										sizeClass="px-4 py-2 sm:px-5"
 										className="mx-2"
 									>
-										{__(t.rs_publish)}
+										Publier une annonce
 									</ButtonPrimary>
 
 									<NotifyDropdown />

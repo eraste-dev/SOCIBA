@@ -75,6 +75,9 @@ const ProductTableRow: FC<ProductTableRowProps> = ({
 						</div>
 
 						<div className="px-5">
+							<div>
+								<Card11Price item={row} />
+							</div>
 							<div className="relative " style={{ maxWidth: 150 }}>
 								<span className="inset-x-3 z-10 mb-5">
 									<CategoryPropertyBadgeOne category={category} />
@@ -111,24 +114,6 @@ const ProductTableRow: FC<ProductTableRowProps> = ({
 								)}
 							</div>
 						</div>
-					</div>
-				</TableCell>
-
-				<TableCell>
-					<div className="flex">
-						<span className="mr- 2">
-							<Card11Price item={row} />
-						</span>
-						<span>
-							{PERIODICITY_LIST.find((p) => p.id === periodicity)?.name &&
-								"/ " + PERIODICITY_LIST.find((p) => p.id === periodicity)?.name}
-						</span>
-					</div>
-				</TableCell>
-
-				<TableCell>
-					<div className="flex">
-						{category && <span className="mr- 2">{category.name}</span>}
 					</div>
 				</TableCell>
 

@@ -135,6 +135,30 @@ export const SUB_APPARTEMENT_DETAIL: ISubCategoryType[] = [
 	{ code: "AUTRE", name: "Autre" },
 ];
 
+export const convertPayloadToFormData = (data: ProductRequest, imageFiles?: File[]): FormData => {
+	const formData = new FormData(); // initialize form data
+	for (const key in data) {
+		if (
+			data.hasOwnProperty(key) &&
+			data[key as keyof ProductRequest] !== undefined &&
+			data[key as keyof ProductRequest] !== null
+		) {
+			if (key === "images" && data.images) {
+				if (imageFiles && Array.isArray(imageFiles)) {
+					imageFiles.forEach((image) => {
+						console.log("check images", image);
+						formData.append("images[]", image);
+					});
+				}
+			} else {
+				formData.append(key, data[key as keyof ProductRequest] as any);
+			}
+		}
+	}
+
+	return formData;
+};
+
 const DashboardSubmitPost = () => {
 	const CURRENCY: string = "FCFA";
 
@@ -172,12 +196,12 @@ const DashboardSubmitPost = () => {
 
 	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
 		console.log("SubmitHandler imageFiles", imageFiles);
-		const formData = new FormData(); // initialize form data
+		let formData = new FormData(); // initialize form data
 		const defaultType: string =
 			data.home_type ??
 			(SUB_CATEGORIES().length > 0 ? Object.values(SUB_CATEGORIES())[0].code : "");
 
-		const priceString: string = data.price.toString().replace(/\s/g, "");
+		const priceString: string = data?.price ? data?.price.toString().replace(/\s/g, "") : "0";
 		const priceSecondString: string | null = data.price_second
 			? data.price_second.toString().replace(/\s/g, "")
 			: null;
@@ -228,30 +252,11 @@ const DashboardSubmitPost = () => {
 		}
 
 		// Convert data to FormData
-		for (const key in data) {
-			if (
-				data.hasOwnProperty(key) &&
-				data[key as keyof ProductRequest] !== undefined &&
-				data[key as keyof ProductRequest] !== null
-			) {
-				if (key === "images" && data.images) {
-					if (Array.isArray(imageFiles)) {
-						imageFiles.forEach((image) => {
-							console.log("check images", image);
-							formData.append("images[]", image);
-						});
-					}
-				} else {
-					formData.append(key, data[key as keyof ProductRequest] as any);
-				}
-			}
-		}
+		formData = convertPayloadToFormData(data, imageFiles);
 
 		if (product && productId) {
 			formData.append("id", productId);
 		}
-
-		console.info(">>> postProduct ", data);
 
 		dispatch(postProduct(formData));
 	};

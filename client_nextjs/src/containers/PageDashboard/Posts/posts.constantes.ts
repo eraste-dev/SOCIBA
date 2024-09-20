@@ -1,0 +1,42 @@
+import { PeriodicityType, ProductRequest } from "app/axios/api.type";
+import { IProduct } from "app/reducer/products/product";
+
+export const mapIProductToProductRequest = (iProduct: IProduct): ProductRequest => {
+	return {
+		id: iProduct.id,
+		title: iProduct.title,
+		category_id: iProduct.category.id,
+		periodicity: iProduct.periodicity as PeriodicityType,
+		excerpt: iProduct.excerpt,
+		content: iProduct.content,
+		type: iProduct.type,
+		status: iProduct.status,
+		location_id: String(iProduct.location.id),
+		location_description: iProduct.location_description,
+		price: iProduct.price,
+		price_second: iProduct.price_second,
+		deposit_price: iProduct.deposit_price,
+		images: iProduct.images.map((image) => image.image),
+		bathrooms: iProduct.bathrooms,
+		bedrooms: iProduct.bedrooms,
+		garages: iProduct.garages,
+		kitchens: iProduct.kitchens,
+		rooms: iProduct.rooms,
+		area: iProduct.area,
+		area_unit: iProduct.area_unit,
+		count_advance: iProduct.count_advance,
+		count_monthly: iProduct.count_monthly,
+		jacuzzi: iProduct.jacuzzi ? 1 : 0,
+		bath: iProduct.bath ? 1 : 0,
+		WiFi: iProduct.WiFi ? 1 : 0,
+		pool: iProduct.pool ? 1 : 0,
+		air_conditioning: iProduct.air_conditioning ? 1 : 0,
+		acd: iProduct.acd ? 1 : 0,
+		home_type: iProduct.home_type,
+		home_type_more: iProduct.home_type_more,
+		security: iProduct.security,
+		purchase_power: iProduct.purchase_power,
+		accessibility: iProduct.accessibility,
+		area_count: iProduct.area_count,
+	};
+};

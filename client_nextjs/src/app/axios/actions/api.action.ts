@@ -370,7 +370,7 @@ export const updateUser =
 		try {
 			const response = await axiosRequest<IServerResponse>({
 				...serverEndpoints.public.auth.updateProfile(params),
-				// headers: { "Content-Type": "multipart/form-data" },
+				headers: { "Content-Type": "multipart/form-data" },
 			});
 			dispatch(updateUserSuccess(response.data));
 		} catch (error: any) {

@@ -54,7 +54,7 @@ const MainNav2: FC<MainNav2Props> = () => {
 	const handleClickAddPost = () => {
 		dispatch(initProductState());
 		dispatch(setSingleProduct(EMPTY_PRODUCT));
-		history.push(route("add_post"));
+		history.replace(route("add_post"));
 	};
 
 	const classNameContainer = isDashboard() ? "px-0" : "container";

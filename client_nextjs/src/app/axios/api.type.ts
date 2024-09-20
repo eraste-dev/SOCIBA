@@ -84,6 +84,8 @@ export type UpdateUserRequest = {
 	// email: string;
 	id: number;
 	password?: string;
+	fonction?: string;
+	influence_zone_id?: number;
 	confirmPassword?: string;
 	name?: string;
 	last_name?: string;
@@ -106,8 +108,8 @@ export interface ProductRequest {
 	location_id?: string;
 	unlisted_city?: string;
 	location_description?: string; // detail commune location
-	price: number;
-	price_second: number | null;
+	price?: number;
+	price_second?: number | null;
 	deposit_price?: number;
 	images?: FileList | string[] | null;
 	// details
