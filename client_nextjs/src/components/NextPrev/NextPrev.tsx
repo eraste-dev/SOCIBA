@@ -22,6 +22,10 @@ const NextPrev: FC<NextPrevProps> = ({
 	onlyNext = false,
 	onlyPrev = false,
 }) => {
+	if (true) {
+		return null;
+	}
+
 	return (
 		<div
 			className={`nc-NextPrev z-10 text-neutral-900 dark:text-neutral-300 w-full ${containerClassName}`}

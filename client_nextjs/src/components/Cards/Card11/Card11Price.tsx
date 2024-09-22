@@ -43,7 +43,7 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className }) => {
 							: "nc-card-title block font-bold text-primary-800 dark:text-neutral-100 text-sm text-clip overflow-hidden text-end"
 					}
 				>
-					<span className="text-sm sm:text-base" >{_f(item.price)}</span>
+					<span className="text-sm sm:text-sm" >{_f(item.price)}</span>
 
 					{/* // PERIODICITY */}
 					{item.type !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] ? (
