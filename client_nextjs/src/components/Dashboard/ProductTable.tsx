@@ -8,25 +8,16 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { IProduct, IProductImage } from "app/reducer/products/product";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { Link, useHistory } from "react-router-dom";
-import { route } from "routers/route";
-import ProductTableAction from "./ProductTableAction";
+import { useHistory } from "react-router-dom";
 import ConfirmDialog from "components/Dialog/ConfirmDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { initProductState, isAdmin, postProduct, updateUser } from "app/axios/actions/api.action";
-import ChangeUserType from "./Users/ChangeUserType";
+import { postProduct } from "app/axios/actions/api.action";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
-import ChangeProductType, { STATUS_LABEL } from "./Products/ChangeProductType";
-import ChangeProductTypeTableHeader from "./Products/ChangeProductTypeTableHeader";
+import { STATUS_LABEL } from "./Products/ChangeProductType";
 import { _f } from "utils/money-format";
-import {
-	convertPayloadToFormData,
-	PERIODICITY_LIST,
-} from "containers/PageDashboard/Posts/DashboardSubmitPost";
+import { convertPayloadToFormData } from "containers/PageDashboard/Posts/posts.constantes";
 import { AuthAction } from "app/reducer/auth/auth";
 import ProductTableRow from "./PostTableRow";
-import { ProductRequest } from "app/axios/api.type";
 import { mapIProductToProductRequest } from "containers/PageDashboard/Posts/posts.constantes";
 
 export interface ColumnProductTable {

@@ -4,6 +4,7 @@ import GallerySlider from "./GallerySlider";
 import MediaVideo from "./MediaVideo";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
 import { IProduct } from "app/reducer/products/product";
+import MediaVideoTwo from "./MediaVideoTwo";
 
 export interface PostFeaturedMediaProps {
 	className?: string;

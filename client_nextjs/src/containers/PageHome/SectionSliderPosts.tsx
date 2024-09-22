@@ -35,7 +35,7 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 	const dispatch = useAppDispatch();
 	const data = useAppSelector(PropertyAction.data)?.features?.get;
 	const loading = useSelector(PropertyAction.data)?.features?.loading;
-	const error = useSelector(PropertyAction.error);
+	const error = useSelector(PropertyAction.data)?.features?.error;
 
 	useEffect(() => {
 		if (!data && !loading && !error) {

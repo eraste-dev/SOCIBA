@@ -2,39 +2,27 @@ import { FC } from "react";
 import { IProduct } from "app/reducer/products/product";
 import {
 	FaBath,
-	FaFirstOrderAlt,
 	FaMoneyBill,
 	FaMoneyBillWave,
-	FaReact,
 	FaRoute,
 } from "react-icons/fa";
 import {
 	Apps,
-	Cancel,
 	Fastfood,
-	FoodBankOutlined,
-	ForkLeftRounded,
-	Kitchen,
-	KitchenOutlined,
 	PhotoSizeSelectSmallTwoTone,
 	Security,
-	ToysTwoTone,
 } from "@mui/icons-material";
-import {
-	PRODUCT_TYPE,
-	TYPE_BIEN_EN_VENTE_KEY,
-	TYPE_LOCATION_KEY,
-	TYPE_RESERVATION_KEY,
-} from "containers/PageDashboard/Posts/DashboardSubmitPost";
+
 import ItemChecked from "./ItemCheck";
-import { CheckCircleIcon, HomeIcon } from "@heroicons/react/solid";
+import { CheckCircleIcon } from "@heroicons/react/solid";
 import { Tooltip } from "@mui/material";
 import { ProductcategoryUUID } from "data/categories_uuid";
-import { getAccessibilityText, getSecurityLabel } from "utils/utils";
+import { getSecurityLabel } from "utils/utils";
 import {
 	accessibilities,
 	purchase_powers,
 } from "containers/PageDashboard/Posts/components/Forms/DetailBienTwo";
+import { PRODUCT_TYPE, TYPE_BIEN_EN_VENTE_KEY, TYPE_LOCATION_KEY, TYPE_RESERVATION_KEY } from "containers/PageDashboard/Posts/posts.constantes";
 
 export interface PostCardDetailMetaProps {
 	className?: string;

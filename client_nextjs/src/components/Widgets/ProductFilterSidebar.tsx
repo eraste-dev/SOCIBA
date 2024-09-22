@@ -161,15 +161,17 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 								</ButtonPrimary>
 							</div>
 
-							<div className={!linear ? "mr-2 mb-2" : "col-span-1 mr-2"}>
-								<ButtonSecondary
-									className="w-full"
-									onClick={removeQueryParams}
-									sizeClass="px-4 py-2 sm:px-5"
-								>
-									Réinitialiser
-								</ButtonSecondary>
-							</div>
+							{false && (
+								<div className={!linear ? "mr-2 mb-2" : "col-span-1 mr-2"}>
+									<ButtonSecondary
+										className="w-full"
+										onClick={removeQueryParams}
+										sizeClass="px-4 py-2 sm:px-5"
+									>
+										Réinitialiser
+									</ButtonSecondary>
+								</div>
+							)}
 						</>
 					)}
 
@@ -185,14 +187,16 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 							</ButtonPrimary>
 						</div>
 
-						<div className={!linear ? "mr-2" : "col-span-1 mr-2"}>
-							<ButtonSecondary
-								onClick={removeQueryParams}
-								sizeClass="px-4 py-2 sm:px-5"
-							>
-								Réinitialiser
-							</ButtonSecondary>
-						</div>
+						{false && (
+							<div className={!linear ? "mr-2" : "col-span-1 mr-2"}>
+								<ButtonSecondary
+									onClick={removeQueryParams}
+									sizeClass="px-4 py-2 sm:px-5"
+								>
+									Réinitialiser
+								</ButtonSecondary>
+							</div>
+						)}
 					</div>
 				)}
 			</div>

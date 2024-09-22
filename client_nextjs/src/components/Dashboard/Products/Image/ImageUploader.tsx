@@ -46,41 +46,49 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 	return (
 		<div className="p-4 bg-white rounded-lg shadow-md">
 			<label className="block text-sm font-medium text-gray-700">Images</label>
-			<p className="text-xs text-gray-500">
-				Ajoutez plusieurs photos pour augmenter vos chances d'être contacté
-			</p>
-			<div className="mt-4 flex flex-wrap gap-4">
+			<div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+				<p className="text-xs text-gray-500">
+					Ajoutez plusieurs photos pour augmenter vos chances d'être contacté
+				</p>
+
+				<div className="flex justify-end" >
+					{images.length < maxImages && (
+						<div className="w-24 h-24 border-2 border-dashed border-primary-300 rounded flex items-center justify-center">
+							<label className="flex flex-col items-center cursor-pointer justify-center text-center">
+								<span className="text-primary-500 text-sm">Ajouter une photo</span>
+								<input
+									type="file"
+									accept="image/*"
+									multiple
+									onChange={handleImageChange}
+									className="hidden"
+								/>
+							</label>
+						</div>
+					)}
+				</div>
+			</div>
+
+			<div className="mt-4 grid md:grid-cols-2 grid-cols-1 gap-4">
 				{images.map((image, index) => (
-					<div key={index} className="relative w-64 h-64 border rounded overflow-hidden">
-						<img
-							src={image}
-							alt={`upload-${index}`}
-							className="object-cover w-full h-full cursor-pointer"
-							onClick={() => handleImageClick(image)}
-						/>
-						<button
-							type="button"
-							onClick={() => handleImageDelete(index)}
-							className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
-						>
-							X
-						</button>
+					<div key={index} className="col-span-1">
+						<div className="relative w-auto h-auto border rounded hover:p-2 overflow-hidden">
+							<img
+								src={image}
+								alt={`upload-${index}`}
+								className="object-cover w-full h-full cursor-pointer"
+								onClick={() => handleImageClick(image)}
+							/>
+							<button
+								type="button"
+								onClick={() => handleImageDelete(index)}
+								className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+							>
+								X
+							</button>
+						</div>
 					</div>
 				))}
-				{images.length < maxImages && (
-					<div className="w-full h-64 border-2 border-dashed border-primary-300 rounded flex items-center justify-center">
-						<label className="flex flex-col items-center cursor-pointer justify-center text-center">
-							<span className="text-primary-500">Ajouter une photo</span>
-							<input
-								type="file"
-								accept="image/*"
-								multiple
-								onChange={handleImageChange}
-								className="hidden"
-							/>
-						</label>
-					</div>
-				)}
 			</div>
 			{selectedImage && (
 				<ImageModal image={selectedImage} onClose={() => setSelectedImage(null)} />

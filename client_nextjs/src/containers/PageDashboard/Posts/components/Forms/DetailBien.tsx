@@ -12,7 +12,7 @@ import {
 	TYPE_BIEN_EN_VENTE_KEY,
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
-} from "../../DashboardSubmitPost";
+} from "../../posts.constantes";
 import {
 	FoodBankOutlined,
 	FoodBankTwoTone,
@@ -74,6 +74,7 @@ const DetailBien: FC<DetailBienProps> = ({
 								<Input
 									type="number"
 									className="mt-1"
+									min={0}
 									defaultValue={(product && product.area && product.area) ?? 0}
 									{...register("area")}
 								/>
@@ -95,6 +96,8 @@ const DetailBien: FC<DetailBienProps> = ({
 								<Input
 									type="number"
 									className="mt-1"
+									max={9}
+									min={0}
 									defaultValue={(product && product.bathrooms) ?? 0}
 									{...register("bathrooms")}
 								/>
@@ -119,6 +122,8 @@ const DetailBien: FC<DetailBienProps> = ({
 								<Input
 									type="number"
 									className="mt-1"
+									max={9}
+									min={0}
 									defaultValue={(product && product.kitchens) ?? 0}
 									{...register("kitchens")}
 								/>

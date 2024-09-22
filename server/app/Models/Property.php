@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\Resources\MunicipalityResource;
 use App\Http\Resources\PropertyCategoryResource;
 use App\Http\Resources\PropertyImagesResource;
+use App\Http\Resources\PropertyVideosResource;
 use App\Http\Resources\UserResource;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -142,7 +143,6 @@ class Property extends Model
     {
         return $this->hasMany(PropertyImages::class, 'property_id');
     }
-
     /**
      * Retrieves the images associated with this property.
      *
@@ -151,6 +151,16 @@ class Property extends Model
     public function get_images()
     {
         return PropertyImagesResource::collection(PropertyImages::where('property_id', $this->id)->get());
+    }
+
+    public function videos()
+    {
+        return $this->hasMany(PropertyVideo::class, 'property_id');
+    }
+
+    public function get_videos()
+    {
+        return PropertyVideosResource::collection(PropertyVideo::where('property_id', $this->id)->get());
     }
 
     public function getAuthor()
@@ -172,6 +182,11 @@ class Property extends Model
     public function saveImages($images)
     {
         $this->images()->createMany($images);
+    }
+
+    public function saveVideos($videos)
+    {
+        $this->images()->createMany($videos);
     }
 
     public static function requestSearch(): array

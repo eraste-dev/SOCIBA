@@ -1,19 +1,9 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchCategories, fetchSliders, isAdmin } from "app/axios/actions/api.action";
-import { AuthAction, IUser } from "app/reducer/auth/auth";
-import UserManagementTable from "components/Dashboard/Users/UserManagementTable";
-import { UserManagementAction } from "app/reducer/users/users";
-import { fetchAllUser } from "app/axios/actions/api.users.action";
-import { initializeUserProduct } from "app/axios/actions/api.products.action";
+import { useDispatch } from "react-redux";
+import { fetchSliders, isAdmin } from "app/axios/actions/api.action";
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import { FaPlus, FaRedo, FaRedoAlt } from "react-icons/fa";
-import UserProductList from "components/Dashboard/Users/UserProductList";
-import { Tooltip } from "@mui/material";
-import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
+import { FaRedo } from "react-icons/fa";
 import { useAppSelector } from "app/hooks";
-import PostCategoriesManagementTable from "components/Dashboard/Products/Categories/PostCategoriesManagementTable";
-import EditCategory from "components/Dashboard/Products/Categories/EditCategory";
 import { sliderAction } from "app/reducer/sliders/sliders";
 import Slider from "react-slick";
 import EditSlider from "./EditSlider";
@@ -45,13 +35,13 @@ const DashboardSliders = () => {
 
 	return (
 		<div className="flex flex-col space-y-8">
-			<EditSlider
+			{/* <EditSlider
 				selected={selected}
 				categories={sliders || []}
 				handleChangeView={() => {
 					handleChangeView("LIST", null);
 				}}
-			/>
+			/> */}
 
 			<div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 				<div className="py-2 align-middle inline-block min-w-full px-1 sm:px-6 lg:px-8">

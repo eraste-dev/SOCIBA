@@ -1,8 +1,8 @@
-import React, { useState, ChangeEvent } from "react";
+import React from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { createPortal } from "react-dom";
-import ImageViewer from "../ImageViwer";
+import ImageViewer from "./ImageViwer";
 
 interface ImageModalProps {
 	image: string;

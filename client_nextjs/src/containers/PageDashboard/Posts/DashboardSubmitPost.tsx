@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "components/Form/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import Select from "components/Form/Select/Select";
@@ -8,20 +8,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 import { useAppSelector } from "app/hooks";
-import {
-	fetchCategories,
-	fetchSingleProperties,
-	initProductState,
-	postProduct,
-} from "app/axios/actions/api.action";
+import { fetchCategories, initProductState, postProduct } from "app/axios/actions/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
-import {
-	EMPTY_PRODUCT,
-	PeriodicityType,
-	PRODUCT_REQUEST_EMPTY,
-	ProductRequest,
-} from "app/axios/api.type";
+import { PeriodicityType, PRODUCT_REQUEST_EMPTY, ProductRequest } from "app/axios/api.type";
 import { ILocation, LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import { useSnackbar } from "notistack";
@@ -29,7 +19,7 @@ import { IProduct, PropertyAction } from "app/reducer/products/product";
 import ErrorMessage from "components/Form/ErrorMessage";
 import { useHistory } from "react-router-dom";
 import { route } from "routers/route";
-import ImageUploader from "components/Dashboard/Products/ImageUploader";
+import ImageUploader from "components/Dashboard/Products/Image/ImageUploader";
 import { ProductcategoryUUID } from "data/categories_uuid";
 import Loading from "components/UI/Loading";
 import { IPropertySubCategory } from "app/reducer/products/sub-propertiy-category";
@@ -38,7 +28,6 @@ import {
 	BUREAU_KEY,
 	CATEGORIES_SUB,
 	DUPLEX_KEY,
-	MAISON_KEY,
 	TERRAIN_KEY,
 	TRIPLEX_KEY,
 	VILLA_KEY,
@@ -47,117 +36,20 @@ import DetailBien from "./components/Forms/DetailBien";
 import DetailBienTwo from "./components/Forms/DetailBienTwo";
 import CurrencyInput from "react-currency-input-field";
 import { buildLocationItem } from "utils/utils";
-
-export type IProductType = "LOCATION" | "BIEN EN VENTE" | "RESERVATION"; // | "AUTRE"
-
-export const TYPE_LOCATION_KEY: number = 0;
-export const TYPE_RESERVATION_KEY: number = 1;
-export const TYPE_BIEN_EN_VENTE_KEY: number = 2;
-export const TYPE_AUTRE_KEY: number = 3;
-
-export const PRODUCT_TYPE: IProductType[] = ["LOCATION", "RESERVATION", "BIEN EN VENTE"]; //"AUTRE"
-
-export interface IPRODUCT_PERIODICITY {
-	id: string;
-	name: string;
-}
-export const PERIODICITY_LIST: IPRODUCT_PERIODICITY[] = [{ id: "MONTH", name: "Mois" }];
-
-// { id: "WEEK", name: "Semaine" },
-export const PERIODICITY_RESERVATION_LIST: { id: string; name: string }[] = [
-	{ id: "DAY", name: "Jour" },
-	{ id: "VISIT", name: "Séjour" },
-];
-
-export type IPRODUCT_AREA_UNIT_KEY = "M" | "LOT";
-
-export interface IPRODUCT_AREA_UNIT {
-	id: IPRODUCT_AREA_UNIT_KEY;
-	name: string;
-}
-
-export const PRODUCT_AREA_UNIT: IPRODUCT_AREA_UNIT[] = [
-	{ id: "M", name: "m²" },
-	{ id: "LOT", name: "Lot" },
-];
-
-export interface ISubCategoryType {
-	code: string;
-	name: string;
-}
-
-export const SUB_MAISON_ONE_DETAIL: ISubCategoryType[] = [
-	// {
-	// 	code: "APPARTEMENT",
-	// 	name: "Appartement",
-	// },
-	{
-		code: "STUDIO",
-		name: "Studio",
-	},
-	{ code: "TWO_PIECE", name: "2 pièces" },
-	{ code: "THREE_PIECE", name: "3 pièces" },
-	{ code: "FOUR_PIECE", name: "4 pièces" },
-	{ code: "VILLA", name: "Villa" },
-	{ code: "DUPLEX", name: "Duplex" },
-	{ code: "TRIPLEX", name: "Triplex" },
-];
-
-export const SUB_MAISON_DETAIL: ISubCategoryType[] = [
-	// {
-	// 	code: "APPARTEMENT",
-	// 	name: "Appartement",
-	// },
-	{
-		code: "STUDIO",
-		name: "Studio",
-	},
-	{ code: "TWO_PIECE", name: "2 pièces" },
-	{ code: "THREE_PIECE", name: "3 pièces" },
-	// { code: "FOUR_PIECE", name: "4 pièces" },
-	{ code: "VILLA", name: "Villa" },
-	// { code: "DUPLEX", name: "Duplex" },
-	// { code: "TRIPLEX", name: "Triplex" },
-];
-
-export const SUB_HOTEL_DETAIL: ISubCategoryType[] = [
-	{
-		code: "CHAMBRE",
-		name: "Chambre",
-	},
-	{ code: "SUITE", name: "Suite" },
-];
-
-export const SUB_APPARTEMENT_DETAIL: ISubCategoryType[] = [
-	{ code: "TWO_PIECE", name: "2 pièces" },
-	{ code: "THREE_PIECE", name: "3 pièces" },
-	{ code: "FOUR_PIECE", name: "4 pièces" },
-	{ code: "AUTRE", name: "Autre" },
-];
-
-export const convertPayloadToFormData = (data: ProductRequest, imageFiles?: File[]): FormData => {
-	const formData = new FormData(); // initialize form data
-	for (const key in data) {
-		if (
-			data.hasOwnProperty(key) &&
-			data[key as keyof ProductRequest] !== undefined &&
-			data[key as keyof ProductRequest] !== null
-		) {
-			if (key === "images" && data.images) {
-				if (imageFiles && Array.isArray(imageFiles)) {
-					imageFiles.forEach((image) => {
-						console.log("check images", image);
-						formData.append("images[]", image);
-					});
-				}
-			} else {
-				formData.append(key, data[key as keyof ProductRequest] as any);
-			}
-		}
-	}
-
-	return formData;
-};
+import {
+	convertPayloadToFormData,
+	IPRODUCT_AREA_UNIT_KEY,
+	IProductType,
+	ISubCategoryType,
+	PERIODICITY_LIST,
+	PERIODICITY_RESERVATION_LIST,
+	PRODUCT_AREA_UNIT,
+	PRODUCT_TYPE,
+	TYPE_BIEN_EN_VENTE_KEY,
+	TYPE_LOCATION_KEY,
+	TYPE_RESERVATION_KEY,
+} from "./posts.constantes";
+import VideoUploader from "components/Dashboard/Products/Video/VideoUploader";
 
 const DashboardSubmitPost = () => {
 	const CURRENCY: string = "FCFA";
@@ -190,6 +82,8 @@ const DashboardSubmitPost = () => {
 	const [defaultValue, setDefaultValue] = useState(null as ProductRequest | null);
 	const [images, setImages] = useState<string[]>([]);
 	const [imageFiles, setImageFiles] = useState<File[]>([]);
+	const [videos, setVideos] = useState<string[]>([]);
+	const [videoFiles, setVideoFiles] = useState<File[]>([]);
 	const [tmpcatId, settmpcatId] = useState(0);
 
 	const { register, handleSubmit, watch, setValue, getValues } = useForm<ProductRequest>();
@@ -208,6 +102,7 @@ const DashboardSubmitPost = () => {
 
 		// ! FIX DEFAULT VALUE
 		data.images = images;
+		data.videos = videos;
 		data.price = parseInt(priceString);
 		data.price_second = priceSecondString ? parseInt(priceSecondString) : null;
 		data.type = data.type ?? PRODUCT_TYPE[0];
@@ -225,6 +120,7 @@ const DashboardSubmitPost = () => {
 		data.area_unit = getAreaUnitValue(data);
 		data.count_monthly = data.count_monthly ?? 0;
 		// data.security = data.security;
+		data.periodicity = getPeriodicityFinalValue(data);
 
 		// set category_id
 		if (!data.category_id) {
@@ -252,7 +148,7 @@ const DashboardSubmitPost = () => {
 		}
 
 		// Convert data to FormData
-		formData = convertPayloadToFormData(data, imageFiles);
+		formData = convertPayloadToFormData(data, imageFiles, videoFiles);
 
 		if (product && productId) {
 			formData.append("id", productId);
@@ -269,6 +165,18 @@ const DashboardSubmitPost = () => {
 		}
 
 		return areaUnit;
+	};
+
+	const getPeriodicityFinalValue = (data: ProductRequest): PeriodicityType | undefined => {
+		let p: PeriodicityType | undefined = "MONTH";
+
+		if (data.type === PRODUCT_TYPE[TYPE_RESERVATION_KEY]) {
+			p = getValues("periodicity") ?? (GET_PERIODICITY()[0].id as PeriodicityType);
+		} else if (data.type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY]) {
+			p = undefined;
+		}
+
+		return p;
 	};
 
 	const isCategorySelected = (category: IPropertyCategory) => {
@@ -341,7 +249,7 @@ const DashboardSubmitPost = () => {
 					}
 				});
 
-				console.log(">> cats", data);
+				// setreshrehPrice(reshrehPrice)
 			}
 		} catch (error) {
 			console.error(error);
@@ -590,9 +498,17 @@ const DashboardSubmitPost = () => {
 				area_count: product.area_count,
 				home_type_more: product.home_type_more,
 			};
+			if (value.price) {
+				setreshrehPrice(value.price?.toString());
+			}
+			if (value.price_second) {
+				setreshrehPrice(value.price_second?.toString());
+			}
 			setDefaultValue(value);
 			setImages(product.images.map((image) => image.image));
 			setImageFiles([]);
+			setVideos(product.videos.map((video) => video.src));
+			setVideoFiles([]);
 			useFormSetDefault(value);
 
 			if (categories && categories.length > 0) {
@@ -609,17 +525,6 @@ const DashboardSubmitPost = () => {
 	const showCaution = (): boolean => {
 		const condition: boolean =
 			getValues("type") === PRODUCT_TYPE[0] || product?.type === "LOCATION";
-
-		const cat: IPropertyCategory | null =
-			GET_CATEGORIES()?.find((c) => c.id === getValues("category_id")) ?? null;
-
-		// const conditionTwo: boolean =
-		// 	(cat &&
-		// 		[
-		// 			ProductcategoryUUID.MAISON.key,
-		// 			ProductcategoryUUID.MAISON.children.APPARTEMENT,
-		// 		].includes(cat.uuid)) ??
-		// 	false;
 
 		return condition;
 	};
@@ -745,11 +650,12 @@ const DashboardSubmitPost = () => {
 	}, [snackbar, success, loading, history]);
 
 	if ((initialize === false || defaultValue == null) && productId) {
-		return (
-			<div className="flex justify-center justify-self-center" style={{ height: "100vh" }}>
-				<Loading />
-			</div>
-		);
+		// return history.push(route("posts"));
+		// return (
+		// 	<div className="flex justify-center justify-self-center" style={{ height: "100vh" }}>
+		// 		<Loading />
+		// 	</div>
+		// );
 	}
 
 	if (loading || categoriesLoading || locationLoading) {
@@ -1281,9 +1187,10 @@ const DashboardSubmitPost = () => {
 																	className="w-full rounded-md "
 																	placeholder="Entrer le montant"
 																	defaultValue={
+																		reshrehPriceSecond ??
 																		(product &&
 																			product.price_second) ??
-																		0
+																		getValues("price_second")
 																	}
 																	min={0}
 																	value={reshrehPriceSecond}
@@ -1294,13 +1201,23 @@ const DashboardSubmitPost = () => {
 																		name,
 																		values
 																	) => {
+																		console.log({
+																			value,
+																			name,
+																			values,
+																		});
+
 																		value &&
 																			setreshrehPriceSecond(
 																				value
 																			);
 																	}}
 																	{...register("price_second", {
-																		required: true,
+																		required:
+																			currentType() ===
+																			PRODUCT_TYPE[
+																				TYPE_BIEN_EN_VENTE_KEY
+																			],
 																	})}
 																/>
 																<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
@@ -1490,6 +1407,24 @@ const DashboardSubmitPost = () => {
 													setImages={setImages}
 													imageFiles={imageFiles}
 													setImageFiles={setImageFiles}
+												/>
+											</div>
+										</div>
+									</div>
+								)}
+
+								{allowImage() && (
+									<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 mb-5">
+										<div className="grid md:grid-cols-2 gap-6 ">
+											{/* VIDEO */}
+											<div className="block md:col-span-2">
+												<VideoUploader
+													maxVideo={1}
+													videoDefault={videos}
+													videos={videos}
+													setVideos={setVideos}
+													videoFiles={videoFiles}
+													setVideoFiles={setVideoFiles}
 												/>
 											</div>
 										</div>

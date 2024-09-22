@@ -1,13 +1,5 @@
 import { FC } from "react";
-import Badge from "components/Badge/Badge";
-import { IPropertyCategory } from "app/reducer/products/propertiy-category";
-import { FaAngleRight, FaArrowRight } from "react-icons/fa";
 import { IProduct } from "app/reducer/products/product";
-import {
-	PRODUCT_TYPE,
-	TYPE_BIEN_EN_VENTE_KEY,
-} from "containers/PageDashboard/Posts/DashboardSubmitPost";
-import { ProductcategoryUUID } from "data/categories_uuid";
 
 export interface CategoryPropertyBadgeTwoProps {
 	className?: string;

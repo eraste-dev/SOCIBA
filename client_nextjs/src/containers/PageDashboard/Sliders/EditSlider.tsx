@@ -1,29 +1,14 @@
-import LayoutPage from "components/LayoutPage/UserLayout";
 import { FC, useEffect, useState } from "react";
-import Input from "components/Form/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import NcLink from "components/NcLink/NcLink";
-import { Helmet } from "react-helmet";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	editSliders,
-	initAuth,
-	initEditSliders,
-	login,
-	postProduct,
-} from "app/axios/actions/api.action";
-import { AuthAction } from "app/reducer/auth/auth";
+import { editSliders, initEditSliders } from "app/axios/actions/api.action";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 import { useHistory } from "react-router-dom";
-import { route } from "routers/route";
 import { useSnackbar } from "notistack";
-import { PropertyAction } from "app/reducer/products/product";
-import ButtonSecondary from "components/Button/ButtonSecondary";
 import { VIEW_ADMIN_POST_CATEGORY } from "containers/PageDashboard/DashboardPostCategories";
-import Button from "components/Button/Button";
 import { Slider, sliderAction } from "app/reducer/sliders/sliders";
-import ImageUploader from "components/Dashboard/Products/ImageUploader";
+import ImageUploader from "components/Dashboard/Products/Image/ImageUploader";
 
 export interface EditSliderProps {
 	className?: string;
@@ -53,7 +38,7 @@ const EditSlider: FC<EditSliderProps> = ({
 	const error = useSelector(sliderAction.error);
 	const success = useSelector(sliderAction.success);
 	const loading = useSelector(sliderAction.loading);
-	const [initialize, setInitialize] = useState(false);
+	// const [initialize, setInitialize] = useState(false);
 	const [images, setImages] = useState<string[]>([]);
 	const [imageFiles, setImageFiles] = useState<File[]>([]);
 

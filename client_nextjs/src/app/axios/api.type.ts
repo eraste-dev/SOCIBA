@@ -6,7 +6,7 @@ import { IPagination } from "app/reducer/products/type";
 import { RootState } from "app/reducer/store";
 import { AxiosRequestConfig } from "axios";
 import { STATUS_LABEL } from "components/Dashboard/Products/ChangeProductType";
-import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/Posts/DashboardSubmitPost";
+import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/Posts/posts.constantes";
 
 export interface IServerResponse {
 	success: boolean;
@@ -112,6 +112,7 @@ export interface ProductRequest {
 	price_second?: number | null;
 	deposit_price?: number;
 	images?: FileList | string[] | null;
+	videos?: FileList | string[] | null;
 	// details
 	bathrooms?: number | null;
 	bedrooms?: number | null;
@@ -236,6 +237,7 @@ export const EMPTY_PRODUCT: IProduct = {
 	facebook_link: null,
 	video_link: "",
 	images: [],
+	videos: [],
 	featured_image: "",
 	type: "",
 	created_by: "",

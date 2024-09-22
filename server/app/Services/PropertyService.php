@@ -7,6 +7,7 @@ use App\Http\Resources\PropertyResource;
 use App\Models\Municipality;
 use App\Models\Property;
 use App\Models\PropertyCategory;
+use App\Models\PropertyVideo;
 use App\Utils\Utils;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -251,5 +252,28 @@ class PropertyService
         $properties = $query->get();
 
         return PropertyResource::collection($properties);
+    }
+
+    public static function upload_video($product)
+    {
+        try {
+            if (isset(request()->videos)) {
+                PropertyVideo::clearVideo($product->id);
+                $videos = request()->videos;
+                foreach ($videos as $key => $image) {
+                    $filetomove = $product->id . "__" . time() . "__video" . "__" . $key . "__"  . "." . $image->getClientOriginalExtension();
+
+                    $destinationPath = public_path('assets/videos/products');
+                    $image->move($destinationPath, $filetomove);
+
+                    PropertyVideo::create([
+                        'property_id' => $product->id,
+                        'src'       => "/videos/products/" . $filetomove
+                    ]);
+                }
+            }
+        } catch (\Throwable $th) {
+           var_dump($th);
+        }
     }
 }

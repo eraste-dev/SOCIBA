@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImages;
+use App\Models\PropertyVideo;
 use App\Services\NotificationService;
 use App\Services\ProudctPaginationService;
 use App\Services\PropertyService;
@@ -91,6 +92,7 @@ class PropertyController extends Controller
             'purchase_power'       => 'nullable|in:LESS_EXPENSIVE,EQUAL_EXPENSIVE,MORE_EXPENSIVE',
             'accessibility'        => 'nullable|in:NOT_FAR_FROM_THE_TAR,A_LITTLE_FAR_FROM_THE_TAR,FAR_FROM_THE_TAR',
             'images.*'             => 'required|file|max:10048',
+            'videos.*'             => 'required|file|max:90048',
             // 'excerpt'           => 'nullable|string',
         ]);
 
@@ -170,6 +172,7 @@ class PropertyController extends Controller
             NotificationService::afterInsertPost();
         }
 
+        // upload images
         try {
             if (isset($request->images)) {
                 PropertyImages::clearImage($product->id);
@@ -187,6 +190,13 @@ class PropertyController extends Controller
                     ]);
                 }
             }
+        } catch (\Throwable $th) {
+            return ResponseService::error("Product created successfully", 500,);
+        }
+
+        // upload videos
+        try {
+            PropertyService::upload_video($product);
         } catch (\Throwable $th) {
             return ResponseService::error("Product created successfully", 500,);
         }

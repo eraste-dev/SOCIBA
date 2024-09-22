@@ -18,13 +18,13 @@ const NextPrev: FC<NextPrevProps> = ({
 	onClickNext = () => {},
 	onClickPrev = () => {},
 	btnClassName = "w-6 h-6",
-  btnTopClassName = "absolute top-32",
+	btnTopClassName = "absolute top-32",
 	onlyNext = false,
 	onlyPrev = false,
 }) => {
 	return (
 		<div
-			className={`nc-NextPrev ${btnTopClassName} z-10 flex justify-between items-center text-neutral-900 dark:text-neutral-300 w-full ${containerClassName}`}
+			className={`nc-NextPrev z-10 text-neutral-900 dark:text-neutral-300 w-full ${containerClassName}`}
 			data-nc-id="NextPrev"
 			data-glide-el="controls"
 		>

@@ -7,7 +7,7 @@ import {
 	TYPE_BIEN_EN_VENTE_KEY,
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
-} from "containers/PageDashboard/Posts/DashboardSubmitPost";
+} from "containers/PageDashboard/Posts/posts.constantes";
 
 const createNavItem = (name: string, href: string) => {
 	return {

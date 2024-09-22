@@ -5,6 +5,7 @@ import { IPropertyFilter } from "app/reducer/products/product";
 import LoadingLinear from "components/UI/Loading/LoadingLinear";
 import { Filter, Filter1Rounded, Filter2, Sort, TripOriginSharp } from "@mui/icons-material";
 import MobileFilterDialog from "./MobileFilterDialog";
+import { getParamsCount } from "containers/PageHome/ListProducts";
 
 export interface FloatFilterProps {
 	className?: string;
@@ -35,32 +36,34 @@ const FloatFilter: FC<FloatFilterProps> = ({
 			</div>
 		);
 
-	const boxWidth = "100px";
+	const boxWidth = "150px";
 
 	if (noFloating) {
 		return (
 			<>
 				<div className="block sm:hidden">
 					<span
-						className="cursor-pointer z-50 block sm:hidden"
+						className="cursor-pointer z-50 block sm:hidden bg-primary-800 dark:bg-primary-800 text-white rounded-full p-1.5 hover:bg-primary-600 dark:hover:bg-primary-700"
 						onClick={() => setOpenMobile(!openMobile)}
 						style={{
 							position: "fixed",
-							background: "rgba(0,0,0,1)",
 							color: "white",
-							top: `calc(100% - 0px - ${boxWidth})`,
-							// left: `calc(50% + 20px - ${boxWidth})`,
+							top: `calc(100% + 50px - ${boxWidth})`,
 							width: boxWidth,
-							// height: "ini",
-							padding: "5px 20px",
-							borderRadius: "5%",
 							display: "flex",
 							justifyContent: "center",
 							alignItems: "center",
 						}}
 					>
 						<Sort />
-						Recherche
+						Rechercher
+						{getParamsCount() > 0 ? (
+							<span className="relative">
+								<span>({getParamsCount()})</span>
+								<span className="absolute top-0 left-5 h-2 w-2 bg-red-500 rounded-full animate-ping"></span>
+								<span className="absolute top-0 left-5 h-2 w-2 bg-green-500 rounded-full"></span>
+							</span>
+						) : null}
 					</span>
 
 					<MobileFilterDialog

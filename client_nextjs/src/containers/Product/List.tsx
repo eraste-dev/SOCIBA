@@ -35,7 +35,7 @@ const ListProduct: React.FC = () => {
 			{/* ======== ALL SECTIONS ======== */}
 
 			{/* ======= START CONTAINER ============= */}
-			<div className="container relative">
+			<div className="container relative " style={{ minHeight: "70vh" }}>
 				<div className="my-4" style={{ height: 200, overflow: "hidden" }}>
 					{/* TODO : use dynamic image */}
 					<NcImage src={img2} />

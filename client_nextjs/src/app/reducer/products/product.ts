@@ -12,11 +12,16 @@ import { RootState } from "app/reducer/store";
 import { IUser } from "app/reducer/auth/auth";
 import { ILocation } from "../locations/locations";
 import { IPagination } from "./type";
-import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/Posts/DashboardSubmitPost";
+import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/Posts/posts.constantes";
 
 export interface IProductImage {
 	id: number;
 	image: string;
+}
+
+export interface IProductVideo {
+	id: number;
+	src: string;
 }
 
 export interface IProduct {
@@ -46,6 +51,7 @@ export interface IProduct {
 	facebook_link: null;
 	video_link: string;
 	images: IProductImage[];
+	videos: IProductVideo[];
 	featured_image: string;
 	type: string;
 	created_by: string;

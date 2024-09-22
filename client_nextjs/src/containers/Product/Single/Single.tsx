@@ -22,6 +22,7 @@ import Card11Price from "components/Cards/Card11/Card11Price";
 import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeaturedMedia";
 import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
 import { AuthorLine } from "containers/PageSingle/SingleAuthor";
+import MediaVideoTwo from "components/PostCard/PostFeaturedMedia/MediaVideoTwo";
 
 export interface SingleProps {
 	className?: string;
@@ -38,6 +39,7 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 	const { slug } = useParams<{ slug: string }>();
 
 	const single = useAppSelector(PropertyAction.data)?.single;
+	const error = useAppSelector(PropertyAction.error);
 	const related = useAppSelector(PropertyAction.data)?.similars;
 	// const [fetchRelated, setFetchRelated] = useState(false);
 	const loading = useAppSelector(PropertyAction.loading);
@@ -52,7 +54,7 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 	const className_text = "text-base font-semibold text-green-900 dark:text-neutral-400";
 
 	useEffect(() => {
-		if (!loading && !single && slug) {
+		if (!loading && !error && !single && slug) {
 			if (idParam) {
 				dispatch(fetchSingleProperties({ id: idParam }));
 			} else {
@@ -125,6 +127,16 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 						<SingleImage meta={single} handleOpenModal={handleOpenModal} />
 					) : null}
 
+					<div className="mt-5 h-3/4">
+						<div className={`nc-Card11 relative flex flex-col group h-full w-auto `}>
+							{single && single.videos && single.videos.length > 0
+								? single.videos.map((v) => (
+										<MediaVideoTwo key={v.id} isHover={true} videoUrl={v.src} />
+								  ))
+								: null}
+						</div>
+					</div>
+
 					<div className="grid grid-cols-6 mb-4">
 						<div className="col-span-4">
 							<div className="w-full">
@@ -189,13 +201,21 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 
 					<ContactSeller
 						productLink={single?.href}
-						phone={single!.author!.phone ? single!.author!.phone : undefined}
+						phone={
+							single && single.author && single!.author!.phone
+								? single!.author!.phone
+								: undefined
+						}
 						whatsapp={
-							single!.author!.phone_whatsapp
+							single && single.author && single!.author!.phone_whatsapp
 								? single!.author!.phone_whatsapp
 								: undefined
 						}
-						sms={single!.author!.phone ? single!.author!.phone : undefined}
+						sms={
+							single && single.author && single!.author!.phone
+								? single!.author!.phone
+								: undefined
+						}
 					/>
 				</div>
 

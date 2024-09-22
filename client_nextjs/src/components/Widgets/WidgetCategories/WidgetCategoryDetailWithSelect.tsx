@@ -1,10 +1,7 @@
-import { setFilters } from "app/axios/actions/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import WidgetHeading1 from "components/Widgets/WidgetHeading1/WidgetHeading1";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { IPropertyFilter, PropertyAction } from "app/reducer/products/product";
-import { LocationAction } from "app/reducer/locations/locations";
-import { fetchLocation } from "app/axios/actions/api.others.action";
 import { updateParamsUrl } from "utils/utils";
 import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "../WidgetSort/ListBoxSelectFilter";
 import {
@@ -12,7 +9,7 @@ import {
 	SUB_HOTEL_DETAIL,
 	SUB_MAISON_DETAIL,
 	SUB_MAISON_ONE_DETAIL,
-} from "containers/PageDashboard/Posts/DashboardSubmitPost";
+} from "containers/PageDashboard/Posts/posts.constantes";
 
 export interface WidgetCategoryDetailWithSelectProps {
 	className?: string;

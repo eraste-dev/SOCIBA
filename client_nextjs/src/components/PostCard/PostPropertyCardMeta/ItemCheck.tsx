@@ -29,7 +29,7 @@ const ItemChecked: React.FC<ItemCheckedProps> = ({
 
 	return (
 		<div
-			className={`flex overflow-hidden text-sm sm:text-base text-ellipsis ${className}`}
+			className={`flex overflow-hidden text-sm sm:text-xs md:text-sm lg:text-sm xl:text-sm 2xl:text-sm  text-ellipsis ${className}`}
 		>
 			<div className="flex justify-center">{condition && Icon}</div>
 			<span>{name}</span>

@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
 import { fetchAllProperties } from "app/axios/actions/api.action";
-import { useLocation } from "react-router-dom";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import Loading from "components/UI/Loading";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
@@ -91,6 +90,13 @@ export const getParams = (): IGetSearchPropertiesParams => {
 	return params;
 };
 
+export const getParamsCount = (): number => {
+	let output: number = 0;
+	const params: IGetSearchPropertiesParams = getParams();
+
+	return Object.keys(params).length ?? output;
+};
+
 export interface ListProductsProps {
 	gridClass?: string;
 	className?: string;
@@ -107,13 +113,16 @@ const ListProducts: FC<ListProductsProps> = ({
 
 	const products = useAppSelector(PropertyAction.data)?.all?.get;
 	const loading = useSelector(PropertyAction.data)?.all?.loading;
+	const error = useSelector(PropertyAction.data)?.all?.error;
 
 	const [useStateFilter, setUseStateFilter] = useState<IPropertyFilter>({});
 	const [showFilter, setShowFilter] = useState(false);
 	const toggleFilter = () => setShowFilter(!showFilter);
 
 	const fetchAll = () => {
-		return dispatch(fetchAllProperties(getParams()));
+		if (!loading && !error) {
+			return dispatch(fetchAllProperties(getParams()));
+		}
 	};
 
 	const renderCard = (post: IProduct) => {
@@ -121,18 +130,17 @@ const ListProducts: FC<ListProductsProps> = ({
 	};
 
 	useEffect(() => {
-		if (!products && !loading) {
-			// TODO : fetch all properties
+		if (!products && !loading && !error) {
 			dispatch(fetchAllProperties(getParams()));
 		}
-	}, [dispatch, fetchAllProperties, getParams, products, loading]);
+	}, [dispatch, fetchAllProperties, getParams, products, loading, !error]);
 
 	if (loading) {
 		<Loading />;
 	}
 
 	return (
-		<div className={`nc-ListProducts relative ${className}`} id="post-list" >
+		<div className={`nc-ListProducts relative ${className}`} id="post-list">
 			<div className="mt-5">
 				<Heading>{heading}</Heading>
 			</div>

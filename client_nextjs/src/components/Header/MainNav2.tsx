@@ -52,6 +52,7 @@ const MainNav2: FC<MainNav2Props> = () => {
 	};
 
 	const handleClickAddPost = () => {
+		console.log("handleClickAddPost");
 		dispatch(initProductState());
 		dispatch(setSingleProduct(EMPTY_PRODUCT));
 		history.replace(route("add_post"));
@@ -66,7 +67,7 @@ const MainNav2: FC<MainNav2Props> = () => {
 				<MainNav2Desktop
 					isDashboard={() => isDashboard()}
 					user={user}
-					handleClickAddPost={() => handleClickAddPost}
+					handleClickAddPost={handleClickAddPost}
 				/>
 			</div>
 
@@ -75,7 +76,7 @@ const MainNav2: FC<MainNav2Props> = () => {
 				<MainNav2Mobile
 					isDashboard={() => isDashboard()}
 					user={user}
-					handleClickAddPost={() => handleClickAddPost}
+					handleClickAddPost={handleClickAddPost}
 				/>
 			</div>
 		</div>
