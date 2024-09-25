@@ -23,7 +23,7 @@ const Heading: React.FC<HeadingProps> = ({
 	return (
 		<>
 			<div
-				className={`nc-Section-Heading relative flex flex-col sm:flex-row sm:items-end justify-between ${className}`}
+				className={`nc-Section-Heading relative flex flex-col sm:flex-row sm:items-end justify-between`}
 			>
 				<div className={isCenter ? "text-center w-full max-w-full mx-auto " : "max-w-full"}>
 					<h2

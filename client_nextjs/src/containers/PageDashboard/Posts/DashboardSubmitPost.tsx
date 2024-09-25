@@ -113,6 +113,7 @@ const DashboardSubmitPost = () => {
 		data.pool = data.pool ? 1 : 0;
 		data.WiFi = data.WiFi ? 1 : 0;
 		data.acd = data.acd ? 1 : 0;
+		data.site_approved = data.site_approved ? 1 : 0;
 		data.air_conditioning = data.air_conditioning ? 1 : 0;
 		data.bathrooms = data.bathrooms ?? 0;
 		data.kitchens = data.kitchens ?? 0;
@@ -442,6 +443,7 @@ const DashboardSubmitPost = () => {
 
 		setValue("jacuzzi", value.jacuzzi);
 		setValue("acd", value.acd);
+		setValue("site_approved", value.site_approved);
 		setValue("bath", value.bath);
 		setValue("air_conditioning", value.air_conditioning);
 		setValue("kitchens", value.kitchens);
@@ -491,6 +493,7 @@ const DashboardSubmitPost = () => {
 				WiFi: product.WiFi ? 1 : 0,
 				air_conditioning: product.air_conditioning ? 1 : 0,
 				acd: product.acd ? 1 : 0,
+				site_approved: product.site_approved ? 1 : 0,
 				home_type: product.home_type,
 				accessibility: product.accessibility,
 				purchase_power: product.purchase_power,

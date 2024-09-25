@@ -54,6 +54,7 @@ return new class extends Migration
             $table->boolean('pool')->nullable();
             $table->boolean('air_conditioning')->nullable();
             $table->boolean('acd')->nullable();
+            $table->boolean('site_approved')->nullable();
             $table->string('home_type')->nullable();
             $table->string('home_type_more')->nullable();
             $table->enum('security', [null, 'WITH_GUARD', 'WITHOUT_GUARD'])->default(null)->nullable();

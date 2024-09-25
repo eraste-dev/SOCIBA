@@ -1,19 +1,9 @@
 import { FC } from "react";
 import { IProduct } from "app/reducer/products/product";
-import {
-	FaBath,
-	FaMoneyBill,
-	FaMoneyBillWave,
-	FaRoute,
-} from "react-icons/fa";
-import {
-	Apps,
-	Fastfood,
-	PhotoSizeSelectSmallTwoTone,
-	Security,
-} from "@mui/icons-material";
+import { FaBath, FaMoneyBill, FaMoneyBillWave, FaRoute } from "react-icons/fa";
+import { Apps, Fastfood, PhotoSizeSelectSmallTwoTone, Security } from "@mui/icons-material";
 
-import ItemChecked from "./ItemCheck";
+import ItemChecked, { iconColor, iconSize, iconSizeSingle } from "./ItemCheck";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 import { Tooltip } from "@mui/material";
 import { ProductcategoryUUID } from "data/categories_uuid";
@@ -22,7 +12,13 @@ import {
 	accessibilities,
 	purchase_powers,
 } from "containers/PageDashboard/Posts/components/Forms/DetailBienTwo";
-import { PRODUCT_TYPE, TYPE_BIEN_EN_VENTE_KEY, TYPE_LOCATION_KEY, TYPE_RESERVATION_KEY } from "containers/PageDashboard/Posts/posts.constantes";
+import {
+	PRODUCT_TYPE,
+	TYPE_BIEN_EN_VENTE_KEY,
+	TYPE_LOCATION_KEY,
+	TYPE_RESERVATION_KEY,
+} from "containers/PageDashboard/Posts/posts.constantes";
+import { smText, smTextOnIsSingle } from "components/Cards/Card11/Card11Price";
 
 export interface PostCardDetailMetaProps {
 	className?: string;
@@ -39,15 +35,24 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 	size = "normal",
 	isSingle = false,
 }) => {
-	const iconSize: number = 18;
 	const { type, category, home_type, area, area_count, area_unit, bathrooms, kitchens } = meta;
-	const gridThree = "grid grid-cols-2 sm:grid-cols-3 gap-1";
+	const gridThree = "grid grid-cols-3 sm:grid-cols-5 gap-1";
+	const gridFive = isSingle ? "grid grid-cols-3" : "flex justify-between w-full";
 	const gridThreeAlt = isSingle
-		? "grid grid-cols-1 sm:grid-cols-3 gap-1"
-		: "grid grid-cols-1 sm:grid-cols-2 gap-1";
+		? "flex item-center justify-start item-center"
+		: "grid grid-cols-2 sm:grid-cols-3 gap-1";
 	const locationItemClassName = isSingle
-		? "flex items-center justify-start"
-		: "flex items-center justify-start sm:justify-center";
+		? "flex item-center justify-start item-center " // col-span-1
+		: "flex item-center justify-center item-center ";
+	const ItemCheckedClassName = "justify-self-start item-center";
+
+	const getFontSize = (): "large" | "medium" | "small" | "inherit" => {
+		if (isSingle) {
+			return "medium";
+		} else {
+			return "small";
+		}
+	};
 
 	const getAreaUnit = (): string => {
 		let unit = " m²";
@@ -66,23 +71,42 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 			return (
 				<div>
 					{/*  */}
-					<div className={`${gridThree} ${isSingle ? "space-y-1" : ""}`}>
+					<div className={`${gridFive}`}>
 						{/* Superficie */}
 						{area && area != 0 ? (
-							<div className={locationItemClassName} title="Superficie">
-								<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
-								{isSingle && <span className="mr-1">Superficie: </span>}
-								<span className={isSingle ? "text-base" : "text-xs"}>
-									{`${area} / ${getAreaUnit()}`}
-								</span>
+							<div className={`${locationItemClassName}`} title="Superficie">
+								<div className="flex">
+									<PhotoSizeSelectSmallTwoTone
+										fontSize={getFontSize()}
+										style={{ width: isSingle ? iconSizeSingle : iconSize }}
+										className="mt-0 mr-2"
+									/>
+									{/* {isSingle && <span className="mr-1">Superficie: </span>} */}
+									<span className={isSingle ? smTextOnIsSingle : smText}>
+										{`${area}/${getAreaUnit()}`}
+									</span>
+								</div>
 							</div>
-						) : null}
+						) : (
+							<div className={`${locationItemClassName} mr-16`} title="Superficie" />
+						)}
 
 						{bathrooms ? (
 							<div className={locationItemClassName}>
-								<FaBath size={iconSize} className="mb-1 mr-1" />
-								{isSingle && <span className="mr-1">Salle de bain : </span>}
-								{bathrooms}
+								<div className="flex">
+									<FaBath
+										size={isSingle ? iconSizeSingle : iconSize}
+										fontSize={getFontSize()}
+										style={{ width: isSingle ? iconSizeSingle : iconSize }}
+										className="mb-1 mr-1"
+									/>
+									{isSingle && false ? (
+										<span className={"text-sm"}>
+											Salle de bain : {bathrooms}{" "}
+										</span>
+									) : null}
+									{bathrooms}
+								</div>
 							</div>
 						) : null}
 
@@ -90,8 +114,12 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 							<Tooltip title="Cuisine">
 								<div className={locationItemClassName}>
 									{/* <Kitchen className="mb-1 mr-1" /> */}
-									<Fastfood className="mb-1 mr-1" />
-									{isSingle && <span className="mr-1">Cuisine : </span>}
+									<Fastfood
+										fontSize={getFontSize()}
+										style={{ width: isSingle ? iconSizeSingle : iconSize }}
+										className="mb-1 mr-1"
+									/>
+									{/* {isSingle && <span className="mr-1">Cuisine : </span>} */}
 									{kitchens}
 								</div>
 							</Tooltip>
@@ -99,30 +127,22 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 					</div>
 
 					{/* grid grid-cols-3 */}
-					<div className={`${gridThreeAlt} mt-2`}>
+					<div className={`${gridThreeAlt} mt-0`}>
 						{/* SECURITY */}
 						{isSingle && meta.security ? (
-							<ItemChecked
-								name={getSecurityLabel(meta.security)}
-								condition={true}
-								className="justify-self-start"
-								icon={
-									<Security
-										className={
-											meta.security === "WITH_GUARD"
-												? "mr-2 text-green-800"
-												: "mr-2"
-										}
-										width={iconSize}
-										height={iconSize}
-									/>
-								}
-							/>
+							<div className="flex items-center">
+								<ItemChecked
+									name={getSecurityLabel(meta.security)}
+									condition={true}
+									className={ItemCheckedClassName}
+									icon={<Security width={iconSize} height={iconSize} />}
+								/>
+							</div>
 						) : meta.security && meta.security == "WITH_GUARD" ? (
 							<ItemChecked
 								name="Avec virgile"
 								condition={meta.security == "WITH_GUARD"}
-								className="justify-self-start"
+								className={ItemCheckedClassName}
 							/>
 						) : null}
 
@@ -135,59 +155,60 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 									)?.label ?? ""
 								}
 								condition={true}
-								className="justify-self-start"
-								icon={
-									meta.accessibility === "NOT_FAR_FROM_THE_TAR" ? (
-										<CheckCircleIcon
-											className="mr-2 text-green-800"
-											width={iconSize}
-										/>
-									) : (
-										<FaRoute className="mr-2 text-gray-800" width={iconSize} />
-									)
-								}
+								className={ItemCheckedClassName}
+								icon={<FaRoute size={isSingle ? iconSizeSingle : iconSize} />}
 							/>
 						) : meta.accessibility && meta.accessibility == "NOT_FAR_FROM_THE_TAR" ? (
 							<ItemChecked
 								name="Accès facile"
 								condition={meta.accessibility == "NOT_FAR_FROM_THE_TAR"}
-								className="justify-self-start"
+								className={ItemCheckedClassName}
+								// width={isSingle ? iconSizeSingle : iconSize}
+								// height={isSingle ? iconSizeSingle : iconSize}
 							/>
 						) : null}
 
 						{/* PURCHASE_POWER */}
-						{isSingle && meta.purchase_power ? (
-							<ItemChecked
-								name={
-									"Pouvoir d'achat : " +
-										purchase_powers.find(
-											(item) => item.value === meta.purchase_power
-										)?.label ?? ""
-								}
-								condition={true}
-								className="justify-self-start"
-								icon={
-									["LESS_EXPENSIVE", "EQUAL_EXPENSIVE"].includes(
+						{isSingle ? (
+							<>
+								{meta.purchase_power ? (
+									<ItemChecked
+										name={
+											"Pouvoir d'achat : " +
+												purchase_powers.find(
+													(item) => item.value === meta.purchase_power
+												)?.label ?? ""
+										}
+										condition={true}
+										className={ItemCheckedClassName}
+										icon={
+											["LESS_EXPENSIVE", "EQUAL_EXPENSIVE"].includes(
+												meta.purchase_power
+											) ? (
+												<FaMoneyBillWave
+													width={isSingle ? iconSizeSingle : iconSize}
+													height={isSingle ? iconSizeSingle : iconSize}
+												/>
+											) : (
+												<FaMoneyBill
+													fontSize={isSingle ? iconSizeSingle : iconSize}
+												/>
+											)
+										}
+									/>
+								) : meta.purchase_power &&
+								  ["LESS_EXPENSIVE", , "EQUAL_EXPENSIVE"].includes(
 										meta.purchase_power
-									) ? (
-										<FaMoneyBillWave className="mr-2 text-green-800 text-2xl" />
-									) : (
-										<FaMoneyBill
-											className="mr-2 text-gray-800 text-2xl"
-											width={iconSize}
-										/>
-									)
-								}
-							/>
-						) : meta.purchase_power &&
-						  ["LESS_EXPENSIVE", , "EQUAL_EXPENSIVE"].includes(meta.purchase_power) ? (
-							<ItemChecked
-								name="Zone à pouvoir d'achat"
-								condition={["LESS_EXPENSIVE", , "EQUAL_EXPENSIVE"].includes(
-									meta.purchase_power
-								)}
-								className="justify-self-start"
-							/>
+								  ) ? (
+									<ItemChecked
+										name="Zone à pouvoir d'achat"
+										condition={["LESS_EXPENSIVE", , "EQUAL_EXPENSIVE"].includes(
+											meta.purchase_power
+										)}
+										className={ItemCheckedClassName}
+									/>
+								) : null}
+							</>
 						) : null}
 					</div>
 				</div>
@@ -203,7 +224,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 		return (
 			<>
 				<div
-					className={`grid gap-2 sm:gap-0 mt-3  ${
+					className={`grid gap-0 sm:gap-0 mt-0  ${
 						isSingle ? "grid-cols-3 sm:grid-cols-5 " : "grid-cols-2"
 					}`}
 				>
@@ -213,7 +234,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 							isSingle={true}
 							name="Jacuzzi"
 							condition={meta.jacuzzi}
-							className="justify-self-start"
+							className={ItemCheckedClassName}
 						/>
 					) : null}
 
@@ -251,11 +272,15 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 		return (
 			<>
 				{/* grid grid-cols-3 gap-0*/}
-				<div className="flex justify-between mt-3">
+				<div className="flex items-center">
 					{/* *SUPERFICIE */}
 					{area && area > 0 ? (
 						<div className="flex items-center justify-center mr-2" title="Superficie">
-							<PhotoSizeSelectSmallTwoTone className="mb-1 mr-2" />
+							<PhotoSizeSelectSmallTwoTone
+								fontSize={getFontSize()}
+								style={{ width: iconSize }}
+								className="mb-1 mr-2"
+							/>
 							{`${area} / ${getAreaUnit()}`}
 						</div>
 					) : null}
@@ -266,7 +291,12 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 							{type === "BIEN EN VENTE" &&
 							category.uuid === ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN &&
 							area_count < 0 ? (
-								<Apps width={iconSize} className="mb-1 mr-2" />
+								<Apps
+									width={iconSize}
+									fontSize={getFontSize()}
+									style={{ width: iconSize }}
+									className=""
+								/>
 							) : null}
 
 							{type === "BIEN EN VENTE" &&
@@ -287,17 +317,36 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 						<ItemChecked
 							name="ACD"
 							condition={true}
-							className="justify-self-start"
+							className={ItemCheckedClassName}
 							icon={
 								<CheckCircleIcon
 									className="mr-2"
 									width={iconSize}
 									height={iconSize}
-									color="green"
+									color={iconColor}
 								/>
 							}
 						/>
-					) : null}
+					) : (
+						<>
+							{/* SITE_APPROVED */}
+							{meta.site_approved ? (
+								<ItemChecked
+									name="Approuvé"
+									condition={true}
+									className={ItemCheckedClassName}
+									icon={
+										<CheckCircleIcon
+											className=""
+											width={iconSize}
+											height={iconSize}
+											color={iconColor}
+										/>
+									}
+								/>
+							) : null}
+						</>
+					)}
 				</div>
 			</>
 		);
@@ -322,9 +371,9 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 				) : null}
 
 				<div
-					className={`text-neutral-800 dark:text-neutral-200 ${
-						isSingle ? "text-base" : size === "normal" ? "text-xs" : "text-sm"
-					} ${className}`}
+					className={`text-neutral-800 dark:text-neutral-200 ${className} ${
+						isSingle ? smTextOnIsSingle : smText
+					}}`}
 					data-nc-id="PostCardMetaV2"
 				>
 					<LocationMeta />

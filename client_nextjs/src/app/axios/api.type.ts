@@ -129,6 +129,7 @@ export interface ProductRequest {
 	pool?: number;
 	air_conditioning?: number;
 	acd?: number;
+	site_approved?: number;
 	home_type?: string;
 	home_type_more?: string;
 	security?: string;
@@ -265,6 +266,7 @@ export const EMPTY_PRODUCT: IProduct = {
 	air_conditioning: false,
 	home_type: "",
 	acd: false,
+	site_approved: false,
 	security: "",
 	area_count: 0,
 	purchase_power: "",

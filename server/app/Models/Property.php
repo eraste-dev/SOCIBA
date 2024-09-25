@@ -54,6 +54,7 @@ class Property extends Model
         'count_advance',
         'count_monthly',
         'acd',
+        'site_approved',
 
         'jacuzzi',
         'bath',

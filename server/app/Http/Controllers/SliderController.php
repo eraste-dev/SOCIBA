@@ -35,7 +35,7 @@ class SliderController extends Controller
             'id'          => 'nullable|integer|exists:sliders,id',
             'title'       => 'nullable|string',
             'description' => 'nullable|string',
-            'image'       => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image'       => 'required|image|mimes:jpeg,png,jpg,gif', // |max:2048
         ]);
 
         if ($validator->fails()) {

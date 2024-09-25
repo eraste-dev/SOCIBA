@@ -12,16 +12,20 @@ export const AuthorLine = ({
 	label: string;
 	classNameValue?: string;
 }) => {
+	const classNameOne = "col-span-3 sm:col-span-2 md:col-span-1"
+	const classNameTwo = "col-span-5 sm:col-span-7 md:col-span-1"
+
+
 	return (
 		<div className="grid grid-cols-8 sm:grid-cols-5 md:grid-cols-8">
-			<div className="col-span-3 sm:col-span-2 md:col-span-1">
+			<div className={classNameOne}>
 				<div className="w-full flex justify-between">
 					<span>{label}</span>
 					<span className="mr-2">:</span>
 				</div>
 			</div>
 
-			<div className="">
+			<div className={classNameTwo}>
 				<span className={classNameValue ? classNameValue : "font-semibold"}>{value}</span>
 			</div>
 		</div>
@@ -54,7 +58,7 @@ const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
 								<AuthorLine label="Statut" value={`${author.fonction}`} />
 
 								<AuthorLine
-									label="Commune"
+									label="Zone"
 									value={`${author.influence_zone?.name}`}
 								/>
 

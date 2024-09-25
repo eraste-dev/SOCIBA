@@ -37,7 +37,8 @@ const SingleHeader: FC<SingleHeaderProps> = ({
 		<>
 			<Helmet>
 				<title>
-					{category && category.name} {" , "} {home_type && home_type}
+					Annonce
+					{/* {category && category.name} {" , "} {home_type && home_type} */}
 				</title>
 			</Helmet>
 

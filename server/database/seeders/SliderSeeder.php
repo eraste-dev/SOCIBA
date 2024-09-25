@@ -18,13 +18,19 @@ class SliderSeeder extends Seeder
         Slider::create([
             'title' => 'Premier slider',
             'description' => 'Description du premier slider',
-            'image' => '/images/sliders/image1.png',
+            'image' => '/images/sliders/01.png',
         ]);
 
         Slider::create([
             'title' => 'Deuxième slider',
             'description' => 'Description du deuxième slider',
-            'image' => '/images/sliders/image2.png',
+            'image' => '/images/sliders/02.png',
+        ]);
+
+        Slider::create([
+            'title' => 'Deuxième slider',
+            'description' => 'Description du deuxième slider',
+            'image' => '/images/sliders/03.png',
         ]);
 
         // Ajoutez d'autres sliders si nécessaire

@@ -34,7 +34,6 @@ export interface DashboardPage {
 }
 
 export const USER_SUB_PAGES: DashboardPage[] = [
-	// { sPath: "/root", exact: true, component: DashboardRoot, emoij: "🕹", pageName: "Dash board" },
 	{ pageName: "Annonces" },
 	{
 		sPath: "/submit-post",

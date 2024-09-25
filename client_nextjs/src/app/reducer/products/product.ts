@@ -81,6 +81,7 @@ export interface IProduct {
 	home_type: string;
 	home_type_more?: string;
 	acd: boolean;
+	site_approved: boolean;
 	security: string;
 	area_count: number;
 	purchase_power: string;

@@ -78,6 +78,7 @@ class PropertyController extends Controller
             'area'                 => 'nullable|numeric',
             'area_unit'            => 'nullable', // string|in:M,LOT
             'acd'                  => 'nullable',
+            'site_approved'        => 'nullable',
             'count_advance'        => 'nullable',
             'count_monthly'        => 'nullable',
             'home_type'            => 'nullable|string',
@@ -157,6 +158,7 @@ class PropertyController extends Controller
             $product->WiFi                 = isset($validatedData['WiFi']) ? $validatedData['WiFi'] : null;
             $product->pool                 = isset($validatedData['pool']) ? $validatedData['pool'] : null;
             $product->acd                  = isset($validatedData['acd']) ? intval($validatedData['acd']) : null;
+            $product->site_approved        = isset($validatedData['site_approved']) ? intval($validatedData['site_approved']) : null;
             $product->air_conditioning     = isset($validatedData['air_conditioning']) ? boolval($validatedData['air_conditioning']) : null;
             $product->home_type            = isset($validatedData['home_type']) ? ($validatedData['home_type']) : null;
             $product->home_type_more       = isset($validatedData['home_type_more']) ? ($validatedData['home_type_more']) : null;

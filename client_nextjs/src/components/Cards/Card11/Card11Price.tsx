@@ -13,12 +13,16 @@ import {
 import React from "react";
 import { _f } from "utils/money-format";
 
+export const smText = "text-xs md:text-sm";
+export const smTextOnIsSingle = "text-base";
+
 interface Card11PriceProps {
 	item: IProduct;
 	className?: string;
+	isSingle?: boolean;
 }
 
-const Card11Price: React.FC<Card11PriceProps> = ({ item, className }) => {
+const Card11Price: React.FC<Card11PriceProps> = ({ item, className, isSingle = false }) => {
 	const GET_PERIODICITY = (): IPRODUCT_PERIODICITY[] => {
 		let data: IPRODUCT_PERIODICITY[] = [];
 		data = [...PERIODICITY_LIST, ...PERIODICITY_RESERVATION_LIST];
@@ -35,26 +39,28 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className }) => {
 	return (
 		<div className={`nc-Card11Price ${className}`} data-nc-id="Card11Price">
 			{/* SHOW PRICE *********************************************************************** */}
-			<div className="w-full flex lg:justify-end justify-start mt-2 lg:mt-0 ">
+			<div className="w-full flex lg:justify-end justify-start ">
 				<span
 					className={
 						className
 							? className
-							: "nc-card-title block font-bold text-primary-800 dark:text-neutral-100 text-sm text-clip overflow-hidden text-end"
+							: "nc-card-title block font-bold text-black dark:text-neutral-100 text-sm text-clip overflow-hidden text-end"
 					}
 				>
-					<span className="text-sm sm:text-sm" >{_f(item.price)}</span>
+					<span className={`${isSingle ? smTextOnIsSingle : smText}`}>
+						{_f(item.price)}
+					</span>
 
 					{/* // PERIODICITY */}
 					{item.type !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] ? (
-						<span className="text-xs" >
+						<span className={isSingle ? smTextOnIsSingle : smText}>
 							{item.periodicity &&
 							GET_PERIODICITY().find((p) => p.id === item.periodicity) ? (
-								<>
+								<span>
 									{` / ` +
 										GET_PERIODICITY().find((p) => p.id === item.periodicity)
 											?.name}
-								</>
+								</span>
 							) : null}
 						</span>
 					) : null}
@@ -64,13 +70,11 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className }) => {
 
 			{/*  SHOW SECOND PRICE  ************************************************************** */}
 			{item.price_second != null && item.type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] ? (
-				<div className="w-full flex lg:justify-end justify-start mt-2 lg:mt-0 ">
+				<div className="w-full flex lg:justify-end justify-start ">
 					<span
-						className={
-							className
-								? className
-								: "nc-card-title block font-bold text-primary-800 dark:text-neutral-100 text-sm text-clip overflow-hidden text-end"
-						}
+						className={`nc-card-titles block font-bold text-black dark:text-neutral-100 text-clip overflow-hidden text-end ${
+							isSingle ? smTextOnIsSingle : smText
+						}`}
 					>
 						{_f(item.price_second)}
 
@@ -89,22 +93,6 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className }) => {
 
 			{/*  SHOW SECOND PRICE  ************************************************************** */}
 
-			{/* ! DEAD CODE *************************************************** */}
-			<div className="w-full flex lg:justify-end justify-start ">
-				{item.deposit_price && false && (
-					<p
-						className={
-							className
-								? className
-								: "nc-card-title block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs "
-						}
-					>
-						{_f(item.deposit_price)}
-					</p>
-				)}
-			</div>
-			{/* ! DEAD CODE *************************************************** */}
-
 			{item.type && item.type === PRODUCT_TYPE[0] && (
 				<>
 					{/* MOIS DE LOYER *************************************************** */}
@@ -114,10 +102,10 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className }) => {
 								className={
 									className
 										? className
-										: "block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs"
+										: "block font-bold text-black dark:text-neutral-100 text-xs sm:text-base"
 								}
 							>
-								{`Caution: ${item.count_monthly} mois`}
+								{`Caution: x${item.count_monthly}`}
 							</p>
 						</div>
 					) : null}
@@ -126,7 +114,7 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className }) => {
 					{/* MOIS D'AVANCE *************************************************** */}
 					{item.count_advance && false && (
 						<div className="w-full flex lg:justify-end justify-start ">
-							<p className="block text-base font-bold text-primary-800 dark:text-neutral-100 text-md sm:text-xs ">
+							<p className="block text-base font-bold text-black dark:text-neutral-100 text-md sm:text-xs ">
 								{`${item.count_advance} mois d'avance`}
 							</p>
 						</div>

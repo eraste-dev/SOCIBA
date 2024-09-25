@@ -60,28 +60,25 @@ const Card11: FC<Card11Props> = ({
 				<span className="text-xs text-neutral-500">{updated_at}</span>
 
 				{/* grid grid-cols-3 */}
-				<div className="grid grid-cols-1 sm:flex justify-between">
+				<div className="flex justify-between">
 					<div
 						className="grid col-span-1 text-ellipsis truncate "
-						style={{ minWidth: "70px", maxWidth: "75px" }}
+					
 					>
 						<CategoryPropertyBadgeTwo className="text-xs md:text-md" item={post} />
 
-						<p className="relative sm:bottom-3 mt-2 text-xs font-semibold text-secondary-900 dark:text-neutral-100 ">
-							<span className="text-xs text-neutral-500 flex justify-items-center ">
-								{/* <FaMapMarkerAlt className="mr-1" /> */}
+						<p className="relative text-xs text-primary-800 dark:text-neutral-100 ">
+							<span className="text-xs flex justify-items-center">
 								{location.name}
 							</span>
-							{/*  style={{ marginLeft: "15px" }} */}
-							<span className="text-xs text-neutral-500">{location_description}</span>
-							{/* , {location.city?.name} */}
+							<span className="text-xs text-clip ">{location_description}</span>
 						</p>
 					</div>
 
 					{/* grid lg:col-span-4 col-span-6 */}
 					{/* "grid-cols-2 md:grid-cols-3 lg:grid-cols-4" */}
 					{/* order-1 sm:order-1 */}
-					<div className="flex justify-start col-span-3 sm:col-span-2 sm:justify-end">
+					<div className="flex justify-start col-span-3 sm:col-span-1 sm:justify-end">
 						{/*  grid grid-cols-subgrid lg:col-span-4 text-justify col-span-6 */}
 						<Card11Price item={post} />
 					</div>

@@ -35,13 +35,13 @@ const DashboardSliders = () => {
 
 	return (
 		<div className="flex flex-col space-y-8">
-			{/* <EditSlider
+			<EditSlider
 				selected={selected}
 				categories={sliders || []}
 				handleChangeView={() => {
 					handleChangeView("LIST", null);
 				}}
-			/> */}
+			/>
 
 			<div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 				<div className="py-2 align-middle inline-block min-w-full px-1 sm:px-6 lg:px-8">

@@ -35,12 +35,12 @@ const widgetMenus: WidgetFooterMenu[] = [
 const Footer: React.FC = () => {
 	const renderWidgetMenuItem = (menu: WidgetFooterMenu, index: number) => {
 		return (
-			<div key={index} className=" col-span-1 text-sm">
+			<div key={index} className="col-span-1 text-sm">
 				<h2 className="font-semibold text-neutral-700 dark:text-neutral-200">
 					{menu.title}
 				</h2>
 
-				<ul className="mt-5 space-y-4 list-none">
+				<ul className="mt-5 space-y-1 list-none">
 					{menu.menus.map((item, index) => (
 						<li key={index}>
 							<a
@@ -59,19 +59,17 @@ const Footer: React.FC = () => {
 
 	return (
 		<div className="nc-Footer border-t border-neutral-200 dark:border-neutral-700">
-			<div className="container py-12 ">
+			<div className="container py-2">
 				{/* gap-y-10 gap-x-5 sm:gap-x-8 lg:gap-x-10 */}
-				<div className="grid grid-cols-3 gap-y-10 gap-x-8">
-					<div className="col-span-3 md:col-span-1">
-						<div className="grid grid-cols-1">
-							<div className="col-span-1 mb-5">
-								<Logo />
-							</div>
+				<div className="grid grid-cols-3 gap-y-6 gap-x-8">
+					<div className="col-span-3 md:col-span-2">
+						<div className="col-span-1 mb-2">
+							<Logo />
+						</div>
 
-							<div className="col-span-2 ">
-								<div className="grid grid-cols-2">
-									<SocialsList1 className="flex items-center space-x-3 lg:space-x-0 lg:flex-col lg:space-y-2.5 lg:items-start" />
-								</div>
+						<div className="col-span-1 ">
+							<div className="grid grid-cols-2">
+								<SocialsList1 className="flex items-center space-x-3 lg:space-x-0 lg:flex-col lg:space-y-1 lg:items-start" />
 							</div>
 						</div>
 					</div>

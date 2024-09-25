@@ -83,7 +83,7 @@ const Home: React.FC = () => {
 				<SectionSliderPosts
 					className="pt-1 pb-1 my-0"
 					postCardName="card11"
-					heading="Les meilleures publications actuellement"
+					heading="Publier recement"
 					subHeading=""
 					uniqueSliderClass="slider-top"
 				/>

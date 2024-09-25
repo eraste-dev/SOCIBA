@@ -45,7 +45,7 @@ const CategoryPropertyBadgeOne: FC<CategoryPropertyBadgeOneProps> = ({
 					)
 				)}
 
-				<Badge className={itemClass} name={"SOCIBA"} color="indigo" />
+				{/* <Badge className={itemClass} name={"SOCIBA"} color="indigo" /> */}
 			</div>
 		</div>
 	);

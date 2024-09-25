@@ -6,6 +6,7 @@ import ListProducts from "containers/PageHome/ListProducts";
 import img2 from "images/hero/CoinAfrique_banner_1000x185.png";
 import NcImage from "components/NcImage/NcImage";
 import { LIST_GRID_CLASS } from "containers/PageHome/Home";
+import SectionHeroSlider from "components/SectionHero/SectionHeroSlider";
 
 // DEMO DATA
 const POSTS = DEMO_POSTS;
@@ -37,9 +38,10 @@ const ListProduct: React.FC = () => {
 			{/* ======= START CONTAINER ============= */}
 			<div className="container relative " style={{ minHeight: "70vh" }}>
 				{/* style={{ height: 200, overflow: "hidden" }} */}
-				<div className="my-4" >
+				<div className="my-4">
+					<SectionHeroSlider className="pb-0" />
 					{/* TODO : use dynamic image */}
-					<NcImage src={img2} />
+					{/* <NcImage src={img2} /> */}
 				</div>
 
 				<div className="mt-3">

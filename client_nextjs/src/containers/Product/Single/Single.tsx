@@ -168,11 +168,12 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 						</div>
 
 						<div className="col-span-2">
-							<div className="w-full flex justify-end ">
+							<div className="w-full flex justify-end">
 								{single && (
 									<Card11Price
 										item={single}
-										className="text-primary-6000 dark:text-neutral-500 font-semibold sm:text-2xl text-lg flex flex-col justify-end text-right "
+										isSingle={true}
+										className="text-primary-6000 dark:text-neutral-500 font-semibold"
 									/>
 								)}
 							</div>

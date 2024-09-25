@@ -32,6 +32,7 @@ export const mapIProductToProductRequest = (iProduct: IProduct): ProductRequest 
 		pool: iProduct.pool ? 1 : 0,
 		air_conditioning: iProduct.air_conditioning ? 1 : 0,
 		acd: iProduct.acd ? 1 : 0,
+		site_approved: iProduct.site_approved ? 1 : 0,
 		home_type: iProduct.home_type,
 		home_type_more: iProduct.home_type_more,
 		security: iProduct.security,
@@ -54,11 +55,11 @@ export interface IPRODUCT_PERIODICITY {
 	id: string;
 	name: string;
 }
-export const PERIODICITY_LIST: IPRODUCT_PERIODICITY[] = [{ id: "MONTH", name: "Mois" }];
+export const PERIODICITY_LIST: IPRODUCT_PERIODICITY[] = [{ id: "MONTH", name: "M" }];
 
 // { id: "WEEK", name: "Semaine" },
 export const PERIODICITY_RESERVATION_LIST: { id: string; name: string }[] = [
-	{ id: "DAY", name: "Jour" },
+	{ id: "DAY", name: "J" },
 	{ id: "VISIT", name: "Séjour" },
 ];
 
