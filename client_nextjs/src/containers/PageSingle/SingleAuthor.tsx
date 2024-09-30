@@ -3,6 +3,35 @@ import Avatar from "components/Avatar/Avatar";
 import { FC } from "react";
 import SingleAuthorRating from "./SingleAuthorRating";
 
+export const AuthorLine = ({
+	value,
+	label,
+	classNameValue,
+}: {
+	value: string;
+	label: string;
+	classNameValue?: string;
+}) => {
+	const classNameOne = "col-span-3 sm:col-span-2 md:col-span-1"
+	const classNameTwo = "col-span-5 sm:col-span-7 md:col-span-1"
+
+
+	return (
+		<div className="grid grid-cols-8 sm:grid-cols-5 md:grid-cols-8">
+			<div className={classNameOne}>
+				<div className="w-full flex justify-between">
+					<span>{label}</span>
+					<span className="mr-2">:</span>
+				</div>
+			</div>
+
+			<div className={classNameTwo}>
+				<span className={classNameValue ? classNameValue : "font-semibold"}>{value}</span>
+			</div>
+		</div>
+	);
+};
+
 export interface SingleAuthorProps {
 	author: IUser;
 }
@@ -21,30 +50,19 @@ const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
 									</span>
 								)}
 
-								<h2 className="text-lg text-neutral-900 dark:text-neutral-200">
-									<span>Annonceur :</span>{" "}
-									<span className="font-semibold">
-										{author.name} {author.last_name}
-									</span>
-									{/* <Link to={author.href}>{author.name}</Link> */}
-								</h2>
+								<AuthorLine
+									label="Annonceur"
+									value={`${author.name} ${author.last_name}`}
+								/>
 
-								<p>{author.fonction}</p>
+								<AuthorLine label="Statut" value={`${author.fonction}`} />
 
-								{author && author.influence_zone && (
-									<p>Zone : {author.influence_zone.name}</p>
-								)}
+								<AuthorLine
+									label="Zone"
+									value={`${author.influence_zone?.name}`}
+								/>
 
-								<span className="text-lg dark:text-neutral-300">
-									{/* {author.email} */}
-									<span className="font-semibold">{author.phone}</span>
-									{/* <Link
-										className="text-primary-6000 font-medium ml-1"
-										to={author.href}
-									>
-										Voir plus
-									</Link> */}
-								</span>
+								<AuthorLine label="Contact" value={`${author.phone}`} />
 							</div>
 						</div>
 
@@ -53,17 +71,19 @@ const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
 								<Avatar
 									imgUrl={author.avatar}
 									userName={author.name}
-									sizeClass="h-32 w-32 sm:h-24 sm:w-24 "
+									sizeClass="h-16 w-16 sm:h-32 sm:w-32"
 									radius="rounded-xl"
 								/>
 								{/* <Link to={author.href}></Link> */}
 							</div>
 
 							<div className="w-full flex justify-end">
-								<SingleAuthorRating
-									defaultValue={author.rating}
-									onChange={() => {}}
-								/>
+								<div className="mr-4">
+									<SingleAuthorRating
+										defaultValue={author.rating}
+										onChange={() => {}}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>

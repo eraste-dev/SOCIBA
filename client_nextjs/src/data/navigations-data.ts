@@ -1,12 +1,15 @@
 import { MegamenuItem, NavItemType } from "components/Navigation/NavigationItem";
 import { route } from "routers/route";
 import ncNanoId from "utils/ncNanoId";
-import { ProductcategoryUUID } from "./categories_uuid";
 import {
 	PRODUCT_TYPE,
+	TYPE_BIEN_EN_VENTE_KEY,
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
-} from "containers/PageDashboard/Posts/DashboardSubmitPost";
+} from "containers/PageDashboard/Posts/posts.constantes";
+import LocationImg from "../images/menu/location_licence.jpg";
+import ReservationImg from "../images/menu/reservation.png";
+import SellImg from "../images/menu/vente_licence.jpg";
 
 const createNavItem = (name: string, href: string) => {
 	return {
@@ -81,9 +84,18 @@ const NAV_COLUMN_TWO: NavItemType[] = [
 ];
 
 const NAV_COLUMN_THREE: NavItemType[] = [
-	createNavItem("Maison", href(ProductcategoryUUID.BIEN_EN_VENTE.children.MAISON)),
-	createNavItem("Terrain", href(ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN)),
-	createNavItem("Autre bien immobilier", href(ProductcategoryUUID.BIEN_EN_VENTE.children.AUTRES)),
+	createNavItem(
+		"Maison",
+		href(PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY], "maison") // TODO : use constant for scalability
+	),
+	createNavItem(
+		"Terrain",
+		href(PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY], "terrain") // TODO : use constant for scalability
+	),
+	createNavItem(
+		"Autre bien immobilier",
+		href(PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY], "autre-bien-immobilier") // TODO : use constant for scalability
+	),
 	// createNavItem("Magasin", href(ProductcategoryUUID.BIEN_EN_VENTE.children.MAGASIN)),
 ];
 
@@ -98,7 +110,7 @@ const NAV_COLUMN_FIVE: NavItemType[] = [createNavItem("A propos de nous", "/abou
 const MEGA_MENU1: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
-		image: "../images/default/categories/location.jpeg",
+		image: LocationImg,
 		title: "Location",
 		items: NAV_COLUMN_ONE.map((i) => i),
 	},
@@ -107,7 +119,7 @@ const MEGA_MENU1: MegamenuItem[] = [
 const MEGA_MENU2: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
-		image: "../images/default/p-474x232.png",
+		image: ReservationImg,
 		title: "Réservation",
 		items: NAV_COLUMN_TWO.map((i) => i),
 	},
@@ -116,7 +128,7 @@ const MEGA_MENU2: MegamenuItem[] = [
 const MEGA_MENU3: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
-		image: "../images/default/p-474x232.png",
+		image: SellImg,
 		title: "En vente",
 		items: NAV_COLUMN_THREE.map((i) => i),
 	},

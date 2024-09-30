@@ -16,7 +16,7 @@ const CategoryPropertyBadgeThree: FC<CategoryPropertyBadgeThreeProps> = ({
 	className = "flex flex-wrap space-x-2",
 	itemClass,
 	category,
-	rightText = "SOCIBA",
+	rightText = null, // "SOCIBA"
 }) => {
 	return (
 		<div
@@ -42,8 +42,8 @@ const CategoryPropertyBadgeThree: FC<CategoryPropertyBadgeThreeProps> = ({
 						/>
 					)
 				)}
-				{rightText !== "SOCIBA" ? (
-					<span>{ rightText }</span>
+				{rightText && rightText !== "SOCIBA" ? (
+					<span className="text-xs">{rightText}</span>
 				) : (
 					<Badge className={itemClass} name={rightText} color="indigo" />
 				)}

@@ -12,7 +12,7 @@ import {
 	TYPE_BIEN_EN_VENTE_KEY,
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
-} from "../../DashboardSubmitPost";
+} from "../../posts.constantes";
 import {
 	FoodBankOutlined,
 	FoodBankTwoTone,
@@ -67,13 +67,14 @@ const DetailBien: FC<DetailBienProps> = ({
 				<div className="grid grid-cols-3 gap-6">
 					{/* SUPERFICIE */}
 					<div>
-						<Label>Superficie</Label>
+						<Label>Superficie </Label>
 						<div className="block md:col-span-2 p-2">
 							<div className="flex  " style={{ alignItems: "center" }}>
 								<PhotoSizeSelectSmallTwoTone className="mr-2" />
 								<Input
 									type="number"
 									className="mt-1"
+									min={0}
 									defaultValue={(product && product.area && product.area) ?? 0}
 									{...register("area")}
 								/>
@@ -95,6 +96,8 @@ const DetailBien: FC<DetailBienProps> = ({
 								<Input
 									type="number"
 									className="mt-1"
+									max={9}
+									min={0}
 									defaultValue={(product && product.bathrooms) ?? 0}
 									{...register("bathrooms")}
 								/>
@@ -119,6 +122,8 @@ const DetailBien: FC<DetailBienProps> = ({
 								<Input
 									type="number"
 									className="mt-1"
+									max={9}
+									min={0}
 									defaultValue={(product && product.kitchens) ?? 0}
 									{...register("kitchens")}
 								/>
@@ -227,12 +232,12 @@ const DetailBien: FC<DetailBienProps> = ({
 	const DetailVente = () => {
 		return (
 			<>
-				<div className="grid grid-cols-3 gap-6">
+				<div className="grid grid-cols-4 gap-6">
 					{/* SUPERFICIE */}
-					<div>
-						<Label>Superficie</Label>
+					<div className="col-span-4 sm:col-span-2">
+						<Label>Superficie (m2)</Label>
 						<div className="block md:col-span-2 p-2">
-							<div className="flex  " style={{ alignItems: "center" }}>
+							<div className="flex" style={{ alignItems: "center" }}>
 								<PhotoSizeSelectSmallTwoTone className="mr-2" />
 								<Input
 									type="number"
@@ -251,17 +256,42 @@ const DetailBien: FC<DetailBienProps> = ({
 
 					{/* ACD */}
 					{canShowACDCheckbox() && (
-						<div className="mt-5 flex items-center" style={{ alignItems: "center" }}>
-							<div className="flex justify-center align-middle">
-								<Input
-									id="acd"
-									type="checkbox"
-									className="mx-2"
-									style={checkBoxStyle}
-									defaultChecked={product?.acd}
-									{...register("acd")}
-								/>
-								<label htmlFor="acd">ACD</label>
+						<div className="col-span-4 sm:col-span-2 mt-0 sm:mt-6">
+							<div className="flex items-center align-middle">
+								<div
+									className="mt-5 flex items-center"
+									style={{ alignItems: "center" }}
+								>
+									<div className="flex justify-center align-middle">
+										<Input
+											id="acd"
+											type="checkbox"
+											className="mx-2"
+											style={checkBoxStyle}
+											defaultChecked={product?.acd}
+											{...register("acd")}
+										/>
+										<label htmlFor="acd">ACD</label>
+									</div>
+								</div>
+
+								{/* SITE_A */}
+								<div
+									className="mt-5 flex items-center"
+									style={{ alignItems: "center" }}
+								>
+									<div className="flex justify-center align-middle">
+										<Input
+											id="site_approved"
+											type="checkbox"
+											className="mx-2"
+											style={checkBoxStyle}
+											defaultChecked={product?.site_approved}
+											{...register("site_approved")}
+										/>
+										<label htmlFor="site_approved">Site approuvé</label>
+									</div>
+								</div>
 							</div>
 						</div>
 					)}

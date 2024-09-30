@@ -24,8 +24,10 @@ return new class extends Migration
             $table->enum('type', ['BIEN EN VENTE', 'RESERVATION', 'LOCATION', 'AUTRE'])->nullable();
             $table->double('price')->nullable();
             $table->double('deposit_price')->nullable();
+            $table->double('price_second')->nullable();
             // $table->string('post_type')->nullable()->comment('ADMIN :admin CUSTOMER:customer');
             $table->string('location_id')->nullable(); // municipalities id
+            $table->string('unlisted_city')->nullable(); // city name
             $table->string('location_description')->nullable();
             $table->string('video_link')->nullable();
             $table->double('latitude')->nullable();
@@ -52,7 +54,9 @@ return new class extends Migration
             $table->boolean('pool')->nullable();
             $table->boolean('air_conditioning')->nullable();
             $table->boolean('acd')->nullable();
+            $table->boolean('site_approved')->nullable();
             $table->string('home_type')->nullable();
+            $table->string('home_type_more')->nullable();
             $table->enum('security', [null, 'WITH_GUARD', 'WITHOUT_GUARD'])->default(null)->nullable();
             $table->enum('purchase_power', [null, 'LESS_EXPENSIVE', 'EQUAL_EXPENSIVE', 'MORE_EXPENSIVE'])->default(null)->nullable();
             $table->enum('accessibility', [null, 'NOT_FAR_FROM_THE_TAR', 'A_LITTLE_FAR_FROM_THE_TAR', 'FAR_FROM_THE_TAR'])->default(null)->nullable();

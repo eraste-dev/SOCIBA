@@ -1,17 +1,15 @@
-import { setFilters } from "app/axios/actions/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import WidgetHeading1 from "components/Widgets/WidgetHeading1/WidgetHeading1";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { IPropertyFilter, PropertyAction } from "app/reducer/products/product";
-import { LocationAction } from "app/reducer/locations/locations";
-import { fetchLocation } from "app/axios/actions/api.others.action";
 import { updateParamsUrl } from "utils/utils";
 import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "../WidgetSort/ListBoxSelectFilter";
 import {
+	SUB_APPARTEMENT_DETAIL,
 	SUB_HOTEL_DETAIL,
 	SUB_MAISON_DETAIL,
 	SUB_MAISON_ONE_DETAIL,
-} from "containers/PageDashboard/Posts/DashboardSubmitPost";
+} from "containers/PageDashboard/Posts/posts.constantes";
 
 export interface WidgetCategoryDetailWithSelectProps {
 	className?: string;
@@ -71,6 +69,18 @@ const WidgetCategoryDetailWithSelect: FC<WidgetCategoryDetailWithSelectProps> = 
 		if (categorySlugSelected && categorySlugSelected === "maison") {
 			if (SUB_MAISON_ONE_DETAIL && SUB_MAISON_ONE_DETAIL.length > 0) {
 				SUB_MAISON_ONE_DETAIL.forEach((location) => {
+					data.push({
+						name: location.name,
+						value: location.name.toString(),
+						selected: false, // TODO : set the right value
+					});
+				});
+			}
+		}
+
+		if (categorySlugSelected && categorySlugSelected === "appartement") {
+			if (SUB_APPARTEMENT_DETAIL && SUB_APPARTEMENT_DETAIL.length > 0) {
+				SUB_APPARTEMENT_DETAIL.forEach((location) => {
 					data.push({
 						name: location.name,
 						value: location.name.toString(),

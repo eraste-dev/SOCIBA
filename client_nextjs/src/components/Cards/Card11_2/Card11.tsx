@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import CategoryPropertyBadgeList from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeList";
 import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeaturedMedia";
 import { IProduct } from "app/reducer/products/product";
 import PostPropertyCardMetaV2 from "components/PostCard/PostPropertyCardMeta/PostCardMetaV2";
@@ -9,9 +8,8 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { setSingleProduct } from "app/axios/actions/api.action";
 import { useAppDispatch } from "app/hooks";
 import CategoryPropertyBadgeOne from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeOne";
-import PostCardLikeAndComment from "components/PostCard/PostCardLikeAndComment/PostCardLikeAndComment";
-import PostCardSaveAction from "components/PostCard/PostCardSaveAction/PostCardSaveAction";
 import CategoryPropertyBadgeTwo from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeTwo";
+import { IPropertyCategory } from "app/reducer/products/propertiy-category";
 
 export interface Card11_2Props {
 	className?: string;
@@ -73,7 +71,7 @@ const Card11_2: FC<Card11_2Props> = ({
 
 				<div className="grid grid-cols-6">
 					<div className="grid grid-cols-subgrid col-span-2">
-						<CategoryPropertyBadgeTwo category={category} />
+						<CategoryPropertyBadgeTwo item={post} />
 						<p className="mt-2 text-base font-semibold text-secondary-900 dark:text-neutral-100 ">
 							{false && (
 								<span className="text-xs text-neutral-500 flex justify-items-center ">
@@ -120,7 +118,6 @@ const Card11_2: FC<Card11_2Props> = ({
 						{/* <PostCardSaveAction className="relative" postData={post} /> */}
 					</div>
 				)}
-
 
 				{post && post.author && post.author.href && <PostPropertyCardMetaV2 meta={post} />}
 			</div>

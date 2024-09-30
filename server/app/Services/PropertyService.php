@@ -2,13 +2,12 @@
 
 namespace App\Services;
 
-use App\Http\Middleware\JwtMiddleware;
-use App\Http\Resources\Collection;
+
 use App\Http\Resources\PropertyResource;
 use App\Models\Municipality;
 use App\Models\Property;
 use App\Models\PropertyCategory;
-use App\Models\Slider;
+use App\Models\PropertyVideo;
 use App\Utils\Utils;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -52,6 +51,12 @@ class PropertyService
 
             $query->orWhere(
                 'price',
+                'like',
+                '%' . $payload['searchText'] . '%'
+            );
+
+            $query->orWhere(
+                'home_type',
                 'like',
                 '%' . $payload['searchText'] . '%'
             );
@@ -111,6 +116,15 @@ class PropertyService
             $query->where('category_id', $payload['category']);
         }
 
+        // location_description
+        if ($payload['location_description'] && $payload['location_description'] !== '*') {
+            $query->where(
+                'location_description',
+                'like',
+                '%' . $payload['location_description'] . '%'
+            );
+        }
+
         // ? categories
         if ($payload['categories'] && count(explode(',', $payload['categories'])) > 0) {
             $query->whereIn('category_id', explode(',', $payload['categories']));
@@ -164,6 +178,20 @@ class PropertyService
         // ? location
         if (isset($payload['location']) && $payload['location'] !== '*') {
             $query->where('location_id', $payload['location']);
+        } else if ($payload['location'] == "0") {
+            $query->where('location_id', null);
+        }
+
+        if (isset($payload['unlisted_location']) && !isset($payload['location'])) {
+            $query->where('location_id', null);
+        }
+
+        if (isset($payload['other_location']) && !isset($payload['location'])) {
+            $query->where(
+                'unlisted_city',
+                'like',
+                '%' . $payload['other_location'] . '%'
+            );
         }
 
         // ? type
@@ -224,5 +252,28 @@ class PropertyService
         $properties = $query->get();
 
         return PropertyResource::collection($properties);
+    }
+
+    public static function upload_video($product)
+    {
+        try {
+            if (isset(request()->videos)) {
+                PropertyVideo::clearVideo($product->id);
+                $videos = request()->videos;
+                foreach ($videos as $key => $image) {
+                    $filetomove = $product->id . "__" . time() . "__video" . "__" . $key . "__"  . "." . $image->getClientOriginalExtension();
+
+                    $destinationPath = public_path('assets/videos/products');
+                    $image->move($destinationPath, $filetomove);
+
+                    PropertyVideo::create([
+                        'property_id' => $product->id,
+                        'src'       => "/videos/products/" . $filetomove
+                    ]);
+                }
+            }
+        } catch (\Throwable $th) {
+           var_dump($th);
+        }
     }
 }

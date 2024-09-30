@@ -43,6 +43,7 @@ export interface ILocation {
 	iso2: string | null;
 	lat: number | null;
 	long: number | null;
+	unlisted?: boolean;
 	thumbnail: string | null;
 	updated_at: string | null;
 	count_post: number | null;
@@ -60,6 +61,13 @@ export const LocationSlice = createSlice({
 	name: "locations",
 	initialState,
 	reducers: {
+		initLocations: (state) => {
+			state.loading = false;
+			state.error = null;
+			state.data = undefined;
+			state.success = false;
+			state.message = "";
+		},
 		fetchLocationsStart: (state) => {
 			state.loading = true;
 			state.error = null;
@@ -79,7 +87,8 @@ export const LocationSlice = createSlice({
 	},
 });
 
-export const { fetchLocationsStart, fetchLocationsSuccess, fetchLocationsFailure } = LocationSlice.actions;
+export const { fetchLocationsStart, fetchLocationsSuccess, fetchLocationsFailure, initLocations } =
+	LocationSlice.actions;
 
 export const LocationAction: IStoreAction<ILocation[]> = {
 	data: (state: RootState) => state.locations.data,

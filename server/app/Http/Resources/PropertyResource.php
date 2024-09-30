@@ -25,10 +25,12 @@ class PropertyResource extends JsonResource
             'client_address'       => $this->client_address,
 
             'price'                => $this->price,
+            'price_second'         => $this->price_second,
             'deposit_price'        => $this->deposit_price,
 
 
             'location'             => $this->getLocation(),
+            'unlisted_city'        => $this->unlisted_city, // $this->getUnlistedCity(),
             'location_description' => $this->location_description,
 
 
@@ -51,6 +53,7 @@ class PropertyResource extends JsonResource
 
             // * IMAGES
             'images'               => $this->get_images() ?? [],
+            'videos'               => $this->get_videos() ?? [],
             'featured_image'       => "{$this->featured_image}",
 
             // ! NOT_USED
@@ -68,12 +71,14 @@ class PropertyResource extends JsonResource
             "area_count"       => $this->area_count,
             "count_advance"    => $this->count_advance,
             "count_monthly"    => $this->count_monthly,
-            "home_type" => $this->home_type,
+            "home_type"        => $this->home_type,
+            "home_type_more"   => $this->home_type_more,
             "jacuzzi"          => boolval($this->jacuzzi),
             "bath"             => boolval($this->bath),
             "WiFi"             => boolval($this->WiFi),
             "pool"             => boolval($this->pool),
-            "acd"               => boolval($this->acd),
+            "acd"              => boolval($this->acd),
+            "site_approved"    => boolval($this->site_approved),
             "air_conditioning" => boolval($this->air_conditioning),
             "security"         => $this->security,
             "purchase_power"   => $this->purchase_power,

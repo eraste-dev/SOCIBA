@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+	ul,
+	ol {
+		list-style: revert;
+	}
+}
+
 /* .container-post-custom-btn {
 	height: "calc(80vh - 60px)" !important;
 }

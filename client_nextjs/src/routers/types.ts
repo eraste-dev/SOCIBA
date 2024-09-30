@@ -34,6 +34,8 @@ export interface LocationStates {
 	"/page404"?: {};
 	"/dashboard"?: {};
 	"/subscription"?: {};
+
+	"/moving"?: {};
 	//
 	"/theme-cyan-blueGrey"?: {};
 	"/theme-blue-blueGrey"?: {};

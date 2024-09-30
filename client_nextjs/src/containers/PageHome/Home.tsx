@@ -6,9 +6,13 @@ import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import SectionHeroSlider from "components/SectionHero/SectionHeroSlider";
 import SectionSliderCities from "./SectionSliderCities";
 import ListProducts from "./ListProducts";
+import SectionSliderCitiesTwo from "./SectionSliderCitiesTwo";
 
 // DEMO DATA
 const POSTS = DEMO_POSTS;
+
+export const LIST_GRID_CLASS: string =
+	"grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4";
 
 const Home: React.FC = () => {
 	useEffect(() => {
@@ -47,13 +51,24 @@ const Home: React.FC = () => {
 					className="pb-8 lg:pb-10"
 				/> */}
 
-				<SectionSliderCities
-					className="mb-2"
-					categoryCardType="card1"
-					heading=" "
-					subHeading="Ou souhaitez-vous trouver votre logement ?"
-					uniqueSliderClass="slider-top"
-				/>
+				{true ? (
+					<SectionSliderCitiesTwo
+						className="mb-2"
+						categoryCardType="card1"
+						sliderStype="style1"
+						heading=" "
+						subHeading="Ou souhaitez-vous trouver votre logement ?"
+					/>
+				) : (
+					<SectionSliderCities
+						className="mb-2"
+						categoryCardType="card1"
+						sliderStype="style1"
+						heading=" "
+						subHeading="Ou souhaitez-vous trouver votre logement ?"
+						uniqueSliderClass="slider-top"
+					/>
+				)}
 
 				{/* <SectionGridCitiesBoxTwo
 					className="pb-16 lg:pb-28"
@@ -66,9 +81,9 @@ const Home: React.FC = () => {
 
 				{/* === SECTION TOP POSTS === */}
 				<SectionSliderPosts
-					className="pt-8 pb-5"
+					className="pt-1 pb-1 my-0"
 					postCardName="card11"
-					heading="Les meilleures publications actuellement"
+					heading="Publier recement"
 					subHeading=""
 					uniqueSliderClass="slider-top"
 				/>
@@ -87,7 +102,8 @@ const Home: React.FC = () => {
 
 				<ListProducts
 					postCardName="card11"
-					gridClass="grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+					// gridClass="grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+					gridClass={LIST_GRID_CLASS}
 					className="pb-16 lg:pb-28"
 				/>
 				{/* === SECTION LATEST POSTS === */}

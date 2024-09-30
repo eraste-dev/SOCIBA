@@ -1,12 +1,14 @@
 import { FC, useState } from "react";
 import Input from "components/Form/Input/Input";
 import { useDispatch, useSelector } from "react-redux";
-import { IPropertyFilter, PropertyAction } from "app/reducer/products/product";
+import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/product";
 import { useHistory } from "react-router-dom";
 import { IGetSearchPropertiesParams, searchParamsFromRedux } from "utils/query-builder.utils";
 import { fetchAllProperties, searchProperties } from "app/axios/actions/api.action";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 import { _f } from "utils/money-format";
+import { route } from "routers/route";
+import { useForm } from "react-hook-form";
 
 export interface SearchHeaderProps {}
 
@@ -17,8 +19,12 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 
 	const [useStateFilter, setUseStateFilter] = useState<IPropertyFilter>({});
 	const [searchText, setSearchText] = useState<string>("");
+	const [open, setopen] = useState(false);
+	const { register, handleSubmit, watch, setValue, getValues } = useForm<{
+		searchText: string;
+	}>();
 
-	const fetchAll = (params: IGetSearchPropertiesParams) => {
+	const search = (params: IGetSearchPropertiesParams) => {
 		if (useStateFilter) {
 			// const _params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
 			const _params: IGetSearchPropertiesParams = { searchText };
@@ -27,28 +33,60 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 		}
 	};
 
+	const fetchAll = () => {
+		const _params: IGetSearchPropertiesParams = { searchText };
+		return dispatch(fetchAllProperties(_params));
+	};
+
+	const handleChange = (value: string) => {
+		const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
+		setUseStateFilter((prev) => ({ ...prev, textSearch: value }));
+		setSearchText(value);
+		search(params);
+	};
+
+	const onSubmit = () => {
+		const url = route("annonces") + "/?searchText=" + searchText;
+		console.log("onSubmit search", {
+			searchText,
+			url,
+		});
+		history.replace(url);
+		setopen(false);
+		// const params: IGetSearchPropertiesParams = { searchText };
+		fetchAll();
+	};
+
+	const handleClickItem = (item: IProduct) => {
+		setSearchText("");
+		setopen(false);
+		console.log({
+			searchText,
+			item,
+		});
+		const url = route("annonce") + "/" + item.category.slug + "?id=" + item.id;
+		return history.push(url);
+	};
+
 	return (
 		<>
-			<form action="" method="POST" className="relative">
+			<form className="relative w-full my-1" onSubmit={handleSubmit(onSubmit)}>
 				<Input
 					type="search"
 					placeholder="Chercher sur SOCIBA"
 					className="pr-10 w-full"
 					sizeClass="h-[42px] pl-4 py-3"
+					{...(register("searchText"), { required: true })}
 					onChange={(e) => {
-						const params: IGetSearchPropertiesParams =
-							searchParamsFromRedux(useStateFilter);
-						setUseStateFilter((prev) => ({ ...prev, textSearch: e.target.value }));
-						setSearchText(e.target.value);
-						fetchAll(params);
+						handleChange(e.target.value);
+						// setopen(true);
 					}}
 					onBlur={() => {
-						const params: IGetSearchPropertiesParams =
-							searchParamsFromRedux(useStateFilter);
-						fetchAll(params);
+						// setSearchText("");
+						open && setopen(false);
 					}}
 				/>
-				<span className="absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500">
+				<span className="absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500 cursor-pointer">
 					<svg
 						className="h-5 w-5"
 						viewBox="0 0 24 24"
@@ -74,9 +112,11 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 				<input type="submit" hidden value="" />
 			</form>
 
-			{searchText && searchText.length >= 2 && (
+			{/* searchText && searchText.length >= 2 */}
+			{/* w-11/12 md:w-1/3 lg:w-1/3 */}
+			{open && (
 				<div
-					className="relative bg-white dark:bg-neutral-400 shadow-md w-11/12 md:w-1/3 lg:w-1/3 p-4 overflow-auto"
+					className="relative bg-white dark:bg-neutral-400 shadow-sm w-11/12 md:w-1/3 lg:w-1/3 p-4 overflow-auto"
 					style={{
 						minHeight: "200px",
 						maxHeight: "450px",
@@ -90,21 +130,39 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 						</div>
 					)}
 
+					{searchText == "" && (
+						<div className="w-full flex justify-center text-sm text-neutral-200 dark:text-neutral-800">
+							{" "}
+							Aucun résultat{" "}
+						</div>
+					)}
+
 					<ul className="w-full">
-						{productSearched &&
+						{searchText != "" &&
+							productSearched &&
 							productSearched.get &&
 							productSearched.get?.length > 0 &&
 							productSearched.get?.map((item) => (
 								<li
 									key={item.id}
 									className="w-full items-center p-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
-									onClick={() => {
-										history.push(`${item.href}&?id=${item.id}`);
-										setSearchText("");
-									}}
+									onClick={() => handleClickItem(item)}
 								>
-									<span>{item.title}</span> <br />
-									<span> {_f(item.price)} FCFA </span>
+									<span>
+										<span className="font-semibold">
+											{item.category && item.category.name}
+										</span>{" "}
+										{item.home_type && item.home_type != item.category.name
+											? item.home_type
+											: ""}{" "}
+									</span>
+									<br />
+									<span>
+										{`Commune : ${item.location.name}`} {" , "}
+										<span>{`quartier : ${item.location_description}`}</span>
+									</span>{" "}
+									<br />
+									<span> {_f(item.price)} </span>
 								</li>
 							))}
 					</ul>

@@ -52,7 +52,7 @@ export default function NotifyDropdown() {
 
 	// fetchNotification
 	useEffect(() => {
-		if (!notifications && !loading) {
+		if (!notifications && !loading && !error) {
 			dispatch(fetchNotification());
 		}
 	}, [dispatch, notifications, loading, interval]);

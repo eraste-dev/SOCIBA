@@ -5,7 +5,7 @@ import Label from "components/Form/Label/Label";
 import Select from "components/Form/Select/Select";
 import { FC } from "react";
 import { UseFormRegister } from "react-hook-form";
-import { IProductType, PRODUCT_TYPE, TYPE_LOCATION_KEY } from "../../DashboardSubmitPost";
+import { IProductType, PRODUCT_TYPE, TYPE_LOCATION_KEY } from "../../posts.constantes";
 
 export const securities: { value: string; label: string }[] = [
 	{ value: "WITH_GUARD", label: "Avec vigile" },
@@ -56,6 +56,7 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 							<div className="flex  " style={{ alignItems: "center" }}>
 								{/* <Security className="mr-2" /> */}
 								<Select
+									name="security"
 									onChange={(event) => {
 										event.target.value &&
 											setValue("security", event.target.value);
@@ -67,7 +68,10 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 									{securities.map((security) => (
 										<option
 											value={security.value}
-											selected={security.value === product?.security}
+											selected={
+												security.value === getValues("security") ??
+												security.value === product?.security
+											}
 										>
 											{security.label}
 										</option>
@@ -89,6 +93,7 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 							<div className="flex" style={{ alignItems: "center" }}>
 								{/* <Security className="mr-2" /> */}
 								<Select
+									name="purchase_power"
 									onChange={(event) => {
 										event.target.value &&
 											setValue("purchase_power", event.target.value);
@@ -98,7 +103,10 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 									{purchase_powers.map((i) => (
 										<option
 											value={i.value}
-											selected={i.value === product?.purchase_power}
+											selected={
+												i.value === getValues("purchase_power") ??
+												i.value === product?.purchase_power
+											}
 										>
 											{i.label}
 										</option>
@@ -120,6 +128,7 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 							<div className="flex" style={{ alignItems: "center" }}>
 								{/* <Security className="mr-2" /> */}
 								<Select
+									name="accessibility"
 									onChange={(event) => {
 										event.target.value &&
 											setValue("accessibility", event.target.value);
@@ -129,7 +138,10 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 									{accessibilities.map((i) => (
 										<option
 											value={i.value}
-											selected={i.value === product?.accessibility}
+											selected={
+												i.value === getValues("accessibility") ??
+												i.value === product?.accessibility
+											}
 										>
 											{i.label}{" "}
 										</option>

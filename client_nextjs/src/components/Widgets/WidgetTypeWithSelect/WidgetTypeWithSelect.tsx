@@ -7,7 +7,7 @@ import { LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import { updateParamsUrl } from "utils/utils";
 import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "../WidgetSort/ListBoxSelectFilter";
-import { PRODUCT_TYPE } from "containers/PageDashboard/Posts/DashboardSubmitPost";
+import { PRODUCT_TYPE } from "containers/PageDashboard/Posts/posts.constantes";
 
 export interface WidgetTypeWithSelectProps {
 	className?: string;

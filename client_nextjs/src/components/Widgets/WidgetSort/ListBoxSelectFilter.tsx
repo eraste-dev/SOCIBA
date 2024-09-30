@@ -1,10 +1,4 @@
-import {
-	MenuItem,
-	Select as MUISelect,
-	FormControl,
-	InputLabel,
-	SelectChangeEvent,
-} from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import Label from "components/Form/Label/Label";
 import Select from "components/Form/Select/Select";
 import { useState } from "react";
@@ -35,9 +29,6 @@ const ListBoxSelectFilter: React.FC<IListBoxSelectFilterProps> = ({
 		const selectedValue = event.target.value;
 		const selectedItem = options.find((item) => item.value === selectedValue);
 
-		console.log("selectedItem :: ", selectedItem, currentValue);
-		console.log("selectedItem :: currentValue ", currentValue);
-
 		if (selectedItem && selectedItem.value) {
 			onChange(selectedItem);
 		}
@@ -45,31 +36,6 @@ const ListBoxSelectFilter: React.FC<IListBoxSelectFilterProps> = ({
 
 	return (
 		<>
-			{false && (
-				<FormControl className="mb-2" sx={{ mb: 1, minWidth: "100%", maxWidth: "100%" }}>
-					<InputLabel id="select-filter-label"> {label} </InputLabel>
-					<MUISelect
-						fullWidth
-						labelId="select-filter-label"
-						id="select-filter"
-						onChange={(e) => {
-							console.log("LixBox :: ", e.target.value);
-							handleChange(e as any);
-						}}
-					>
-						{options.map((item) => (
-							<MenuItem
-								key={`menu-item-${label}-${item.value}`}
-								value={item.value}
-								selected={item.selected && item.selected}
-							>
-								{item.name}
-							</MenuItem>
-						))}
-					</MUISelect>
-				</FormControl>
-			)}
-
 			<div className="mb-4" style={{ minWidth: "100%", maxWidth: "100%" }}>
 				<Label> {label} </Label>
 				<Select

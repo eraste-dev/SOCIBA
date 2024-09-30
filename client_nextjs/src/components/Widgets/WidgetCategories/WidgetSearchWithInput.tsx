@@ -23,10 +23,13 @@ const WidgetSearchWithInput: FC<WidgetSearchWithInputProps> = ({
 }) => {
 	const dispatch = useAppDispatch();
 
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const searchText = urlSearchParams.get("searchText");
+
 	const handleChange = (value: string) => {
-		updateParamsUrl("neighborhood", value);
-		dispatch(setFilters({ neighborhood: value }));
-		setUseStateFilter && setUseStateFilter({ ...useStateFilter, neighborhood: value });
+		updateParamsUrl("searchText", value);
+		dispatch(setFilters({ searchText: value }));
+		setUseStateFilter && setUseStateFilter({ ...useStateFilter, searchText: value });
 		if (value && value.length > 3) {
 			setTimeout(() => {
 				handleFetch && handleFetch();
@@ -46,7 +49,11 @@ const WidgetSearchWithInput: FC<WidgetSearchWithInputProps> = ({
 			>
 				{!groupFilter && <WidgetHeading1 title="Communes" />}
 				<div className="flex flex-col divide-neutral-200 dark:divide-neutral-700 px-1 w-full mb-5">
-					<InputFilter onChange={handleChange} label="Recherche par texte" value="" />
+					<InputFilter
+						onChange={handleChange}
+						label="Recherche par texte"
+						value={searchText ?? ""}
+					/>
 				</div>
 			</div>
 		</div>

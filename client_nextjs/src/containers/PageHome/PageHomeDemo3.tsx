@@ -33,7 +33,7 @@ const PageHomeDemo3: React.FC = () => {
 	useEffect(() => {
 		const $body = document.querySelector("body");
 		if ($body) {
-			$body.className = "theme-fuchsia-blueGrey";
+			$body.className = "theme-cyan-blueGrey";
 		}
 		return () => {
 			if ($body) {

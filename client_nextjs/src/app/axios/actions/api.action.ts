@@ -66,6 +66,7 @@ import {
 	registerSuccess,
 } from "app/reducer/auth/auth";
 import { InputsEditSlider } from "containers/PageDashboard/Sliders/EditSlider";
+import { initLocations } from "app/reducer/locations/locations";
 
 export const fetchSliders = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchSlidersStart());
@@ -191,6 +192,10 @@ export const inittPropertyList = () => async (dispatch: AppDispatch) => {
 	dispatch(initFetchAllProperties());
 };
 
+export const initCitiesList = () => async (dispatch: AppDispatch) => {
+	dispatch(initLocations());
+};
+
 /**
  * Fetches feature properties based on the provided query parameters.
  *
@@ -298,7 +303,6 @@ export const deleteProduct = (payload: number) => async (dispatch: AppDispatch) 
 	}
 };
 
-
 export const initProductState = () => async (dispatch: AppDispatch) => {
 	dispatch(postProductInit());
 };
@@ -366,7 +370,7 @@ export const updateUser =
 		try {
 			const response = await axiosRequest<IServerResponse>({
 				...serverEndpoints.public.auth.updateProfile(params),
-				// headers: { "Content-Type": "multipart/form-data" },
+				headers: { "Content-Type": "multipart/form-data" },
 			});
 			dispatch(updateUserSuccess(response.data));
 		} catch (error: any) {

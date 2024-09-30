@@ -7,17 +7,21 @@ import logoImgTwo from "images/logo/logo-alt-2.png";
 import NcImage from "components/NcImage/NcImage";
 import { route } from "routers/route";
 import { useDispatch, useSelector } from "react-redux";
-import { inittPropertyList } from "app/axios/actions/api.action";
+import { initCitiesList, inittPropertyList } from "app/axios/actions/api.action";
 import { PropertyAction } from "app/reducer/products/product";
 
-export interface LogoProps {}
+export interface LogoProps {
+	height?: string;
+	width?: string;
+}
 
-const Logo: React.FC<LogoProps> = ({}) => {
+const Logo: React.FC<LogoProps> = ({ height = "55px", width = "auto" }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const filters = useSelector(PropertyAction.data)?.filters;
 
 	const onClickItem = () => {
+		dispatch(initCitiesList());
 		dispatch(inittPropertyList());
 		history.push(route("home"));
 	};
@@ -32,13 +36,13 @@ const Logo: React.FC<LogoProps> = ({}) => {
 				<NcImage
 					src={logoImgTwo}
 					className="hidden md:blockhidden"
-					style={{ height: 85, width: "auto" }}
+					style={{ height, width }}
 					alt="logo"
 				/>
 				<NcImage
 					src={logoImg}
 					className="block md:block"
-					style={{ height: 55, width: "auto" }}
+					style={{ height, width }}
 					alt="logo"
 				/>
 			</span>

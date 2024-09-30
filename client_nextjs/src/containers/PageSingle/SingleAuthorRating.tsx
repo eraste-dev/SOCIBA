@@ -21,7 +21,7 @@ const SingleAuthorRating: FC<SingleAuthorRatingProps> = ({ defaultValue, onChang
 			{[1, 2, 3, 4, 5].map((value) => (
 				<FaStar
 					key={value}
-					className={`h-6 w-6 cursor-pointer ${
+					className={`h-3 w-3 cursor-pointer ${
 						value <= rating ? "text-orange-800 drk:text-yellow-400" : "text-gray-300"
 					}`}
 					onClick={() => handleClick(value)}

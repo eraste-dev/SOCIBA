@@ -12,11 +12,16 @@ import { RootState } from "app/reducer/store";
 import { IUser } from "app/reducer/auth/auth";
 import { ILocation } from "../locations/locations";
 import { IPagination } from "./type";
-import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/Posts/DashboardSubmitPost";
+import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/Posts/posts.constantes";
 
 export interface IProductImage {
 	id: number;
 	image: string;
+}
+
+export interface IProductVideo {
+	id: number;
+	src: string;
 }
 
 export interface IProduct {
@@ -30,9 +35,11 @@ export interface IProduct {
 	address: string;
 	client_address: string;
 	price: number;
+	price_second: number | null;
 	deposit_price: number;
 	location_description: string;
 	location: ILocation;
+	unlisted_city?: ILocation;
 	city: string;
 	status: "PUBLISH" | "DRAFT" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED" | null;
 	total_click: number;
@@ -44,6 +51,7 @@ export interface IProduct {
 	facebook_link: null;
 	video_link: string;
 	images: IProductImage[];
+	videos: IProductVideo[];
 	featured_image: string;
 	type: string;
 	created_by: string;
@@ -71,7 +79,9 @@ export interface IProduct {
 	pool: boolean;
 	air_conditioning: boolean;
 	home_type: string;
+	home_type_more?: string;
 	acd: boolean;
+	site_approved: boolean;
 	security: string;
 	area_count: number;
 	purchase_power: string;
@@ -102,10 +112,12 @@ export interface IPropertyFilter {
 	created_by?: number;
 	city?: string;
 	location?: number | string;
+	unlisted_location?: string;
+	citySearch?: string;
 	top?: boolean;
 	categories?: number[];
 	locations?: number[];
-	neighborhood?: string;
+	searchText?: string;
 	textSearch?: string;
 	category?: number | "*";
 	date?: "all" | "week" | "month" | "year";

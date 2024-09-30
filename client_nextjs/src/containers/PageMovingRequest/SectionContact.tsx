@@ -26,13 +26,15 @@ export interface SectionContactProps {
 }
 
 export type MovingRequestInputs = {
-	name: string;
-	phone: string;
-	area: string;
-	location: string;
-	message: string;
-	others: string;
-	date: string;
+	name?: string;
+	phone?: string;
+	area?: string;
+	location?: string;
+	message?: string;
+	email?: string;
+	others?: string;
+	date?: string;
+	type: "MOVING" | "CONTACT_US";
 };
 
 const SectionContact: FC<SectionContactProps> = () => {
@@ -53,6 +55,7 @@ const SectionContact: FC<SectionContactProps> = () => {
 	const onSubmit: SubmitHandler<MovingRequestInputs> = (data) => {
 		console.log(data);
 		if (!loading && !success) {
+			data.type = "MOVING";
 			dispatch(sendUserRequest(data));
 		}
 	};
@@ -67,7 +70,7 @@ const SectionContact: FC<SectionContactProps> = () => {
 	}, [error, success]);
 
 	return (
-		<div className="mb-12" >
+		<div className="mb-12">
 			<div>
 				<NcImage src={Image} />
 			</div>

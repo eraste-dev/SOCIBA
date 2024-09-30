@@ -14,7 +14,6 @@ import {
 } from "components/Dashboard/Products/ChangeProductType";
 import { Tooltip } from "@mui/material";
 import FloatFilter from "components/Widgets/FloatFilter";
-import { fetchAllProperties } from "app/axios/actions/api.action";
 import { getParams } from "containers/PageHome/ListProducts";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
@@ -50,7 +49,6 @@ const DashboardPosts = () => {
 			param.type = undefined;
 		}
 		return dispatch(fetchUserProduct(getParams()));
-		// return dispatch(fetchAllProperties(getParams()));
 	};
 
 	const CountByStatue = () => {
@@ -61,9 +59,7 @@ const DashboardPosts = () => {
 					<div className="text-2xl"> {products?.get?.length ?? 0} </div>
 				</div>
 
-				{LIST_STATUS.filter(
-					(item) => item.name !== "REJECTED" && item.name !== ("BLOCKED" as STATUS_LABEL)
-				).map((item) => {
+				{LIST_STATUS.filter((item) => item.name !== "REJECTED").map((item) => {
 					return (
 						<div
 							className={`mb-1 mr-2 rounded-tl-lg rounded-lg p-3 text-center ${getStatusColor(
@@ -71,10 +67,9 @@ const DashboardPosts = () => {
 							)}`}
 						>
 							<div> {getStatuslabel(item.name as STATUS_LABEL)} </div>
-							<div className="text-2xl">
-								{" "}
+							<div className="text-base">
 								{products?.get?.filter((product) => product.status === item.name)
-									.length ?? 0}{" "}
+									.length ?? 0}
 							</div>
 						</div>
 					);

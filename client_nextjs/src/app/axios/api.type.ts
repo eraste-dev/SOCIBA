@@ -6,7 +6,7 @@ import { IPagination } from "app/reducer/products/type";
 import { RootState } from "app/reducer/store";
 import { AxiosRequestConfig } from "axios";
 import { STATUS_LABEL } from "components/Dashboard/Products/ChangeProductType";
-import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/Posts/DashboardSubmitPost";
+import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/Posts/posts.constantes";
 
 export interface IServerResponse {
 	success: boolean;
@@ -84,6 +84,8 @@ export type UpdateUserRequest = {
 	// email: string;
 	id: number;
 	password?: string;
+	fonction?: string;
+	influence_zone_id?: number;
 	confirmPassword?: string;
 	name?: string;
 	last_name?: string;
@@ -92,8 +94,7 @@ export type UpdateUserRequest = {
 	avatar?: File | null;
 };
 
-
-export type PeriodicityType = "DAY" | "WEEK" | "MONTH" | "YEAR" | "VISIT";
+export type PeriodicityType = "DAY" | "WEEK" | "MONTH" | "YEAR" | "VISIT";
 
 export interface ProductRequest {
 	id?: number;
@@ -105,10 +106,13 @@ export interface ProductRequest {
 	type?: string;
 	status?: STATUS_LABEL;
 	location_id?: string;
+	unlisted_city?: string;
 	location_description?: string; // detail commune location
-	price: number;
+	price?: number;
+	price_second?: number | null;
 	deposit_price?: number;
 	images?: FileList | string[] | null;
+	videos?: FileList | string[] | null;
 	// details
 	bathrooms?: number | null;
 	bedrooms?: number | null;
@@ -125,7 +129,9 @@ export interface ProductRequest {
 	pool?: number;
 	air_conditioning?: number;
 	acd?: number;
+	site_approved?: number;
 	home_type?: string;
+	home_type_more?: string;
 	security?: string;
 	purchase_power?: string;
 	accessibility?: string;
@@ -134,6 +140,7 @@ export interface ProductRequest {
 
 export const PRODUCT_REQUEST_EMPTY: ProductRequest = {
 	price: 0,
+	price_second: null,
 	bathrooms: null,
 	bedrooms: null,
 	garages: null,
@@ -191,7 +198,7 @@ const EMPTY_CATEGORY: IPropertyCategory = {
 	can_upload_image: true,
 };
 
-const EMPTY_LOCATION: ILocation = {
+export const EMPTY_LOCATION: ILocation = {
 	id: 0,
 	name: "",
 	description: null,
@@ -217,6 +224,7 @@ export const EMPTY_PRODUCT: IProduct = {
 	address: "",
 	client_address: "",
 	price: 0,
+	price_second: null,
 	deposit_price: 0,
 	location_description: "",
 	location: EMPTY_LOCATION,
@@ -230,6 +238,7 @@ export const EMPTY_PRODUCT: IProduct = {
 	facebook_link: null,
 	video_link: "",
 	images: [],
+	videos: [],
 	featured_image: "",
 	type: "",
 	created_by: "",
@@ -257,6 +266,7 @@ export const EMPTY_PRODUCT: IProduct = {
 	air_conditioning: false,
 	home_type: "",
 	acd: false,
+	site_approved: false,
 	security: "",
 	area_count: 0,
 	purchase_power: "",

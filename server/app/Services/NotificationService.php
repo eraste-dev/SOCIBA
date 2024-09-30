@@ -58,23 +58,33 @@ class NotificationService
         );
     }
 
+    public static function getLabelByProduct(Property $product): string
+    {
+        $label = "";
+        if ($product != null) {
+            $label = $product->id;
+        }
+
+        return $label;
+    }
+
     public static function afterUpdatePost(Property $product)
     {
         if (auth()->user()->type === "USER") {
             NotificationService::notify(
                 auth()->user(),
-                'L\'annonce <strong>' . $product->title . '</strong> a été mise à jour',
-                'L\'annonce <strong>' . $product->title . '</strong> a été mise à jour',
+                'L\'annonce <strong>' . static::getLabelByProduct($product) . '</strong> a été mise à jour',
+                'L\'annonce <strong>' . static::getLabelByProduct($product) . '</strong> a été mise à jour',
                 [
-                    'title'   => 'L\'annonce <strong>' . $product->title . '</strong> a été mise à jour',
-                    'message' => 'L\'annonce <strong>' . $product->title . '</strong> a été mise à jour, par ' . auth()->user()->name . ' ' . auth()->user()->last_name,
+                    'title'   => 'L\'annonce <strong>' . static::getLabelByProduct($product) . '</strong> a été mise à jour',
+                    'message' => 'L\'annonce <strong>' . static::getLabelByProduct($product) . '</strong> a été mise à jour, par ' . auth()->user()->name . ' ' . auth()->user()->last_name,
                 ]
             );
         } else {
             NotificationService::notify(
                 auth()->user(),
-                'L\'annonce <strong>' . $product->title . '</strong> a été mise à jour',
-                'L\'annonce <strong>' . $product->title . '</strong> a été mise à jour',
+                'L\'annonce <strong>' . static::getLabelByProduct($product) . '</strong> a été mise à jour',
+                'L\'annonce <strong>' . static::getLabelByProduct($product) . '</strong> a été mise à jour',
             );
         }
     }

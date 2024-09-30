@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImages;
+use App\Models\PropertyVideo;
 use App\Services\NotificationService;
 use App\Services\ProudctPaginationService;
 use App\Services\PropertyService;
@@ -18,8 +19,12 @@ class PropertyController extends Controller
 {
     private $limit_product = 9999999999999;
 
+
     /**
-     * Display a listing of the resource.
+     * Handles the HTTP GET request for retrieving properties.
+     *
+     * @param Request $request The HTTP request object
+     * @return ResponseService::success() A successful HTTP response with paginated properties
      */
     public function get(Request $request)
     {
@@ -60,8 +65,10 @@ class PropertyController extends Controller
             'type'                 => 'nullable|string|in:LOCATION,BIEN EN VENTE,RESERVATION,AUTRE"',
             'status'               => 'nullable|string',
             'location_id'          => 'nullable|string|exists:municipalities,id',
+            'unlisted_city'        => 'nullable|string',
             'location_description' => 'nullable|string',
             'price'                => 'nullable|numeric',
+            'price_second'         => 'nullable|numeric',
             'periodicity'          => 'nullable|string',
             'bathrooms'            => 'nullable|numeric',
             'bedrooms'             => 'nullable|numeric',
@@ -70,20 +77,23 @@ class PropertyController extends Controller
             'rooms'                => 'nullable|numeric',
             'area'                 => 'nullable|numeric',
             'area_unit'            => 'nullable', // string|in:M,LOT
-            'acd'                  => 'nullable|numeric',
-            'count_advance'        => 'nullable|numeric',
-            'count_monthly'        => 'nullable|numeric',
-            'home_type'     => 'nullable|string',
-            'jacuzzi'              => 'nullable|numeric', // |boolean
-            'bath'                 => 'nullable|numeric', // |boolean
-            'WiFi'                 => 'nullable|numeric', // |boolean
-            'pool'                 => 'nullable|numeric', // |boolean
-            'area_count'           => 'nullable|numeric', // |boolean
+            'acd'                  => 'nullable',
+            'site_approved'        => 'nullable',
+            'count_advance'        => 'nullable',
+            'count_monthly'        => 'nullable',
+            'home_type'            => 'nullable|string',
+            'home_type_more'       => 'nullable|string',
+            'jacuzzi'              => 'nullable', // |boolean
+            'bath'                 => 'nullable', // |boolean
+            'WiFi'                 => 'nullable', // |boolean
+            'pool'                 => 'nullable', // |boolean
+            'area_count'           => 'nullable', // |boolean
             'air_conditioning'     => 'nullable', // |boolean
             'security'             => 'nullable|in:WITH_GUARD,WITHOUT_GUARD',
             'purchase_power'       => 'nullable|in:LESS_EXPENSIVE,EQUAL_EXPENSIVE,MORE_EXPENSIVE',
             'accessibility'        => 'nullable|in:NOT_FAR_FROM_THE_TAR,A_LITTLE_FAR_FROM_THE_TAR,FAR_FROM_THE_TAR',
             'images.*'             => 'required|file|max:10048',
+            'videos.*'             => 'required|file|max:90048',
             // 'excerpt'           => 'nullable|string',
         ]);
 
@@ -125,9 +135,11 @@ class PropertyController extends Controller
             $product->category_id          = $validatedData['category_id'];
             $product->content              = isset($validatedData['content']) && $validatedData['content'] !==  0 && $validatedData['content'] !== 1 ? $validatedData['content'] : null;
             $product->type                 = $validatedData['type'];
-            $product->location_id          = $validatedData['location_id'];
+            $product->location_id          = isset($validatedData['location_id']) ? $validatedData['location_id'] : null;
+            $product->unlisted_city        = isset($validatedData['unlisted_city']) ? $validatedData['unlisted_city'] : null;
             $product->location_description = $validatedData['location_description'];
             $product->price                = $validatedData['price'];
+            $product->price_second         =  isset($validatedData['price_second']) ? $validatedData['price'] : null;
             $product->periodicity          = isset($validatedData['periodicity']) ? $validatedData['periodicity'] : null;
 
             // details
@@ -145,9 +157,11 @@ class PropertyController extends Controller
             $product->bath                 = isset($validatedData['bath']) ? $validatedData['bath'] : null;
             $product->WiFi                 = isset($validatedData['WiFi']) ? $validatedData['WiFi'] : null;
             $product->pool                 = isset($validatedData['pool']) ? $validatedData['pool'] : null;
-            $product->acd                  = isset($validatedData['acd']) ? $validatedData['acd'] : null;
+            $product->acd                  = isset($validatedData['acd']) ? intval($validatedData['acd']) : null;
+            $product->site_approved        = isset($validatedData['site_approved']) ? intval($validatedData['site_approved']) : null;
             $product->air_conditioning     = isset($validatedData['air_conditioning']) ? boolval($validatedData['air_conditioning']) : null;
             $product->home_type            = isset($validatedData['home_type']) ? ($validatedData['home_type']) : null;
+            $product->home_type_more       = isset($validatedData['home_type_more']) ? ($validatedData['home_type_more']) : null;
             $product->security             = isset($validatedData['security']) ? $validatedData['security'] : null;
             $product->purchase_power       = isset($validatedData['purchase_power']) ? $validatedData['purchase_power'] : null;
             $product->accessibility        = isset($validatedData['accessibility']) ? $validatedData['accessibility'] : null;
@@ -160,6 +174,7 @@ class PropertyController extends Controller
             NotificationService::afterInsertPost();
         }
 
+        // upload images
         try {
             if (isset($request->images)) {
                 PropertyImages::clearImage($product->id);
@@ -177,6 +192,13 @@ class PropertyController extends Controller
                     ]);
                 }
             }
+        } catch (\Throwable $th) {
+            return ResponseService::error("Product created successfully", 500,);
+        }
+
+        // upload videos
+        try {
+            PropertyService::upload_video($product);
         } catch (\Throwable $th) {
             return ResponseService::error("Product created successfully", 500,);
         }

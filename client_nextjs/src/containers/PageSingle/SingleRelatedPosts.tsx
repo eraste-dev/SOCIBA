@@ -18,15 +18,15 @@ const demoMoreFromAuthor: PostDataType[] = DEMO_POSTS.filter((_, i) => i >= 14 &
 
 const SingleRelatedPosts: FC<SingleRelatedPostsProps> = ({ relatedPosts = demoRelated, moreFromAuthorPosts = demoMoreFromAuthor, related }) => {
 	return (
-		<div className="relative bg-neutral-100 dark:bg-neutral-800 py-16 lg:py-28 mt-16 lg:mt-28">
+		<div className="relative bg-neutral-100 dark:bg-neutral-800 py-4 mt-5 lg:mt-6">
 			{/* RELATED  */}
 			{related && (
 				<div className="container">
 					<div>
-						<Heading className="mb-10 text-neutral-900 dark:text-neutral-50" desc="">
+						<Heading className="mb-2 text-neutral-900 dark:text-neutral-50" desc="">
 							Annonces similaires
 						</Heading>
-						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 md:gap-8">
+						<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8">
 							{related.map((post) => (
 								<Card11 key={post.id} post={post} />
 							))}

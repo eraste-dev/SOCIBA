@@ -114,19 +114,25 @@ class AuthController extends Controller
     public function updateUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id'             => 'required|integer|exists:users,id',
-            'name'           => 'nullable|string|max:255',
-            'last_name'      => 'nullable|string|max:255',
-            'phone'          => 'nullable|string|max:255',
-            'phone_whatsapp' => 'nullable|string|max:255',
-            'password'       => 'nullable|string',
-            'type'           => 'nullable|string|in:ADMIN,USER,GUEST',
-            'status'         => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
-            'avatar'         => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'id'                => 'required|integer|exists:users,id',
+            'name'              => 'nullable|string|max:255',
+            'last_name'         => 'nullable|string|max:255',
+            'phone'             => 'nullable|string|max:255',
+            'phone_whatsapp'    => 'nullable|string|max:255',
+            'password'          => 'nullable|string',
+            'fonction'          => 'nullable|string',
+            'influence_zone_id' => 'nullable|string',
+            'type'              => 'nullable|string|in:ADMIN,USER,GUEST',
+            'status'            => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
+            'avatar'            => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
-            return ResponseService::error("Erreur de mise à jour", 422, $validator->errors());
+            return ResponseService::error(
+                "Erreur de mise à jour : " . $validator->errors()->first(),
+                422,
+                $validator->errors()
+            );
         }
 
         try {
@@ -137,6 +143,8 @@ class AuthController extends Controller
                 'last_name',
                 'phone',
                 'phone_whatsapp',
+                'fonction',
+                'influence_zone_id',
                 'type',
                 'status'
             ]));
@@ -145,11 +153,21 @@ class AuthController extends Controller
                 $user->password = Hash::make($request->password);
             }
 
-            if ($request->hasFile('avatar')) {
-                if ($user->avatar) {
-                    Storage::disk('public')->delete($user->avatar);
+            try {
+                if (isset($request->avatar)) {
+                    $images = [$request->avatar];
+                    foreach ($images as $key => $image) {
+                        $filetomove = $user->id . "__" . time() . "__image" . "__" . $key . "__"  . "." . $image->getClientOriginalExtension();
+
+                        $destinationPath = public_path('assets/images/users/avatars');
+                        $image->move($destinationPath, $filetomove);
+
+                        $upload = "/images/users/avatars" . $filetomove;
+                        $user->avatar = $upload;
+                    }
                 }
-                $user->avatar = $request->file('avatar')->store('avatars', 'public');
+            } catch (\Throwable $th) {
+                return ResponseService::error("Product created successfully", 500,);
             }
 
             $user->save();

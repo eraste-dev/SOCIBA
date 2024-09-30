@@ -14,6 +14,7 @@ import WidgetCategoryDetailWithSelect from "./WidgetCategories/WidgetCategoryDet
 import { useHistory } from "react-router-dom";
 import ButtonSecondary from "components/Button/ButtonSecondary";
 import WidgetSearchWithInput from "./WidgetCategories/WidgetSearchWithInput";
+import { route } from "routers/route";
 
 export interface ProductFilterSidebarProps {
 	fetchAll?: () => void;
@@ -40,17 +41,35 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 	};
 
 	const removeQueryParams = () => {
-		const urlSearchParams = new URLSearchParams(window.location.search);
-		urlSearchParams.delete("category_slug_selected");
+		const path = history.location.pathname;
+		console.log("path.split", path.split("/"));
 
-		console.log("history.location ::: ", history.location);
+		switch (path.split("/")[1]) {
+			case "annonces":
+				history.replace({
+					search: "",
+					state: {},
+					pathname: "/annonces",
+					hash: "#post-list",
+				});
+				break;
 
-		const { pathname } = history.location;
-		if (window.location.search) {
-			window.history.replaceState({}, document.title, pathname);
+			default:
+				history.replace({
+					search: "",
+					state: {},
+					pathname: "/",
+					hash: "#post-list",
+				});
+				break;
 		}
-		fetchAll && fetchAll();
+
+		fetchAll?.();
 	};
+
+	// const handleChangeType = (): void => {
+	// 	WidgetTypeWithSelect;
+	// };
 
 	return (
 		<>
@@ -68,8 +87,6 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 					showFilter ? (!linear ? "block sm:p-2 max-w-md" : "block sm:p-2") : "hidden"
 				}
 			>
-				{/* bgcolor: "background.paper", */}
-
 				<div className={!linear ? "grid grid-cols-1 gap-0" : "grid grid-cols-4 gap-2"}>
 					{true ? (
 						<div>
@@ -87,7 +104,9 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 					</div>
 
 					{categorySlugSelected
-						? ["residence", "hotel", "maison"].includes(categorySlugSelected) && (
+						? ["residence", "hotel", "maison", "appartement"].includes(
+								categorySlugSelected
+						  ) && (
 								<div>
 									<WidgetCategoryDetailWithSelect
 										handleFetch={fetchAll}
@@ -113,38 +132,46 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 					</div>
 
 					<div className={linear ? "col-span-6" : ""}>
-						{linear ? (
+						<WidgetLocationWithInput
+							handleFetch={fetchAll}
+							useStateFilter={useStateFilter}
+							groupFilter={groupFilter}
+						/>
+					</div>
+
+					{false && (
+						<div className={linear ? "col-span-6" : ""}>
 							<WidgetSearchWithInput
 								handleFetch={fetchAll}
 								useStateFilter={useStateFilter}
 								groupFilter={groupFilter}
 							/>
-						) : (
-							<WidgetLocationWithInput
-								handleFetch={fetchAll}
-								useStateFilter={useStateFilter}
-								groupFilter={groupFilter}
-							/>
-						)}
-					</div>
+						</div>
+					)}
 
 					{!linear && (
 						<>
 							<div className={!linear ? "mr-2 mb-2" : "col-span-1"}>
-								<ButtonPrimary className="w-full" onClick={fetchAll} sizeClass="px-4 py-2 sm:px-5">
+								<ButtonPrimary
+									className="w-full"
+									onClick={fetchAll}
+									sizeClass="px-4 py-2 sm:px-5"
+								>
 									Rechercher
 								</ButtonPrimary>
 							</div>
 
-							<div className={!linear ? "mr-2 mb-2" : "col-span-1 mr-2"}>
-								<ButtonSecondary
-								className="w-full"
-									onClick={removeQueryParams}
-									sizeClass="px-4 py-2 sm:px-5"
-								>
-									Réinitialiser
-								</ButtonSecondary>
-							</div>
+							{false && (
+								<div className={!linear ? "mr-2 mb-2" : "col-span-1 mr-2"}>
+									<ButtonSecondary
+										className="w-full"
+										onClick={removeQueryParams}
+										sizeClass="px-4 py-2 sm:px-5"
+									>
+										Réinitialiser
+									</ButtonSecondary>
+								</div>
+							)}
 						</>
 					)}
 
@@ -160,14 +187,16 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 							</ButtonPrimary>
 						</div>
 
-						<div className={!linear ? "mr-2" : "col-span-1 mr-2"}>
-							<ButtonSecondary
-								onClick={removeQueryParams}
-								sizeClass="px-4 py-2 sm:px-5"
-							>
-								Réinitialiser
-							</ButtonSecondary>
-						</div>
+						{false && (
+							<div className={!linear ? "mr-2" : "col-span-1 mr-2"}>
+								<ButtonSecondary
+									onClick={removeQueryParams}
+									sizeClass="px-4 py-2 sm:px-5"
+								>
+									Réinitialiser
+								</ButtonSecondary>
+							</div>
+						)}
 					</div>
 				)}
 			</div>

@@ -8,24 +8,20 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { IProduct, IProductImage } from "app/reducer/products/product";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { Link, useHistory } from "react-router-dom";
-import { route } from "routers/route";
-import ProductTableAction from "./ProductTableAction";
+import { useHistory } from "react-router-dom";
 import ConfirmDialog from "components/Dialog/ConfirmDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { initProductState, isAdmin, postProduct, updateUser } from "app/axios/actions/api.action";
-import ChangeUserType from "./Users/ChangeUserType";
+import { postProduct } from "app/axios/actions/api.action";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
-import ChangeProductType, { STATUS_LABEL } from "./Products/ChangeProductType";
-import ChangeProductTypeTableHeader from "./Products/ChangeProductTypeTableHeader";
+import { STATUS_LABEL } from "./Products/ChangeProductType";
 import { _f } from "utils/money-format";
-import { PERIODICITY_LIST } from "containers/PageDashboard/Posts/DashboardSubmitPost";
+import { convertPayloadToFormData } from "containers/PageDashboard/Posts/posts.constantes";
 import { AuthAction } from "app/reducer/auth/auth";
 import ProductTableRow from "./PostTableRow";
+import { mapIProductToProductRequest } from "containers/PageDashboard/Posts/posts.constantes";
 
 export interface ColumnProductTable {
-	id: "id" | "title" | "price" | "excerpt" | "content" | "actions" | "type" | "status";
+	id: "post" | "actions" | "type" | "status";
 	label: string;
 	minWidth?: number;
 	align?: "right";
@@ -71,7 +67,10 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 	};
 
 	const handleChangeStatus = (row: IProduct, status: STATUS_LABEL) => {
-		dispatch(postProduct({ id: row.id, status: status }));
+		const formData: FormData = convertPayloadToFormData(
+			mapIProductToProductRequest({ ...row, status: status })
+		);
+		dispatch(postProduct(formData));
 	};
 
 	const handleChangeStatusInTableHeader = (status: STATUS_LABEL) => {
@@ -79,11 +78,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 	};
 
 	const columns: ColumnProductTable[] = [
-		// { id: "id", label: "ID", minWidth: 170 },
-		{ id: "title", label: "Title", minWidth: 100 },
-		{ id: "excerpt", label: "Excerpt", minWidth: 100 },
-		// { id: "content", label: "Content", minWidth: 100 },
-		{ id: "type", label: "Prix", minWidth: 100 },
+		{ id: "post", label: "Annonce", minWidth: 100 },
 		{ id: "status", label: "Status", minWidth: 50 },
 		{ id: "actions", label: "Actions" },
 	];

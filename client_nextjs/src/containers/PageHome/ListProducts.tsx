@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
 import { fetchAllProperties } from "app/axios/actions/api.action";
-import { useLocation } from "react-router-dom";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import Loading from "components/UI/Loading";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
@@ -19,22 +18,28 @@ export const getParams = (): IGetSearchPropertiesParams => {
 	const urlSearchParams = new URLSearchParams(window.location.search);
 	const price_sort = urlSearchParams.get("price_sort");
 	const location = urlSearchParams.get("location");
-	const neighborhood = urlSearchParams.get("neighborhood");
+	const unlisted_location = urlSearchParams.get("unlisted_location");
+	const searchText = urlSearchParams.get("searchText");
+	const locationDescription = urlSearchParams.get("location_description");
 	const category_slug = urlSearchParams.get("category_slug");
 	const type = urlSearchParams.get("type");
 	const category_uuid = urlSearchParams.get("category_uuid");
 	const home_type = urlSearchParams.get("home_type");
 	const category_slug_selected = urlSearchParams.get("category_slug_selected");
+	const other_location = urlSearchParams.get("other_location");
 
 	console.log("urlSearchParams", {
 		price_sort: price_sort,
 		location: location,
-		searchText: neighborhood,
+		searchText: searchText,
+		locationDescription: locationDescription,
 		category_slug: category_slug,
 		type: type,
 		category_uuid: category_uuid,
 		home_type: home_type,
 		category_slug_selected: category_slug_selected,
+		unlisted_location: unlisted_location,
+		other_location: other_location,
 	});
 
 	if (price_sort) {
@@ -45,8 +50,17 @@ export const getParams = (): IGetSearchPropertiesParams => {
 		params.location = location;
 	}
 
-	if (neighborhood) {
-		params.searchText = neighborhood;
+	if (unlisted_location && !params.location) {
+		params.unlisted_location = true;
+		// params.location = undefined;
+	}
+
+	if (searchText) {
+		params.searchText = searchText;
+	}
+
+	if (locationDescription) {
+		params.location_description = locationDescription;
 	}
 
 	if (category_slug) {
@@ -69,7 +83,18 @@ export const getParams = (): IGetSearchPropertiesParams => {
 		params.category_slug_selected = category_slug_selected;
 	}
 
+	if (other_location) {
+		params.other_location = other_location;
+	}
+
 	return params;
+};
+
+export const getParamsCount = (): number => {
+	let output: number = 0;
+	const params: IGetSearchPropertiesParams = getParams();
+
+	return Object.keys(params).length ?? output;
 };
 
 export interface ListProductsProps {
@@ -88,13 +113,16 @@ const ListProducts: FC<ListProductsProps> = ({
 
 	const products = useAppSelector(PropertyAction.data)?.all?.get;
 	const loading = useSelector(PropertyAction.data)?.all?.loading;
+	const error = useSelector(PropertyAction.data)?.all?.error;
 
 	const [useStateFilter, setUseStateFilter] = useState<IPropertyFilter>({});
 	const [showFilter, setShowFilter] = useState(false);
 	const toggleFilter = () => setShowFilter(!showFilter);
 
 	const fetchAll = () => {
-		return dispatch(fetchAllProperties(getParams()));
+		if (!loading && !error) {
+			return dispatch(fetchAllProperties(getParams()));
+		}
 	};
 
 	const renderCard = (post: IProduct) => {
@@ -102,24 +130,25 @@ const ListProducts: FC<ListProductsProps> = ({
 	};
 
 	useEffect(() => {
-		if (!products && !loading) {
-			// TODO : fetch all properties
+		if (!products && !loading && !error) {
 			dispatch(fetchAllProperties(getParams()));
 		}
-	}, [dispatch, fetchAllProperties, getParams, products, loading]);
+	}, [dispatch, fetchAllProperties, getParams, products, loading, !error]);
 
 	if (loading) {
 		<Loading />;
 	}
 
 	return (
-		<div className={`nc-ListProducts relative ${className}`}>
+		<div className={`nc-ListProducts relative ${className}`} id="post-list">
 			<div className="mt-5">
 				<Heading>{heading}</Heading>
 			</div>
 
-			<div className="flex flex-row xl:flex-row">
-				<div className="hidden md:block w-1/5 sm:w-1/8 lg:w-1/4 xl:w-1/5">
+			{/* flex flex-row xl:flex-row */}
+			<div className="grid sm:grid-cols-12 grid-cols-1">
+				{/* hidden md:block w-1/5 sm:w-1/8 lg:w-1/4 xl:w-1/5 */}
+				<div className="col-span-3 sm:col-span-1 md:col-span-2">
 					<FloatFilter
 						useStateFilter={useStateFilter}
 						setUseStateFilter={setUseStateFilter}
@@ -132,7 +161,8 @@ const ListProducts: FC<ListProductsProps> = ({
 				</div>
 
 				{/*  xl:pl-14 lg:pl-7 */}
-				<div className="w-full sm:w-6/8 md:w-4/5 lg:w-3/4 xl:w-4/5 lg:pl-7">
+				{/* w-full sm:w-6/8 md:w-4/5 lg:w-3/4 xl:w-4/5 lg:pl-7 */}
+				<div className="col-span-9 sm:col-span-1 md:col-span-10">
 					{loading && loading ? (
 						<CardSkeleton arrayLength={8} />
 					) : (

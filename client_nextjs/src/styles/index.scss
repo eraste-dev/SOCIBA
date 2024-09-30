@@ -7,11 +7,16 @@
 @import "./header";
 
 
+.text-xs {
+    font-size: 0.60rem !important;
+    line-height: .85rem !important;
+}
+
 
 // CUSTOM
 @media (min-width: 576px) {
     .container {
-        max-width: 95% !important;
+        max-width: 100% !important;
     }
 }
 

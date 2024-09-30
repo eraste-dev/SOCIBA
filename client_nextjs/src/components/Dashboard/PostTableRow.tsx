@@ -3,7 +3,6 @@ import { IProduct, IProductImage } from "app/reducer/products/product";
 import { FC, useState } from "react";
 import ChangeProductType, { STATUS_LABEL } from "./Products/ChangeProductType";
 import { LIST_STATUS, STATUS_TEXT } from "./ProductTable";
-import { PERIODICITY_LIST } from "containers/PageDashboard/Posts/DashboardSubmitPost";
 import { _f } from "utils/money-format";
 import { isAdmin } from "app/axios/actions/api.action";
 import { AuthAction } from "app/reducer/auth/auth";
@@ -16,7 +15,6 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import Card11Price from "components/Cards/Card11/Card11Price";
 import PostPropertyCardMetaV2 from "components/PostCard/PostPropertyCardMeta/PostCardMetaV2";
 import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
-import Card11 from "components/Cards/Card11/Card11";
 
 interface ProductTableRowProps {
 	row: IProduct;
@@ -75,6 +73,9 @@ const ProductTableRow: FC<ProductTableRowProps> = ({
 						</div>
 
 						<div className="px-5">
+							<div>
+								<Card11Price item={row} />
+							</div>
 							<div className="relative " style={{ maxWidth: 150 }}>
 								<span className="inset-x-3 z-10 mb-5">
 									<CategoryPropertyBadgeOne category={category} />
@@ -111,24 +112,6 @@ const ProductTableRow: FC<ProductTableRowProps> = ({
 								)}
 							</div>
 						</div>
-					</div>
-				</TableCell>
-
-				<TableCell>
-					<div className="flex">
-						<span className="mr- 2">
-							<Card11Price item={row} />
-						</span>
-						<span>
-							{PERIODICITY_LIST.find((p) => p.id === periodicity)?.name &&
-								"/ " + PERIODICITY_LIST.find((p) => p.id === periodicity)?.name}
-						</span>
-					</div>
-				</TableCell>
-
-				<TableCell>
-					<div className="flex">
-						{category && <span className="mr- 2">{category.name}</span>}
 					</div>
 				</TableCell>
 

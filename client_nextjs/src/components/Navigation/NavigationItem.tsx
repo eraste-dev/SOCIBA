@@ -31,6 +31,26 @@ export interface NavigationItemProps {
 
 type NavigationItemWithRouterProps = RouteComponentProps & NavigationItemProps;
 
+export const convertMegamenuItemsToNavItems = (megamenuItems: MegamenuItem[]): NavItemType[] => {
+	const navItems: NavItemType[] = [];
+
+	megamenuItems.forEach((megamenuItem) => {
+		const navItem: NavItemType = {
+			id: megamenuItem.id,
+			name: megamenuItem.title,
+			href: `/${megamenuItem.id}`, // You can adjust how the href is generated here
+			type: "megaMenu", // Assuming this is for megamenu items
+			children: undefined,
+			megaMenu: undefined,
+			isNew: false, // You can set this based on your logic
+		};
+
+		navItems.push(navItem);
+	});
+
+	return navItems;
+};
+
 const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }) => {
 	const [menuCurrentHovers, setMenuCurrentHovers] = useState<string[]>([]);
 
@@ -103,7 +123,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }
 												<p className="font-medium text-neutral-900 dark:text-neutral-200 py-1 px-2 my-2">
 													{item.title}
 												</p>
-												<ul className="grid space-y-1">
+												<ul className="list-none grid space-y-1">
 													{item.items.map(renderMegaMenuNavlink)}
 												</ul>
 											</div>
@@ -186,7 +206,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }
 								static
 								className="sub-menu will-change-transform absolute transform z-10 w-60 pt-3 left-0"
 							>
-								<ul className="rounded-xl shadow-lg ring-1 ring-black/5 dark:ring-white/10 text-sm relative bg-white dark:bg-neutral-800 py-4 grid space-y-1">
+								<ul className="list-none rounded-xl shadow-lg ring-1 ring-black/5 dark:ring-white/10 text-sm relative bg-white dark:bg-neutral-800 py-4 grid space-y-1">
 									{menuDropdown.children?.map((i) => {
 										if (i.type) {
 											return renderDropdownMenuNavlinkHasChild(i);
@@ -236,7 +256,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }
 								static
 								className="sub-menu absolute z-10 w-56 left-full pl-2 top-0"
 							>
-								<ul className="rounded-xl shadow-lg ring-1 ring-black/5 dark:ring-white/10 text-sm relative bg-white dark:bg-neutral-800 py-4 grid space-y-1">
+								<ul className="list-none rounded-xl shadow-lg ring-1 ring-black/5 dark:ring-white/10 text-sm relative bg-white dark:bg-neutral-800 py-4 grid space-y-1">
 									{item.children?.map((i) => {
 										if (i.type) {
 											return renderDropdownMenuNavlinkHasChild(i);
@@ -327,7 +347,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }
 				exact
 				strict
 				rel="noopener noreferrer"
-				className="inline-flex items-center text-sm xl:text-base font-normal text-neutral-700 dark:text-neutral-300 py-2 px-4 xl:px-5 rounded-full hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
+				className="inline-flex items-center text-sm xl:text-base font-normal text-neutral-700 dark:text-neutral-300 py-1 px-4 xl:px-5 rounded-full hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
 				to={{
 					pathname: item.href || undefined,
 				}}
@@ -335,7 +355,7 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem, history }
 				activeClassName="!font-semibold !text-neutral-900 bg-neutral-100 dark:bg-neutral-800 dark:!text-neutral-100"
 			>
 				{item.name}
-				{item.type  && item.megaMenu && (
+				{item.type && item.megaMenu && (
 					<ChevronDownIcon
 						className="ml-1 -mr-1 h-4 w-4 text-neutral-400"
 						aria-hidden="true"

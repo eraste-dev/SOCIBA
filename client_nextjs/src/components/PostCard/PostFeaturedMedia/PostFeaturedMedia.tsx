@@ -1,22 +1,16 @@
-import React, { FC, useRef } from "react";
+import { FC, useRef } from "react";
 import NcImage from "components/NcImage/NcImage";
-import { PostDataType } from "data/types";
 import GallerySlider from "./GallerySlider";
 import MediaVideo from "./MediaVideo";
-import PostTypeFeaturedIcon from "components/PostCard/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
-import MediaAudio from "./MediaAudio";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
 import { IProduct } from "app/reducer/products/product";
-import {
-	PRODUCT_TYPE,
-	TYPE_BIEN_EN_VENTE_KEY,
-} from "containers/PageDashboard/Posts/DashboardSubmitPost";
-import MediaTerrain from "./MediaTerrain";
+import MediaVideoTwo from "./MediaVideoTwo";
 
 export interface PostFeaturedMediaProps {
 	className?: string;
 	post?: IProduct;
 	isHover?: boolean;
+	single?: boolean;
 }
 
 // CHECK FOR VIDEO CARD ON VIEW
@@ -26,8 +20,9 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
 	className = " w-full h-full ",
 	post,
 	isHover = false,
+	single = false,
 }) => {
-	const { featured_image, type, video_link, images, id, title } = post || {};
+	const { featured_image, video_link, images, id } = post || {};
 
 	const videoRef = useRef(null);
 
@@ -45,12 +40,25 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
 	const IN_VIEW = (cardIntersectionObserver?.intersectionRatio || -1) > PREV_RATIO;
 	PREV_RATIO = cardIntersectionObserver?.intersectionRatio || 0;
 
-	const isPostMedia = () => false; //() => postType === "video" || postType === "audio";
-
 	const renderGallerySlider = () => {
 		if (!images || images.length === 0) return null;
+		// if (images && images.length === 1) {
+		// 	return (
+		// 		<NcImage
+		// 			src={images[0].image}
+		// 			className="absolute inset-0 w-full h-full object-cover"
+		// 		/>
+		// 	);
+		// }
+
 		const arrayImgs: string[] = images.map((item) => item.image);
-		return <GallerySlider galleryImgs={arrayImgs} uniqueClass={`PostFeaturedGallery_${id}`} />;
+		return (
+			<GallerySlider
+				single={single}
+				galleryImgs={arrayImgs}
+				uniqueClass={`PostFeaturedGallery_${id}`}
+			/>
+		);
 	};
 
 	const renderContent = () => {

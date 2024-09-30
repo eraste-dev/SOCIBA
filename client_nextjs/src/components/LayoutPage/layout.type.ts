@@ -10,12 +10,9 @@ import { ComponentType } from "react";
 import DashboardSettings from "containers/PageDashboard/Settings/DashboardSettings";
 
 export interface DashboardLocationState {
-	// "/root"?: {};
 	"/posts"?: {};
 	"/users"?: {};
 	"/edit-profile"?: {};
-	// "/subscription"?: {};
-	// "/billing-address"?: {};
 	"/submit-post"?: {};
 	"/account"?: {};
 	"/post-categories"?: {};
@@ -34,7 +31,6 @@ export interface DashboardPage {
 }
 
 export const USER_SUB_PAGES: DashboardPage[] = [
-	// { sPath: "/root", exact: true, component: DashboardRoot, emoij: "🕹", pageName: "Dash board" },
 	{ pageName: "Annonces" },
 	{
 		sPath: "/submit-post",
@@ -50,18 +46,6 @@ export const USER_SUB_PAGES: DashboardPage[] = [
 		pageName: "Modifier Profile",
 	},
 	{ pageName: "Autres" },
-	// {
-	// 	sPath: "/subscription",
-	// 	component: DashboardSubcription,
-	// 	emoij: "📃",
-	// 	pageName: "Subscription",
-	// },
-	// {
-	// 	sPath: "/billing-address",
-	// 	component: DashboardBillingAddress,
-	// 	emoij: "✈",
-	// 	pageName: "Billing address",
-	// },
 ];
 
 export const ADMIN_SUB_PAGES: DashboardPage[] = [

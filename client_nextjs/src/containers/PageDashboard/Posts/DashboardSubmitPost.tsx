@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "components/Form/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import Select from "components/Form/Select/Select";
@@ -8,20 +8,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 import { useAppSelector } from "app/hooks";
-import {
-	fetchCategories,
-	fetchSingleProperties,
-	initProductState,
-	postProduct,
-} from "app/axios/actions/api.action";
+import { fetchCategories, initProductState, postProduct } from "app/axios/actions/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
-import {
-	EMPTY_PRODUCT,
-	PeriodicityType,
-	PRODUCT_REQUEST_EMPTY,
-	ProductRequest,
-} from "app/axios/api.type";
+import { PeriodicityType, PRODUCT_REQUEST_EMPTY, ProductRequest } from "app/axios/api.type";
 import { ILocation, LocationAction } from "app/reducer/locations/locations";
 import { fetchLocation } from "app/axios/actions/api.others.action";
 import { useSnackbar } from "notistack";
@@ -29,7 +19,7 @@ import { IProduct, PropertyAction } from "app/reducer/products/product";
 import ErrorMessage from "components/Form/ErrorMessage";
 import { useHistory } from "react-router-dom";
 import { route } from "routers/route";
-import ImageUploader from "components/Dashboard/Products/ImageUploader";
+import ImageUploader from "components/Dashboard/Products/Image/ImageUploader";
 import { ProductcategoryUUID } from "data/categories_uuid";
 import Loading from "components/UI/Loading";
 import { IPropertySubCategory } from "app/reducer/products/sub-propertiy-category";
@@ -38,7 +28,6 @@ import {
 	BUREAU_KEY,
 	CATEGORIES_SUB,
 	DUPLEX_KEY,
-	MAISON_KEY,
 	TERRAIN_KEY,
 	TRIPLEX_KEY,
 	VILLA_KEY,
@@ -46,86 +35,21 @@ import {
 import DetailBien from "./components/Forms/DetailBien";
 import DetailBienTwo from "./components/Forms/DetailBienTwo";
 import CurrencyInput from "react-currency-input-field";
-
-export type IProductType = "LOCATION" | "BIEN EN VENTE" | "RESERVATION"; // | "AUTRE"
-
-export const TYPE_LOCATION_KEY: number = 0;
-export const TYPE_RESERVATION_KEY: number = 1;
-export const TYPE_BIEN_EN_VENTE_KEY: number = 2;
-export const TYPE_AUTRE_KEY: number = 3;
-
-export const PRODUCT_TYPE: IProductType[] = ["LOCATION", "RESERVATION", "BIEN EN VENTE"]; //"AUTRE"
-
-export interface IPRODUCT_PERIODICITY {
-	id: string;
-	name: string;
-}
-export const PERIODICITY_LIST: IPRODUCT_PERIODICITY[] = [{ id: "MONTH", name: "Mois" }];
-
-// { id: "WEEK", name: "Semaine" },
-export const PERIODICITY_RESERVATION_LIST: { id: string; name: string }[] = [
-	{ id: "DAY", name: "Jour" },
-	{ id: "VISIT", name: "Séjour" },
-];
-
-export type IPRODUCT_AREA_UNIT_KEY = "M" | "LOT";
-
-export interface IPRODUCT_AREA_UNIT {
-	id: IPRODUCT_AREA_UNIT_KEY;
-	name: string;
-}
-
-export const PRODUCT_AREA_UNIT: IPRODUCT_AREA_UNIT[] = [
-	{ id: "M", name: "m²" },
-	{ id: "LOT", name: "Lot" },
-];
-
-export interface ISubCategoryType {
-	code: string;
-	name: string;
-}
-
-export const SUB_MAISON_ONE_DETAIL: ISubCategoryType[] = [
-	// {
-	// 	code: "APPARTEMENT",
-	// 	name: "Appartement",
-	// },
-	{
-		code: "STUDIO",
-		name: "Studio",
-	},
-	{ code: "TWO_PIECE", name: "2 pièces" },
-	{ code: "THREE_PIECE", name: "3 pièces" },
-	{ code: "FOUR_PIECE", name: "4 pièces" },
-	{ code: "VILLA", name: "Villa" },
-	{ code: "DUPLEX", name: "Duplex" },
-	{ code: "TRIPLEX", name: "Triplex" },
-];
-
-export const SUB_MAISON_DETAIL: ISubCategoryType[] = [
-	// {
-	// 	code: "APPARTEMENT",
-	// 	name: "Appartement",
-	// },
-	{
-		code: "STUDIO",
-		name: "Studio",
-	},
-	{ code: "TWO_PIECE", name: "2 pièces" },
-	{ code: "THREE_PIECE", name: "3 pièces" },
-	// { code: "FOUR_PIECE", name: "4 pièces" },
-	{ code: "VILLA", name: "Villa" },
-	// { code: "DUPLEX", name: "Duplex" },
-	// { code: "TRIPLEX", name: "Triplex" },
-];
-
-export const SUB_HOTEL_DETAIL: ISubCategoryType[] = [
-	{
-		code: "CHAMBRE",
-		name: "Chambre",
-	},
-	{ code: "SUITE", name: "Suite" },
-];
+import { buildLocationItem } from "utils/utils";
+import {
+	convertPayloadToFormData,
+	IPRODUCT_AREA_UNIT_KEY,
+	IProductType,
+	ISubCategoryType,
+	PERIODICITY_LIST,
+	PERIODICITY_RESERVATION_LIST,
+	PRODUCT_AREA_UNIT,
+	PRODUCT_TYPE,
+	TYPE_BIEN_EN_VENTE_KEY,
+	TYPE_LOCATION_KEY,
+	TYPE_RESERVATION_KEY,
+} from "./posts.constantes";
+import VideoUploader from "components/Dashboard/Products/Video/VideoUploader";
 
 const DashboardSubmitPost = () => {
 	const CURRENCY: string = "FCFA";
@@ -144,6 +68,9 @@ const DashboardSubmitPost = () => {
 
 	const categories = useSelector(CategoryAction.data);
 	const [_hasOtherKey, set_hasOtherKey] = useState("");
+	const [resfreshLocaionSelected, setresfreshLocaionSelected] = useState("");
+	const [reshrehPrice, setreshrehPrice] = useState("");
+	const [reshrehPriceSecond, setreshrehPriceSecond] = useState("");
 	const sub_categories: IPropertySubCategory[] = CATEGORIES_SUB; //useSelector(CategorySubAction.data);
 	const categoriesLoading = useAppSelector(CategoryAction.loading);
 
@@ -155,29 +82,38 @@ const DashboardSubmitPost = () => {
 	const [defaultValue, setDefaultValue] = useState(null as ProductRequest | null);
 	const [images, setImages] = useState<string[]>([]);
 	const [imageFiles, setImageFiles] = useState<File[]>([]);
+	const [videos, setVideos] = useState<string[]>([]);
+	const [videoFiles, setVideoFiles] = useState<File[]>([]);
 	const [tmpcatId, settmpcatId] = useState(0);
 
 	const { register, handleSubmit, watch, setValue, getValues } = useForm<ProductRequest>();
 
 	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
 		console.log("SubmitHandler imageFiles", imageFiles);
-		const formData = new FormData(); // initialize form data
+		let formData = new FormData(); // initialize form data
 		const defaultType: string =
 			data.home_type ??
 			(SUB_CATEGORIES().length > 0 ? Object.values(SUB_CATEGORIES())[0].code : "");
 
-		const priceString: string = data.price.toString().replace(/\s/g, "");
+		const priceString: string = data?.price ? data?.price.toString().replace(/\s/g, "") : "0";
+		const priceSecondString: string | null = data.price_second
+			? data.price_second.toString().replace(/\s/g, "")
+			: null;
 
 		// ! FIX DEFAULT VALUE
 		data.images = images;
+		data.videos = videos;
 		data.price = parseInt(priceString);
+		data.price_second = priceSecondString ? parseInt(priceSecondString) : null;
 		data.type = data.type ?? PRODUCT_TYPE[0];
 		data.home_type = defaultType;
+		data.home_type_more = data.home_type_more;
 		data.jacuzzi = data.jacuzzi ? 1 : 0;
 		data.bath = data.bath ? 1 : 0;
 		data.pool = data.pool ? 1 : 0;
 		data.WiFi = data.WiFi ? 1 : 0;
 		data.acd = data.acd ? 1 : 0;
+		data.site_approved = data.site_approved ? 1 : 0;
 		data.air_conditioning = data.air_conditioning ? 1 : 0;
 		data.bathrooms = data.bathrooms ?? 0;
 		data.kitchens = data.kitchens ?? 0;
@@ -185,7 +121,9 @@ const DashboardSubmitPost = () => {
 		data.area_unit = getAreaUnitValue(data);
 		data.count_monthly = data.count_monthly ?? 0;
 		// data.security = data.security;
+		data.periodicity = getPeriodicityFinalValue(data);
 
+		// set category_id
 		if (!data.category_id) {
 			if (tmpcatId) {
 				data.category_id = tmpcatId;
@@ -198,39 +136,24 @@ const DashboardSubmitPost = () => {
 			}
 		}
 
-		if (!data.location_id) {
+		// set location value
+		if (!hasUnlistedLocation()) {
 			if (defaultValue) {
 				data.location_id = defaultValue.location_id;
 			} else if (locations && locations.length > 0) {
 				data.location_id = locations[0].id.toString();
 			}
+		} else {
+			data.location_id = undefined;
+			data.unlisted_city = data.unlisted_city;
 		}
 
 		// Convert data to FormData
-		for (const key in data) {
-			if (
-				data.hasOwnProperty(key) &&
-				data[key as keyof ProductRequest] !== undefined &&
-				data[key as keyof ProductRequest] !== null
-			) {
-				if (key === "images" && data.images) {
-					if (Array.isArray(imageFiles)) {
-						imageFiles.forEach((image) => {
-							console.log("check images", image);
-							formData.append("images[]", image);
-						});
-					}
-				} else {
-					formData.append(key, data[key as keyof ProductRequest] as any);
-				}
-			}
-		}
+		formData = convertPayloadToFormData(data, imageFiles, videoFiles);
 
 		if (product && productId) {
 			formData.append("id", productId);
 		}
-
-		console.info(">>> postProduct ", data);
 
 		dispatch(postProduct(formData));
 	};
@@ -243,6 +166,18 @@ const DashboardSubmitPost = () => {
 		}
 
 		return areaUnit;
+	};
+
+	const getPeriodicityFinalValue = (data: ProductRequest): PeriodicityType | undefined => {
+		let p: PeriodicityType | undefined = "MONTH";
+
+		if (data.type === PRODUCT_TYPE[TYPE_RESERVATION_KEY]) {
+			p = getValues("periodicity") ?? (GET_PERIODICITY()[0].id as PeriodicityType);
+		} else if (data.type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY]) {
+			p = undefined;
+		}
+
+		return p;
 	};
 
 	const isCategorySelected = (category: IPropertyCategory) => {
@@ -270,6 +205,15 @@ const DashboardSubmitPost = () => {
 			}
 		}
 		return label;
+	};
+
+	const hasVenteTerrain = () => {
+		const type = currentType();
+		const cat = currentCategory();
+		return (
+			type === "BIEN EN VENTE" &&
+			cat?.uuid === ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN
+		);
 	};
 
 	const isLocationSelected = (location: ILocation) => {
@@ -306,7 +250,7 @@ const DashboardSubmitPost = () => {
 					}
 				});
 
-				console.log(">> cats", data);
+				// setreshrehPrice(reshrehPrice)
 			}
 		} catch (error) {
 			console.error(error);
@@ -404,6 +348,23 @@ const DashboardSubmitPost = () => {
 		return _type as IProductType;
 	};
 
+	const currentLocation = (): ILocation | undefined => {
+		const location_id: string = getValues("location_id") ?? resfreshLocaionSelected;
+		console.log("location_id :::: ", location_id);
+
+		let location: ILocation | undefined;
+		if (location_id && location_id != "") {
+			location = get_location().find((l) => l.id.toString() === location_id);
+		}
+		return location;
+	};
+
+	const currentCategory = (): IPropertyCategory | null => {
+		const _cat_id =
+			getValues("category_id") ?? (categories && categories[0] && categories[0].id);
+		return _findCat(_cat_id) && _findCat(_cat_id).length > 0 ? _findCat(_cat_id)[0] : null;
+	};
+
 	const getVenteCountLabel = () => {
 		let label: "Nombre de terrain" | "Nombre de pièces" = "Nombre de terrain";
 
@@ -414,6 +375,19 @@ const DashboardSubmitPost = () => {
 		}
 
 		return label;
+	};
+
+	const hasAutreImmo = (): boolean => {
+		let output: boolean = false;
+
+		if (
+			currentType() === "BIEN EN VENTE" &&
+			currentCategory()?.uuid === ProductcategoryUUID.BIEN_EN_VENTE.children.AUTRES
+		) {
+			output = true;
+		}
+
+		return output;
 	};
 
 	const hasResidence = (): boolean => {
@@ -452,8 +426,10 @@ const DashboardSubmitPost = () => {
 		setValue("type", product?.type ?? PRODUCT_TYPE[0]);
 		setValue("category_id", value.category_id);
 		setValue("home_type", value.home_type);
+		setValue("home_type_more", value.home_type_more);
 
 		setValue("location_id", value.location_id);
+		setValue("unlisted_city", value.unlisted_city);
 		setValue("location_description", value.location_description);
 
 		setValue("title", value.title);
@@ -461,11 +437,13 @@ const DashboardSubmitPost = () => {
 		setValue("content", value.content);
 
 		setValue("price", value.price);
+		setValue("price_second", value.price_second);
 		setValue("deposit_price", value.deposit_price);
 		setValue("periodicity", value.periodicity);
 
 		setValue("jacuzzi", value.jacuzzi);
 		setValue("acd", value.acd);
+		setValue("site_approved", value.site_approved);
 		setValue("bath", value.bath);
 		setValue("air_conditioning", value.air_conditioning);
 		setValue("kitchens", value.kitchens);
@@ -494,8 +472,10 @@ const DashboardSubmitPost = () => {
 				content: product.content,
 				type: product.type ?? PRODUCT_TYPE[0],
 				location_id: product.location.id.toString(),
+				unlisted_city: product && product.unlisted_city ? product.unlisted_city.name : "",
 				location_description: product.location_description,
 				price: product.price,
+				price_second: product.price_second,
 				deposit_price: product.deposit_price,
 				area: product.area,
 				area_unit: product.area_unit,
@@ -513,15 +493,25 @@ const DashboardSubmitPost = () => {
 				WiFi: product.WiFi ? 1 : 0,
 				air_conditioning: product.air_conditioning ? 1 : 0,
 				acd: product.acd ? 1 : 0,
+				site_approved: product.site_approved ? 1 : 0,
 				home_type: product.home_type,
 				accessibility: product.accessibility,
 				purchase_power: product.purchase_power,
 				security: product.security,
 				area_count: product.area_count,
+				home_type_more: product.home_type_more,
 			};
+			if (value.price) {
+				setreshrehPrice(value.price?.toString());
+			}
+			if (value.price_second) {
+				setreshrehPrice(value.price_second?.toString());
+			}
 			setDefaultValue(value);
 			setImages(product.images.map((image) => image.image));
 			setImageFiles([]);
+			setVideos(product.videos.map((video) => video.src));
+			setVideoFiles([]);
 			useFormSetDefault(value);
 
 			if (categories && categories.length > 0) {
@@ -538,17 +528,6 @@ const DashboardSubmitPost = () => {
 	const showCaution = (): boolean => {
 		const condition: boolean =
 			getValues("type") === PRODUCT_TYPE[0] || product?.type === "LOCATION";
-
-		const cat: IPropertyCategory | null =
-			GET_CATEGORIES()?.find((c) => c.id === getValues("category_id")) ?? null;
-
-		// const conditionTwo: boolean =
-		// 	(cat &&
-		// 		[
-		// 			ProductcategoryUUID.MAISON.key,
-		// 			ProductcategoryUUID.MAISON.children.APPARTEMENT,
-		// 		].includes(cat.uuid)) ??
-		// 	false;
 
 		return condition;
 	};
@@ -571,6 +550,33 @@ const DashboardSubmitPost = () => {
 			default:
 				return "Prix de location";
 		}
+	};
+
+	const canShowDetailCategory = (): boolean => {
+		const condition = getValues("category_id") != undefined && !hasVenteTerrain();
+		return condition;
+	};
+
+	const get_location = (): ILocation[] => {
+		let data: ILocation[] = [];
+		if (locations && locations.length > 0) {
+			for (const l of locations) {
+				data.push(l);
+			}
+			data.push(buildLocationItem("Autres", true));
+		}
+		return data;
+	};
+
+	const hasUnlistedLocation = (): boolean => {
+		let output: boolean = false;
+		console.table(currentLocation());
+
+		if (currentLocation() && currentLocation()?.unlisted) {
+			output = true;
+		}
+
+		return output;
 	};
 
 	// FETCH_CATEGORIES
@@ -647,11 +653,12 @@ const DashboardSubmitPost = () => {
 	}, [snackbar, success, loading, history]);
 
 	if ((initialize === false || defaultValue == null) && productId) {
-		return (
-			<div className="flex justify-center justify-self-center" style={{ height: "100vh" }}>
-				<Loading />
-			</div>
-		);
+		// return history.push(route("posts"));
+		// return (
+		// 	<div className="flex justify-center justify-self-center" style={{ height: "100vh" }}>
+		// 		<Loading />
+		// 	</div>
+		// );
 	}
 
 	if (loading || categoriesLoading || locationLoading) {
@@ -772,14 +779,12 @@ const DashboardSubmitPost = () => {
 										</label>
 
 										{/* DETAIL CATEGORY */}
-										{/* hasResidence() && */}
-										{getValues("category_id") != undefined && (
+										{canShowDetailCategory() && (
 											<label className="block col-span-4">
 												<div className="grid grid-cols-1 gap-6">
 													<div>
 														<Label>
 															{getTypeDeteailLabel()}
-
 															{/* <span className="text-red-500">*</span> */}
 														</Label>
 
@@ -893,55 +898,80 @@ const DashboardSubmitPost = () => {
 										)}
 
 										{/* DETAIL CATEGORY */}
-										{getValues("type") ===
-											PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] &&
+										{currentType() === "BIEN EN VENTE" &&
 											!showNumberOfRooms() && (
-												<label className="block col-span-4">
-													<div className="grid grid-cols-1 gap-6">
-														<div>
-															<Label>
-																{getVenteCountLabel()}
-																<span className="text-red-500">
+												<>
+													{!hasAutreImmo() ? (
+														<label className="block col-span-4">
+															<div className="grid grid-cols-1 gap-6">
+																<div>
+																	<Label>
+																		{getVenteCountLabel()}
+																		{/* <span className="text-red-500">
 																	*
-																</span>
-															</Label>
+																</span> */}
+																	</Label>
 
-															<div className="block md:col-span-2 ">
-																<Input
-																	name="area_count"
-																	autoComplete="on"
-																	defaultValue={
-																		defaultValue?.area_count ??
-																		0
-																	}
-																	onChange={(event) => {
-																		event.target.value &&
-																			setValue(
-																				"area_count",
-																				parseInt(
-																					event.target
-																						.value
-																				)
-																			);
-																	}}
-																></Input>
+																	<div className="block md:col-span-2 ">
+																		<Input
+																			name="area_count"
+																			autoComplete="on"
+																			defaultValue={
+																				defaultValue?.area_count ??
+																				0
+																			}
+																			onChange={(event) => {
+																				event.target
+																					.value &&
+																					setValue(
+																						"area_count",
+																						parseInt(
+																							event
+																								.target
+																								.value
+																						)
+																					);
+																			}}
+																		></Input>
+																	</div>
+																</div>
 															</div>
-														</div>
-													</div>
-													<div>
-														<ErrorMessage
-															errors={errorArray}
-															error="category_id"
-															customMessage="Veuillez choisir un type de bien"
-														/>
-													</div>
-												</label>
+															<div>
+																<ErrorMessage
+																	errors={errorArray}
+																	error="category_id"
+																	customMessage="Veuillez choisir un type de bien"
+																/>
+															</div>
+														</label>
+													) : null}
+												</>
 											)}
+
+										{hasAutreImmo() ? (
+											<div className="col-span-3">
+												<Label>Autre Aspect (Détails)</Label>
+												<Input
+													autoComplete="on"
+													defaultValue={defaultValue?.home_type_more}
+													name="home_type_more"
+													onChange={(e) =>
+														setValue("home_type_more", e.target.value)
+													}
+												/>
+											</div>
+										) : null}
 
 										{/* VILLE - COUNTRY - STATE */}
 										<label className="block col-span-4">
 											<div className="grid grid-cols-2 gap-6">
-												<div className="col-span-1">
+												<div
+													className={
+														hasUnlistedLocation()
+															? "col-span-2"
+															: "col-span-1"
+													}
+												>
 													<Label>
 														Commune{" "}
 														<span className="text-red-500">*</span>
@@ -951,25 +981,27 @@ const DashboardSubmitPost = () => {
 														<Select
 															name="location_id"
 															required
-															onChange={(event) =>
+															onChange={(event) => {
 																setValue(
 																	"location_id",
 																	event.target.value
-																)
-															}
+																);
+																setresfreshLocaionSelected(
+																	event.target.value
+																);
+															}}
 														>
-															{locations &&
-																locations.map((location) => (
-																	<option
-																		key={location.id}
-																		value={location.id}
-																		selected={isLocationSelected(
-																			location
-																		)}
-																	>
-																		{location.name}
-																	</option>
-																))}
+															{get_location().map((location) => (
+																<option
+																	key={location.id}
+																	value={location.id}
+																	selected={isLocationSelected(
+																		location
+																	)}
+																>
+																	{location.name}
+																</option>
+															))}
 														</Select>
 														<ErrorMessage
 															errors={errorArray}
@@ -978,6 +1010,26 @@ const DashboardSubmitPost = () => {
 														/>
 													</div>
 												</div>
+
+												{hasUnlistedLocation() ? (
+													<div className="col-span-1">
+														<label className="block ">
+															<Label>Nom de la ville </Label>
+															{/* {product?.location.id} */}
+															<Input
+																type="text"
+																className="mt-1"
+																defaultValue={``}
+																{...register("unlisted_city")}
+															/>
+															<ErrorMessage
+																errors={errorArray}
+																error="location_description"
+																customMessage="Veuillez saisir un quartier"
+															/>
+														</label>
+													</div>
+												) : null}
 
 												<div className="col-span-1">
 													<label className="block ">
@@ -1007,17 +1059,19 @@ const DashboardSubmitPost = () => {
 										</label>
 									</div>
 
-									<DetailBien
-										errorArray={errorArray}
-										register={register}
-										product={product}
-										setValue={setValue}
-										getValues={getValues}
-										typeDeBien={
-											(getValues("type") as IProductType) ??
-											(PRODUCT_TYPE[0] as IProductType)
-										}
-									/>
+									{!hasAutreImmo() && (
+										<DetailBien
+											errorArray={errorArray}
+											register={register}
+											product={product}
+											setValue={setValue}
+											getValues={getValues}
+											typeDeBien={
+												(getValues("type") as IProductType) ??
+												(PRODUCT_TYPE[0] as IProductType)
+											}
+										/>
+									)}
 
 									<DetailBienTwo
 										errorArray={errorArray}
@@ -1059,182 +1113,223 @@ const DashboardSubmitPost = () => {
 											</label>
 										)}
 
-										{/* PRICE - DEPOSIT PRICE */}
-										<label className="block md:col-span-2">
+										{/* PRICE - PRICE_SECOND  */}
+										<div className="block md:col-span-2">
 											<div className="grid grid-cols-3 gap-6">
-												<div className="col-span-2">
-													<Label>
-														{getPriceLabel()}
-														<span className="text-red-500">*</span>
-														<div className="flex items-center relative mt-2">
-															<CurrencyInput
-																id="input-currency"
-																className="w-full rounded-md "
-																placeholder="Entrer le montant"
-																defaultValue={
-																	product && product.price
-																}
-																min={0}
-																decimalsLimit={2}
-																groupSeparator=" "
-																onValueChange={(
-																	value,
-																	name,
-																	values
-																) =>
-																	// setValue("price", value)
-																	console.log({
+												{/* PRICE */}
+												{true ? (
+													<div
+														className={
+															currentType() === "BIEN EN VENTE" &&
+															currentCategory() &&
+															currentCategory()?.uuid !==
+																ProductcategoryUUID.MAISON.key
+																? "col-span-3"
+																: "col-span-2"
+														}
+													>
+														<Label>
+															{getPriceLabel()}
+															<span className="text-red-500">*</span>
+															<div className="flex items-center relative mt-2">
+																<CurrencyInput
+																	id="input-currency"
+																	className="w-full rounded-md "
+																	placeholder="Entrer le montant"
+																	defaultValue={
+																		product && product.price
+																	}
+																	min={0}
+																	decimalsLimit={2}
+																	groupSeparator=" "
+																	value={reshrehPrice}
+																	onValueChange={(
 																		value,
 																		name,
-																		values,
-																	})
-																}
-																{...register("price", {
-																	required: true,
-																})}
-															/>
-															<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
-																FCFA
-															</span>
-															{false && (
-																<>
-																	<Input
-																		type="number"
-																		className="mt-1"
-																		defaultValue={
-																			(product &&
-																				product?.price) ??
-																			0
-																		}
-																		{...register("price", {
-																			required: true,
-																		})}
-																	/>
-
-																	<span className="text-lg ml-2 text-neutral-300">
-																		{CURRENCY}{" "}
-																	</span>
-																</>
-															)}
-														</div>
-													</Label>
-													<ErrorMessage
-														errors={errorArray}
-														error="price"
-														customMessage="Veuillez saisir un prix"
-													/>
-												</div>
-
-												<div className="col-span-1">
-													{getValues("type") !==
-														PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
-														<div className="block ">
-															<Label className="my-0">
-																Périodicité
-															</Label>
-															<Select
-																name="periodicity"
-																className="w-full"
-																onChange={(event) =>
-																	setValue(
-																		"periodicity",
-																		event.target
-																			.value as PeriodicityType
-																	)
-																}
-															>
-																{false && (
-																	<option value="">
-																		Choisir une périodicité
-																	</option>
-																)}
-																{GET_PERIODICITY().map((p) => (
-																	<option
-																		key={p.id}
-																		value={p.id}
-																		selected={
-																			defaultValue?.periodicity ===
-																			p.id
-																		}
-																	>
-																		{p.name}
-																	</option>
-																))}
-															</Select>
-														</div>
-													)}
-
-													{getValues("type") ===
-														PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] && (
-														<div className="block md:col-span-2 ">
-															<Select
-																name="periodicity"
-																className="mt-4"
-																onChange={(event) =>
-																	setValue(
-																		"periodicity",
-																		event.target
-																			.value as PeriodicityType
-																	)
-																}
-															>
-																{PRODUCT_AREA_UNIT.map((u) => (
-																	<option
-																		key={u.id}
-																		value={u.id}
-																		selected={
-																			product &&
-																			product.area_unit ===
-																				u.id
-																		}
-																		defaultValue={
-																			!getValues("area_unit")
-																				? u.id
-																				: ""
-																		}
-																	>
-																		{u.name}
-																	</option>
-																))}
-															</Select>
-														</div>
-													)}
-
-													{false && (
-														<>
-															<label className="block md:col-span-2">
-																Caution{" "}
-																<span className="text-red-500">
-																	*
+																		values
+																	) => {
+																		// setValue("price", value)
+																		// console.log({
+																		// 	value,
+																		// 	name,
+																		// 	values,
+																		// });
+																		value &&
+																			setreshrehPrice(value);
+																	}}
+																	{...register("price", {
+																		required: true,
+																	})}
+																/>
+																<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
+																	FCFA
 																</span>
-																<div className="flex items-center">
-																	<Input
-																		type="number"
-																		// defaultValue={
-																		// 	product && product.deposit_price
-																		// }
-																		className="mt-1"
-																		{...register(
-																			"deposit_price",
-																			{
-																				required: true,
+															</div>
+														</Label>
+														<ErrorMessage
+															errors={errorArray}
+															error="price"
+															customMessage="Veuillez saisir un prix"
+														/>
+													</div>
+												) : null}
+
+												{/* PRICE BY UNIT */}
+												{currentType() === "BIEN EN VENTE" &&
+												currentCategory() &&
+												currentCategory()?.uuid !==
+													ProductcategoryUUID.MAISON.key &&
+												!hasAutreImmo() ? (
+													<div className="col-span-2">
+														<Label>
+															Prix par unité
+															<span className="text-red-500">*</span>
+															<div className="flex items-center relative mt-2">
+																<CurrencyInput
+																	id="input-currency"
+																	className="w-full rounded-md "
+																	placeholder="Entrer le montant"
+																	defaultValue={
+																		reshrehPriceSecond ??
+																		(product &&
+																			product.price_second) ??
+																		getValues("price_second")
+																	}
+																	min={0}
+																	value={reshrehPriceSecond}
+																	decimalsLimit={0}
+																	groupSeparator=" "
+																	onValueChange={(
+																		value,
+																		name,
+																		values
+																	) => {
+																		console.log({
+																			value,
+																			name,
+																			values,
+																		});
+
+																		value &&
+																			setreshrehPriceSecond(
+																				value
+																			);
+																	}}
+																	{...register("price_second", {
+																		required:
+																			currentType() ===
+																			PRODUCT_TYPE[
+																				TYPE_BIEN_EN_VENTE_KEY
+																			],
+																	})}
+																/>
+																<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
+																	FCFA
+																</span>
+															</div>
+														</Label>
+														<ErrorMessage
+															errors={errorArray}
+															error="price"
+															customMessage="Veuillez saisir un prix"
+														/>
+													</div>
+												) : null}
+
+												{/* PERIODICITY OR  UNIT */}
+												{true ? (
+													<div className="col-span-1">
+														{getValues("type") !==
+															PRODUCT_TYPE[
+																TYPE_BIEN_EN_VENTE_KEY
+															] && (
+															<div className="block ">
+																<Label className="my-0">
+																	Périodicité
+																</Label>
+																<Select
+																	name="periodicity"
+																	className="w-full"
+																	onChange={(event) =>
+																		setValue(
+																			"periodicity",
+																			event.target
+																				.value as PeriodicityType
+																		)
+																	}
+																>
+																	{false && (
+																		<option value="">
+																			Choisir une périodicité
+																		</option>
+																	)}
+																	{GET_PERIODICITY().map((p) => (
+																		<option
+																			key={p.id}
+																			value={p.id}
+																			selected={
+																				defaultValue?.periodicity ===
+																				p.id
 																			}
+																		>
+																			{p.name}
+																		</option>
+																	))}
+																</Select>
+															</div>
+														)}
+
+														{getValues("type") ===
+															PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] &&
+															currentCategory() &&
+															currentCategory()?.uuid ===
+																ProductcategoryUUID.BIEN_EN_VENTE
+																	.children.TERRAIN && (
+																<div className="block md:col-span-2 ">
+																	<Label className="">
+																		Unité
+																		<span>
+																			{" (m² / LOT)".toUpperCase()}{" "}
+																		</span>
+																	</Label>
+																	<Select
+																		name="periodicity"
+																		className="mt-2"
+																		onChange={(event) =>
+																			setValue(
+																				"periodicity",
+																				event.target
+																					.value as PeriodicityType
+																			)
+																		}
+																	>
+																		{PRODUCT_AREA_UNIT.map(
+																			(u) => (
+																				<option
+																					key={u.id}
+																					value={u.id}
+																					selected={
+																						product &&
+																						product.area_unit ===
+																							u.id
+																					}
+																					defaultValue={
+																						!getValues(
+																							"area_unit"
+																						)
+																							? u.id
+																							: ""
+																					}
+																				>
+																					{u.name}
+																				</option>
+																			)
 																		)}
-																	/>
-																	<span className="text-lg ml-2 text-neutral-300">
-																		{" "}
-																		{CURRENCY}{" "}
-																	</span>
+																	</Select>
 																</div>
-															</label>
-															<ErrorMessage
-																errors={errorArray}
-																error="deposit_price"
-																customMessage="Veuillez saisir une caution"
-															/>
-														</>
-													)}
-												</div>
+															)}
+													</div>
+												) : null}
 											</div>
 
 											{showCaution() && (
@@ -1290,7 +1385,7 @@ const DashboardSubmitPost = () => {
 													)}
 												</div>
 											)}
-										</label>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -1315,6 +1410,24 @@ const DashboardSubmitPost = () => {
 													setImages={setImages}
 													imageFiles={imageFiles}
 													setImageFiles={setImageFiles}
+												/>
+											</div>
+										</div>
+									</div>
+								)}
+
+								{allowImage() && (
+									<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 mb-5">
+										<div className="grid md:grid-cols-2 gap-6 ">
+											{/* VIDEO */}
+											<div className="block md:col-span-2">
+												<VideoUploader
+													maxVideo={1}
+													videoDefault={videos}
+													videos={videos}
+													setVideos={setVideos}
+													videoFiles={videoFiles}
+													setVideoFiles={setVideoFiles}
 												/>
 											</div>
 										</div>

@@ -11,9 +11,15 @@ export interface WidgetAuthorsProps {
 	handleFetch?: () => void;
 }
 
-const WidgePrice: FC<WidgetAuthorsProps> = ({ className = "bg-neutral-100 dark:bg-neutral-800" , handleFetch }) => {
+const WidgePrice: FC<WidgetAuthorsProps> = ({
+	className = "bg-neutral-100 dark:bg-neutral-800",
+	handleFetch,
+}) => {
 	const dispatch = useAppDispatch();
 	const [price, setPrice]: any = useState([0, 9999999999999]);
+
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const price_sort = urlSearchParams.get("price_sort");
 
 	const handleChange = () => {
 		if (price && price.length > 2 && price[0] > price[1]) {
@@ -23,7 +29,10 @@ const WidgePrice: FC<WidgetAuthorsProps> = ({ className = "bg-neutral-100 dark:b
 	};
 
 	return (
-		<div className={`nc-WidgetAuthors rounded-3xl overflow-hidden ${className}`} data-nc-id="WidgetAuthors">
+		<div
+			className={`nc-WidgetAuthors rounded-3xl overflow-hidden ${className}`}
+			data-nc-id="WidgetAuthors"
+		>
 			<WidgetHeading1 title="Prix" />
 			<div className="flow-root">
 				<div className="flex flex-col divide-y divide-neutral-200 dark:divide-neutral-700">
