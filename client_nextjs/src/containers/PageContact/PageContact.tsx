@@ -30,7 +30,7 @@ const PageContact: FC<PageContactProps> = ({ className = "" }) => {
 				<title>Contact || Blog Magazine React Template</title>
 			</Helmet>
 			<LayoutPage subHeading="Drop us message and we will get back for you." headingEmoji="" heading="Contact us">
-				<div className="grid gap-8 lg:grid-cols-2">
+				<div className="grid gap-8 lg:grid-cols-2 mt-0">
 					<div className="max-w-sm space-y-6">
 						{INFO_CONTACT.map((item, index) => (
 							<div key={index}>

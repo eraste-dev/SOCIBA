@@ -20,6 +20,12 @@ export const APP_ROUTE: IAppRoute[] = [
 
 	{ key: "login", value: "/login" },
 	{ key: "signup", value: "/signup" },
+
+	{ key: "about", value: "/about" },
+	{ key: "cgu", value: "/condition-generale-d-utilisation" },
+	{ key: "pgv", value: "/politique-generale-de-vente" },
+	{ key: "pc", value: "/politique-de-confidentialite" },
+	{ key: "rd", value: "/regle-de-diffusion" },
 ];
 
 export type IAppRouteKey =
@@ -34,7 +40,12 @@ export type IAppRouteKey =
 	| "add_post"
 	| "edit_profile"
 	| "posts"
-	| "user_post";
+	| "user_post"
+	| "about"
+	| "cgu"
+	| "pgv"
+	| "pc"
+	| "rd";
 export function route(key: IAppRouteKey, slug?: string): string {
 	let output: string = "";
 

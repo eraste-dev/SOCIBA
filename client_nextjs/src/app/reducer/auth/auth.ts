@@ -1,6 +1,7 @@
 import { IStoreAction, IStoreDataState } from "../../axios/api.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "app/reducer/store";
+import { ILocation } from "../locations/locations";
 
 export interface IUser {
 	id: number;
@@ -11,9 +12,13 @@ export interface IUser {
 	phone_whatsapp: string;
 	href: string;
 	avatar: string;
+	rating: number;
+	fonction: string;
+	influence_zone: ILocation | null;
 	status: "ACTIVE" | "INACTIVE" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED";
 	type: "ADMIN" | "USER" | "GUEST" | "AGENT";
 	count_products: number;
+	
 }
 
 export interface IAuth {
@@ -104,10 +109,14 @@ export const AuthSlice = createSlice({
 			state.success = false;
 			state.message = "";
 		},
-		registerSuccess: (state, action: PayloadAction<{ user: IUser; token: string; exprire: number }>) => {
+		registerSuccess: (
+			state,
+			action: PayloadAction<{ user: IUser; token: string; exprire: number }>
+		) => {
 			state.loading = false;
 			state.error = null;
-			state.data = { ...state.data, registrationSuccess: true, token: action.payload.token, expire: action.payload.exprire, user: action.payload.user };
+			state.data = { ...state.data, registrationSuccess: true };
+			// state.data = { ...state.data, registrationSuccess: true, token: action.payload.token, expire: action.payload.exprire, user: action.payload.user };
 		},
 		registerFailure: (state, action: PayloadAction<{ error: string; errors: any }>) => {
 			state.loading = false;

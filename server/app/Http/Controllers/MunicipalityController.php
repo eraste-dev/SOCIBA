@@ -13,7 +13,7 @@ class MunicipalityController extends Controller
 {
     public function index()
     {
-        $municipalities = Municipality::all();
+        $municipalities = Municipality::orderBy('popularity_rate', 'desc')->get();
         // $data = Collection::collection($municipalities);
         $data = MunicipalityResource::collection($municipalities);
         return ResponseService::success($data);

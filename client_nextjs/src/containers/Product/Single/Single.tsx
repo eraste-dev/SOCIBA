@@ -1,10 +1,8 @@
-import React, { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import { PostDataType, TaxonomyType } from "data/types";
-import NcImage from "components/NcImage/NcImage";
 import { SINGLE_GALLERY } from "data/single";
 import { CommentType } from "components/CommentCard/CommentCard";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { changeCurrentPage } from "app/reducer/pages/pages";
 import SingleContent from "containers/PageSingle/SingleContent";
 import SingleRelatedPosts from "containers/PageSingle/SingleRelatedPosts";
 import SingleHeader from "containers/PageSingle/SingleHeader";
@@ -19,6 +17,12 @@ import { _f, _suffix } from "utils/money-format";
 import Loading from "components/UI/Loading";
 import ContactSeller from "containers/PageSingle/sellerData";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
+import CategoryPropertyBadgeTwo from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeTwo";
+import Card11Price from "components/Cards/Card11/Card11Price";
+import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeaturedMedia";
+import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
+import { AuthorLine } from "containers/PageSingle/SingleAuthor";
+import MediaVideoTwo from "components/PostCard/PostFeaturedMedia/MediaVideoTwo";
 
 export interface SingleProps {
 	className?: string;
@@ -35,26 +39,22 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 	const { slug } = useParams<{ slug: string }>();
 
 	const single = useAppSelector(PropertyAction.data)?.single;
+	const error = useAppSelector(PropertyAction.error);
 	const related = useAppSelector(PropertyAction.data)?.similars;
-	const [fetchRelated, setFetchRelated] = useState(false);
+	// const [fetchRelated, setFetchRelated] = useState(false);
 	const loading = useAppSelector(PropertyAction.loading);
 	const [isOpen, setIsOpen] = useState(false);
 	const [openFocusIndex, setOpenFocusIndex] = useState(0);
+	const [isHover, setIsHover] = useState(false);
 
 	const location = useLocation();
 	const searchParams = new URLSearchParams(location.search);
 	const idParam = searchParams.get("id");
 
-	// UPDATE CURRENTPAGE DATA IN PAGEREDUCERS
-	// useEffect(() => {
-	// 	dispatch(changeCurrentPage({ type: "/single/:slug", data: SINGLE_GALLERY }));
-	// 	return () => {
-	// 		dispatch(changeCurrentPage({ type: "/", data: {} }));
-	// 	};
-	// }, []);
+	const className_text = "text-base font-semibold text-green-900 dark:text-neutral-400";
 
 	useEffect(() => {
-		if (!loading && !single && slug) {
+		if (!loading && !error && !single && slug) {
 			if (idParam) {
 				dispatch(fetchSingleProperties({ id: idParam }));
 			} else {
@@ -73,9 +73,9 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 			}
 
 			if (single?.location.id) {
-				payload.location = single?.location.id;
+				// payload.location = single?.location.id;
 			}
-			dispatch(fetchSimilars({ ...payload, limit: 6 }));
+			dispatch(fetchSimilars({ ...payload, limit: 12 }));
 		}
 	}, [related, single, dispatch, fetchSimilars, loading]);
 
@@ -87,23 +87,6 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 
 	const PHOTOS = SINGLE_GALLERY.galleryImgs || [];
 
-	const gridTest = () => {
-		return (
-			<div className="container">
-				<div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-					<div className="col-span-8 bg-gray-200 p-4">
-						<h2 className="text-lg font-bold mb-2">Colonne 1</h2>
-						<p>Contenu de la colonne 1</p>
-					</div>
-					<div className="col-span-4 bg-gray-200 p-4 order-first md:order-last">
-						<h2 className="text-lg font-bold mb-2">Colonne 2</h2>
-						<p>Contenu de la colonne 2</p>
-					</div>
-				</div>
-			</div>
-		);
-	};
-
 	if (loading) {
 		return <Loading />;
 	}
@@ -114,16 +97,88 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 
 	return (
 		<>
-			<div className="bg-gray-100 dark:bg-neutral-800">{single && <SingleBreadcrumb meta={single} />}</div>
+			<div className="bg-gray-100 dark:bg-neutral-800">
+				{single && <SingleBreadcrumb meta={single} />}
+			</div>
 
 			<div className={`nc-Single pt-8 lg:pt-16 ${className}`} data-nc-id="Single">
 				{/* SINGLE HEADER */}
 				<div className="container">
-					<header className="rounded-xl">{single && <SingleHeader metaActionStyle="style2" hiddenDesc pageData={single} />}</header>
+					<header className="rounded-xl">
+						{single ? (
+							<SingleHeader metaActionStyle="style2" hiddenDesc pageData={single} />
+						) : null}
+					</header>
 
-					<ContactSeller productLink={single?.href} />
+					<div className="mt-5 h-3/4">
+						<div
+							className={`nc-Card11 relative flex flex-col group h-full w-auto `}
+							data-nc-id="Card11"
+							onMouseEnter={() => setIsHover(true)}
+							onMouseLeave={() => setIsHover(false)}
+						>
+							{single ? (
+								<PostFeaturedMedia post={single} isHover={isHover} single={true} />
+							) : null}
+						</div>
+					</div>
 
-					{single && <SingleImage meta={single} handleOpenModal={handleOpenModal} />}
+					{single ? (
+						<SingleImage meta={single} handleOpenModal={handleOpenModal} />
+					) : null}
+
+					<div className="mt-5 h-3/4">
+						<div className={`nc-Card11 relative flex flex-col group h-full w-auto `}>
+							{single && single.videos && single.videos.length > 0
+								? single.videos.map((v) => (
+										<MediaVideoTwo key={v.id} isHover={true} videoUrl={v.src} />
+								  ))
+								: null}
+						</div>
+					</div>
+
+					<div className="grid grid-cols-6 mb-4">
+						<div className="col-span-4">
+							<div className="w-full">
+								{/* <CategoryPropertyBadgeTwo className="text-lg" item={single} /> */}
+								{single && single.home_type ? (
+									<AuthorLine
+										label={"Détail"}
+										value={`${single?.home_type}`}
+										classNameValue={className_text}
+									/>
+								) : null}
+
+								{single?.location && single.location.name ? (
+									<AuthorLine
+										label={single.location.unlisted ? "Ville" : "Commune"}
+										value={`${single?.location.name}`}
+										classNameValue={className_text}
+									/>
+								) : null}
+
+								{single?.location_description ? (
+									<AuthorLine
+										label={"Quartier"}
+										value={single.location_description}
+										classNameValue={className_text}
+									/>
+								) : null}
+							</div>
+						</div>
+
+						<div className="col-span-2">
+							<div className="w-full flex justify-end">
+								{single && (
+									<Card11Price
+										item={single}
+										isSingle={true}
+										className="text-primary-6000 dark:text-neutral-500 font-semibold"
+									/>
+								)}
+							</div>
+						</div>
+					</div>
 
 					{/* MODAL PHOTOS */}
 					{single && (
@@ -137,14 +192,35 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 
 					{/* SINGLE MAIN CONTENT */}
 
+					{single && <PostCardDetailMeta meta={single} isSingle={true} />}
+
 					{single && (
-						<div className="container">
+						<div className="">
 							<SingleContent data={single} />
 						</div>
 					)}
 
-					{/* RELATED POSTS */}
+					<ContactSeller
+						productLink={single?.href}
+						phone={
+							single && single.author && single!.author!.phone
+								? single!.author!.phone
+								: undefined
+						}
+						whatsapp={
+							single && single.author && single!.author!.phone_whatsapp
+								? single!.author!.phone_whatsapp
+								: undefined
+						}
+						sms={
+							single && single.author && single!.author!.phone
+								? single!.author!.phone
+								: undefined
+						}
+					/>
 				</div>
+
+				{/* RELATED POSTS */}
 				{related && <SingleRelatedPosts related={related} />}
 			</div>
 		</>

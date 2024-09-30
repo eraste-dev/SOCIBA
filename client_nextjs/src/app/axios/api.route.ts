@@ -1,6 +1,9 @@
-import { IGetQueryParams, IGetSearchPropertiesParams, QueryBuilder } from "utils/query-builder.utils";
+import { IGetSearchPropertiesParams, QueryBuilder } from "utils/query-builder.utils";
 import { ProductRequest, UpdateUserRequest } from "./api.type";
-import { IProduct } from "app/reducer/products/product";
+import { InputsEditCategory } from "components/Dashboard/Products/Categories/EditCategory";
+import { InputsEditSlider } from "containers/PageDashboard/Sliders/EditSlider";
+import { MovingRequestInputs } from "containers/PageMovingRequest/SectionContact";
+import { ISettings } from "app/reducer/settings/settings.";
 
 export const apiBase: string = "http://localhost:8000";
 
@@ -17,16 +20,23 @@ export interface IAxiosRequestConfig {
 
 export interface IServerEndpoint {
 	public: {
+		settings: {
+			get: (key: string) => IAxiosRequestConfig;
+			post: (data: ISettings) => IAxiosRequestConfig;
+		};
 		sliders: {
 			get: IAxiosRequestConfig;
+			post: (product: FormData | InputsEditSlider) => IAxiosRequestConfig;
+			delete: (payload: { id: number }) => IAxiosRequestConfig;
 		};
 		locations: {
 			get: IAxiosRequestConfig;
 		};
 		properties: {
 			categories: IAxiosRequestConfig;
+			editCategory: (params: InputsEditCategory) => IAxiosRequestConfig;
 			search: (query: IGetSearchPropertiesParams) => IAxiosRequestConfig;
-			post: (product: FormData|ProductRequest) => IAxiosRequestConfig;
+			post: (product: FormData | ProductRequest) => IAxiosRequestConfig;
 			delete: (id: number) => IAxiosRequestConfig;
 		};
 		auth: {
@@ -37,7 +47,7 @@ export interface IServerEndpoint {
 			resetPassword: IAxiosRequestConfig;
 			refreshToken: IAxiosRequestConfig;
 			profile: IAxiosRequestConfig;
-			updateProfile: (data: FormData|UpdateUserRequest) => IAxiosRequestConfig; // UpdateUserRequest
+			updateProfile: (data: FormData | UpdateUserRequest) => IAxiosRequestConfig; // UpdateUserRequest
 			// updatePassword: (data: UpdateUserRequest) => IAxiosRequestConfig;
 			verifyEmail: IAxiosRequestConfig;
 			resendEmail: IAxiosRequestConfig;
@@ -45,6 +55,14 @@ export interface IServerEndpoint {
 		};
 		users: {
 			getAll: IAxiosRequestConfig;
+			delete: (id: number) => IAxiosRequestConfig;
+			sendUserRequest: (payload: MovingRequestInputs) => IAxiosRequestConfig;
+			getAllUserRequest: IAxiosRequestConfig;
+			notifications: IAxiosRequestConfig;
+			markAsReadnotifications: IAxiosRequestConfig;
+		};
+		meta: {
+			search: (key: string) => IAxiosRequestConfig;
 		};
 	};
 	authentificated?: any;
@@ -52,22 +70,66 @@ export interface IServerEndpoint {
 
 export const serverEndpoints: IServerEndpoint = {
 	public: {
+		settings: {
+			get: (key: string) => ({
+				method: "GET",
+				url: `${v100}/settings?key=${key}`,
+			}),
+			post: (data: ISettings) => ({
+				method: "POST",
+				url: `${v100}/settings/update`,
+				data,
+			}),
+		},
 		sliders: {
 			get: { method: "GET", url: `${v100}/sliders` },
+			post: (data: FormData | InputsEditSlider) => ({
+				method: "POST",
+				url: `${v100}/admin/sliders`,
+				data,
+			}),
+			delete: (data: { id: number }) => ({
+				method: "DELETE",
+				url: `${v100}/admin/sliders`,
+				data,
+			}),
 		},
 		locations: {
 			get: { method: "GET", url: `${v100}/locations` },
 		},
 		properties: {
 			categories: { method: "GET", url: `${v100}/categories` },
-			search: (query: IGetSearchPropertiesParams) => ({ method: "GET", url: `${v100}/properties${QueryBuilder.searchProperties(query)}` }),
-			post: (data: FormData|ProductRequest) => ({ method: "POST", url: `${v100}/admin/products`, data }),
-			delete: (id: number) => ({ method: "DELETE", url: `${v100}/admin/products`, data: { id } }),
+			editCategory: (params: InputsEditCategory) => ({
+				method: "PUT",
+				url: `${v100}/admin/categories`,
+			}),
+			search: (query: IGetSearchPropertiesParams) => ({
+				method: "GET",
+				url: `${v100}/properties${QueryBuilder.searchProperties(query)}`,
+			}),
+			post: (data: FormData | ProductRequest) => ({
+				method: "POST",
+				url: `${v100}/admin/products`,
+				data,
+			}),
+			delete: (id: number) => ({
+				method: "DELETE",
+				url: `${v100}/admin/products`,
+				data: { id },
+			}),
 		},
 		auth: {
-			login: (data: { email: string; password: string }) => ({ method: "POST", url: `${v100}/auth/login`, data }),
+			login: (data: { email: string; password: string }) => ({
+				method: "POST",
+				url: `${v100}/auth/login`,
+				data,
+			}),
 			register: { method: "POST", url: `${v100}/auth/register` },
-			logout: (data: { token: string }) => ({ method: "POST", url: `${v100}/auth/logout`, data }),
+			logout: (data: { token: string }) => ({
+				method: "POST",
+				url: `${v100}/auth/logout`,
+				data,
+			}),
 			forgetPassword: { method: "POST", url: `${v100}/auth/forget-password` },
 			resetPassword: { method: "POST", url: `${v100}/auth/reset-password` },
 			refreshToken: { method: "POST", url: `${v100}/auth/refresh-token` },
@@ -75,11 +137,34 @@ export const serverEndpoints: IServerEndpoint = {
 			verifyEmail: { method: "POST", url: `${v100}/auth/verify-email` },
 			resendEmail: { method: "POST", url: `${v100}/auth/resend-email` },
 			confirmEmail: { method: "POST", url: `${v100}/auth/confirm-email` },
-			updateProfile: (data: FormData|UpdateUserRequest) => ({ method: "PUT", url: `${v100}/user/update-profile`, data }),
+			updateProfile: (data: FormData | UpdateUserRequest) => ({
+				method: "PUT",
+				url: `${v100}/user/update-profile`,
+				data,
+			}),
 			// updatePassword: (data: UpdateUserRequest) => ({ method: "PUT", url: `${v100}/user/update-password` }),
 		},
 		users: {
 			getAll: { method: "GET", url: `${v100}/user/list` },
+			notifications: { method: "GET", url: `${v100}/user/notifications/unread` },
+			markAsReadnotifications: {
+				method: "POST",
+				url: `${v100}/user/notifications/mark-all-as-read`,
+			},
+			delete: (id: number) => ({
+				method: "DELETE",
+				url: `${v100}/user/delete`,
+				data: { id },
+			}),
+			sendUserRequest: (payload: MovingRequestInputs) => ({
+				method: "POST",
+				url: `${v100}/user/send-request`,
+				data: payload,
+			}),
+			getAllUserRequest: { method: "GET", url: `${v100}/user/user-request` },
+		},
+		meta: {
+			search: (key: string) => ({ method: "GET", url: `${v100}/meta/${key}` }),
 		},
 	},
 };

@@ -1,4 +1,8 @@
-import { MegamenuItem, NavItemType } from "components/Navigation/NavigationItem";
+import {
+	convertMegamenuItemsToNavItems,
+	MegamenuItem,
+	NavItemType,
+} from "components/Navigation/NavigationItem";
 import ncNanoId from "utils/ncNanoId";
 import __megamenu from "./jsons/__megamenu.json";
 import { route } from "routers/route";
@@ -6,13 +10,21 @@ import {
 	MEGA_MENU1,
 	MEGA_MENU2,
 	MEGA_MENU3,
-	MEGA_MENU4,
-	MEGA_MENU5,
 	NAV_COLUMN_FOUR,
 	NAV_COLUMN_ONE,
 	NAV_COLUMN_THREE,
 	NAV_COLUMN_TWO,
 } from "./navigations-data";
+import { IProductType } from "containers/PageDashboard/Posts/posts.constantes";
+import logoImgTwo from "images/logo/logo-alt-2.png";
+
+export const linkByType = (type: IProductType) => {
+	return route("annonces") + "/?type=" + type;
+};
+
+export const linkByUuid = (uuid: string) => {
+	return route("annonces") + "/?category_uuid=" + uuid;
+};
 
 const megaMenuDemo: MegamenuItem[] = [
 	{
@@ -70,7 +82,7 @@ const megaMenuDemo: MegamenuItem[] = [
 const megaMenu3ItemDemo: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
-		image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
+		image: logoImgTwo,
 		title: "location",
 		items: NAV_COLUMN_ONE.map((i) => i),
 	},
@@ -83,7 +95,7 @@ const megaMenu3ItemDemo: MegamenuItem[] = [
 	{
 		id: ncNanoId(),
 		image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
-		title: "vente",
+		title: "Achat",
 		items: NAV_COLUMN_THREE.map((i) => i),
 	},
 	{
@@ -398,38 +410,41 @@ export const NAVIGATION_SHORT_DEMO: NavItemType[] = [
 	// },
 	{
 		id: ncNanoId(),
-		href: "#",
+		href: linkByType("LOCATION"),
 		// image: "http://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ycG9yYXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
 		name: "Location",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU1,
+		children: NAV_COLUMN_ONE,
 	},
 	{
 		id: ncNanoId(),
-		href: "#",
+		href: linkByType("RESERVATION"),
 		name: "Réservation",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU2,
+		children: NAV_COLUMN_TWO,
 	},
 	{
 		id: ncNanoId(),
-		href: "#",
-		name: "Vente",
+		href: linkByType("BIEN EN VENTE"),
+		name: "Bien en vente",
 		type: "megaMenu",
 		megaMenu: MEGA_MENU3,
+		children: NAV_COLUMN_THREE,
 	},
 	{
 		id: ncNanoId(),
-		href: "#",
-		name: "Évènementiels",
-		type: "megaMenu",
-		megaMenu: MEGA_MENU4,
+		href: "/moving",
+		name: "Démenagement",
+		type: "none",
+		// megaMenu: MEGA_MENU4,
 	},
 	{
 		id: ncNanoId(),
 		href: "/about",
-		name: "Autres",
-		type: "megaMenu",
-		megaMenu: MEGA_MENU5,
+		name: "A propose de nous",
+		type: "none",
+		// megaMenu: MEGA_MENU5,
 	},
 ];

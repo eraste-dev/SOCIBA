@@ -24,10 +24,10 @@ const WidgetLocationWithInput: FC<WidgetLocationWithSelectProps> = ({
 	const dispatch = useAppDispatch();
 
 	const handleChange = (value: string) => {
-		updateParamsUrl("neighborhood", value);
-		dispatch(setFilters({ neighborhood: value }));
-		setUseStateFilter && setUseStateFilter({ ...useStateFilter, neighborhood: value });
-		if (value && value.length > 3) {
+		updateParamsUrl("location_description", value);
+		// dispatch(setFilters({ location_description: value }));
+		setUseStateFilter && setUseStateFilter({ ...useStateFilter, location_description: value });
+		if (value && value.length > 1) {
 			setTimeout(() => {
 				handleFetch && handleFetch();
 			}, 100);
@@ -46,7 +46,7 @@ const WidgetLocationWithInput: FC<WidgetLocationWithSelectProps> = ({
 			>
 				{!groupFilter && <WidgetHeading1 title="Communes" />}
 				<div
-					className="flex flex-col divide-y divide-neutral-200 dark:divide-neutral-700 px-1"
+					className="flex flex-col divide-neutral-200 dark:divide-neutral-700 px-1 w-full my-2"
 					style={{ position: "relative", top: "-12px" }}
 				>
 					<InputFilter onChange={handleChange} label="Quartier" value="" />

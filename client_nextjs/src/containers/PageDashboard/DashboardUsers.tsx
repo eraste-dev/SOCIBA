@@ -7,9 +7,8 @@ import { UserManagementAction } from "app/reducer/users/users";
 import { fetchAllUser } from "app/axios/actions/api.users.action";
 import { initializeUserProduct } from "app/axios/actions/api.products.action";
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import { FaRedo, FaRedoAlt } from "react-icons/fa";
+import { FaRedo } from "react-icons/fa";
 import UserProductList from "components/Dashboard/Users/UserProductList";
-import { Tooltip } from "@mui/material";
 
 export type VIEW_ADMIN_USER = "LIST_USER" | "USER_PRODUCT";
 const DashboardUsers = () => {

@@ -20,6 +20,7 @@ import ChangeUserType from "./ChangeUserType";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
 import UpdateUserDialog from "./UpdateUserDialog";
 import { VIEW_ADMIN_USER } from "containers/PageDashboard/DashboardUsers";
+import ConfirmDialogUser from "components/Dialog/ConfirmDialogUser";
 
 export interface ColumnUserManagementTable {
 	id: "id" | "name" | "status" | "phone" | "phone_whatsapp" | "type" | "count_products" | "actions";
@@ -196,7 +197,7 @@ const UserManagementTable: FC<UserManagementTableProps> = ({ rows, handleChangeV
 				onPageChange={handleChangePage}
 				onRowsPerPageChange={handleChangeRowsPerPage}
 			/>
-			<ConfirmDialog handleClose={() => setOpenDelete(false)} open={openDelete} row={rowSelected} />
+			<ConfirmDialogUser handleClose={() => setOpenDelete(false)} open={openDelete} row={rowSelected} />
 			<UpdateUserDialog handleClose={() => setOpenUpdate(false)} open={openUpdate} row={rowSelected} />
 		</Paper>
 	);

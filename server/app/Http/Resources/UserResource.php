@@ -24,13 +24,17 @@ class UserResource extends JsonResource
             "href"           => "user/" . $this->id,
             "email"          => $this->email,
             "phone"          => $this->phone,
+            "fonction"       => $this->fonction,
+            "influence_zone" => $this->getInfluenceZone($this->influence_zone_id),
             "phone_whatsapp" => $this->phone_whatsapp,
             'avatar'         => $this->avatar != null ? ImageService::getImage($this->avatar) : null,
             "type"           => $this->type,
             "status"         => $this->status,
             "updated_at"     => Carbon::parse($this->updated_at)->format(Utils::DATE_FORMAT()),
             // "products" => $this->getProductsByUser($this->id),
-            "count_products" => $this->countProducts()
+            "count_products" => $this->countProducts(),
+            "rating"         => $this->rating(),
+            "meta"
         ];
     }
 }

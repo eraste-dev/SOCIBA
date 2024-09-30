@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('property_images', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('property_id');
+            $table->bigInteger('property_id')->nullable();
             $table->text('image')->nullable();
             $table->boolean('featured_image')->nullable();
             $table->timestamps();

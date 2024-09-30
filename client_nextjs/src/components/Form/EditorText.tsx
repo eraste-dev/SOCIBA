@@ -5,16 +5,18 @@ import { Editor } from "@tinymce/tinymce-react";
 export interface EditorTextProps {
 	onEditorChange: (content: string) => void;
 	initialValue?: string;
+	minHeight?: number;
 }
 
-const EditorText: FC<EditorTextProps> = ({ onEditorChange, initialValue }) => {
+const EditorText: FC<EditorTextProps> = ({ onEditorChange, initialValue, minHeight }) => {
 	return (
 		<Editor
 			apiKey="yzz1chogxlfmvur9dccog16q7rw63ajhx4po8tcxi6fbzhpg"
 			initialValue={initialValue}
 			init={{
-				height: 500,
+				height: minHeight ?? 500,
 				menubar: true,
+				language: "fr_FR",
 				plugins: [
 					"advlist autolink lists link image charmap print preview anchor",
 					"searchreplace visualblocks code fullscreen",

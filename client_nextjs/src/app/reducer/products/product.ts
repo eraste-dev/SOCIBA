@@ -12,10 +12,16 @@ import { RootState } from "app/reducer/store";
 import { IUser } from "app/reducer/auth/auth";
 import { ILocation } from "../locations/locations";
 import { IPagination } from "./type";
+import { IPRODUCT_AREA_UNIT_KEY } from "containers/PageDashboard/Posts/posts.constantes";
 
 export interface IProductImage {
 	id: number;
 	image: string;
+}
+
+export interface IProductVideo {
+	id: number;
+	src: string;
 }
 
 export interface IProduct {
@@ -29,9 +35,11 @@ export interface IProduct {
 	address: string;
 	client_address: string;
 	price: number;
+	price_second: number | null;
 	deposit_price: number;
 	location_description: string;
 	location: ILocation;
+	unlisted_city?: ILocation;
 	city: string;
 	status: "PUBLISH" | "DRAFT" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED" | null;
 	total_click: number;
@@ -43,6 +51,7 @@ export interface IProduct {
 	facebook_link: null;
 	video_link: string;
 	images: IProductImage[];
+	videos: IProductVideo[];
 	featured_image: string;
 	type: string;
 	created_by: string;
@@ -53,6 +62,30 @@ export interface IProduct {
 	isLiked: boolean;
 	like: number;
 	commentCount: number;
+	periodicity: string;
+	//details
+	bathrooms: number | null;
+	bedrooms: number | null;
+	garages: number | null;
+	kitchens: number | null;
+	rooms: number | null;
+	area: number | null;
+	area_unit: IPRODUCT_AREA_UNIT_KEY;
+	count_advance: number;
+	count_monthly: number;
+	jacuzzi: boolean;
+	bath: boolean;
+	WiFi: boolean;
+	pool: boolean;
+	air_conditioning: boolean;
+	home_type: string;
+	home_type_more?: string;
+	acd: boolean;
+	site_approved: boolean;
+	security: string;
+	area_count: number;
+	purchase_power: string;
+	accessibility: string;
 }
 
 export type SORT_TYPE = "asc" | "desc" | "*";
@@ -79,11 +112,14 @@ export interface IPropertyFilter {
 	created_by?: number;
 	city?: string;
 	location?: number | string;
+	unlisted_location?: string;
+	citySearch?: string;
 	top?: boolean;
 	categories?: number[];
 	locations?: number[];
-	neighborhood?: string;
-	category?: number;
+	searchText?: string;
+	textSearch?: string;
+	category?: number | "*";
 	date?: "all" | "week" | "month" | "year";
 	page?: number;
 }
@@ -122,6 +158,7 @@ const failProductDataAction = (message: string = "") => {
 
 export interface IStorePropertyData {
 	all?: IStoreDataStateItem<IProduct[] | undefined>;
+	search?: IStoreDataStateItem<IProduct[] | undefined>;
 	user?: IStoreDataStateItem<IProduct[] | undefined>;
 	paginate?: IPagination;
 	features?: IStoreDataStateItem<IProduct[] | undefined>;
@@ -162,6 +199,17 @@ export const PropertiesSlice = createSlice({
 	initialState,
 	reducers: {
 		// ALL
+		initFetchAllProperties: (state) => {
+			state.loading = false;
+			state.error = null;
+			state.data = {
+				...state.data,
+				all: createStoreDataStateItem(undefined, false),
+				single: undefined,
+			};
+			state.success = true;
+			state.message = "";
+		},
 		fetchAllPropertiesStart: (state) => {
 			state.loading = true;
 			state.error = null;
@@ -190,6 +238,39 @@ export const PropertiesSlice = createSlice({
 			state.data = {
 				...state.data,
 				all: createStoreDataStateItem(undefined, false, false, action.payload),
+				paginate: undefined,
+			};
+			// state.error = action.payload;
+		},
+
+		searchPropertiesStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.data = {
+				...state.data,
+				search: createStoreDataStateItem(undefined, true),
+				single: undefined,
+			};
+			state.success = false;
+			state.message = "";
+		},
+		searchPropertiesSuccess: (
+			state,
+			action: PayloadAction<{ data: IProduct[]; pagination: IPagination | undefined }>
+		) => {
+			state.loading = false;
+			state.error = null;
+			// paginate: action.payload?.pagination
+			state.data = {
+				...state.data,
+				search: createStoreDataStateItem(action.payload?.data, false, true),
+			};
+		},
+		searchPropertiesFailure: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.data = {
+				...state.data,
+				search: createStoreDataStateItem(undefined, false, false, action.payload),
 				paginate: undefined,
 			};
 			// state.error = action.payload;
@@ -294,6 +375,14 @@ export const PropertiesSlice = createSlice({
 		},
 
 		// set selected to actions by user
+		postProductInit: (state) => {
+			state.loading = false;
+			state.error = null;
+			state.data = undefined;
+			state.success = false;
+			state.errors = undefined;
+			state.message = "";
+		},
 
 		// POST
 		postProductStart: (state) => {
@@ -387,9 +476,15 @@ export const PropertiesSlice = createSlice({
 });
 
 export const {
+	initFetchAllProperties,
 	fetchAllPropertiesStart,
 	fetchAllPropertiesSuccess,
 	fetchAllPropertiesFailure,
+
+	searchPropertiesStart,
+	searchPropertiesSuccess,
+	searchPropertiesFailure,
+
 	fetchSinglePropertiesStart,
 	fetchSinglePropertiesSuccess,
 	fetchSinglePropertiesFailure,
@@ -405,6 +500,7 @@ export const {
 	setFiltersSuccess,
 	resetFiltersSuccess,
 	postProductStart,
+	postProductInit,
 	postProductSuccess,
 	postProductFailure,
 	deleteProductStart,

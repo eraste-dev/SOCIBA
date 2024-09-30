@@ -10,7 +10,17 @@ class PropertyCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'parent_id', 'slug', 'icon', 'description'];
+    protected $fillable = [
+        'name',
+        'parent_id',
+        'slug',
+        'icon',
+        'description',
+        'type',
+        'uuid',
+        'can_delete',
+        'can_upload_image',
+    ];
 
     public function parent()
     {
@@ -25,12 +35,15 @@ class PropertyCategory extends Model
     public function getChildren()
     {
         $children = PropertyCategory::where('parent_id', $this->id)->get();
+        // $cat = PropertyCategory::find($this->id);
+        // $children = Property::whereIn('category_id', [$this->id, $cat->parent_id])->get();
         return PropertyCategoryResource::collection($children);
     }
 
     public static function getByParent()
     {
-        $parents = PropertyCategory::where('parent_id', null)->get();
+        // $parents = PropertyCategory::where('parent_id', null)->get();
+        $parents = PropertyCategory::all();
         return PropertyCategoryResource::collection($parents);
     }
 

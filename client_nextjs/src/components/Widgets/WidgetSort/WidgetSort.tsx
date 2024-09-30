@@ -31,18 +31,44 @@ const WidgetSort: FC<WidgetSortProps> = ({
 	groupFilter = false,
 }) => {
 	const dispatch = useAppDispatch();
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const sortSelected = urlSearchParams.get("price_sort");
 
 	const handleChangeSortPrice = (item: IListBoxSelectFilterWidget) => {
 		updateParamsUrl("price_sort", item.value);
-		dispatch(setFilters({ price_sort: item.value as SORT_TYPE }));
+		// dispatch(setFilters({ price_sort: item.value as SORT_TYPE }));
 		handleFetch && handleFetch();
 	};
 
 	const handleChangeDepositSortPrice = (item: IListBoxSelectFilterWidget) => {
 		updateParamsUrl("deposit_price_sort", item.value);
-		dispatch(setFilters({ deposit_price_sort: item.value as SORT_TYPE }));
+		// dispatch(setFilters({ deposit_price_sort: item.value as SORT_TYPE }));
 		handleFetch && handleFetch();
 	};
+
+	const getPriceSortList = (): IListBoxSelectFilterWidget[] => {
+		let data: IListBoxSelectFilterWidget[] = PRICE_SORT_LIST;
+		console.log("sortSelected", sortSelected);
+
+		data = data.map((item) => {
+			if (item.value === sortSelected) {
+				item.selected = true;
+			}
+			return item;
+		});
+
+		if (!sortSelected || sortSelected === null) {
+			data[0].selected = true;
+		}
+		return data;
+	};
+
+	// useEffect(() => {
+	//   if(sortSelected) {
+	// 	handleChangeSortPrice(PRICE_SORT_LIST[0]);
+	//   }
+	// }, [])
+	
 
 	return (
 		<div
@@ -57,7 +83,7 @@ const WidgetSort: FC<WidgetSortProps> = ({
 				{/* <SelectFilterWidget className="w-full" handleChange={handleChangeSortPrice} lists={PRICE_SORT_LIST} /> */}
 				<ListBoxSelectFilter
 					onChange={handleChangeSortPrice}
-					options={PRICE_SORT_LIST}
+					options={getPriceSortList()}
 					label="Prix"
 					labelID="prix"
 				/>

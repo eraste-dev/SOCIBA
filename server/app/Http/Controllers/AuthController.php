@@ -46,14 +46,16 @@ class AuthController extends Controller
     {
         // Validation des données saisies
         $validator = Validator::make($request->all(), [
-            'name'           => 'required|string|max:255',
-            'last_name'      => 'required|string|max:255',
-            'phone'          => 'required|string|max:255',
-            'phone_whatsapp' => 'required|string|max:255',
-            'email'          => 'required|string|email|max:255|unique:users',
-            'password'       => 'required|string|min:6',
-            'status'         => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
-            'type'           => 'nullable|string|inADMIN,USER,GUEST'
+            'name'              => 'required|string|max:255',
+            'last_name'         => 'required|string|max:255',
+            'phone'             => 'required|string|max:255',
+            'phone_whatsapp'    => 'required|string|max:255',
+            'email'             => 'required|string|email|max:255|unique:users',
+            'password'          => 'required|string|min:6',
+            'status'            => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
+            'type'              => 'nullable|string|inADMIN,USER,GUEST',
+            "fonction"          => 'nullable|string|max:255',
+            "influence_zone_id" => 'nullable|max:255',
         ]);
 
         // Si la validation échoue, renvoyer les erreurs
@@ -63,27 +65,23 @@ class AuthController extends Controller
 
         // Création d'un nouvel utilisateur
         $user = User::create([
-            'name'       => $request->name,
-            'last_name'  => $request->last_name,
-            'phone'      => $request->phone,
-            'email'      => $request->email,
-            'password'   => Hash::make($request->password),
-            'type'       => $request->type ? $request->type : 'USER',
-            'status'     => $request->status ? $request->status : 'ACTIVE',
+            'name'              => $request->name,
+            'last_name'         => $request->last_name,
+            'phone'             => $request->phone,
+            'phone_whatsapp'    => $request->phone_whatsapp,
+            'email'             => $request->email,
+            'password'          => Hash::make($request->password),
+            'type'              => $request->type ? $request->type : 'USER',
+            'status'            => $request->status ? $request->status : 'ACTIVE',
+            'fonction'          => $request->fonction ? $request->fonction : null,
+            'influence_zone_id' => $request->influence_zone_id ? $request->influence_zone_id : null,
+            'email_verified_at' => now(),
         ]);
 
 
         // send notification
         try {
-            NotificationService::notify(
-                $user,
-                'Merci de vous être inscrit',
-                'Merci de faire confiance à SOCIBA, vous pouvez publier votre première annonce',
-                [
-                    'title' => 'Nouvel utilisateur',
-                    'message' => 'Nouvel utilisateur enregisté : ' . $user->name . ' ' . $user->last_name
-                ]
-            );
+            NotificationService::afterRegistration($user);
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -116,37 +114,60 @@ class AuthController extends Controller
     public function updateUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id'             => 'required|integer|exists:users,id',
-            'name'           => 'nullable|string|max:255',
-            'last_name'      => 'nullable|string|max:255',
-            'phone'          => 'nullable|string|max:255',
-            'phone_whatsapp' => 'nullable|string|max:255',
-            'password'       => 'nullable|string',
-            'type'           => 'nullable|string|in:ADMIN,USER,GUEST',
-            'status'         => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
-            'avatar'         => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'id'                => 'required|integer|exists:users,id',
+            'name'              => 'nullable|string|max:255',
+            'last_name'         => 'nullable|string|max:255',
+            'phone'             => 'nullable|string|max:255',
+            'phone_whatsapp'    => 'nullable|string|max:255',
+            'password'          => 'nullable|string',
+            'fonction'          => 'nullable|string',
+            'influence_zone_id' => 'nullable|string',
+            'type'              => 'nullable|string|in:ADMIN,USER,GUEST',
+            'status'            => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
+            'avatar'            => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
-            return ResponseService::error("Erreur de mise à jour", 422, $validator->errors());
+            return ResponseService::error(
+                "Erreur de mise à jour : " . $validator->errors()->first(),
+                422,
+                $validator->errors()
+            );
         }
 
         try {
             $user = User::findOrFail($request->id);
 
             $user->fill($request->only([
-                'name', 'last_name', 'phone', 'phone_whatsapp', 'type', 'status'
+                'name',
+                'last_name',
+                'phone',
+                'phone_whatsapp',
+                'fonction',
+                'influence_zone_id',
+                'type',
+                'status'
             ]));
 
             if ($request->filled('password')) {
                 $user->password = Hash::make($request->password);
             }
 
-            if ($request->hasFile('avatar')) {
-                if ($user->avatar) {
-                    Storage::disk('public')->delete($user->avatar);
+            try {
+                if (isset($request->avatar)) {
+                    $images = [$request->avatar];
+                    foreach ($images as $key => $image) {
+                        $filetomove = $user->id . "__" . time() . "__image" . "__" . $key . "__"  . "." . $image->getClientOriginalExtension();
+
+                        $destinationPath = public_path('assets/images/users/avatars');
+                        $image->move($destinationPath, $filetomove);
+
+                        $upload = "/images/users/avatars" . $filetomove;
+                        $user->avatar = $upload;
+                    }
                 }
-                $user->avatar = $request->file('avatar')->store('avatars', 'public');
+            } catch (\Throwable $th) {
+                return ResponseService::error("Product created successfully", 500,);
             }
 
             $user->save();

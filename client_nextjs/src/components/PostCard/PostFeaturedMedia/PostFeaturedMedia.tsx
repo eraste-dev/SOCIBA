@@ -1,29 +1,35 @@
-import React, { FC, useRef } from "react";
+import { FC, useRef } from "react";
 import NcImage from "components/NcImage/NcImage";
-import { PostDataType } from "data/types";
 import GallerySlider from "./GallerySlider";
 import MediaVideo from "./MediaVideo";
-import PostTypeFeaturedIcon from "components/PostCard/PostTypeFeaturedIcon/PostTypeFeaturedIcon";
-import MediaAudio from "./MediaAudio";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
 import { IProduct } from "app/reducer/products/product";
+import MediaVideoTwo from "./MediaVideoTwo";
 
 export interface PostFeaturedMediaProps {
 	className?: string;
 	post?: IProduct;
 	isHover?: boolean;
+	single?: boolean;
 }
 
 // CHECK FOR VIDEO CARD ON VIEW
 let PREV_RATIO = 0.0;
 
-const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({ className = " w-full h-full ", post, isHover = false }) => {
-	const { featured_image, type, video_link, images, id, title } = post || {};
+const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
+	className = " w-full h-full ",
+	post,
+	isHover = false,
+	single = false,
+}) => {
+	const { featured_image, video_link, images, id } = post || {};
 
 	const videoRef = useRef(null);
 
 	let IS_MOBILE = false;
-	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+	if (
+		/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+	) {
 		IS_MOBILE = true;
 	}
 	const cardIntersectionObserver = useIntersectionObserver(videoRef, {
@@ -34,12 +40,25 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({ className = " w-full h-
 	const IN_VIEW = (cardIntersectionObserver?.intersectionRatio || -1) > PREV_RATIO;
 	PREV_RATIO = cardIntersectionObserver?.intersectionRatio || 0;
 
-	const isPostMedia = () => false; //() => postType === "video" || postType === "audio";
-
 	const renderGallerySlider = () => {
 		if (!images || images.length === 0) return null;
+		// if (images && images.length === 1) {
+		// 	return (
+		// 		<NcImage
+		// 			src={images[0].image}
+		// 			className="absolute inset-0 w-full h-full object-cover"
+		// 		/>
+		// 	);
+		// }
+
 		const arrayImgs: string[] = images.map((item) => item.image);
-		return <GallerySlider galleryImgs={arrayImgs} uniqueClass={`PostFeaturedGallery_${id}`} />;
+		return (
+			<GallerySlider
+				single={single}
+				galleryImgs={arrayImgs}
+				uniqueClass={`PostFeaturedGallery_${id}`}
+			/>
+		);
 	};
 
 	const renderContent = () => {
@@ -70,8 +89,18 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({ className = " w-full h-
 	};
 
 	return (
-		<div className={`nc-PostFeaturedMedia relative ${className}`} data-nc-id="PostFeaturedMedia" ref={videoRef}>
+		<div
+			className={`nc-PostFeaturedMedia relative ${className}`}
+			data-nc-id="PostFeaturedMedia"
+			ref={videoRef}
+		>
 			<NcImage containerClassName="absolute inset-0" src={featured_image} />
+			{/* {post?.type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] ? (
+				<MediaTerrain post={post} />
+			) : (
+				renderContent()
+			)} */}
+
 			{renderContent()}
 		</div>
 	);

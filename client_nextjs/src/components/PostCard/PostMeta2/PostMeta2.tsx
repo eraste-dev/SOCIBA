@@ -12,7 +12,13 @@ export interface PostMeta2Props {
 	avatarRounded?: string;
 }
 
-const PostMeta2: FC<PostMeta2Props> = ({ className = "leading-none", meta, hiddenCategories = false, size = "normal", avatarRounded }) => {
+const PostMeta2: FC<PostMeta2Props> = ({
+	className = "leading-none",
+	meta,
+	hiddenCategories = false,
+	size = "normal",
+	avatarRounded,
+}) => {
 	const { updated_at, author, category, total_click } = meta;
 
 	if (!author) {
@@ -29,7 +35,9 @@ const PostMeta2: FC<PostMeta2Props> = ({ className = "leading-none", meta, hidde
 			<Link to={author.href} className="flex items-center space-x-2">
 				<Avatar
 					radius={avatarRounded}
-					sizeClass={size === "normal" ? "h-6 w-6 text-sm" : "h-10 w-10 sm:h-11 sm:w-11 text-xl"}
+					sizeClass={
+						size === "normal" ? "h-6 w-6 text-sm" : "h-10 w-10 sm:h-11 sm:w-11 text-xl"
+					}
 					imgUrl={author.avatar}
 					userName={author.name}
 				/>
@@ -57,7 +65,11 @@ const PostMeta2: FC<PostMeta2Props> = ({ className = "leading-none", meta, hidde
 				<div className="text-xs mt-[6px]">
 					<span className="text-neutral-700 dark:text-neutral-300">{updated_at}</span>
 					<span className="mx-2 font-semibold">·</span>
-					<span className="text-neutral-700 dark:text-neutral-300">{total_click} vue(s)</span>
+					{false && (
+						<span className="text-neutral-700 dark:text-neutral-300">
+							{total_click} vue(s)
+						</span>
+					)}
 				</div>
 			</div>
 		</div>

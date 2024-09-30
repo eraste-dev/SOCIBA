@@ -43,10 +43,36 @@ export const UserManagementSlice = createSlice({
 			state.loading = false;
 			state.error = action.payload;
 		},
+
+		deleteUserStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.data = { ...state.data, users: [] };
+			state.success = false;
+			state.message = "";
+		},
+		deleteUserSuccess: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = null;
+			state.success = true;
+			state.data = undefined;
+		},
+		deleteUserFailure: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
 	},
 });
 
-export const { initStateUsers, fetchAllUsersStart, fetchAllUsersSuccess, fetchAllUsersFailure } = UserManagementSlice.actions;
+export const {
+	initStateUsers,
+	fetchAllUsersStart,
+	fetchAllUsersSuccess,
+	fetchAllUsersFailure,
+	deleteUserStart,
+	deleteUserSuccess,
+	deleteUserFailure,
+} = UserManagementSlice.actions;
 
 export const UserManagementAction: IStoreAction<IUsersState> = {
 	data: (state: RootState) => state.usersManagement.data,

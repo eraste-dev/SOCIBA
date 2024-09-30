@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\UserMeta;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -14,9 +15,12 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // create default user function
+
+
         User::create([
-            'name'              => 'Admin',
-            'last_name'          => '',
+            'name'              => 'Paĉome',
+            'last_name'          => 'Djé',
             'email'             => 'admin@sociba.com',
             'email_verified_at' => now(),
             'password'          => Hash::make('password'),
@@ -25,6 +29,8 @@ class UserSeeder extends Seeder
             'avatar'            => '/images/users/avatars/logo-sociba-400xauto.png',
             'remember_token'    => null,
             'type'              => 'ADMIN',
+            'fonction'          => 'Agent immobilier',
+            'influence_zone_id' => 1,
             'status' => 'ACTIVE'
         ]);
 
@@ -39,7 +45,9 @@ class UserSeeder extends Seeder
             'password'          => Hash::make('password'),
             'remember_token'    => null,
             'type'              => 'USER',
-            'status' => 'ACTIVE'
+            'fonction'          => 'Démarcheur immobilier',
+            'influence_zone_id' => 1,
+            'status'            => 'ACTIVE'
         ]);
     }
 }

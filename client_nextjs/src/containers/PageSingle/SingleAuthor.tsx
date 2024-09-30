@@ -1,8 +1,36 @@
 import { IUser } from "app/reducer/auth/auth";
 import Avatar from "components/Avatar/Avatar";
-import { PostAuthorType } from "data/types";
-import React, { FC } from "react";
-import { Link } from "react-router-dom";
+import { FC } from "react";
+import SingleAuthorRating from "./SingleAuthorRating";
+
+export const AuthorLine = ({
+	value,
+	label,
+	classNameValue,
+}: {
+	value: string;
+	label: string;
+	classNameValue?: string;
+}) => {
+	const classNameOne = "col-span-3 sm:col-span-2 md:col-span-1"
+	const classNameTwo = "col-span-5 sm:col-span-7 md:col-span-1"
+
+
+	return (
+		<div className="grid grid-cols-8 sm:grid-cols-5 md:grid-cols-8">
+			<div className={classNameOne}>
+				<div className="w-full flex justify-between">
+					<span>{label}</span>
+					<span className="mr-2">:</span>
+				</div>
+			</div>
+
+			<div className={classNameTwo}>
+				<span className={classNameValue ? classNameValue : "font-semibold"}>{value}</span>
+			</div>
+		</div>
+	);
+};
 
 export interface SingleAuthorProps {
 	author: IUser;
@@ -10,23 +38,54 @@ export interface SingleAuthorProps {
 
 const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
 	return (
-		<div className="nc-SingleAuthor flex">
+		<div className="nc-SingleAuthor w-full">
 			{author && author.href && author.name && author.email && (
 				<>
-					<Link to={author.href}>
-						<Avatar imgUrl={author.avatar} userName={author.name} sizeClass="h-12 w-12 text-lg sm:text-xl sm:h-24 sm:w-24 " radius="rounded-xl" />
-					</Link>
-					<div className="flex flex-col ml-3 max-w-lg sm:ml-5">
-						<span className="text-xs text-neutral-400 uppercase tracking-wider">Publié(e) par</span>
-						<h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-200">
-							<Link to={author.href}>{author.name}</Link>
-						</h2>
-						<span className="text-sm text-neutral-500 sm:text-base dark:text-neutral-300">
-							{author.email}
-							<Link className="text-primary-6000 font-medium ml-1" to={author.href}>
-								Voir plus
-							</Link>
-						</span>
+					<div className="grid grid-cols-3 gap-5">
+						<div className="col-span-2">
+							<div className="">
+								{false && (
+									<span className="text-xs text-neutral-400 uppercase tracking-wider">
+										Publié(e) par
+									</span>
+								)}
+
+								<AuthorLine
+									label="Annonceur"
+									value={`${author.name} ${author.last_name}`}
+								/>
+
+								<AuthorLine label="Statut" value={`${author.fonction}`} />
+
+								<AuthorLine
+									label="Zone"
+									value={`${author.influence_zone?.name}`}
+								/>
+
+								<AuthorLine label="Contact" value={`${author.phone}`} />
+							</div>
+						</div>
+
+						<div className="col-span-1">
+							<div className="w-full flex justify-end">
+								<Avatar
+									imgUrl={author.avatar}
+									userName={author.name}
+									sizeClass="h-16 w-16 sm:h-32 sm:w-32"
+									radius="rounded-xl"
+								/>
+								{/* <Link to={author.href}></Link> */}
+							</div>
+
+							<div className="w-full flex justify-end">
+								<div className="mr-4">
+									<SingleAuthorRating
+										defaultValue={author.rating}
+										onChange={() => {}}
+									/>
+								</div>
+							</div>
+						</div>
 					</div>
 				</>
 			)}

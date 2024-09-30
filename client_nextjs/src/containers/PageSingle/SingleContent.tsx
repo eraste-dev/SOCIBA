@@ -25,6 +25,7 @@ const SingleContent: FC<SingleContentProps> = ({ data }) => {
 		if (location.hash !== "#comment") {
 			return;
 		}
+
 		//
 		if (location.hash === "#comment") {
 			setTimeout(() => {
@@ -36,9 +37,12 @@ const SingleContent: FC<SingleContentProps> = ({ data }) => {
 	}, [location]);
 
 	return (
-		<div className="nc-SingleContent space-y-10">
+		<div className="nc-SingleContent space-y-2">
+			<p className="mt-4 text-base text-neutral-900 dark:text-neutral-100 font-semibold">
+				Description
+			</p>
 			{/* ENTRY CONTENT */}
-			<div id="single-entry-content" className="prose prose-sm !max-w-screen-md sm:prose lg:prose-lg mx-auto dark:prose-invert">
+			<div id="single-entry-content" className="mx-0 dark:prose-invert">
 				{/* THIS IS THE DEMP CONTENT */}
 				<SingleContentDemo content={data.content} />
 			</div>
@@ -51,17 +55,19 @@ const SingleContent: FC<SingleContentProps> = ({ data }) => {
 			</div> */}
 
 			{/* AUTHOR */}
-			<div className="max-w-screen-md mx-auto border-b border-t border-neutral-100 dark:border-neutral-700"></div>
-			<div className="max-w-screen-md mx-auto ">
-				<SingleAuthor author={author} />
-			</div>
+			{/* <div className="max-w-screen-md mx-auto border-b border-t border-neutral-100 dark:border-neutral-700"></div> */}
 
 			{/* COMMENT FORM */}
 			{false && (
 				<>
 					<div id="comment" ref={commentRef} className="max-w-screen-md mx-auto pt-5">
-						<h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Responses ({commentCount})</h3>
-						<SingleCommentForm onClickSubmit={(id) => console.log(id)} onClickCancel={(id) => console.log(id)} />
+						<h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200">
+							Responses ({commentCount})
+						</h3>
+						<SingleCommentForm
+							onClickSubmit={(id) => console.log(id)}
+							onClickCancel={(id) => console.log(id)}
+						/>
 					</div>
 
 					{/* COMMENTS LIST */}

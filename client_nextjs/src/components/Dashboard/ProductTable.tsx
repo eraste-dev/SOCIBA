@@ -8,29 +8,24 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { IProduct, IProductImage } from "app/reducer/products/product";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { Link, useHistory } from "react-router-dom";
-import { route } from "routers/route";
-import ProductTableAction from "./ProductTableAction";
+import { useHistory } from "react-router-dom";
 import ConfirmDialog from "components/Dialog/ConfirmDialog";
-import { useDispatch } from "react-redux";
-import { initProductState, postProduct, updateUser } from "app/axios/actions/api.action";
-import ChangeUserType from "./Users/ChangeUserType";
+import { useDispatch, useSelector } from "react-redux";
+import { postProduct } from "app/axios/actions/api.action";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
-import ChangeProductType, { STATUS_LABEL } from "./Products/ChangeProductType";
-import ChangeProductTypeTableHeader from "./Products/ChangeProductTypeTableHeader";
+import { STATUS_LABEL } from "./Products/ChangeProductType";
+import { _f } from "utils/money-format";
+import { convertPayloadToFormData } from "containers/PageDashboard/Posts/posts.constantes";
+import { AuthAction } from "app/reducer/auth/auth";
+import ProductTableRow from "./PostTableRow";
+import { mapIProductToProductRequest } from "containers/PageDashboard/Posts/posts.constantes";
 
 export interface ColumnProductTable {
-	id: "id" | "title" | "excerpt" | "content" | "actions" | "type" | "status";
+	id: "post" | "actions" | "type" | "status";
 	label: string;
 	minWidth?: number;
 	align?: "right";
 	format?: (value: number) => string;
-}
-
-export interface ProductTableProps {
-	// columns: readonly ColumnProductTable[];
-	rows: IProduct[];
 }
 
 // "PUBLISH" | "DRAFT" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED" | null
@@ -43,13 +38,23 @@ export const LIST_STATUS: ListBoxItemType[] = [
 	{ name: "BLOCKED" },
 ];
 
+export type STATUS_TEXT = "PENDING" | "BLOCKED" | "REJECTED" | "DRAFT" | "PUBLISH" | "PENDING";
+
+export interface ProductTableProps {
+	// columns: readonly ColumnProductTable[];
+	rows: IProduct[];
+}
+
 const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const [openDelete, setOpenDelete] = React.useState(false);
 	const [rowSelected, setRowSelected]: any = React.useState(null);
+	const user = useSelector(AuthAction.data)?.user;
 	const [page, setPage] = React.useState(0);
-	const [filterTableHeader, setFilterTableHeader] = React.useState<{ status: STATUS_LABEL | null }>({ status: null });
+	const [filterTableHeader, setFilterTableHeader] = React.useState<{
+		status: STATUS_LABEL | null;
+	}>({ status: null });
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
 	const handleChangePage = (event: unknown, newPage: number) => {
@@ -62,7 +67,10 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 	};
 
 	const handleChangeStatus = (row: IProduct, status: STATUS_LABEL) => {
-		dispatch(postProduct({ id: row.id, status: status }));
+		const formData: FormData = convertPayloadToFormData(
+			mapIProductToProductRequest({ ...row, status: status })
+		);
+		dispatch(postProduct(formData));
 	};
 
 	const handleChangeStatusInTableHeader = (status: STATUS_LABEL) => {
@@ -70,12 +78,8 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 	};
 
 	const columns: ColumnProductTable[] = [
-		// { id: "id", label: "ID", minWidth: 170 },
-		{ id: "title", label: "Title", minWidth: 100 },
-		// { id: "excerpt", label: "Excerpt", minWidth: 100 },
-		// { id: "content", label: "Content", minWidth: 100 },
-		{ id: "type", label: "Type de bien & Catégorie", minWidth: 100 },
-		{ id: "status", label: "Status", minWidth: 100 },
+		{ id: "post", label: "Annonce", minWidth: 100 },
+		{ id: "status", label: "Status", minWidth: 50 },
 		{ id: "actions", label: "Actions" },
 	];
 
@@ -83,8 +87,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 		return null;
 	}
 
-	type STATUS_TEXT = "PENDING" | "BLOCKED" | "REJECTED" | "DRAFT" | "PUBLISH" | "PENDING";
-	const getStatus = (status: STATUS_TEXT) => {
+	const getStatus = (status: STATUS_TEXT): JSX.Element => {
 		const className: string = "text-white p-1 px-3 rounded-lg";
 		switch (status) {
 			case "BLOCKED":
@@ -118,7 +121,11 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 					<TableHead className="bg-gray-500">
 						<TableRow>
 							{columns.map((column) => (
-								<TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+								<TableCell
+									key={column.id}
+									align={column.align}
+									style={{ maxWidth: column.minWidth }}
+								>
 									{column.label}
 									{column.id === "status" && (
 										<>
@@ -135,58 +142,19 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-							const { id, title, description, category, status, images, location, location_description } = row;
-							return (
-								<TableRow hover role="checkbox" tabIndex={-1} key={id}>
-									{/* align={column.align} */}
-									{/* {column.format && typeof value === "number" ? column.format(value) : value} */}
-									<TableCell>
-										<div className="flex justify-start items-center p-2 cursor-pointer  ">
-											<div className="flex items-center post-image-container mr-2" style={{ width: 200, height: 200 }}>
-												<img src={getFeatureImage(images)} alt="image" style={{ width: "auto", height: "100%" }} />
-											</div>
-											<div>
-												<h4 className="text-xl">{title}</h4>
-												<p>{description}</p>
-												<p>{`${location_description}, ${location.name}, ${location.city && location.city.name}`}</p>
-
-												<div className="m2-2">{getStatus(status as STATUS_TEXT)}</div>
-											</div>
-										</div>
-									</TableCell>
-									<TableCell>
-										<div className="flex">
-											{category.parent && (
-												<>
-													<span className="mr- 2">{category.parent?.name}</span>
-													{" , "}
-												</>
-											)}
-											<span className="mr- 2">{category.name}</span>
-										</div>
-									</TableCell>
-
-									<TableCell>
-										<ChangeProductType
-											lists={LIST_STATUS}
-											selectedIndex={LIST_STATUS.findIndex((item) => item.name === row.status)}
-											handleChange={(row: IProduct, status: STATUS_LABEL) => handleChangeStatus(row, status)}
-											row={row}
-										/>
-									</TableCell>
-									<TableCell>
-										<ProductTableAction
-											row={row}
-											handleOpenDelete={() => {
-												setOpenDelete(true);
-												setRowSelected(row);
-											}}
-										/>
-									</TableCell>
-								</TableRow>
-							);
-						})}
+						{rows
+							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+							.map((row) => (
+								<ProductTableRow
+									key={row.id}
+									getFeatureImage={getFeatureImage}
+									getStatus={getStatus}
+									row={row}
+									handleChangeStatus={handleChangeStatus}
+									setOpenDelete={setOpenDelete}
+									setRowSelected={setRowSelected}
+								/>
+							))}
 					</TableBody>
 				</Table>
 			</TableContainer>
@@ -199,7 +167,11 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 				onPageChange={handleChangePage}
 				onRowsPerPageChange={handleChangeRowsPerPage}
 			/>
-			<ConfirmDialog handleClose={() => setOpenDelete(false)} open={openDelete} row={rowSelected} />
+			<ConfirmDialog
+				handleClose={() => setOpenDelete(false)}
+				open={openDelete}
+				row={rowSelected}
+			/>
 		</Paper>
 	);
 };

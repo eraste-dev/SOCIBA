@@ -1,13 +1,10 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import SocialsShare from "components/SocialsShare/SocialsShare";
 import Avatar from "components/Avatar/Avatar";
 import { SinglePageType } from "containers/PageSingle/PageSingle";
 import BookmarkContainer from "containers/BookmarkContainer/BookmarkContainer";
-import PostCardLikeContainer from "containers/PostCardLikeContainer/PostCardLikeContainer";
 import { PageItemType } from "app/reducer/pages/pages";
-import MainNav2Logged from "./MainNav2Logged";
 import MainNav2 from "./MainNav2";
-import MainNav1 from "./MainNav1";
 
 export interface HeaderProps {
 	mainNavStyle?: "style1" | "style2" | "style2Logedin";

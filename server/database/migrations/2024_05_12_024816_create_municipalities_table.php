@@ -22,6 +22,7 @@ return new class extends Migration
             $table->double('lat')->nullable();
             $table->double('long')->nullable();
             $table->string('thumbnail')->nullable();
+            $table->integer('popularity_rate')->nullable();
             $table->timestamps();
         });
     }
