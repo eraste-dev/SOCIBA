@@ -14,25 +14,32 @@ class SliderSeeder extends Seeder
      */
     public function run()
     {
-        // Créez des données de sliders de test
         Slider::create([
             'title' => 'Premier slider',
             'description' => 'Description du premier slider',
             'image' => '/images/sliders/01.png',
+            'place' => 'HOME',
         ]);
 
         Slider::create([
             'title' => 'Deuxième slider',
-            'description' => 'Description du deuxième slider',
+            'description' => '',
             'image' => '/images/sliders/02.png',
+            'place' => 'HOME',
         ]);
 
         Slider::create([
             'title' => 'Deuxième slider',
-            'description' => 'Description du deuxième slider',
+            'description' => '',
             'image' => '/images/sliders/03.png',
+            'place' => 'HOME',
         ]);
 
-        // Ajoutez d'autres sliders si nécessaire
+        Slider::create([
+            'title' => 'Deuxième slider',
+            'description' => '',
+            'image' => '/images/sliders/04.png',
+            'place' => 'MOVING',
+        ]);
     }
 }

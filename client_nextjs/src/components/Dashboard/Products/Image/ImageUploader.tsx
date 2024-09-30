@@ -8,6 +8,7 @@ interface ImageUploaderProps {
 	setImages: (images: string[]) => void;
 	imageFiles: File[];
 	setImageFiles: (imageFiles: File[]) => void;
+	textOne?: string | undefined;
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({
@@ -17,6 +18,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 	setImages,
 	imageFiles,
 	setImageFiles,
+	textOne = "Ajoutez plusieurs photos pour augmenter vos chances d'être contacté",
 }) => {
 	const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -47,11 +49,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 		<div className="p-4 bg-white rounded-lg shadow-md">
 			<label className="block text-sm font-medium text-gray-700">Images</label>
 			<div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-				<p className="text-xs text-gray-500">
-					Ajoutez plusieurs photos pour augmenter vos chances d'être contacté
-				</p>
+				{textOne ? <p className="text-xs text-gray-500">{{ textOne }}</p> : null}
 
-				<div className="flex justify-end" >
+				<div className="flex justify-end">
 					{images.length < maxImages && (
 						<div className="w-24 h-24 border-2 border-dashed border-primary-300 rounded flex items-center justify-center">
 							<label className="flex flex-col items-center cursor-pointer justify-center text-center">

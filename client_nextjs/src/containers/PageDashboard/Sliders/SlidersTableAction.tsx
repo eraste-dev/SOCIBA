@@ -19,7 +19,7 @@ const SlidersTableAction: FC<SlidersTableActionProps> = ({
 	handleOpenUpdate,
 }) => {
 	return (
-		<ul className="flex space-x-1">
+		<ul className="flex space-x-1 list-none">
 			{false && (
 				<li className="mr-2 ">
 					<button onClick={handleOpenUpdate}>

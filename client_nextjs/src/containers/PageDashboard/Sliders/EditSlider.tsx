@@ -6,30 +6,27 @@ import { editSliders, initEditSliders } from "app/axios/actions/api.action";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 import { useHistory } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import { VIEW_ADMIN_POST_CATEGORY } from "containers/PageDashboard/DashboardPostCategories";
 import { Slider, sliderAction } from "app/reducer/sliders/sliders";
 import ImageUploader from "components/Dashboard/Products/Image/ImageUploader";
+import Select from "components/Form/Select/Select";
 
-export interface EditSliderProps {
-	className?: string;
-	selected: Slider | null;
-	categories: Slider[];
-	handleChangeView: (value: VIEW_ADMIN_POST_CATEGORY, item: Slider | null) => void;
-}
-
-const loginSocials: { name: string; href: string; icon: string }[] = [];
+export const sliderTypeOption: { id: string; label: string }[] = [
+	{ id: "HOME", label: "Page d'accueil" },
+	{ id: "PRODUCT", label: "Liste produits" },
+	{ id: "MOVING", label: "Page déménagement" },
+];
 
 export type InputsEditSlider = {
 	id: number | null;
 	image: string;
 };
 
-const EditSlider: FC<EditSliderProps> = ({
-	className = "",
-	selected,
-	categories,
-	handleChangeView,
-}) => {
+export interface EditSliderProps {
+	className?: string;
+	item: Slider | null;
+}
+
+const EditSlider: FC<EditSliderProps> = ({ className = "", item }) => {
 	const dispatch = useDispatch();
 
 	const history = useHistory();
@@ -52,9 +49,9 @@ const EditSlider: FC<EditSliderProps> = ({
 	const onSubmit: SubmitHandler<InputsEditSlider> = (data) => {
 		if (imageFiles && imageFiles.length > 0 && !loading) {
 			const fd: FormData = new FormData();
-			selected?.id && fd.append("id", selected?.id.toString());
-			selected?.description && fd.append("description", selected?.description);
-			selected?.title && fd.append("title", selected?.title);
+			item?.id && fd.append("id", item?.id.toString());
+			item?.description && fd.append("description", item?.description);
+			item?.title && fd.append("title", item?.title);
 			fd.append("image", imageFiles[0]);
 			dispatch(editSliders(fd));
 		} else {
@@ -87,14 +84,20 @@ const EditSlider: FC<EditSliderProps> = ({
 		<div className={`nc-EditSlider shadow-md ${className}`} data-nc-id="EditSlider">
 			<div className="max-w-md mx-auto space-y-6">
 				{/* FORM */}
-				<form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit(onSubmit)}>
+				<form className="grid grid-cols-1 gap-" onSubmit={handleSubmit(onSubmit)}>
 					<label className="block">
-						<span className="text-neutral-800 dark:text-neutral-200">Email</span>
-						{/* <Input
-							className="mt-1"
-							defaultValue={selected?.name}
-							{...register("name", { required: true })}
-						/> */}
+						{/* <span className="text-neutral-800 dark:text-neutral-200">Email</span> */}
+						<Select>
+							{sliderTypeOption.map((option) => (
+								<option key={option.id} value={option.id}>
+									{option.label}
+								</option>
+							))}
+						</Select>
+					</label>
+
+					<label className="block">
+						{/* <span className="text-neutral-800 dark:text-neutral-200">Email</span> */}
 						<ImageUploader
 							initialImages={images}
 							maxImages={1}
@@ -102,15 +105,13 @@ const EditSlider: FC<EditSliderProps> = ({
 							setImages={setImages}
 							imageFiles={imageFiles}
 							setImageFiles={setImageFiles}
+							textOne={""}
 						/>
 					</label>
 
 					{!loading ? (
 						<div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
 							<ButtonPrimary type="submit">Ajouter</ButtonPrimary>
-							{/* <Button type="reset" onClick={() => handleChangeView("LIST", null)}>
-								Annuler
-							</Button> */}
 						</div>
 					) : (
 						<LoadingSpinner />
