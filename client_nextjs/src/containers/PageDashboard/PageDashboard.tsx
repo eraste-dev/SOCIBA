@@ -1,11 +1,13 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router";
+import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { AuthAction } from "app/reducer/auth/auth";
 import { ADMIN_SUB_PAGES, USER_SUB_PAGES } from "components/LayoutPage/layout.type";
 import AdminLayout from "./layout/Admin.layout";
-import SideBarDashbord from "./layout/SideBar.layout";
+import { route } from "routers/route";
+import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 
 export interface PageDashboardProps {
 	className?: string;
@@ -13,10 +15,37 @@ export interface PageDashboardProps {
 
 const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
 	let { path } = useRouteMatch();
+	const history = useHistory();
 	const user = useSelector(AuthAction.data)?.user;
+	const loading = useSelector(AuthAction.loading);
+	const error = useSelector(AuthAction.error);
+	const token = useSelector(AuthAction.data)?.token;
+	const expire = useSelector(AuthAction.data)?.expire;
 
-	if (!user) {
-		return <></>;
+	const checkExpireDate = () => {
+		if (token && expire) {
+			return new Date(expire*1000) > new Date();
+		}
+		return false;
+	};
+
+	useEffect(() => {
+		if (!loading && !error) {
+			console.log(">>> check if user is expire", {
+				user,
+				expire,
+				token,
+				isExpired: checkExpireDate(),
+			});
+
+			if (!checkExpireDate() || !user) {
+				history.push(route("home"));
+			}
+		}
+	}, [loading, error, history, user, checkExpireDate]);
+
+	if (loading) {
+		return <LoadingSpinner></LoadingSpinner>;
 	}
 
 	return (
