@@ -1,21 +1,11 @@
 import { AuthAction, IUser } from "app/reducer/auth/auth";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import ButtonSecondary from "components/Button/ButtonSecondary";
-import Logo from "components/Logo/Logo";
-import MenuBar from "components/MenuBar/MenuBar";
-import Navigation from "components/Navigation/Navigation";
-import DarkModeContainer from "containers/DarkModeContainer/DarkModeContainer";
-import { NAVIGATION_SHORT_DEMO } from "data/navigation";
 import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { t } from "utils/translation/fr";
 import { __ } from "utils/translation/translation";
-import NotifyDropdown from "./NotifyDropdown";
-import AvatarDropdown from "./AvatarDropdown";
 import { route } from "routers/route";
 import { useHistory } from "react-router-dom";
-import LoginDropdown from "./LoginDropdown";
-import SearchHeader from "./SearchHeader";
 import { initProductState, setSingleProduct } from "app/axios/actions/api.action";
 import { EMPTY_PRODUCT } from "app/axios/api.type";
 import MainNav2Desktop from "./MainNav2Desktop";
@@ -57,8 +47,6 @@ const MainNav2: FC<MainNav2Props> = () => {
 		dispatch(setSingleProduct(EMPTY_PRODUCT));
 		history.replace(route("add_post"));
 	};
-
-	const classNameContainer = isDashboard() ? "px-0" : "container";
 
 	return (
 		<div className="main-header-style-one">

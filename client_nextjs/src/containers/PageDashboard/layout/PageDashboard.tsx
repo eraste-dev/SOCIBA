@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { AuthAction } from "app/reducer/auth/auth";
 import { ADMIN_SUB_PAGES, USER_SUB_PAGES } from "components/LayoutPage/layout.type";
-import AdminLayout from "./layout/Admin.layout";
+import AdminLayout from "./Admin.layout";
 import { route } from "routers/route";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 
@@ -59,7 +59,6 @@ const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
 				<div className="h-full w-full">
 					<div className="flex flex-col space-y-8 xl:space-y-0 xl:flex-row">
 						{/* SIDEBAR */}
-
 						<div className="border border-neutral-100 dark:border-neutral-800 md:hidden"></div>
 						<div className="flex-grow">
 							<Switch>

@@ -53,4 +53,19 @@ class SettingsController extends Controller
         $setting->update($request->all());
         return ResponseService::success(new SettingResource($setting));
     }
+
+    public function change_logo(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'logo' => 'nullable|file|mimes:jpeg,png,jpg,gif',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error("Erreur d'enregistrement", 422, $validator->errors());
+        }
+
+        $setting = Settings::where('key', Settings::default_key())->first();
+        $setting->update($request->all());
+        return ResponseService::success(new SettingResource($setting));
+    }
 }
