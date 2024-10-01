@@ -105,7 +105,7 @@ const EditSlider: FC<EditSliderProps> = ({ className = "", item }) => {
 							setImages={setImages}
 							imageFiles={imageFiles}
 							setImageFiles={setImageFiles}
-							textOne={""}
+							textOne={null}
 						/>
 					</label>
 

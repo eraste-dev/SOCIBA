@@ -67,6 +67,7 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 									</option>
 									{securities.map((security) => (
 										<option
+											key={security.value}
 											value={security.value}
 											selected={
 												security.value === getValues("security") ??
@@ -102,6 +103,7 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 									<option>Choix du pouvoir d'achat</option>
 									{purchase_powers.map((i) => (
 										<option
+											key={i.value}
 											value={i.value}
 											selected={
 												i.value === getValues("purchase_power") ??
@@ -137,6 +139,7 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 									<option>Choix de l'accessibilité</option>
 									{accessibilities.map((i) => (
 										<option
+											key={i.value}
 											value={i.value}
 											selected={
 												i.value === getValues("accessibility") ??

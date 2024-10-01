@@ -1410,6 +1410,7 @@ const DashboardSubmitPost = () => {
 													setImages={setImages}
 													imageFiles={imageFiles}
 													setImageFiles={setImageFiles}
+													textOne="Ajoutez plusieurs photos pour augmenter vos chances d'être contacté"
 												/>
 											</div>
 										</div>

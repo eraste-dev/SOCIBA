@@ -17,12 +17,12 @@ import { _f, _suffix } from "utils/money-format";
 import Loading from "components/UI/Loading";
 import ContactSeller from "containers/PageSingle/sellerData";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
-import CategoryPropertyBadgeTwo from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeTwo";
 import Card11Price from "components/Cards/Card11/Card11Price";
 import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeaturedMedia";
 import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
 import { AuthorLine } from "containers/PageSingle/SingleAuthor";
 import MediaVideoTwo from "components/PostCard/PostFeaturedMedia/MediaVideoTwo";
+import PostCardDetailMetaSingle from "components/PostCard/PostPropertyCardMeta/PostCardDetailMetaSingle";
 
 export interface SingleProps {
 	className?: string;
@@ -140,7 +140,6 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 					<div className="grid grid-cols-6 mb-4">
 						<div className="col-span-4">
 							<div className="w-full">
-								{/* <CategoryPropertyBadgeTwo className="text-lg" item={single} /> */}
 								{single && single.home_type ? (
 									<AuthorLine
 										label={"Détail"}
@@ -192,7 +191,8 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 
 					{/* SINGLE MAIN CONTENT */}
 
-					{single && <PostCardDetailMeta meta={single} isSingle={true} />}
+					{/* {single && <PostCardDetailMeta meta={single} isSingle={true} />} */}
+					{single && <PostCardDetailMetaSingle meta={single} isSingle={true} />}
 
 					{single && (
 						<div className="">

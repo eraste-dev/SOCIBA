@@ -5,7 +5,9 @@ interface SingleContentDemoPropos {
 }
 
 const SingleContentDemo: FC<SingleContentDemoPropos> = ({ content }) => {
-	return <div dangerouslySetInnerHTML={{ __html: content }} />;
+	return (
+		<div className="mx-auto prose lg:prose-xl w-full" dangerouslySetInnerHTML={{ __html: content }} />
+	);
 };
 
 export default SingleContentDemo;
