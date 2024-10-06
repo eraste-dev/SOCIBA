@@ -10,14 +10,9 @@ import TableRow from "@mui/material/TableRow";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
-import { VIEW_ADMIN_USER } from "containers/PageDashboard/DashboardUsers";
-import ConfirmDialogUser from "components/Dialog/ConfirmDialogUser";
-import { IPropertyCategory } from "app/reducer/products/propertiy-category";
-import { VIEW_ADMIN_POST_CATEGORY } from "containers/PageDashboard/DashboardPostCategories";
 import { Slider } from "app/reducer/sliders/sliders";
 import NcImage from "components/NcImage/NcImage";
 import SlidersTableAction from "./SlidersTableAction";
-import { VIEW_ADMIN_SLDIERS } from "./DashboardSliders";
 import { deleteSliders } from "app/axios/actions/api.action";
 
 export interface ColumnSliderTable {
@@ -47,7 +42,6 @@ export interface SliderManagementTableProps {
 }
 
 const SliderManagementTable: FC<SliderManagementTableProps> = ({ rows }) => {
-	const history = useHistory();
 	const dispatch = useDispatch();
 	const [openDelete, setOpenDelete] = React.useState(false);
 	const [openUpdate, setOpenUpdate] = React.useState(false);
@@ -107,13 +101,10 @@ const SliderManagementTable: FC<SliderManagementTableProps> = ({ rows }) => {
 												<SlidersTableAction
 													row={row}
 													handleOpenUpdate={() => {
-														// setOpenUpdate(true);
 														setRowSelected(row);
-														// setSelected(row);
 													}}
 													handleOpenDelete={() => {
 														setRowSelected(row);
-														// setOpenDelete(true);
 														dispatch(
 															deleteSliders({ id: parseInt(row.id) })
 														);

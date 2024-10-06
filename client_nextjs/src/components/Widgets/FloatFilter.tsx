@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
-import { FaFilter, FaSortAlphaDown, FaTimesCircle } from "react-icons/fa";
+import { FaSortAlphaDown, FaTimesCircle } from "react-icons/fa";
 import ProductFilterSidebar from "./ProductFilterSidebar";
 import { IPropertyFilter } from "app/reducer/products/product";
 import LoadingLinear from "components/UI/Loading/LoadingLinear";
-import { Filter, Filter1Rounded, Filter2, Sort, TripOriginSharp } from "@mui/icons-material";
+import { Sort } from "@mui/icons-material";
 import MobileFilterDialog from "./MobileFilterDialog";
 import { getParamsCount } from "containers/PageHome/ListProducts";
 

@@ -41,8 +41,9 @@ const SingleContent: FC<SingleContentProps> = ({ data }) => {
 			<p className="mt-4 text-base text-neutral-900 dark:text-neutral-100 font-semibold">
 				Description
 			</p>
+
 			{/* ENTRY CONTENT */}
-			<div id="single-entry-content" className="mx-0 dark:prose-invert">
+			<div id="single-entry-content" className="mx-0 dark:prose-invert w-full">
 				{/* THIS IS THE DEMP CONTENT */}
 				<SingleContentDemo content={data.content} />
 			</div>

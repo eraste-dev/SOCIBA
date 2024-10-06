@@ -148,7 +148,7 @@ const ListProducts: FC<ListProductsProps> = ({
 			{/* flex flex-row xl:flex-row */}
 			<div className="grid sm:grid-cols-12 grid-cols-1">
 				{/* hidden md:block w-1/5 sm:w-1/8 lg:w-1/4 xl:w-1/5 */}
-				<div className="col-span-3 sm:col-span-1 md:col-span-2">
+				<div className="col-span-1 sm:col-span-3">
 					<FloatFilter
 						useStateFilter={useStateFilter}
 						setUseStateFilter={setUseStateFilter}
@@ -162,11 +162,11 @@ const ListProducts: FC<ListProductsProps> = ({
 
 				{/*  xl:pl-14 lg:pl-7 */}
 				{/* w-full sm:w-6/8 md:w-4/5 lg:w-3/4 xl:w-4/5 lg:pl-7 */}
-				<div className="col-span-9 sm:col-span-1 md:col-span-10">
+				<div className="col-span-1 sm:col-span-9 ">
 					{loading && loading ? (
 						<CardSkeleton arrayLength={8} />
 					) : (
-						<div className={`grid gap-6 md:gap-8 ${gridClass}`}>
+						<div className={`grid gap-1 md:gap-2 ${gridClass}`}>
 							{products && products.map((post) => renderCard(post))}
 						</div>
 					)}

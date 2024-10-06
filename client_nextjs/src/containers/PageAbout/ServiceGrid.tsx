@@ -42,7 +42,7 @@ const ServiceGrid = () => {
 					key={index}
 					className="bg-white dark:bg-neutral-900 p-4 rounded-md hover:shadow-lg border border-primary-100 "
 				>
-					<div className="flex justify-center" style={{ height: 300 }}>
+					<div className="flex justify-center" style={{ height: 100 }}>
 						{/* <img
 						src={service.imageUrl}
 						alt={service.title}

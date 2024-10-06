@@ -12,9 +12,8 @@ export const AuthorLine = ({
 	label: string;
 	classNameValue?: string;
 }) => {
-	const classNameOne = "col-span-3 sm:col-span-2 md:col-span-1"
-	const classNameTwo = "col-span-5 sm:col-span-7 md:col-span-1"
-
+	const classNameOne = "col-span-3 sm:col-span-2 md:col-span-1";
+	const classNameTwo = "col-span-5 sm:col-span-7 md:col-span-1";
 
 	return (
 		<div className="grid grid-cols-8 sm:grid-cols-5 md:grid-cols-8">
@@ -57,10 +56,7 @@ const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
 
 								<AuthorLine label="Statut" value={`${author.fonction}`} />
 
-								<AuthorLine
-									label="Zone"
-									value={`${author.influence_zone?.name}`}
-								/>
+								<AuthorLine label="Zone" value={`${author.influence_zone?.name}`} />
 
 								<AuthorLine label="Contact" value={`${author.phone}`} />
 							</div>
@@ -79,10 +75,7 @@ const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
 
 							<div className="w-full flex justify-end">
 								<div className="mr-4">
-									<SingleAuthorRating
-										defaultValue={author.rating}
-										onChange={() => {}}
-									/>
+									<SingleAuthorRating author={author} />
 								</div>
 							</div>
 						</div>

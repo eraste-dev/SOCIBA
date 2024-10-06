@@ -55,16 +55,20 @@ const MainNav2Desktop: FC<MainNav2DesktopProps> = ({ user, isDashboard, handleCl
 				className={`pt-5 pb-2 relative flex flex-col justify-between items-center ${classNameContainer}`}
 			>
 				{/* #1 */}
-				<div className="flex justify-between w-full space-x-2 xl:space-x-4">
+				<div className={` flex justify-${isDashboard() ? "end" : "between"} w-full space-x-2 xl:space-x-4`}>
 					{/* #1'1 */}
-					<div className="flex justify-between flex-grow items-center space-x-3 sm:space-x-8 lg:space-x-10 ">
-						{!isDashboard() && <Logo />}
-					</div>
+					{!isDashboard() ? (
+						<div className="flex justify-between flex-grow items-center space-x-3 sm:space-x-8 lg:space-x-10 flex-1">
+							<Logo />
+						</div>
+					) : null}
 
 					{/* #1'2 */}
-					<div className="hidden sm:block flex-grow">
-						<SearchHeader />
-					</div>
+					{!isDashboard() ? (
+						<div className="hidden sm:block flex-grow justify-center items-center flex-1">
+							<SearchHeader />
+						</div>
+					) : null}
 
 					{/* #1'3 */}
 					<div className="flex items-center justify-end text-neutral-700 dark:text-neutral-100 space-x-1">
@@ -91,9 +95,11 @@ const MainNav2Desktop: FC<MainNav2DesktopProps> = ({ user, isDashboard, handleCl
 				</div>
 
 				{/* #2 */}
-				<div className="flex justify-between w-full">
-					<Navigation navigations={NAVIGATION_SHORT_DEMO} />
-				</div>
+				{!isDashboard() && (
+					<div className="flex justify-between w-full">
+						<Navigation navigations={NAVIGATION_SHORT_DEMO} />
+					</div>
+				)}
 			</div>
 		</div>
 	);

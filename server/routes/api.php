@@ -46,6 +46,7 @@ Route::group(['prefix' => 'v1'], function () {
         // ? USER REQUEST
         Route::group(['prefix' => 'user'], function () {
             Route::post('send-request', [UserRequestController::class, 'store']);
+            Route::post('update-score', [UserController::class, 'update_score'])->name('user.update_score');
         });
     });
 
@@ -64,6 +65,7 @@ Route::group(['prefix' => 'v1'], function () {
         // ? SETTINGS ROUTES
         Route::group(['prefix' => '/settings'], function () {
             Route::post('update', [SettingsController::class, 'store']);
+            Route::post('update-logo', [SettingsController::class, 'change_logo']);
         });
 
         // ? PROTECTED PRODUCTS ROUTES
@@ -84,7 +86,7 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::put('update-profile',   [AuthController::class, 'updateUser'])->name('user.update-profile');
             Route::get('list',             [UserController::class, 'listUsers'])->name('user.list');
-            Route::delete('delete',             [UserController::class, 'delete'])->name('user.delete');
+            Route::delete('delete',        [UserController::class, 'delete'])->name('user.delete');
 
             // NOTIFICATION USER
             Route::get('notifications',                     [NotificationController::class, 'index'])->name('user.notifications');

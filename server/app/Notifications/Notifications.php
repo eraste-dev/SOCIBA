@@ -33,7 +33,7 @@ class Notifications extends Notification
             ->subject($this->title)
             ->line($this->message)
             ->action('View Details', url('/'))
-            ->line('Merci de faire confiance à SOCIBA');
+            ->line('Merci de faire confiance à BAJORA');
     }
 
     public function toArray($notifiable)

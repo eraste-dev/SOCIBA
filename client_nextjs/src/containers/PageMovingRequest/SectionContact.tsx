@@ -96,12 +96,12 @@ const SectionContact: FC<SectionContactProps> = () => {
 				{!isSubmitSuccessful && !success && (
 					<div className="w-2/3">
 						<div className="fe">
-							<p className="text-3xl font-bold text-primary-800 text-center mb-5">
+							<p className="mt-2 text-lg font-bold text-primary-800 text-center mb-2">
 								Formulaire de démenagement
 							</p>
 
-							<p className="text-base font-bold text-primary-800 text-center mb-12">
-								Veuillez remplir le formulaire ci-dessous pour nous contacter
+							<p className="text-base font-bold text-center mb-2">
+								Planifier votre démenagement selon votre disponibilité :
 							</p>
 						</div>
 

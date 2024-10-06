@@ -221,4 +221,19 @@ class Property extends Model
 
         return $payload;
     }
+
+    public static function increase_total_click($property_id)
+    {
+        if (is_null($property_id)) {
+            return;
+        }
+
+        $property = Property::find($property_id);
+
+        if (is_null($property)) {
+            return;
+        }
+
+        $property->update(['total_click' => $property->total_click + 1]);
+    }
 }

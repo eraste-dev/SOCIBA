@@ -30,7 +30,7 @@ const Home: React.FC = () => {
 	return (
 		<div className="nc-PageHomeDemo3 overflow-hidden relative">
 			<Helmet>
-				<title>SOCIBA || Annonces gratuites en Côte d'Ivoire</title>
+				<title>BAJORA || Annonces gratuites en Côte d'Ivoire</title>
 			</Helmet>
 
 			{/* ======== BG GLASS ======== */}

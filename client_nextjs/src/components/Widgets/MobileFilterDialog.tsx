@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import ProductFilterSidebar from "./ProductFilterSidebar";
 import { IPropertyFilter } from "app/reducer/products/product";
-import { CloseRounded, CloseSharp, Timer3SelectRounded, TimeToLeave } from "@mui/icons-material";
+import { CloseSharp } from "@mui/icons-material";
 
 export interface FloatFilterProps {
 	open: boolean;
@@ -28,9 +28,9 @@ const MobileFilterDialog: FC<FloatFilterProps> = ({
 		>
 			{/* onBlur={open ? onClose : undefined} */}
 			<div className="bg-white dark:bg-neutral-800 w-full mx-8 px-4 py-0 rounded-lg shadow-lg">
-				<div className="flex justify-end">
+				<div className="flex justify-end pt-2">
 					<button
-						className="text-3xl text-white bg-red-500 rounded-full px-2 m-5"
+						className="text-base text-red-800 rounded-full"
 						onClick={onClose}
 					>
 						<CloseSharp />
