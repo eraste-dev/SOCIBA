@@ -26,7 +26,7 @@ const MediaVideoTwo: FC<MediaVideoTwoProps> = ({ videoUrl, isHover }) => {
 
 	return (
 		<div className="nc-MediaVideo">
-			<div className="w-full flex justify-center items-center">
+			<div className="object-cover h-52 md:h-64 w-full flex justify-center items-center">
 				<ReactPlayer
 					url={videoUrl}
 					controls={true}
@@ -41,32 +41,36 @@ const MediaVideoTwo: FC<MediaVideoTwoProps> = ({ videoUrl, isHover }) => {
 					onStart={() => setIsPlaying(true)}
 				/>
 			</div>
-			<div
-				className={`${
-					isPlaying ? "opacity-0" : "opacity-100"
-				} relative bg-neutral-900 bg-opacity-30 flex items-center justify-center inset-0`}
-			>
-				<LoadingVideo />
-			</div>
-			<div
-				className={`relative z-20 bottom-2 left-2 h-6 rounded-full bg-black bg-opacity-70 text-white flex items-center justify-center text-sm transform transition-transform nc-will-change-transform ${
-					showDescUnmuted ? "pl-[6px] pr-2" : "w-6 hover:scale-125"
-				}`}
-				onClick={() => setIsMuted(!isMuted)}
-			>
-				{isMuted ? (
-					<>
-						<i className="las la-volume-off"></i>
-						{showDescUnmuted && (
-							<span className="ml-1 inline-block text-[9px]">
-								Click here to unmute
-							</span>
-						)}
-					</>
-				) : (
-					<i className="las la-volume-up"></i>
-				)}
-			</div>
+			{false && (
+				<div
+					className={`${
+						isPlaying ? "opacity-0" : "opacity-100"
+					} relative bg-neutral-900 bg-opacity-30 flex items-center justify-center inset-0`}
+				>
+					<LoadingVideo />
+				</div>
+			)}
+			{false && (
+				<div
+					className={`relative z-20 bottom-2 left-2 h-6 rounded-full bg-black bg-opacity-70 text-white flex items-center justify-center text-sm transform transition-transform nc-will-change-transform ${
+						showDescUnmuted ? "pl-[6px] pr-2" : "w-6 hover:scale-125"
+					}`}
+					onClick={() => setIsMuted(!isMuted)}
+				>
+					{isMuted ? (
+						<>
+							<i className="las la-volume-off"></i>
+							{showDescUnmuted && (
+								<span className="ml-1 inline-block text-[9px]">
+									Click here to unmute
+								</span>
+							)}
+						</>
+					) : (
+						<i className="las la-volume-up"></i>
+					)}
+				</div>
+			)}
 		</div>
 	);
 };

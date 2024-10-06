@@ -19,13 +19,13 @@ class UserSeeder extends Seeder
 
 
         User::create([
-            'name'              => 'Paĉome',
-            'last_name'          => 'Djé',
-            'email'             => 'admin@sociba.com',
+            'name'              => '',
+            'last_name'          => 'BAJORA',
+            'email'             => 'admin@bajora.com',
             'email_verified_at' => now(),
             'password'          => Hash::make('password'),
-            'phone'             => '0789670552',
-            'phone_whatsapp'    => '0789670552',
+            'phone'             => '0759855544',
+            'phone_whatsapp'    => '0759855544',
             'avatar'            => '/images/users/avatars/logo-sociba-400xauto.png',
             'remember_token'    => null,
             'type'              => 'ADMIN',

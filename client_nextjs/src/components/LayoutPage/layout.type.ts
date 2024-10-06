@@ -67,7 +67,7 @@ export const ADMIN_SUB_PAGES: DashboardPage[] = [
 		sPath: "/user-request",
 		component: DashboardUserRequest,
 		emoij: "  ",
-		pageName: "Demandes de démenagement",
+		pageName: "Demandes", //de démenagement
 	},
 	{
 		sPath: "/settings",

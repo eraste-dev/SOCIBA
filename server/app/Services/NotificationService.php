@@ -46,7 +46,7 @@ class NotificationService
         NotificationService::notify(
             $user,
             'Merci de vous être inscrit',
-            'Merci de faire confiance à SOCIBA, vous pouvez publier votre première annonce',
+            'Merci de faire confiance à BAJORA, vous pouvez publier votre première annonce',
             [
                 'title'   => 'Nouvel utilisateur',
                 'message' => 'Nouvel utilisateur enregisté : ' . $user->name . ' ' . $user->last_name

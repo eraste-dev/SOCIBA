@@ -45,7 +45,11 @@ const MainNav2Mobile: FC<MainNav2MobileProps> = ({ isDashboard, user, handleClic
 				className={`pt-2 pb-1 relative flex flex-col justify-between items-center space-x-0 ${classNameContainer}`}
 			>
 				{/* COL 1 */}
-				<div className="w-full flex justify-between flex-grow items-center space-x-3">
+				<div
+					className={`w-full flex justify-${
+						isDashboard() ? "end" : "between"
+					} flex-grow items-center space-x-3`}
+				>
 					{!isDashboard() && (
 						<>
 							<Logo width="auto" height="40px" />
@@ -64,7 +68,7 @@ const MainNav2Mobile: FC<MainNav2MobileProps> = ({ isDashboard, user, handleClic
 
 						<DarkModeContainer />
 
-						<MenuBar />
+						{isDashboard() ? null : <MenuBar isDashboard={isDashboard()} />}
 					</div>
 				</div>
 
@@ -94,9 +98,11 @@ const MainNav2Mobile: FC<MainNav2MobileProps> = ({ isDashboard, user, handleClic
 				</div>
 
 				{/* COL 2 */}
-				<div className="w-full flex justify-center flex-grow items-center">
-					<SearchHeader />
-				</div>
+				{!isDashboard() ? (
+					<div className="w-full flex justify-center flex-grow items-center">
+						<SearchHeader />
+					</div>
+				) : null}
 			</div>
 		</div>
 	);

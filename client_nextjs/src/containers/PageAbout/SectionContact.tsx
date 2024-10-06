@@ -92,7 +92,7 @@ const SectionContact: FC<SectionContactProps> = ({ className = "" }) => {
 
 			{!isSubmitted || !success ? (
 				<div
-					className="grid gap-8 lg:grid-cols-3 mt-0 "
+					className="grid gap-2 grid-cols-3 mt-0 "
 					style={{ marginTop: "10px !important" }}
 				>
 					<div className="col-span-1">

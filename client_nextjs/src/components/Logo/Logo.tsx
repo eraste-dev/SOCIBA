@@ -15,7 +15,7 @@ export interface LogoProps {
 	width?: string;
 }
 
-const Logo: React.FC<LogoProps> = ({ height = "55px", width = "auto" }) => {
+const Logo: React.FC<LogoProps> = ({ height = "65px", width = "auto" }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const filters = useSelector(PropertyAction.data)?.filters;

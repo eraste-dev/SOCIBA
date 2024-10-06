@@ -32,7 +32,7 @@ export interface SectionStatisticProps {
 const SectionStatistic: FC<SectionStatisticProps> = ({ className = "" }) => {
 	return (
 		<div className={`nc-SectionStatistic relative ${className}`}>
-			<Heading desc="SOCIBA vous permet de trouver facilement ce dont vous chercher en quelque click !">SOCIBA</Heading>
+			<Heading desc="BAJORA vous permet de trouver facilement ce dont vous chercher en quelque click !">BAJORA</Heading>
 			<div className="grid md:grid-cols-2 gap-5 lg:grid-cols-3 xl:gap-8">
 				{FOUNDER_DEMO.map((item) => (
 					<div key={item.id} className="p-6 bg-white dark:bg-black/20 rounded-2xl dark:border-neutral-800">

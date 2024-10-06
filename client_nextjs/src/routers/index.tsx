@@ -9,7 +9,7 @@ import PageContact from "containers/PageContact/PageContact";
 import PageLogin from "containers/PageLogin/PageLogin";
 import PageSignUp from "containers/PageSignUp/PageSignUp";
 import PageForgotPass from "containers/PageForgotPass/PageForgotPass";
-import PageDashboard from "containers/PageDashboard/PageDashboard";
+import PageDashboard from "containers/PageDashboard/layout/PageDashboard";
 import HeaderContainer from "containers/HeaderContainer/HeaderContainer";
 import MediaRunningContainer from "containers/MediaRunningContainer/MediaRunningContainer";
 import MediaRunningContainerForSafari from "containers/MediaRunningContainer/MediaRunningContainerForSafari";

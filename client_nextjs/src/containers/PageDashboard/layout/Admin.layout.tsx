@@ -7,7 +7,7 @@ export interface AdminLayoutProps {
 }
 
 export const layoutSetting = {
-	sideBarWidth: "260",
+	sideBarWidth: "200",
 };
 
 const AdminLayout: FC<AdminLayoutProps> = ({ className = "", children }) => {

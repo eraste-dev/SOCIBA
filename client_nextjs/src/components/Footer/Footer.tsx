@@ -62,14 +62,16 @@ const Footer: React.FC = () => {
 			<div className="container py-2">
 				{/* gap-y-10 gap-x-5 sm:gap-x-8 lg:gap-x-10 */}
 				<div className="grid grid-cols-3 gap-y-6 gap-x-8">
-					<div className="col-span-3 md:col-span-2">
-						<div className="col-span-1 mb-2">
-							<Logo />
-						</div>
+					<div className="col-span-1">
+						<div className="grid grid-cols-3">
+							<div className="col-span-3">
+								<Logo />
+							</div>
 
-						<div className="col-span-1 ">
-							<div className="grid grid-cols-2">
-								<SocialsList1 className="flex items-center space-x-3 lg:space-x-0 lg:flex-col lg:space-y-1 lg:items-start" />
+							<div className="col-span-3">
+								<div className=" ">
+									<SocialsList1 className="flex items-center space-x-3 lg:space-x-0 lg:flex-col lg:space-y-1 lg:items-start" />
+								</div>
 							</div>
 						</div>
 					</div>

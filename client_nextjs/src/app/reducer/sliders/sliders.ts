@@ -11,6 +11,7 @@ export interface Slider {
 	id: string;
 	image: string;
 	title: string;
+	place: "HOME" | "PRODUCT" | "MOVING";
 	description: string;
 }
 

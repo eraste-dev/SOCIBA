@@ -14,25 +14,50 @@ class SliderSeeder extends Seeder
      */
     public function run()
     {
-        // Créez des données de sliders de test
         Slider::create([
             'title' => 'Premier slider',
             'description' => 'Description du premier slider',
-            'image' => '/images/sliders/01.png',
+            // 'image' => '/images/sliders/01.png',
+            'image' => '/images/sliders/s1.jpeg',
+            'place' => 'HOME',
         ]);
 
         Slider::create([
             'title' => 'Deuxième slider',
-            'description' => 'Description du deuxième slider',
-            'image' => '/images/sliders/02.png',
+            'description' => '',
+            // 'image' => '/images/sliders/02.png',
+            'image' => '/images/sliders/s2.jpeg',
+            'place' => 'HOME',
         ]);
 
         Slider::create([
             'title' => 'Deuxième slider',
-            'description' => 'Description du deuxième slider',
-            'image' => '/images/sliders/03.png',
+            'description' => '',
+            // 'image' => '/images/sliders/03.png',
+            'image' => '/images/sliders/s3.jpeg',
+            'place' => 'HOME',
         ]);
 
-        // Ajoutez d'autres sliders si nécessaire
+        Slider::create([
+            'title' => 'Deuxième - alt slider',
+            'description' => '',
+            // 'image' => '/images/sliders/03.png',
+            'image' => '/images/sliders/s4.jpeg',
+            'place' => 'HOME',
+        ]);
+        Slider::create([
+            'title' => 'Deuxième - alt slider',
+            'description' => '',
+            // 'image' => '/images/sliders/03.png',
+            'image' => '/images/sliders/s5.jpeg',
+            'place' => 'HOME',
+        ]);
+
+        Slider::create([
+            'title' => 'Deuxième slider',
+            'description' => '',
+            'image' => '/images/sliders/04.png',
+            'place' => 'MOVING',
+        ]);
     }
 }

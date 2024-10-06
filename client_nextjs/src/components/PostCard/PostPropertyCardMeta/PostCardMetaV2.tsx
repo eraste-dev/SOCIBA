@@ -32,17 +32,14 @@ const PostPropertyCardMetaV2: FC<PostPropertyCardMetaV2Props> = ({
 				data-nc-id="PostCardMetaV2"
 			>
 				{/* sm:grid-cols-1 */}
-				<div className="grid md:grid-cols-8 grid-cols-3 ">
+				{/* *grid md:grid-cols-8 grid-cols-3 */}
+				<div className=" flex ">
 					<div className="md:col-span-2 sm:col-span-1 ">
 						<div className="sm:flex sm:justify-start flex justify-center">
 							{!hiddenAvatar && (
 								<Avatar
 									radius="rounded-full"
-									sizeClass={
-										size === "normal"
-											? "h-9 w-9 text-base"
-											: "h-10 w-10 text-xl"
-									}
+									// sizeClass={"h-10 w-10 aspect-w-1 aspect-h-1"}
 									imgUrl={author.avatar}
 									userName={author.name}
 								/>

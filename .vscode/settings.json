@@ -18,5 +18,14 @@
         "titleBar.inactiveBackground": "#482d5c99",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#482d5c"
+    "peacock.color": "#482d5c",
+    "sqltools.useNodeRuntime": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:others}/server/database/database.sqlite",
+            "name": "BAJORA"
+        }
+    ]
 }

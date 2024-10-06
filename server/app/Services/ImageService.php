@@ -10,7 +10,7 @@ class ImageService
     {
         // Vérifie si le fichier image existe
         if (Env('APP_ENV') == 'production') {
-            return 'https://api.eebtp-ci.com/assets' . $imageName;
+            return 'https://api.bajorah.com/assets' . $imageName;
         }
 
         $imagePath = public_path('assets' . $imageName);

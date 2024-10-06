@@ -132,7 +132,7 @@ export interface IPropertyType {
 export interface IStorePropertyDataAction {
 	success?: boolean;
 	message?: string;
-	Loading?: boolean;
+	loading?: boolean;
 	error?: string | null;
 	selected?: IProduct | null;
 }
@@ -140,7 +140,7 @@ export interface IStorePropertyDataAction {
 const successProductDataAction = (selected: IProduct, message: string = "") => {
 	const output: IStorePropertyDataAction = {
 		success: true,
-		Loading: false,
+		loading: false,
 		error: null,
 		selected: selected,
 		message: message,
@@ -150,7 +150,7 @@ const successProductDataAction = (selected: IProduct, message: string = "") => {
 const failProductDataAction = (message: string = "") => {
 	const output: IStorePropertyDataAction = {
 		success: false,
-		Loading: false,
+		loading: false,
 		error: null,
 		message: message,
 	};
@@ -166,6 +166,7 @@ export interface IStorePropertyData {
 	single?: IProduct | undefined;
 	filters?: IPropertyFilter;
 	types?: IPropertyType[];
+	updateScore?: IStorePropertyDataAction;
 	actions?: {
 		delete?: IStorePropertyDataAction;
 		store?: IStorePropertyDataAction;
@@ -427,6 +428,40 @@ export const PropertiesSlice = createSlice({
 			state.error = action.payload;
 		},
 
+		// UPDATE USER SCORE
+		updateUserScoreStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.data = {
+				...state.data,
+				updateScore: { ...state.data?.updateScore, loading: true },
+			}; // single: undefined
+			state.success = false;
+			state.message = "";
+		},
+		updateUserScoreSuccess: (state, action: PayloadAction<{ score: number }>) => {
+			let single = state.data?.single;
+			if (single && single.author && single.author.rating !== undefined) {
+				single.author.rating = action.payload.score;
+			}
+			state.loading = false;
+			state.error = null;
+			state.data = {
+				...state.data,
+				single: single,
+				updateScore: {
+					error: null,
+					loading: false,
+					message: "",
+					success: true,
+				},
+			};
+		},
+		updateUserScoreFailure: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
+
 		// FIlTERS
 		setFiltersSuccess: (state, action: PayloadAction<IPropertyFilter>) => {
 			state.data = { ...state.data, filters: { ...state.data?.filters, ...action.payload } };
@@ -510,6 +545,10 @@ export const {
 	fetchUserProductStart,
 	fetchUserProductSuccess,
 	fetchUserProductFailure,
+
+	updateUserScoreStart,
+	updateUserScoreSuccess,
+	updateUserScoreFailure,
 } = PropertiesSlice.actions;
 
 export const PropertyAction: IStoreAction<IStorePropertyData> = {

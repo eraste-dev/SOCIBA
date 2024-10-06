@@ -38,6 +38,13 @@ export interface IServerEndpoint {
 			search: (query: IGetSearchPropertiesParams) => IAxiosRequestConfig;
 			post: (product: FormData | ProductRequest) => IAxiosRequestConfig;
 			delete: (id: number) => IAxiosRequestConfig;
+			updateUserScore: ({
+				user_id,
+				score,
+			}: {
+				user_id: number;
+				score: number;
+			}) => IAxiosRequestConfig;
 		};
 		auth: {
 			login: (data: { email: string; password: string }) => IAxiosRequestConfig;
@@ -116,6 +123,11 @@ export const serverEndpoints: IServerEndpoint = {
 				method: "DELETE",
 				url: `${v100}/admin/products`,
 				data: { id },
+			}),
+			updateUserScore: ({ user_id, score }: { user_id: number; score: number }) => ({
+				method: "POST",
+				url: `${v100}/user/update-score`,
+				data: { user_id, score },
 			}),
 		},
 		auth: {

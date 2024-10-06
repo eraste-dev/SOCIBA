@@ -28,7 +28,7 @@ const ListProduct: React.FC = () => {
 	return (
 		<div className="nc-PageHomeDemo3 overflow-hidden relative">
 			<Helmet>
-				<title>SOCIBA || Annonces</title>
+				<title>BAJORA || Annonces</title>
 			</Helmet>
 
 			{/* ======== BG GLASS ======== */}
