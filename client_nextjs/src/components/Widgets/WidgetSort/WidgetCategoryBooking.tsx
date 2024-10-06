@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 
 export const SIMPLIFY_LIST_CAT: IListBoxSelectFilterWidget[] = [
-	{ name: "Tous(*)", value: "*" },
+	{ name: "Selectionner", value: "*" },
 	{
 		name: "Residence",
 		value: "residence",
@@ -108,7 +108,7 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 				}))) ??
 			SIMPLIFY_LIST_CAT;
 
-		data.unshift({ name: "Tous(*)", value: "*" });
+		data.unshift({ name: "Selectionner", value: "*" });
 		return data;
 	}
 

@@ -34,7 +34,7 @@ const WidgetTypeWithSelect: FC<WidgetTypeWithSelectProps> = ({
 	function LOCATION_OPTION(): IListBoxSelectFilterWidget[] {
 		let data: IListBoxSelectFilterWidget[] = [
 			{
-				name: "Tous(*)",
+				name: "Selectionner",
 				value: "*",
 				selected: !type || type === "*" ? true : false,
 			},
