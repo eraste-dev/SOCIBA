@@ -2,7 +2,7 @@ import React from "react";
 import ButtonClose from "components/ButtonClose/ButtonClose";
 import Logo from "components/Logo/Logo";
 import { Disclosure } from "@headlessui/react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { NavItemType } from "./NavigationItem";
 import DarkModeContainer from "containers/DarkModeContainer/DarkModeContainer";
 import { NAVIGATION_DEMO, NAVIGATION_SHORT_DEMO } from "data/navigation";
@@ -20,9 +20,11 @@ export interface NavMobileProps {
 
 const NavMobile: React.FC<NavMobileProps> = ({ data = NAVIGATION_SHORT_DEMO, onClickClose }) => {
 	const dispatch = useAppDispatch();
-	const onClickItem = () => {
+	const history = useHistory();
+	const goTo = (href: string) => {
 		dispatch(initUserRequest());
 		dispatch(inittPropertyList());
+		history.push(href);
 	};
 
 	const _renderMenuChild = (item: NavItemType) => {
@@ -33,7 +35,10 @@ const NavMobile: React.FC<NavMobileProps> = ({ data = NAVIGATION_SHORT_DEMO, onC
 						{i.targetBlank ? (
 							<a
 								// href={i.href}
-								onClick={onClickClose}
+								onClick={() => {
+									goTo(i.href);
+									onClickClose && onClickClose();
+								}}
 								target="_blank"
 								rel="noreferrer"
 								className="flex px-4 py-2.5 text-neutral-900 dark:text-neutral-200 text-sm font-medium rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 mt-[2px]"
@@ -68,14 +73,15 @@ const NavMobile: React.FC<NavMobileProps> = ({ data = NAVIGATION_SHORT_DEMO, onC
 								)}
 							</a>
 						) : (
-							<NavLink
-								exact
-								strict
-								to={{
-									pathname: i.href || undefined,
-								}}
+							<a
+								// exact
+								// strict
+								// to={{
+								// 	pathname: i.href || undefined,
+								// }}
+								// activeClassName="text-secondary"
+								onClick={() => goTo(i.href)}
 								className="flex px-4 py-2.5 text-neutral-900 dark:text-neutral-200 text-sm font-medium rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 mt-[2px]"
-								activeClassName="text-secondary"
 							>
 								<span
 									className={!i.children ? "block w-full" : ""}
@@ -99,7 +105,7 @@ const NavMobile: React.FC<NavMobileProps> = ({ data = NAVIGATION_SHORT_DEMO, onC
 										</Disclosure.Button>
 									</span>
 								)}
-							</NavLink>
+							</a>
 						)}
 						{i.children && <Disclosure.Panel>{_renderMenuChild(i)}</Disclosure.Panel>}
 					</Disclosure>
@@ -111,14 +117,15 @@ const NavMobile: React.FC<NavMobileProps> = ({ data = NAVIGATION_SHORT_DEMO, onC
 	const _renderItem = (item: NavItemType, index: number) => {
 		return (
 			<Disclosure key={item.id} as="li" className="text-neutral-900 dark:text-white">
-				<NavLink
-					exact
-					strict
+				<a
+					// exact
+					// strict
+					// to={{
+					// 	pathname: item.href || undefined,
+					// }}
+					// activeClassName="text-secondary"
+					onClick={() => goTo(item.href)}
 					className="flex w-full items-center py-2.5 px-4 font-medium uppercase tracking-wide text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg"
-					to={{
-						pathname: item.href || undefined,
-					}}
-					activeClassName="text-secondary"
 				>
 					<span className={!item.children ? "block w-full" : ""} onClick={onClickClose}>
 						{item.name}
@@ -134,7 +141,7 @@ const NavMobile: React.FC<NavMobileProps> = ({ data = NAVIGATION_SHORT_DEMO, onC
 							</Disclosure.Button>
 						</span>
 					)}
-				</NavLink>
+				</a>
 				{item.children && <Disclosure.Panel>{_renderMenuChild(item)}</Disclosure.Panel>}
 			</Disclosure>
 		);

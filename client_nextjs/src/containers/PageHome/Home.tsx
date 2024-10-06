@@ -30,20 +30,20 @@ const Home: React.FC = () => {
 	return (
 		<div className="nc-PageHomeDemo3 overflow-hidden relative">
 			<Helmet>
-				<title>BAJORA || Annonces gratuites en Côte d'Ivoire</title>
+				<title>BAJORAH || Annonces gratuites en Côte d'Ivoire</title>
 			</Helmet>
 
 			{/* ======== BG GLASS ======== */}
 			<BgGlassmorphism />
 			{/* ======== ALL SECTIONS ======== */}
 
+			{/* === SECTION HERO === */}
+			{/* className="pt-10 pb-16 md:py-16 lg:py-28" */}
+			<SectionHeroSlider className="pb-0" />
+			{/* === SECTION HERO === */}
+
 			{/* ======= START CONTAINER ============= */}
 			<div className="container relative">
-				{/* === SECTION HERO === */}
-				{/* className="pt-10 pb-16 md:py-16 lg:py-28" */}
-				<SectionHeroSlider className="pb-0" />
-				{/* === SECTION HERO === */}
-
 				{/* === SECTION CITIES === */}
 				{/* <SectionGridCitiesBox
 					headingCenter={false}

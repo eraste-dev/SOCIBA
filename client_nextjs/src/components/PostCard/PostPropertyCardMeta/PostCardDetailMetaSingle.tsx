@@ -66,6 +66,9 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 	};
 
 	const LocationMeta = () => {
+		const get_purchase_power_label = (label: string) => {
+			return purchase_powers.find((item) => item.value === meta.purchase_power)?.label ?? "";
+		};
 		if (type === PRODUCT_TYPE[TYPE_LOCATION_KEY]) {
 			return (
 				<div>
@@ -92,36 +95,29 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 
 						{bathrooms ? (
 							<div className={locationItemClassName}>
-								<div className="flex">
+								<div className="flex items-center">
 									<FaBath
 										size={iconSizeSingle}
 										fontSize={getFontSize()}
 										style={{ width: iconSizeSingle }}
 										className="mb-1 mr-1"
 									/>
-									{isSingle && false ? (
-										<span className={"text-sm"}>
-											Salle de bain : {bathrooms}{" "}
-										</span>
-									) : null}
-									{bathrooms}
+									{/* Salle de bain :  */}
+									{`${bathrooms}`}
 								</div>
 							</div>
 						) : null}
 
 						{kitchens ? (
-							<Tooltip title="Cuisine">
-								<div className={locationItemClassName}>
-									{/* <Kitchen className="mb-1 mr-1" /> */}
-									<Fastfood
-										fontSize={getFontSize()}
-										style={{ width: iconSizeSingle }}
-										className="mb-1 mr-1"
-									/>
-									{/* {isSingle && <span className="mr-1">Cuisine : </span>} */}
-									{kitchens}
-								</div>
-							</Tooltip>
+							<div className={locationItemClassName}>
+								<Fastfood
+									fontSize={getFontSize()}
+									style={{ width: iconSizeSingle }}
+									className="mb-1 mr-1"
+								/>
+								{/* Cuisine :  */}
+								{`${kitchens}`}
+							</div>
 						) : null}
 					</div>
 
@@ -180,9 +176,7 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 									<ItemCheckTwo
 										name={
 											"Pouvoir d'achat : " +
-												purchase_powers.find(
-													(item) => item.value === meta.purchase_power
-												)?.label ?? ""
+											get_purchase_power_label(meta.purchase_power)
 										}
 										condition={true}
 										className={ItemCheckedClassName}

@@ -73,7 +73,7 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 			<form className="relative w-full mt-3" onSubmit={handleSubmit(onSubmit)}>
 				<Input
 					type="search"
-					placeholder="Chercher sur BAJORA"
+					placeholder="Chercher sur BAJORAH"
 					className="pr-10 w-full"
 					sizeClass="h-[42px] pl-4 py-3"
 					{...(register("searchText"), { required: true })}

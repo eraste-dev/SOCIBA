@@ -19,7 +19,7 @@ export default function LoginDropdown() {
 	return (
 		<div className="LoginDropdown">
 			<Popover className="relative">
-				{({ open }) => (
+				{({ open, close }) => (
 					<>
 						<Popover.Button
 							className={`inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
@@ -45,6 +45,7 @@ export default function LoginDropdown() {
 										{/* ------------------ 1 --------------------- */}
 										<Link
 											to={route("login")}
+											onClick={() => close()}
 											className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
 										>
 											<div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
@@ -81,6 +82,7 @@ export default function LoginDropdown() {
 										{/* ------------------ 2 --------------------- */}
 										<Link
 											to={route("signup")}
+											onClick={() => close()}
 											className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
 										>
 											<div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
@@ -125,7 +127,7 @@ export default function LoginDropdown() {
 											</div>
 											<div className="ml-4">
 												<p className="text-sm font-medium ">
-													{"Déposer une annonce"}
+													{"Publier une annonce"}
 												</p>
 											</div>
 										</Link>

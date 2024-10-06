@@ -21,7 +21,7 @@ export interface Card11Props {
 const Card11: FC<Card11Props> = ({
 	className = "h-full",
 	post,
-	ratio = "aspect-w-4 aspect-h-3",
+	ratio = "aspect-w-1 aspect-h-1",
 }) => {
 	const { title, href, category, updated_at, location, location_description } = post;
 	const [isHover, setIsHover] = useState(false);

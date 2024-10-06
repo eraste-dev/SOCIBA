@@ -9,6 +9,7 @@ import { sliderAction } from "app/reducer/sliders/sliders";
 import { fetchSliders } from "app/axios/actions/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import NcImage from "components/NcImage/NcImage";
+import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 
 export interface SectionHeroSliderProps {
 	className?: string;
@@ -51,8 +52,7 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "" }) => {
 		<div className={`nc-SectionHero relative ${className}`} data-nc-id="SectionHero">
 			{loading ? (
 				<div className="text-center">
-					{/* <Spinner animation="border" variant="primary" />  */}
-					Loading...
+					<LoadingSpinner />
 				</div>
 			) : (
 				<Slider {...settings}>
@@ -62,15 +62,17 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "" }) => {
 							.map((slide, index) => (
 								<div
 									key={index}
-									style={{ height: "500px", background: "rgba(0, 0, 0, 0.5)" }}
+									style={{ background: "rgba(0, 0, 0, 1)," }}
 								>
-									<img
+									{/* <img
 										className="w-full"
 										src={slide.image}
 										alt={slide.title}
-										height={"100%"}
-										width={"auto"}
-									/>
+										width={"100%"}
+										height={"auto"}
+									/> */}
+
+									<NcImage src={slide.image} height={"100%"} />
 								</div>
 							))}
 				</Slider>

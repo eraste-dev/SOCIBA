@@ -16,10 +16,10 @@ class HomeController extends Controller
     {
         return ResponseService::success(
             [
-                "message" => "Welcome to the Sociba Server API",
+                "message" => "Welcome to the BAJORAH Server API",
                 'version' => 'v1.0.0',
                 'status' => 'ok',
-                'author' => 'Sociba',
+                'author' => 'BAJORAH',
                 'license' => 'MIT',
                 'time' => date('Y-m-d H:i:s'),
                 'env' => config('app.env'),
@@ -27,7 +27,7 @@ class HomeController extends Controller
                 'key' => config('app.key'),
                 'name' => config('app.name'),
             ],
-            "Welcome to the Sociba Server API"
+            "Welcome to the BAJORAH Server API"
         );
     }
 }

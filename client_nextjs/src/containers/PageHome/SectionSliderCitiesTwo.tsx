@@ -8,6 +8,7 @@ import { fetchLocation } from "app/axios/actions/api.others.action";
 import CardCities1 from "components/Cards/CardCities1/CardCities1";
 import { buildLocationItem } from "utils/utils";
 import Slider from "react-slick";
+import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 
 export type breackPoint = "sm" | "md" | "lg";
 
@@ -153,8 +154,7 @@ const SectionSliderCitiesTwo: FC<SectionSliderCitiesTwoProps> = ({
 		<div className={`nc-SectionHero relative ${className}`} data-nc-id="SectionHero">
 			{loading ? (
 				<div className="text-center">
-					{/* <Spinner animation="border" variant="primary" />  */}
-					Loading...
+					<LoadingSpinner />
 				</div>
 			) : (
 				<>

@@ -30,7 +30,7 @@ export const NavAuthAction: FC<{ user?: IUser }> = ({ user }) => {
 
 			<ButtonPrimary href={"/signup"} sizeClass="py-2 sm:px-1">
 				{/* <FaUserShield className="hidden sm:block md:hidden" /> */}
-				<span className={spanClassName}>Déposer une annonce</span>
+				<span className={spanClassName}>Publier une annonce</span>
 			</ButtonPrimary>
 		</div>
 	);

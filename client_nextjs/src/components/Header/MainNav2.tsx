@@ -23,7 +23,7 @@ export const NavAuthAction: FC<{ user?: IUser }> = ({ user }) => {
 			</ButtonSecondary>
 
 			<ButtonPrimary href={"/signup"} sizeClass="px-4 py-2 sm:px-5">
-				Déposer une annonce
+				Publier une annonce
 			</ButtonPrimary>
 		</>
 	);
