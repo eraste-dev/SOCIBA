@@ -57,20 +57,22 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "" }) => {
 			) : (
 				<Slider {...settings}>
 					{data &&
-						data.map((slide, index) => (
-							<div
-								key={index}
-								style={{ height: "500px", background: "rgba(0, 0, 0, 0.5)" }}
-							>
-								<img
-									className="w-full"
-									src={slide.image}
-									alt={slide.title}
-									height={"100%"}
-									width={"auto"}
-								/>
-							</div>
-						))}
+						data
+							.filter((s) => s.place === "HOME")
+							.map((slide, index) => (
+								<div
+									key={index}
+									style={{ height: "500px", background: "rgba(0, 0, 0, 0.5)" }}
+								>
+									<img
+										className="w-full"
+										src={slide.image}
+										alt={slide.title}
+										height={"100%"}
+										width={"auto"}
+									/>
+								</div>
+							))}
 				</Slider>
 			)}
 		</div>

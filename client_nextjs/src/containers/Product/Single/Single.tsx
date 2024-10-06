@@ -118,7 +118,13 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 							onMouseLeave={() => setIsHover(false)}
 						>
 							{single ? (
-								<PostFeaturedMedia post={single} isHover={isHover} single={true} />
+								<div className="h-64 sm:h-auto">
+									<PostFeaturedMedia
+										post={single}
+										isHover={isHover}
+										single={true}
+									/>
+								</div>
 							) : null}
 						</div>
 					</div>

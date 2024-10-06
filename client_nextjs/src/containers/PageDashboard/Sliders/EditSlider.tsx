@@ -19,6 +19,7 @@ export const sliderTypeOption: { id: string; label: string }[] = [
 export type InputsEditSlider = {
 	id: number | null;
 	image: string;
+	place: string;
 };
 
 export interface EditSliderProps {
@@ -52,6 +53,7 @@ const EditSlider: FC<EditSliderProps> = ({ className = "", item }) => {
 			item?.id && fd.append("id", item?.id.toString());
 			item?.description && fd.append("description", item?.description);
 			item?.title && fd.append("title", item?.title);
+			item?.place && fd.append("place", item?.place);
 			fd.append("image", imageFiles[0]);
 			dispatch(editSliders(fd));
 		} else {
@@ -87,7 +89,7 @@ const EditSlider: FC<EditSliderProps> = ({ className = "", item }) => {
 				<form className="grid grid-cols-1 gap-" onSubmit={handleSubmit(onSubmit)}>
 					<label className="block">
 						{/* <span className="text-neutral-800 dark:text-neutral-200">Email</span> */}
-						<Select>
+						<Select {...register("place")}>
 							{sliderTypeOption.map((option) => (
 								<option key={option.id} value={option.id}>
 									{option.label}

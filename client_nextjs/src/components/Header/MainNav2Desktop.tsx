@@ -58,14 +58,14 @@ const MainNav2Desktop: FC<MainNav2DesktopProps> = ({ user, isDashboard, handleCl
 				<div className={` flex justify-${isDashboard() ? "end" : "between"} w-full space-x-2 xl:space-x-4`}>
 					{/* #1'1 */}
 					{!isDashboard() ? (
-						<div className="flex justify-between flex-grow items-center space-x-3 sm:space-x-8 lg:space-x-10 ">
+						<div className="flex justify-between flex-grow items-center space-x-3 sm:space-x-8 lg:space-x-10 flex-1">
 							<Logo />
 						</div>
 					) : null}
 
 					{/* #1'2 */}
 					{!isDashboard() ? (
-						<div className="hidden sm:block flex-grow">
+						<div className="hidden sm:block flex-grow justify-center items-center flex-1">
 							<SearchHeader />
 						</div>
 					) : null}

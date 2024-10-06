@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyImages;
-use App\Models\PropertyVideo;
 use App\Services\NotificationService;
 use App\Services\ProudctPaginationService;
 use App\Services\PropertyService;

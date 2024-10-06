@@ -101,12 +101,14 @@ class PropertyService
         if ($payload['id']) {
             $query->where('id', $payload['id']);
             $single = $query->firstOrFail();
+            Property::increase_total_click($single->id);
             return new PropertyResource($single);
         }
 
         if ($payload['slug']) {
             $query->where('slug', $payload['slug']);
             $single = $query->firstOrFail();
+            Property::increase_total_click($single->id);
             return new PropertyResource($single);
         }
 

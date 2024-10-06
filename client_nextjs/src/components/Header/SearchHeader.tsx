@@ -70,10 +70,10 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 
 	return (
 		<>
-			<form className="relative w-full my-1" onSubmit={handleSubmit(onSubmit)}>
+			<form className="relative w-full mt-3" onSubmit={handleSubmit(onSubmit)}>
 				<Input
 					type="search"
-					placeholder="Chercher sur SOCIBA"
+					placeholder="Chercher sur BAJORA"
 					className="pr-10 w-full"
 					sizeClass="h-[42px] pl-4 py-3"
 					{...(register("searchText"), { required: true })}

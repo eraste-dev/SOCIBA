@@ -31,7 +31,7 @@ const ItemCheckTwo: React.FC<ItemCheckTwoProps> = ({
 	return (
 		<div className={`flex overflow-hidden text-sm sm:text-base text-ellipsis ${className}`}>
 			<div className="flex justify-center items-center mr-2">{condition && Icon}</div>
-			<span>{name}</span>
+			<span className="text-sm" >{name}</span>
 		</div>
 	);
 };

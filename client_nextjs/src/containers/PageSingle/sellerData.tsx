@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 // Données statiques du vendeur
 const sellerData = {
-	name: "SOCIBA",
+	name: "BAJORA",
 	phone: "+1 (123) 456-7890",
 	whatsapp: "+1 (123) 456-7890",
 };
