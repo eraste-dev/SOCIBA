@@ -57,7 +57,7 @@ class SettingsController extends Controller
     public function change_logo(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'logo' => 'nullable|file|mimes:jpeg,png,jpg,gif',
+            'logo' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,webp',
         ]);
 
         if ($validator->fails()) {
@@ -65,7 +65,23 @@ class SettingsController extends Controller
         }
 
         $setting = Settings::where('key', Settings::default_key())->first();
-        $setting->update($request->all());
+        try {
+            if ($setting != null && isset($request->logo)) {
+                $image = $request->logo;
+                $dir = "assets/settings/images";
+                $filetomove = $setting->id . "__" . time() . "__image" . "__"  . "." . $image->getClientOriginalExtension();
+
+                $destinationPath = public_path($dir);
+                $image->move($destinationPath, $filetomove);
+
+                $setting->update([
+                    'logo' => $dir . "/" . $filetomove
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return ResponseService::error("Product created successfully", 500,);
+        }
+
         return ResponseService::success(new SettingResource($setting));
     }
 }

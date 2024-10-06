@@ -109,9 +109,14 @@ class User extends Authenticatable implements JWTSubject
         }
     }
 
-    public function rating(): int
+    public function rating(): float
     {
-        return 5.0; // TODO : fix
+        if (UserScore::where('user_id', $this->id)->count() == 0) {
+            return 0;
+        } else {
+            $score = round(UserScore::where('user_id', $this->id)->avg('score'), 2);
+        }
+        return $score;
     }
 
     /**
