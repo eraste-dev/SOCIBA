@@ -18,7 +18,7 @@ class ProudctPaginationService
 
         if ($path === null) {
             // Define path for pagination
-            $path = request()->path() ?: (env('APP_ENV') === 'production' ? 'https://dev.eebtp-ci.com/' : 'http://localhost:3000/');
+            $path = request()->path() ?: (env('APP_ENV') === '' ? 'https://bajorah.com/' : 'http://localhost:3000/');
         }
 
         $pagination = new LengthAwarePaginator(
