@@ -9,6 +9,8 @@ import CardCities1 from "components/Cards/CardCities1/CardCities1";
 import { buildLocationItem } from "utils/utils";
 import Slider from "react-slick";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
+import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
 
 export type breackPoint = "sm" | "md" | "lg";
 
@@ -123,6 +125,8 @@ const SectionSliderCitiesTwo: FC<SectionSliderCitiesTwoProps> = ({
 		},
 	];
 
+	const handleDragStart = (e: any) => e.preventDefault();
+
 	const renderHeading = () => {
 		if (sliderStype === "style1") {
 			return (
@@ -158,11 +162,32 @@ const SectionSliderCitiesTwo: FC<SectionSliderCitiesTwoProps> = ({
 				</div>
 			) : (
 				<>
-					<Heading desc="Ou souhaitez-vous trouver votre logement ?" className="mb-1">
+					<Heading desc="Ou souhaitez-vous trouver votre logement ?" className="mb-2">
 						{" "}
 					</Heading>
 
-					<Slider {...settings} responsive={responsive}>
+					<AliceCarousel
+						mouseTracking
+						items={get_cities().map((item, index) => (
+							<CardComponentName
+								index={index < 3 ? `#${index + 1}` : undefined}
+								key={item.id}
+								city={item}
+							/>
+						))}
+						responsive={{
+							0: { items: 4 },
+							1024: { items: 8 },
+						}}
+						controlsStrategy="alternate"
+						autoPlay
+						autoPlayInterval={3000}
+						disableButtonsControls={true}
+						disableDotsControls={true}
+						infinite
+					/>
+
+					{/* <Slider {...settings} responsive={responsive}>
 						{get_cities().map((item, index) => (
 							<div
 								key={index}
@@ -177,7 +202,7 @@ const SectionSliderCitiesTwo: FC<SectionSliderCitiesTwoProps> = ({
 								/>
 							</div>
 						))}
-					</Slider>
+					</Slider> */}
 				</>
 			)}
 		</div>

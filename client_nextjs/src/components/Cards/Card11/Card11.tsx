@@ -61,10 +61,7 @@ const Card11: FC<Card11Props> = ({
 
 				{/* grid grid-cols-3 */}
 				<div className="flex justify-between">
-					<div
-						className="grid col-span-1 text-ellipsis truncate "
-					
-					>
+					<div className="grid col-span-1 text-ellipsis truncate ">
 						<CategoryPropertyBadgeTwo className="text-xs md:text-md" item={post} />
 
 						<p className="relative text-xs text-primary-800 dark:text-neutral-100 ">
@@ -104,7 +101,7 @@ const Card11: FC<Card11Props> = ({
 					</div>
 				)}
 
-				{post && <PostCardDetailMeta meta={post} />}
+				<div style={{ height: 60 }}>{post && <PostCardDetailMeta meta={post} />}</div>
 
 				{post && post.author && post.author.href && <PostPropertyCardMetaV2 meta={post} />}
 			</div>

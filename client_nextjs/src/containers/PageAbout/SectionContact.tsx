@@ -95,7 +95,7 @@ const SectionContact: FC<SectionContactProps> = ({ className = "" }) => {
 					className="grid gap-2 grid-cols-3 mt-0 "
 					style={{ marginTop: "10px !important" }}
 				>
-					<div className="col-span-1">
+					<div className="col-span-3 sm:col-span-1">
 						{INFO_CONTACT.map((item, index) => (
 							<div key={index}>
 								<h3 className="uppercase font-semibold text-sm dark:text-neutral-200 tracking-wider">
@@ -116,7 +116,7 @@ const SectionContact: FC<SectionContactProps> = ({ className = "" }) => {
 
 					{/* <div className="border border-neutral-100 dark:border-neutral-700 lg:hidden"></div> */}
 
-					<div className="col-span-2	" >
+					<div className="col-span-3 sm:col-span-2	" >
 						<h3 className="font-semibold text-xl dark:text-neutral-200 tracking-wider mb-5">
 							Nous contacter
 						</h3>

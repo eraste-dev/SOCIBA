@@ -17,15 +17,43 @@
     line-height: 1.2rem !important;
 }
 
-.text-lg {
-    font-size: 0.75rem !important;
-    line-height: 1.25rem !important;
+// .text-lg {
+//     font-size: 0.75rem !important;
+//     line-height: 1.25rem !important;
+// }
+
+// .text-xl {
+//     font-size: 0.75rem !important;
+//     line-height: 1.25rem !important;
+// }
+
+
+@media screen and (max-width: 768px) {
+
+    .text-sm,
+    .text-base,
+    .text-xs {
+        font-size: 0.65rem !important;
+        line-height: .85rem !important;
+    }
 }
 
-.text-xl {
-    font-size: 0.75rem !important;
-    line-height: 1.25rem !important;
+// DESKTOP
+@media screen and (min-width: 1024px) {
+
+    .text-sm,
+    .text-base,
+    .text-xs {
+        font-size: 0.75rem !important;
+        line-height: .75rem !important;
+    }
+
+    .text-lg {
+        font-size: 1rem !important;
+        line-height: 1.5rem !important;
+    }
 }
+
 
 
 // CUSTOM

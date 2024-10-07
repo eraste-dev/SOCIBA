@@ -130,16 +130,16 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 									onMouseLeave={() => setIsHover(false)}
 								>
 									<div style={{ height: "65vh" }}>
-										<PostFeaturedMedia
-											post={single}
-											isHover={isHover}
-											single={true}
-										/>
-										{/* <PostFeaturedMediaTwo
+										{/* <PostFeaturedMedia
 											post={single}
 											isHover={isHover}
 											single={true}
 										/> */}
+										<PostFeaturedMediaTwo
+											post={single}
+											isHover={isHover}
+											single={true}
+										/>
 									</div>
 								</div>
 							</div>
@@ -230,7 +230,7 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 							)}
 
 							<ContactSeller
-								productLink={single?.href}
+								productLink={`bajorah.com/${single?.href}`}
 								phone={
 									single && single.author && single!.author!.phone
 										? single!.author!.phone

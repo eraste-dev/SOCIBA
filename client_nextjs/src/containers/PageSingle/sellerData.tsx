@@ -27,7 +27,11 @@ const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, s
 	};
 
 	const handleWhatsApp = () => {
-		const _wh = whatsapp ? whatsapp : sellerData.whatsapp;
+		// https://wa.me/447838522154
+		let _wh = whatsapp ? whatsapp : sellerData.whatsapp;
+		if (!_wh.includes("225")) {
+			_wh = "225" + _wh;
+		}
 		return `https://wa.me/${_wh}?text=Votre%20annonce%20publi%C3%A9e%20m'int%C3%A9resse.%20Cliquez%20sur%20l'URL%20ci-dessous%3A%0A%0A${productLink}`;
 	};
 

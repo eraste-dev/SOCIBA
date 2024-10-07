@@ -57,7 +57,7 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className, isSingle = f
 							{item.periodicity &&
 							GET_PERIODICITY().find((p) => p.id === item.periodicity) ? (
 								<span>
-									{` / ` +
+									{`/` +
 										GET_PERIODICITY().find((p) => p.id === item.periodicity)
 											?.name}
 								</span>
@@ -83,7 +83,7 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className, isSingle = f
 							item.area_unit &&
 							GET_AREA_UNIT().find((u) => u.id === item.area_unit) && (
 								<>
-									{` / ` +
+									{`/` +
 										GET_AREA_UNIT().find((u) => u.id === item.area_unit)?.name}
 								</>
 							)}

@@ -69,6 +69,8 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 		const get_purchase_power_label = (label: string) => {
 			return purchase_powers.find((item) => item.value === meta.purchase_power)?.label ?? "";
 		};
+
+		
 		if (type === PRODUCT_TYPE[TYPE_LOCATION_KEY]) {
 			return (
 				<div>
@@ -280,7 +282,7 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 									style={{ width: iconSizeSingle }}
 									className="mb-1 mr-2"
 								/>
-								{`${area} / ${getAreaUnit()}`}
+								{`${area}/${getAreaUnit()}`}
 							</div>
 						</div>
 					) : null}

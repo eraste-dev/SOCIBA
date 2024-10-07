@@ -33,7 +33,7 @@ const Avatar: FC<AvatarProps> = ({
     >
       {url && (
         <img
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-contain"
           src={url}
           alt={name}
         />

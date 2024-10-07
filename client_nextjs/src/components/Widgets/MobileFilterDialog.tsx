@@ -29,10 +29,7 @@ const MobileFilterDialog: FC<FloatFilterProps> = ({
 			{/* onBlur={open ? onClose : undefined} */}
 			<div className="bg-white dark:bg-neutral-800 w-full mx-8 px-4 py-0 rounded-lg shadow-lg">
 				<div className="flex justify-end pt-2">
-					<button
-						className="text-base text-red-800 rounded-full"
-						onClick={onClose}
-					>
+					<button className="text-base text-red-800 rounded-full" onClick={onClose}>
 						<CloseSharp />
 					</button>
 				</div>
@@ -44,6 +41,7 @@ const MobileFilterDialog: FC<FloatFilterProps> = ({
 							useStateFilter={useStateFilter as IPropertyFilter}
 							setUseStateFilter={setUseStateFilter}
 							linear={linear}
+							onClose={onClose}
 						/>
 					)}
 				</div>

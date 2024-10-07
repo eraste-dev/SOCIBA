@@ -53,7 +53,7 @@ const Home: React.FC = () => {
 
 				{true ? (
 					<SectionSliderCitiesTwo
-						className="mb-2"
+						className="mb-3"
 						categoryCardType="card1"
 						sliderStype="style1"
 						heading=" "
@@ -61,7 +61,7 @@ const Home: React.FC = () => {
 					/>
 				) : (
 					<SectionSliderCities
-						className="mb-2"
+						className="mb-3"
 						categoryCardType="card1"
 						sliderStype="style1"
 						heading=" "
@@ -81,9 +81,9 @@ const Home: React.FC = () => {
 
 				{/* === SECTION TOP POSTS === */}
 				<SectionSliderPosts
-					className="pt-1 pb-1 my-0"
+					className="pt-1 pb-3 my-0"
 					postCardName="card11"
-					heading="Publier recement"
+					heading="Les plus récentes"
 					subHeading=""
 					uniqueSliderClass="slider-top"
 				/>

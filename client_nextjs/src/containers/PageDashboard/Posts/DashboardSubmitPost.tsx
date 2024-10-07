@@ -1289,7 +1289,7 @@ const DashboardSubmitPost = () => {
 																	<Label className="">
 																		Unité
 																		<span>
-																			{" (m² / LOT)".toUpperCase()}{" "}
+																			{" (m²/LOT)".toUpperCase()}{" "}
 																		</span>
 																	</Label>
 																	<Select

@@ -8,6 +8,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { sliderAction } from "app/reducer/sliders/sliders";
 import { fetchSliders } from "app/axios/actions/api.action";
 import { useAppDispatch, useAppSelector } from "app/hooks";
+import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
 import NcImage from "components/NcImage/NcImage";
 import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 
@@ -21,6 +23,8 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "" }) => {
 	const data = useAppSelector(sliderAction.data);
 	const loading = useSelector(sliderAction.loading);
 	const error = useSelector(sliderAction.error);
+
+	const handleDragStart = (e: any) => e.preventDefault();
 
 	useEffect(() => {
 		if (!data && !loading && !error) {
@@ -55,27 +59,36 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "" }) => {
 					<LoadingSpinner />
 				</div>
 			) : (
-				<Slider {...settings}>
-					{data &&
-						data
-							.filter((s) => s.place === "HOME")
-							.map((slide, index) => (
-								<div
-									key={index}
-									style={{ background: "rgba(0, 0, 0, 1)," }}
-								>
-									{/* <img
-										className="w-full"
-										src={slide.image}
-										alt={slide.title}
-										width={"100%"}
-										height={"auto"}
-									/> */}
-
-									<NcImage src={slide.image} height={"100%"} />
-								</div>
-							))}
-				</Slider>
+				<>
+					<AliceCarousel
+						mouseTracking
+						items={
+							data
+								? data
+										.filter((s) => s.place === "HOME")
+										.map((item, index) => (
+											<img
+												key={index}
+												src={item.image}
+												alt={item.title}
+												className="w-auto sm:w-full h-28 sm:h-auto " // Ajustement de la hauteur
+												onDragStart={handleDragStart}
+											/>
+										))
+								: []
+						}
+						responsive={{
+							0: { items: 1 },
+							1024: { items: 1 },
+						}}
+						controlsStrategy="alternate"
+						autoPlay
+						autoPlayInterval={3000}
+						disableButtonsControls={true}
+						disableDotsControls={true}
+						infinite
+					/>
+				</>
 			)}
 		</div>
 	);

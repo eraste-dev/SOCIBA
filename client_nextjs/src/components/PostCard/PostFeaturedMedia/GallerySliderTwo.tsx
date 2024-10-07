@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/swiper-bundle.css";
+import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
 // import { Navigation, Pagination } from "swiper";
 
 export interface GallerySliderTwoProps {
@@ -14,29 +14,32 @@ const GallerySliderTwo: FC<GallerySliderTwoProps> = ({
 	uniqueClass,
 	single = false,
 }) => {
+	const handleDragStart = (e: any) => e.preventDefault();
+
 	return (
 		<div className="max-w-2xl mx-auto">
-			{/* Navigation, Pagination */}
-			<Swiper
-				modules={[]}
-				// navigation
-				pagination={{ clickable: true }}
-				loop={true}
-				autoplay={true}
-				className="my-8"
-			>
-				{galleryImgs.map((item, index) => (
-					<SwiperSlide key={index}>
-						<div className="w-full h-full flex justify-center items-center">
-							<img
-								src={item}
-								alt={`Product Image ${index + 1}`}
-								className="w-auto h-100%"
-							/>
-						</div>
-					</SwiperSlide>
+			<AliceCarousel
+				mouseTracking
+				items={galleryImgs.map((image, index) => (
+					<img
+						key={index}
+						src={image}
+						alt={`Product Image ${index + 1}`}
+						onDragStart={handleDragStart}
+						className="w-full h-auto"
+					/>
 				))}
-			</Swiper>
+				responsive={{
+					0: { items: 1 },
+					1024: { items: 1 },
+				}}
+				controlsStrategy="alternate"
+				autoPlay
+				autoPlayInterval={3000}
+				disableButtonsControls={false}
+				disableDotsControls={false}
+				infinite
+			/>
 		</div>
 	);
 };

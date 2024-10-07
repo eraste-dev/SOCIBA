@@ -22,6 +22,7 @@ export interface ProductFilterSidebarProps {
 	setUseStateFilter: any;
 	groupFilter?: boolean;
 	linear?: boolean;
+	onClose?: () => void;
 }
 
 const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
@@ -30,6 +31,7 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 	useStateFilter,
 	groupFilter = false,
 	linear = false,
+	onClose,
 }) => {
 	const [showFilter, setShowFilter] = useState(true);
 	const urlSearchParams = new URLSearchParams(window.location.search);
@@ -154,7 +156,10 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 							<div className={!linear ? "mr-2 mb-2" : "col-span-1"}>
 								<ButtonPrimary
 									className="w-full"
-									onClick={fetchAll}
+									onClick={() => {
+										fetchAll && fetchAll();
+										onClose && onClose();
+									}}
 									sizeClass="px-4 py-2 sm:px-5"
 								>
 									Rechercher

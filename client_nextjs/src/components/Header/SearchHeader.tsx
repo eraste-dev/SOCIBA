@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Input from "components/Form/Input/Input";
 import { useDispatch, useSelector } from "react-redux";
 import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/product";
@@ -20,7 +20,7 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 	const [useStateFilter, setUseStateFilter] = useState<IPropertyFilter>({});
 	const [searchText, setSearchText] = useState<string>("");
 	const [open, setopen] = useState(false);
-	const { register, handleSubmit, watch, setValue, getValues } = useForm<{
+	const { register, handleSubmit, watch, setValue, getValues, reset } = useForm<{
 		searchText: string;
 	}>();
 
@@ -55,6 +55,7 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 		setopen(false);
 		// const params: IGetSearchPropertiesParams = { searchText };
 		fetchAll();
+		reset();
 	};
 
 	const handleClickItem = (item: IProduct) => {
@@ -67,6 +68,12 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 		const url = route("annonce") + "/" + item.category.slug + "?id=" + item.id;
 		return history.push(url);
 	};
+
+	// useEffect(() => {
+	// 	return () => {
+	// 		reset({ searchText: "" });
+	// 	};
+	// }, [history.location.pathname]);
 
 	return (
 		<>
@@ -86,7 +93,10 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 						open && setopen(false);
 					}}
 				/>
-				<span className="absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500 cursor-pointer">
+				<button
+					type="submit"
+					className="absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500 cursor-pointer"
+				>
 					<svg
 						className="h-5 w-5"
 						viewBox="0 0 24 24"
@@ -108,7 +118,7 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 							strokeLinejoin="round"
 						/>
 					</svg>
-				</span>
+				</button>
 				<input type="submit" hidden value="" />
 			</form>
 

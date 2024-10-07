@@ -67,6 +67,10 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 	};
 
 	const LocationMeta = () => {
+		const get_purchase_power_label = (label: string) => {
+			return purchase_powers.find((item) => item.value === meta.purchase_power)?.label ?? "";
+		};
+
 		if (type === PRODUCT_TYPE[TYPE_LOCATION_KEY]) {
 			return (
 				<div>
@@ -175,9 +179,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 									<ItemChecked
 										name={
 											"Pouvoir d'achat : " +
-												purchase_powers.find(
-													(item) => item.value === meta.purchase_power
-												)?.label ?? ""
+											get_purchase_power_label(meta.purchase_power)
 										}
 										condition={true}
 										className={ItemCheckedClassName}
@@ -281,7 +283,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 								style={{ width: iconSize }}
 								className="mb-1 mr-2"
 							/>
-							{`${area} / ${getAreaUnit()}`}
+							{`${area}/${getAreaUnit()}`}
 						</div>
 					) : null}
 

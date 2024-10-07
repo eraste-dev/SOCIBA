@@ -38,27 +38,32 @@ export interface SingleAuthorProps {
 const SingleAuthor: FC<SingleAuthorProps> = ({ author }) => {
 	return (
 		<div className="nc-SingleAuthor w-full">
-			{author && author.href && author.name && author.email && (
+			{author && (
 				<>
 					<div className="grid grid-cols-3 gap-5">
 						<div className="col-span-2">
-							<div className="">
-								{false && (
-									<span className="text-xs text-neutral-400 uppercase tracking-wider">
-										Publié(e) par
-									</span>
-								)}
+							<div className="flex items-center h-full">
+								<div className="">
+									{false && (
+										<span className="text-xs text-neutral-400 uppercase tracking-wider">
+											Publié(e) par
+										</span>
+									)}
 
-								<AuthorLine
-									label="Annonceur"
-									value={`${author.name} ${author.last_name}`}
-								/>
+									<AuthorLine
+										label="Annonceur"
+										value={`${author.name} ${author.last_name}`}
+									/>
 
-								<AuthorLine label="Statut" value={`${author.fonction}`} />
+									<AuthorLine label="Statut" value={`${author.fonction}`} />
 
-								<AuthorLine label="Zone" value={`${author.influence_zone?.name}`} />
+									<AuthorLine
+										label="Zone"
+										value={`${author.influence_zone?.name}`}
+									/>
 
-								<AuthorLine label="Contact" value={`${author.phone}`} />
+									<AuthorLine label="Contact" value={`${author.phone}`} />
+								</div>
 							</div>
 						</div>
 
