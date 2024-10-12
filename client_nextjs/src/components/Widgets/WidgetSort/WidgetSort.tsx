@@ -8,13 +8,13 @@ import { updateParamsUrl } from "utils/utils";
 import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "./ListBoxSelectFilter";
 
 export const PRICE_SORT_LIST: IListBoxSelectFilterWidget[] = [
-	{ name: "Selectionner", value: "*" },
+	{ name: "Choisir", value: "*" },
 	{ name: "Prix croissant", value: "asc" },
 	{ name: "Prix décroissant", value: "desc" },
 ];
 
 export const DEPOSIT_PRICE_SORT_LIST: IListBoxSelectFilterWidget[] = [
-	{ name: "Selectionner", value: "*" },
+	{ name: "Choisir", value: "*" },
 	{ name: "Loyer croissant", value: "asc" },
 	{ name: "Loyer décroissant", value: "desc" },
 ];
