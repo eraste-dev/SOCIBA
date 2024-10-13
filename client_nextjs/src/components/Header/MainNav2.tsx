@@ -10,6 +10,8 @@ import { initProductState, setSingleProduct } from "app/axios/actions/api.action
 import { EMPTY_PRODUCT } from "app/axios/api.type";
 import MainNav2Desktop from "./MainNav2Desktop";
 import MainNav2Mobile from "./MainNav2Mobile";
+import { useAppSelector } from "app/hooks";
+import { selectSidebarState } from "app/reducer/darkmode/darkmode";
 
 export const NavAuthAction: FC<{ user?: IUser }> = ({ user }) => {
 	if (user) {
@@ -36,6 +38,7 @@ const MainNav2: FC<MainNav2Props> = () => {
 	const user = useSelector(AuthAction.data)?.user;
 	const history = useHistory();
 	// const user = useSelector(AuthAction.data)?.token;
+	const isSidebarOpen = useAppSelector(selectSidebarState);
 
 	const isDashboard = () => {
 		return history.location.pathname.includes("dashboard");

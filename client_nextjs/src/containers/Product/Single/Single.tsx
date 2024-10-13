@@ -18,8 +18,6 @@ import Loading from "components/UI/Loading";
 import ContactSeller from "containers/PageSingle/sellerData";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import Card11Price from "components/Cards/Card11/Card11Price";
-import PostFeaturedMedia from "components/PostCard/PostFeaturedMedia/PostFeaturedMedia";
-import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
 import { AuthorLine } from "containers/PageSingle/SingleAuthor";
 import MediaVideoTwo from "components/PostCard/PostFeaturedMedia/MediaVideoTwo";
 import PostCardDetailMetaSingle from "components/PostCard/PostPropertyCardMeta/PostCardDetailMetaSingle";

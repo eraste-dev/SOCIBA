@@ -36,7 +36,7 @@ const SideBarDashbord: FC<SideBarDashbordProps> = ({ className = "", children })
 	};
 
 	return (
-		<div className="h-full fixed -left-full sm:left-0 top-0 bottom-0  ">
+		<div className="h-full fixed sm:left-0 top-0 bottom-0  ">
 			<div className="flex flex-col justify-between h-full py-4 px-2">
 				<div className="overflow-y-scroll">
 					<ul className=" list-none flex flex-col text-sm text-neutral-6000 dark:text-neutral-400">

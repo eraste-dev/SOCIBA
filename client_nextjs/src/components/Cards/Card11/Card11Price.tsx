@@ -14,7 +14,7 @@ import React from "react";
 import { _f } from "utils/money-format";
 
 export const smText = "text-xs md:text-sm";
-export const smTextOnIsSingle = "text-base";
+export const smTextOnIsSingle = "text-lg";
 
 interface Card11PriceProps {
 	item: IProduct;

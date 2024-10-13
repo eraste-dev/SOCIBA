@@ -22,6 +22,7 @@ const DashboardEditProfile = () => {
 	const snackbar = useSnackbar();
 
 	const user = useSelector(AuthAction.data)?.user;
+	const expire = useSelector(AuthAction.data)?.expire;
 	const error = useSelector(AuthAction.error);
 	const errorArray = useSelector(AuthAction.errors);
 	const success = useSelector(AuthAction.success);
@@ -40,6 +41,8 @@ const DashboardEditProfile = () => {
 	} = useForm<UpdateUserRequest>();
 
 	const onSubmit: SubmitHandler<UpdateUserRequest> = (data) => {
+		console.log(">>> payload", user);
+
 		if (!user) return;
 		const payload: UpdateUserRequest = { ...data, id: user.id };
 		const formData = new FormData();
@@ -87,8 +90,8 @@ const DashboardEditProfile = () => {
 	}, [loading, error, snackbar]);
 
 	return (
-		<div className=" ">
-			<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 p-2">
+		<div className="flex justify-center">
+			<div className="w-full md:w-2/3 rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 p-2">
 				<form className="grid md:grid-cols-2 gap-6 " onSubmit={handleSubmit(onSubmit)}>
 					<AvatarUpload
 						defaultUrl={user?.avatar ?? ""}

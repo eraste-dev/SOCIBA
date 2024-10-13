@@ -3,6 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "app/reducer/store";
 import { ILocation } from "../locations/locations";
 
+
+export type IuserStatus = "ACTIVE" | "INACTIVE" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED"; 
 export interface IUser {
 	id: number;
 	name: string;
@@ -15,7 +17,7 @@ export interface IUser {
 	rating: number;
 	fonction: string;
 	influence_zone: ILocation | null;
-	status: "ACTIVE" | "INACTIVE" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED";
+	status: IuserStatus;
 	type: "ADMIN" | "USER" | "GUEST" | "AGENT";
 	count_products: number;
 	

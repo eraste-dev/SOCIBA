@@ -74,7 +74,7 @@ const PostFeaturedMediaTwo: FC<PostFeaturedMediaTwoProps> = ({
 			data-nc-id="PostFeaturedMediaTwo"
 			ref={videoRef}
 		>
-			<NcImage containerClassName="absolute inset-0" src={featured_image} />
+			<NcImage containerClassName="inset-0" src={featured_image} />
 			{renderContent()}
 		</div>
 	);

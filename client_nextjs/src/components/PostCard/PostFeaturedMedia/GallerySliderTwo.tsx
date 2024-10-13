@@ -17,29 +17,31 @@ const GallerySliderTwo: FC<GallerySliderTwoProps> = ({
 	const handleDragStart = (e: any) => e.preventDefault();
 
 	return (
-		<div className="max-w-2xl mx-auto">
-			<AliceCarousel
-				mouseTracking
-				items={galleryImgs.map((image, index) => (
-					<img
-						key={index}
-						src={image}
-						alt={`Product Image ${index + 1}`}
-						onDragStart={handleDragStart}
-						className="w-full h-auto"
-					/>
-				))}
-				responsive={{
-					0: { items: 1 },
-					1024: { items: 1 },
-				}}
-				controlsStrategy="alternate"
-				autoPlay
-				autoPlayInterval={3000}
-				disableButtonsControls={false}
-				disableDotsControls={false}
-				infinite
-			/>
+		<div className="h-52">
+			<div className="max-w-2xl mx-auto">
+				<AliceCarousel
+					mouseTracking
+					items={galleryImgs.map((image, index) => (
+						<img
+							key={index}
+							src={image}
+							alt={`Product Image ${index + 1}`}
+							onDragStart={handleDragStart}
+							className="w-auto h-52 object-cover"
+						/>
+					))}
+					responsive={{
+						0: { items: 1 },
+						1024: { items: 1 },
+					}}
+					autoPlay={true}
+				
+					autoPlayInterval={5000}
+					disableButtonsControls={false}
+					disableDotsControls={false}
+					infinite
+				/>
+			</div>
 		</div>
 	);
 };

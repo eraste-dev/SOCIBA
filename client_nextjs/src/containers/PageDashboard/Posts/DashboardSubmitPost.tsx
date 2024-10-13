@@ -704,11 +704,12 @@ const DashboardSubmitPost = () => {
 														);
 														settmpcatId(GET_CATEGORIES()[0].id);
 													}
-													console.log({
-														category_id: getValues("category_id"),
-														type: getValues("type"),
-														hasResidence: hasResidence(),
-													});
+													false &&
+														console.log({
+															category_id: getValues("category_id"),
+															type: getValues("type"),
+															hasResidence: hasResidence(),
+														});
 												}}
 												selected={watch("type") ?? PRODUCT_TYPE[0]}
 											/>

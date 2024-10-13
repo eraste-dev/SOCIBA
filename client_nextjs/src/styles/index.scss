@@ -13,7 +13,7 @@
 }
 
 .text-base {
-    font-size: 0.65rem !important;
+    font-size: 0.85rem !important;
     line-height: 1.2rem !important;
 }
 
@@ -26,6 +26,16 @@
 //     font-size: 0.75rem !important;
 //     line-height: 1.25rem !important;
 // }
+
+.sidebar {
+    z-index: 50;
+    /* Ensure it sits above content */
+    position: fixed;
+    /* Make sure it's placed on top */
+    width: 100%;
+    /* Full width on mobile */
+}
+
 
 
 @media screen and (max-width: 768px) {
