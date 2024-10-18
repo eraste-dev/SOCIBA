@@ -37,6 +37,7 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 	const urlSearchParams = new URLSearchParams(window.location.search);
 	const categorySlugSelected = urlSearchParams.get("category_slug_selected");
 	const history = useHistory();
+	const colSpanItem = "col-span-6 sm:col-span";
 
 	const handleShowFilter = () => {
 		setShowFilter(!showFilter);
@@ -90,18 +91,16 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 				}
 			>
 				<div className={!linear ? "grid grid-cols-1 gap-0" : "grid grid-cols-4 gap-2"}>
-					{true ? (
-						<div>
-							<WidgetTypeWithSelect
-								handleFetch={fetchAll}
-								useStateFilter={useStateFilter}
-								setUseStateFilter={setUseStateFilter}
-								groupFilter={groupFilter}
-							/>
-						</div>
-					) : null}
+					<div className={colSpanItem}>
+						<WidgetTypeWithSelect
+							handleFetch={fetchAll}
+							useStateFilter={useStateFilter}
+							setUseStateFilter={setUseStateFilter}
+							groupFilter={groupFilter}
+						/>
+					</div>
 
-					<div>
+					<div className={colSpanItem}>
 						<WidgetCategoryBooking handleFetch={fetchAll} groupFilter={groupFilter} />
 					</div>
 
@@ -109,7 +108,7 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 						? ["residence", "hotel", "maison", "appartement"].includes(
 								categorySlugSelected
 						  ) && (
-								<div>
+								<div className={colSpanItem}>
 									<WidgetCategoryDetailWithSelect
 										handleFetch={fetchAll}
 										useStateFilter={useStateFilter}
@@ -120,11 +119,11 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 						  )
 						: null}
 
-					<div>
+					<div className={colSpanItem}>
 						<WidgetSort handleFetch={fetchAll} groupFilter={groupFilter} />
 					</div>
 
-					<div>
+					<div className={colSpanItem}>
 						<WidgetLocationWithSelect
 							handleFetch={fetchAll}
 							useStateFilter={useStateFilter}

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,14 +11,17 @@ import { IProduct, IProductImage } from "app/reducer/products/product";
 import { useHistory } from "react-router-dom";
 import ConfirmDialog from "components/Dialog/ConfirmDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { postProduct } from "app/axios/actions/api.action";
+import { isAdmin, postProduct } from "app/axios/actions/api.action";
 import { ListBoxItemType } from "components/NcListBox/NcListBox";
-import { STATUS_LABEL } from "./Products/ChangeProductType";
+import ChangeProductType, { STATUS_LABEL } from "./Products/ChangeProductType";
 import { _f } from "utils/money-format";
 import { convertPayloadToFormData } from "containers/PageDashboard/Posts/posts.constantes";
 import { AuthAction } from "app/reducer/auth/auth";
 import ProductTableRow from "./PostTableRow";
 import { mapIProductToProductRequest } from "containers/PageDashboard/Posts/posts.constantes";
+import TableDynamic from "components/Table/TableDynamic";
+import ProductCard13 from "./ProductCard13";
+import ProductTableAction from "./ProductTableAction";
 
 export interface ColumnProductTable {
 	id: "post" | "actions" | "type" | "status";
@@ -56,6 +59,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 		status: STATUS_LABEL | null;
 	}>({ status: null });
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
+	const [isHover, setIsHover] = useState(false);
 
 	const handleChangePage = (event: unknown, newPage: number) => {
 		setPage(newPage);
@@ -79,8 +83,8 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 
 	const columns: ColumnProductTable[] = [
 		{ id: "post", label: "Annonce", minWidth: 100 },
-		{ id: "status", label: "Status", minWidth: 50 },
-		{ id: "actions", label: "Actions" },
+		// { id: "status", label: "Status", minWidth: 50 },
+		// { id: "actions", label: "Actions" },
 	];
 
 	if (!columns && !rows) {
@@ -114,65 +118,93 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 		return images[0]?.image || "https://via.placeholder.com/150";
 	};
 
-	return (
-		<Paper sx={{ width: "100%", overflow: "hidden" }}>
-			<TableContainer>
-				<Table stickyHeader aria-label="sticky table">
-					<TableHead className="bg-gray-500">
-						<TableRow>
-							{columns.map((column) => (
-								<TableCell
-									key={column.id}
-									align={column.align}
-									style={{ maxWidth: column.minWidth }}
-								>
-									{column.label}
-									{column.id === "status" && (
-										<>
-											<br />
-											{/* <ChangeProductTypeTableHeader
+	if (false) {
+		return (
+			<Paper sx={{ width: "100%", overflow: "hidden" }}>
+				<TableContainer>
+					<Table stickyHeader aria-label="sticky table">
+						<TableHead className="bg-gray-500">
+							<TableRow>
+								{columns.map((column) => (
+									<TableCell
+										key={column.id}
+										align={column.align}
+										style={{ maxWidth: column.minWidth }}
+									>
+										{column.label}
+										{column.id === "status" && (
+											<>
+												<br />
+												{/* <ChangeProductTypeTableHeader
 												lists={LIST_STATUS}
 												selectedIndex={LIST_STATUS.findIndex((item) => item.name === filterTableHeader.status)}
 												handleChange={(status: STATUS_LABEL) => handleChangeStatusInTableHeader(status)}
 											/> */}
-										</>
-									)}
-								</TableCell>
-							))}
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{rows
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((row) => (
-								<ProductTableRow
-									key={row.id}
-									getFeatureImage={getFeatureImage}
-									getStatus={getStatus}
-									row={row}
-									handleChangeStatus={handleChangeStatus}
-									setOpenDelete={setOpenDelete}
-									setRowSelected={setRowSelected}
-								/>
-							))}
-					</TableBody>
-				</Table>
-			</TableContainer>
-			<TablePagination
-				rowsPerPageOptions={[10, 25, 100]}
-				component="div"
-				count={rows.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onPageChange={handleChangePage}
-				onRowsPerPageChange={handleChangeRowsPerPage}
+											</>
+										)}
+									</TableCell>
+								))}
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{rows
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map((row) => (
+									<ProductTableRow
+										key={row.id}
+										getFeatureImage={getFeatureImage}
+										getStatus={getStatus}
+										row={row}
+										handleChangeStatus={handleChangeStatus}
+										setOpenDelete={setOpenDelete}
+										setRowSelected={setRowSelected}
+									/>
+								))}
+						</TableBody>
+					</Table>
+				</TableContainer>
+				<TablePagination
+					rowsPerPageOptions={[10, 25, 100]}
+					component="div"
+					count={rows.length}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onPageChange={handleChangePage}
+					onRowsPerPageChange={handleChangeRowsPerPage}
+				/>
+				<ConfirmDialog
+					handleClose={() => setOpenDelete(false)}
+					open={openDelete}
+					row={rowSelected}
+				/>
+			</Paper>
+		);
+	}
+
+	const headers = ["Annonce", "Status"];
+
+	const renderActions = (row: any) => (
+		<div className="flex space-x-2">
+			<ProductTableAction
+				row={row}
+				handleOpenDelete={() => {
+					setOpenDelete(true);
+					setRowSelected(row);
+				}}
 			/>
-			<ConfirmDialog
-				handleClose={() => setOpenDelete(false)}
-				open={openDelete}
-				row={rowSelected}
+		</div>
+	);
+
+	return (
+		<div className="">
+			<TableDynamic
+				headers={columns.map((column) => column.label)}
+				data={rows.map((row) => ({
+					Annonce: <ProductCard13 isHover={isHover} setIsHover={setIsHover} row={row} />,
+				}))}
+				renderActions={renderActions}
 			/>
-		</Paper>
+		</div>
 	);
 };
 

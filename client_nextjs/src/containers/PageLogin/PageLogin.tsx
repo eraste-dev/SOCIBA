@@ -81,7 +81,10 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 
 	useEffect(() => {
 		if (user && success && !loading) {
-			snackbar.enqueueSnackbar("Connexion reussie", { variant: "success", autoHideDuration: 3000 });
+			snackbar.enqueueSnackbar("Connexion reussie", {
+				variant: "success",
+				autoHideDuration: 3000,
+			});
 			history.push(route("dashboard"));
 		}
 	}, [user, success, snackbar, history, route, loading]);
@@ -91,7 +94,11 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 			<Helmet>
 				<title>Se connecter</title>
 			</Helmet>
-			<LayoutPage subHeading="En deux clics, c'est gratuit!" headingEmoji="🔑" heading="Se connecter">
+			<LayoutPage
+				subHeading="En deux clics, c'est gratuit!"
+				headingEmoji="🔑"
+				heading="Se connecter"
+			>
 				<div className="max-w-md mx-auto space-y-6">
 					{loginSocials && loginSocials.length > 0 && (
 						<>
@@ -102,7 +109,11 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 										href={item.href}
 										className="nc-will-change-transform flex w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
 									>
-										<img className="flex-shrink-0" src={item.icon} alt={item.name} />
+										<img
+											className="flex-shrink-0"
+											src={item.icon}
+											alt={item.name}
+										/>
 										<h3 className="flex-grow text-center text-sm font-medium text-neutral-700 dark:text-neutral-300 sm:text-sm">
 											{item.name}
 										</h3>
@@ -132,19 +143,31 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 						</label>
 
 						<label className="block">
-							<span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
-								Mot de passe
-								<NcLink to="/forgot-pass" className="text-sm">
-									Mot de passe oublié?
-								</NcLink>
-							</span>
-							<Input type="password" className="mt-1" {...register("password", { required: true })} />
+							{false && (
+								<span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
+									Mot de passe
+									<NcLink to="/forgot-pass" className="text-sm">
+										Mot de passe oublié?
+									</NcLink>
+								</span>
+							)}
+							<Input
+								type="password"
+								className="mt-1"
+								{...register("password", { required: true })}
+							/>
 						</label>
 
-						{!loading ? <ButtonPrimary type="submit">Se connecter</ButtonPrimary> : <LoadingSpinner />}
+						{!loading ? (
+							<ButtonPrimary type="submit">Se connecter</ButtonPrimary>
+						) : (
+							<LoadingSpinner />
+						)}
 					</form>
 
-					<div>{error && !loading && <p className="text-red-500 text-center">{error}</p>}</div>
+					<div>
+						{error && !loading && <p className="text-red-500 text-center">{error}</p>}
+					</div>
 
 					<div>
 						<span className="block text-center text-neutral-700 dark:text-neutral-300">

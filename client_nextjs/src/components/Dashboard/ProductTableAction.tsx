@@ -25,13 +25,13 @@ const ProductTableAction: FC<ProductTableActionProps> = ({ row, handleOpenDelete
 		<ul className="flex space-x-1 list-none">
 			<li className="mr-2 ">
 				<button onClick={handleEdit}>
-					<FaEdit size={25} className="text-blue-500 dark:text-blue-300" />
+					<FaEdit size={16} className="text-blue-500 dark:text-blue-300" />
 				</button>
 			</li>
 
 			<li className="mr-2">
 				<button onClick={handleOpenDelete}>
-					<FaTrashAlt size={25} className="text-red-500" />
+					<FaTrashAlt size={16} className="text-red-500" />
 				</button>
 			</li>
 		</ul>
