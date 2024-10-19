@@ -10,6 +10,7 @@ import CategoryPropertyBadgeOne from "components/CategoryPropertyBadgeList/Categ
 import CategoryPropertyBadgeTwo from "components/CategoryPropertyBadgeList/CategoryPropertyBadgeTwo";
 import PostCardDetailMeta from "components/PostCard/PostPropertyCardMeta/PostCardDetailMeta";
 import Card11Price from "./Card11Price";
+import PostFeaturedMediaTwo from "components/PostCard/PostFeaturedMedia/PostFeaturedMediaTwo";
 
 export interface Card11Props {
 	className?: string;

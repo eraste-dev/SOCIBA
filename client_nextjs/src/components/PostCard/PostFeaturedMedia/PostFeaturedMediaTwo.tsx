@@ -46,11 +46,15 @@ const PostFeaturedMediaTwo: FC<PostFeaturedMediaTwoProps> = ({
 
 		const arrayImgs: string[] = images.map((item) => item.image);
 		return (
-			<GallerySliderTwo
-				single={single}
-				galleryImgs={arrayImgs}
-				uniqueClass={`PostFeaturedGallery_${id}`}
-			/>
+			<div className="h-[300px] sm:h-[500px] overflow-hidden">
+				<div className="flex justify-center bg-gray-100 dark:bg-neutral-800">
+					<GallerySliderTwo
+						single={single}
+						galleryImgs={arrayImgs}
+						uniqueClass={`PostFeaturedGallery_${id}`}
+					/>
+				</div>
+			</div>
 		);
 	};
 

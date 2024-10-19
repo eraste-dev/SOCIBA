@@ -45,12 +45,14 @@ const AdminLayout: FC<AdminLayoutProps> = ({ className = "", children }) => {
 
 					{/* CONTENT */}
 					<div
-						className="p-5 flex-1"
+						className="p-2 sm:p-5 flex-1 bg-gray-50 dark:bg-neutral-900 dark:text-neutral-100"
 						style={{
 							width: isSidebarOpen
 								? `100%`
 								: `calc(100% - ${layoutSetting.sideBarWidth}px)`,
 							left: isSidebarOpen ? `0` : `${layoutSetting.sideBarWidth}px`,
+							height: "100vh",
+							overflow: "auto",
 						}}
 					>
 						<div className="flex justify-center w-full">

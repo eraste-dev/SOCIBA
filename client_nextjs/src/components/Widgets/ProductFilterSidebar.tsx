@@ -37,7 +37,8 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 	const urlSearchParams = new URLSearchParams(window.location.search);
 	const categorySlugSelected = urlSearchParams.get("category_slug_selected");
 	const history = useHistory();
-	const colSpanItem = "col-span-6 sm:col-span";
+	const colSpanItem = "col-span-6 sm:col-span-1 md:col-span-2 2xl:col-span-1";
+	// const colSpanItemAlt = "col-span-6";
 
 	const handleShowFilter = () => {
 		setShowFilter(!showFilter);
@@ -132,7 +133,8 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 						/>
 					</div>
 
-					<div className={linear ? "col-span-6" : ""}>
+					{/* colSpanItemAlt */}
+					<div className={colSpanItem}>
 						<WidgetLocationWithInput
 							handleFetch={fetchAll}
 							useStateFilter={useStateFilter}
@@ -141,7 +143,7 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 					</div>
 
 					{false && (
-						<div className={linear ? "col-span-6" : ""}>
+						<div className={colSpanItem}>
 							<WidgetSearchWithInput
 								handleFetch={fetchAll}
 								useStateFilter={useStateFilter}
@@ -152,7 +154,7 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 
 					{!linear && (
 						<>
-							<div className={!linear ? "mr-2 mb-2" : "col-span-1"}>
+							<div className={!linear ? "mr-2 mb-2" : "col-span-6"}>
 								<ButtonPrimary
 									className="w-full"
 									onClick={() => {
@@ -183,6 +185,7 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 					{/* <WidgetLocations handleFetch={fetchAll} /> */}
 					{/* <WidgePrice /> */}
 				</div>
+
 				{linear && (
 					<div className="flex">
 						<div className={!linear ? "mr-2" : "col-span-1 mr-2"}>

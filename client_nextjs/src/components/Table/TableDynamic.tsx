@@ -21,7 +21,7 @@ const TableDynamic: FC<TableDynamicProps> = ({ headers, data, renderActions, row
 
 	return (
 		<div className="overflow-x-auto">
-			<table className="min-w-full bg-white dark:bg-neutral-800 border border-gray-200">
+			<table className="min-w-full bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700">
 				<thead>
 					<tr>
 						{headers.map((header, index) => (

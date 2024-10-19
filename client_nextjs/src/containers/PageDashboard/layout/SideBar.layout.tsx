@@ -1,6 +1,7 @@
 import { isAdmin, logout } from "app/axios/actions/api.action";
 import { initializeUserProduct } from "app/axios/actions/api.products.action";
 import { AuthAction } from "app/reducer/auth/auth";
+import { toggleSidebar } from "app/reducer/darkmode/darkmode";
 import { ADMIN_SUB_PAGES, USER_SUB_PAGES } from "components/LayoutPage/layout.type";
 import { FC } from "react";
 import { FaHome, FaSignOutAlt } from "react-icons/fa";
@@ -48,6 +49,7 @@ const SideBarDashbord: FC<SideBarDashbordProps> = ({ className = "", children })
 											className={defaultClassName}
 											to={`${url}${sPath}`}
 											activeClassName={activeClassName}
+											onClick={() => dispatch(toggleSidebar())}
 										>
 											<span className="w-8 mr-1">{emoij}</span>
 											{pageName}
@@ -74,6 +76,7 @@ const SideBarDashbord: FC<SideBarDashbordProps> = ({ className = "", children })
 													className={defaultClassName}
 													to={`${url}${sPath}`}
 													activeClassName={activeClassName}
+													onClick={() => dispatch(toggleSidebar())}
 												>
 													<span className="w-8 mr-1">{emoij}</span>
 													{pageName}

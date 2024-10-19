@@ -183,7 +183,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 
 	const headers = ["Annonce", "Status"];
 
-	const renderActions = (row: any) => (
+	const renderActions = (row: IProduct) => (
 		<div className="flex space-x-2">
 			<ProductTableAction
 				row={row}
@@ -200,6 +200,7 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 			<TableDynamic
 				headers={columns.map((column) => column.label)}
 				data={rows.map((row) => ({
+					id: row.id,
 					Annonce: <ProductCard13 isHover={isHover} setIsHover={setIsHover} row={row} />,
 				}))}
 				renderActions={renderActions}

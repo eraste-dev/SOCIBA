@@ -58,12 +58,7 @@ export const ProductCard13 = ({ setIsHover, row, isHover }: ProductCard13Props) 
 					//
 				>
 					<div className="flex items-center post-image-container mr-2">
-						<div
-							style={{
-								width: "auto",
-								height: 100,
-							}}
-						>
+						<div className="h-[300px] w-full">
 							<PostFeaturedMedia post={row} isHover={isHover} />
 						</div>
 					</div>
@@ -72,32 +67,32 @@ export const ProductCard13 = ({ setIsHover, row, isHover }: ProductCard13Props) 
 
 			<div className="col-span-2 sm:col-span-1">
 				<div className="w-full">
-					<div>
-						<Card11Price item={row} />
-					</div>
+					<div className="flex justify-between">
+						<div>
+							<Card11Price item={row} />
+						</div>
 
-					<div className="relative " style={{ maxWidth: 150 }}>
-						<span className="inset-x-3 z-10 mb-5">
-							<CategoryPropertyBadgeOne category={category} />
-						</span>
+						<div className="relative " style={{ maxWidth: 150 }}>
+							<span className="inset-x-3 z-10 mb-5">
+								<CategoryPropertyBadgeOne category={category} />
+							</span>
+						</div>
 					</div>
 
 					<span className="text-xs text-neutral-500">{updated_at}</span>
 					{false && <h4 className="text-xl">{title}</h4>}
 
-					<div className="grid grid-cols-6">
-						<div className="grid grid-cols-subgrid lg:col-span-2 col-span-6">
-							<CategoryPropertyBadgeTwo className="text-xs md:text-md" item={row} />
-							<p className="mt-2 text-xs font-semibold text-secondary-900 dark:text-neutral-100 ">
-								{false && (
-									<span className="text-xs text-neutral-500 flex justify-items-center ">
-										<FaMapMarkerAlt className="mr-1" />
-									</span>
-								)}
-								Commune: {location.name} <br />
-								Quatier : {location_description}
-								{/* , {location.city?.name} */}
-							</p>
+					<div className="flex justify-between items-center">
+						<CategoryPropertyBadgeTwo className="text-xs md:text-md" item={row} />
+						<div className="mt-2 text-xs font-semibold text-secondary-900 dark:text-neutral-100 ">
+							{false && (
+								<span className="text-xs text-neutral-500 flex justify-items-center ">
+									<FaMapMarkerAlt className="mr-1" />
+								</span>
+							)}
+							Commune: {location.name} <br />
+							Quatier : {location_description}
+							{/* , {location.city?.name} */}
 						</div>
 					</div>
 

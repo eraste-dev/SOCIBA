@@ -19,14 +19,30 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({
 	setVideoFiles,
 }) => {
 	const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+	const [progress, setProgress] = useState<number | null>(null);
 
 	const handleVideoChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (!e.target.files) return;
 
-		const fileArray = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
+		const files = Array.from(e.target.files);
+		const fileArray = files.map((file) => URL.createObjectURL(file));
 		const newVideos = [...videos, ...fileArray].slice(0, maxVideo);
 
-		setVideoFiles([...videoFiles, ...Array.from(e.target.files)]);
+		// Simulate upload progress for each file
+		files.forEach((file) => {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onloadstart = () => setProgress(0);
+			reader.onprogress = (event) => {
+				if (event.lengthComputable) {
+					const percentLoaded = Math.round((event.loaded / event.total) * 100);
+					setProgress(percentLoaded);
+				}
+			};
+			reader.onloadend = () => setProgress(null);
+		});
+
+		setVideoFiles([...videoFiles, ...files]);
 		setVideos(newVideos);
 	};
 
@@ -89,9 +105,16 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({
 				))}
 			</div>
 
-			{/* {videos && videos.length === 0 ? (
-				<p className=" text-gray-500">Aucune Vidéo </p>
-			) : null} */}
+			{progress !== null && (
+				<div className="mt-2 w-full bg-gray-200 rounded">
+					<div
+						className="bg-primary-500 text-xs font-medium text-white text-center p-0.5 leading-none rounded"
+						style={{ width: `${progress}%` }}
+					>
+						{progress}%
+					</div>
+				</div>
+			)}
 
 			{selectedVideo && (
 				<VideoModal video={selectedVideo} onClose={() => setSelectedVideo(null)} />

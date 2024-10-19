@@ -55,13 +55,15 @@ const MainNav2Mobile: FC<MainNav2MobileProps> = ({ isDashboard, user, handleClic
 						isDashboard() ? "end" : "between"
 					} flex-grow items-center space-x-3`}
 				>
-					<button
-						className="md:hidden text-2xl p-2 text-primary"
-						onClick={() => dispatch(toggleSidebar())}
-						aria-label="Toggle Sidebar"
-					>
-						{isSidebarOpen ? <IoCloseOutline /> : <IoMenuOutline />}
-					</button>
+					{isDashboard() ? (
+						<button
+							className="md:hidden text-2xl p-2 text-primary"
+							onClick={() => dispatch(toggleSidebar())}
+							aria-label="Toggle Sidebar"
+						>
+							{isSidebarOpen ? <IoCloseOutline /> : <IoMenuOutline />}
+						</button>
+					) : null}
 
 					{!isDashboard() && (
 						<>
