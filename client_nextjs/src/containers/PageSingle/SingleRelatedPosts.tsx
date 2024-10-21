@@ -5,7 +5,7 @@ import Card11 from "components/Cards/Card11/Card11";
 import Card9 from "components/Cards/Card9/Card9";
 import { DEMO_POSTS } from "data/posts";
 import { IProduct } from "app/reducer/products/product";
-import { LIST_GRID_CLASS } from "containers/PageHome/Home";
+import { LIST_GRID_CLASS, LIST_RELATED_GRID_CLASS } from "containers/PageHome/Home";
 
 export interface SingleRelatedPostsProps {
 	relatedPosts?: PostDataType[];
@@ -23,7 +23,7 @@ const SingleRelatedPosts: FC<SingleRelatedPostsProps> = ({
 	related,
 }) => {
 	return (
-		<div className="relative bg-neutral-100 dark:bg-neutral-800 py-4 mt-5 lg:mt-6">
+		<div className="relative bg-neutral-100 dark:bg-neutral-800 py-4 mt-4">
 			{/* RELATED  */}
 			{related && (
 				<div className="container">
@@ -31,9 +31,11 @@ const SingleRelatedPosts: FC<SingleRelatedPostsProps> = ({
 						<Heading className="mb-2 text-neutral-900 dark:text-neutral-50" desc="">
 							Annonces similaires
 						</Heading>
-						<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-2">
+						<div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-2">
 							{related.map((post) => (
-								<Card11 key={post.id} post={post} />
+								<div>
+									<Card11 key={post.id} post={post} />
+								</div>
 							))}
 						</div>
 					</div>
@@ -47,7 +49,7 @@ const SingleRelatedPosts: FC<SingleRelatedPostsProps> = ({
 							>
 								More from author
 							</Heading>
-							<div className={LIST_GRID_CLASS}>
+							<div className={LIST_RELATED_GRID_CLASS}>
 								{moreFromAuthorPosts.map((post) => (
 									<Card9 key={post.id} post={post} />
 								))}

@@ -10,7 +10,8 @@ class VideoService
     {
         // Vérifie si le fichier image existe
         if (Env('APP_ENV') == 'production') {
-            return 'https://api.bajorah.com/assets' . $videoName;
+            return 'https://api.bajorah.com/core/public/assets' . $videoName;
+            // return 'https://api.bajorah.com/assets' . $videoName;
         }
 
         $path = public_path('assets' . $videoName);

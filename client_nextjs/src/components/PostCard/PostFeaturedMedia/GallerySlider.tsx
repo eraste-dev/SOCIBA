@@ -49,8 +49,7 @@ const GallerySlider: FC<GallerySliderProps> = ({ galleryImgs, uniqueClass, singl
 						<li className="glide__slide h-full" key={index}>
 							<img
 								src={item}
-								className="mx-auto object-cover"
-								style={{ width: "auto", height: "100%" }}
+								className="mx-auto object-cover w-full h-full"
 								alt=""
 							/>
 						</li>

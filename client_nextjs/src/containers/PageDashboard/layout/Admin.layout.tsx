@@ -4,6 +4,7 @@ import SideBarDashbord from "./SideBar.layout";
 import { IoMenuOutline, IoCloseOutline } from "react-icons/io5"; // Icon for the menu
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { selectSidebarState, toggleSidebar } from "app/reducer/darkmode/darkmode";
+import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 
 export interface AdminLayoutProps {
 	className?: string;
@@ -57,6 +58,9 @@ const AdminLayout: FC<AdminLayoutProps> = ({ className = "", children }) => {
 					>
 						<div className="flex justify-center w-full">
 							<div className="w-full bg-neutral-100 dark:bg-neutral-800 bg-opacity-25 dark:bg-opacity-40">
+								<div className="relative">
+									<BgGlassmorphism />
+								</div>
 								<div className="md:xxx-container sm:px-5">{children}</div>
 							</div>
 						</div>

@@ -5,6 +5,7 @@ export interface BgGlassmorphismProps {
 }
 
 const BgGlassmorphism: FC<BgGlassmorphismProps> = ({
+  // absolute
   className = "absolute inset-x-0 top-0 min-h-0 pl-10 py-32 flex flex-col overflow-hidden z-0",
 }) => {
   return (

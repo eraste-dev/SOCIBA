@@ -47,7 +47,7 @@ const PostPropertyCardMetaV2: FC<PostPropertyCardMetaV2Props> = ({
 						</div>
 					</div>
 
-					<div className="md:col-span-6 col-span-2 ">
+					<div className="md:col-span-6 col-span-2 ml-2">
 						<div className="flex items-center align-middle text-xs md:text-md">
 							<span className="hidden sm:flex sm:justify-center mr-1">
 								{"Annonceur : "}

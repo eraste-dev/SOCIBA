@@ -15,6 +15,7 @@ import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 import { MetaAction } from "app/reducer/meta/meta";
 import { fetchMetaFunction } from "app/axios/actions/api.meta.action";
 import Select from "components/Form/Select/Select";
+import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 
 const DashboardEditProfile = () => {
 	const dispatch = useDispatch();
@@ -91,6 +92,8 @@ const DashboardEditProfile = () => {
 
 	return (
 		<div className="flex justify-center">
+			{/* ======== BG GLASS ======== */}
+
 			<div className="w-full md:w-2/3 rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 p-2">
 				<form className="grid md:grid-cols-2 gap-6 " onSubmit={handleSubmit(onSubmit)}>
 					<AvatarUpload

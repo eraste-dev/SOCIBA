@@ -43,7 +43,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 		: "grid grid-cols-2 sm:grid-cols-3 gap-1";
 	const locationItemClassName = isSingle
 		? "flex item-center justify-start item-center " // col-span-1
-		: "flex item-center justify-center item-center ";
+		: ""; // flex item-center justify-center item-center 
 	const ItemCheckedClassName = "justify-self-start item-center";
 
 	const getFontSize = (): "large" | "medium" | "small" | "inherit" => {
@@ -79,7 +79,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 						{/* Superficie */}
 						{area && area != 0 ? (
 							<div className={`${locationItemClassName}`} title="Superficie">
-								<div className="flex">
+								<div className="flex h-full items-center">
 									<PhotoSizeSelectSmallTwoTone
 										fontSize={getFontSize()}
 										style={{ width: isSingle ? iconSizeSingle : iconSize }}
@@ -97,7 +97,7 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 
 						{bathrooms ? (
 							<div className={locationItemClassName}>
-								<div className="flex">
+								<div className="flex h-full items-center">
 									<FaBath
 										size={isSingle ? iconSizeSingle : iconSize}
 										fontSize={getFontSize()}
@@ -115,18 +115,16 @@ const PostCardDetailMeta: FC<PostCardDetailMetaProps> = ({
 						) : null}
 
 						{kitchens ? (
-							<Tooltip title="Cuisine">
-								<div className={locationItemClassName}>
-									{/* <Kitchen className="mb-1 mr-1" /> */}
-									<Fastfood
-										fontSize={getFontSize()}
-										style={{ width: isSingle ? iconSizeSingle : iconSize }}
-										className="mb-1 mr-1"
-									/>
-									{/* {isSingle && <span className="mr-1">Cuisine : </span>} */}
-									{kitchens}
-								</div>
-							</Tooltip>
+							<div className={locationItemClassName}>
+								{/* <Kitchen className="mb-1 mr-1" /> */}
+								<Fastfood
+									fontSize={getFontSize()}
+									style={{ width: isSingle ? iconSizeSingle : iconSize }}
+									className="mb-1 mr-1"
+								/>
+								{/* {isSingle && <span className="mr-1">Cuisine : </span>} */}
+								{kitchens}
+							</div>
 						) : null}
 					</div>
 

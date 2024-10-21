@@ -22,6 +22,7 @@ import { AuthorLine } from "containers/PageSingle/SingleAuthor";
 import MediaVideoTwo from "components/PostCard/PostFeaturedMedia/MediaVideoTwo";
 import PostCardDetailMetaSingle from "components/PostCard/PostPropertyCardMeta/PostCardDetailMetaSingle";
 import PostFeaturedMediaTwo from "components/PostCard/PostFeaturedMedia/PostFeaturedMediaTwo";
+import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 
 export interface SingleProps {
 	className?: string;
@@ -101,157 +102,183 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 			</div>
 
 			<div
-				className={`bg-gray-100 dark:bg-neutral-800 pt-8 lg:pt-16 ${className}`}
+				className={`bg-gray-100 dark:bg-neutral-800 pt-2 ${className}`}
 				data-nc-id="Single"
 			>
 				<div className="grid grid-cols-1 sm:grid-cols-5 md:grid-cols-7">
 					<div className="col-span-1"></div>
 
-					<div className="col-span-1 sm:col-span-5 md:col-span-5 bg-white	dark:bg-neutral-900">
+					<div className="col-span-1 sm:col-span-5 md:col-span-5 ">
 						{/* SINGLE HEADER */}
-						<div className="container-xxx px-4 py-2">
-							<header className="rounded-xl">
-								{single ? (
-									<SingleHeader
-										metaActionStyle="style2"
-										hiddenDesc
-										pageData={single}
-									/>
-								) : null}
-							</header>
+						<div className="container ">
+							<div className="bg-white dark:bg-neutral-900 p-3 pb-4">
+								<header className="rounded-xl">
+									{single ? (
+										<SingleHeader
+											metaActionStyle="style2"
+											hiddenDesc
+											pageData={single}
+										/>
+									) : null}
+								</header>
 
-							<div className="mt-5 h-3/4">
-								<div
-									className={`nc-Card11 relative flex flex-col group h-full w-auto `}
-									data-nc-id="Card11"
-									onMouseEnter={() => setIsHover(true)}
-									onMouseLeave={() => setIsHover(false)}
-								>
-									<div>
-										{/* <PostFeaturedMedia
+								<div className="mt-5 h-3/4">
+									<div
+										className={`nc-Card11 relative flex flex-col group h-full w-auto `}
+										data-nc-id="Card11"
+										onMouseEnter={() => setIsHover(true)}
+										onMouseLeave={() => setIsHover(false)}
+									>
+										<div>
+											{/* <PostFeaturedMedia
 											post={single}
 											isHover={isHover}
 											single={true}
 										/> */}
-										<PostFeaturedMediaTwo
-											post={single}
-											isHover={isHover}
-											single={true}
-										/>
+											<PostFeaturedMediaTwo
+												post={single}
+												isHover={isHover}
+												single={true}
+											/>
+										</div>
 									</div>
 								</div>
-							</div>
 
-							{single ? (
-								<SingleImage meta={single} handleOpenModal={handleOpenModal} />
-							) : null}
+								{single ? (
+									<SingleImage meta={single} handleOpenModal={handleOpenModal} />
+								) : null}
 
-							<div className="mt-5 h-3/4">
-								<div
-									className={`nc-Card11 relative flex flex-col group h-full w-auto `}
-								>
-									{single && single.videos && single.videos.length > 0
-										? single.videos.map((v) => (
-												<MediaVideoTwo
-													key={v.id}
-													isHover={true}
-													videoUrl={v.src}
+								{single && single.videos && single.videos.length > 0 ? (
+									<div className="mt-2 mb-5 h-3/4">
+										<div
+											className={`nc-Card11 relative flex flex-col group h-full w-auto `}
+										>
+											{single && single.videos && single.videos.length > 0
+												? single.videos.map((v) => (
+														<MediaVideoTwo
+															key={v.id}
+															isHover={true}
+															videoUrl={v.src}
+														/>
+												  ))
+												: null}
+										</div>
+									</div>
+								) : null}
+
+								<div className="grid grid-cols-6 mb-4">
+									<div className="col-span-4">
+										<div className="w-full">
+											{single && single.home_type ? (
+												<AuthorLine
+													label={"Détail"}
+													value={`${single?.home_type}`}
+													classNameValue={className_text}
 												/>
-										  ))
-										: null}
-								</div>
-							</div>
+											) : null}
 
-							<div className="grid grid-cols-6 mb-4">
-								<div className="col-span-4">
-									<div className="w-full">
-										{single && single.home_type ? (
-											<AuthorLine
-												label={"Détail"}
-												value={`${single?.home_type}`}
-												classNameValue={className_text}
-											/>
-										) : null}
+											{single?.location && single.location.name ? (
+												<AuthorLine
+													label={
+														single.location.unlisted
+															? "Ville"
+															: "Commune"
+													}
+													value={`${single?.location.name}`}
+													classNameValue={className_text}
+												/>
+											) : null}
 
-										{single?.location && single.location.name ? (
-											<AuthorLine
-												label={
-													single.location.unlisted ? "Ville" : "Commune"
-												}
-												value={`${single?.location.name}`}
-												classNameValue={className_text}
-											/>
-										) : null}
+											{single?.location_description ? (
+												<AuthorLine
+													label={"Quartier"}
+													value={single.location_description}
+													classNameValue={className_text}
+												/>
+											) : null}
+										</div>
+									</div>
 
-										{single?.location_description ? (
-											<AuthorLine
-												label={"Quartier"}
-												value={single.location_description}
-												classNameValue={className_text}
-											/>
-										) : null}
+									<div className="col-span-2">
+										<div className="w-full flex justify-end">
+											{single && (
+												<Card11Price
+													item={single}
+													isSingle={true}
+													className="text-primary-6000 font-semibold"
+												/>
+											)}
+										</div>
 									</div>
 								</div>
 
-								<div className="col-span-2">
-									<div className="w-full flex justify-end">
-										{single && (
-											<Card11Price
-												item={single}
-												isSingle={true}
-												className="text-primary-6000 dark:text-neutral-500 font-semibold"
-											/>
-										)}
-									</div>
-								</div>
-							</div>
+								{/* MODAL PHOTOS */}
+								{single && (
+									<ModalPhotos
+										imgs={single.images.map((item) => item.image) || []}
+										isOpen={isOpen}
+										onClose={handleCloseModal}
+										initFocus={openFocusIndex}
+									/>
+								)}
 
-							{/* MODAL PHOTOS */}
-							{single && (
-								<ModalPhotos
-									imgs={single.images.map((item) => item.image) || []}
-									isOpen={isOpen}
-									onClose={handleCloseModal}
-									initFocus={openFocusIndex}
+								{/* SINGLE MAIN CONTENT */}
+
+								{/* {single && <PostCardDetailMeta meta={single} isSingle={true} />} */}
+								{single && (
+									<PostCardDetailMetaSingle meta={single} isSingle={true} />
+								)}
+
+								{single && (
+									<div className="">
+										<SingleContent data={single} />
+									</div>
+								)}
+
+								<ContactSeller
+									productLink={`bajorah.com${single?.href}`}
+									phone={
+										single && single.author && single!.author!.phone
+											? single!.author!.phone
+											: undefined
+									}
+									whatsapp={
+										single && single.author && single!.author!.phone_whatsapp
+											? single!.author!.phone_whatsapp
+											: undefined
+									}
+									sms={
+										single && single.author && single!.author!.phone
+											? single!.author!.phone
+											: undefined
+									}
 								/>
-							)}
-
-							{/* SINGLE MAIN CONTENT */}
-
-							{/* {single && <PostCardDetailMeta meta={single} isSingle={true} />} */}
-							{single && <PostCardDetailMetaSingle meta={single} isSingle={true} />}
-
-							{single && (
-								<div className="">
-									<SingleContent data={single} />
-								</div>
-							)}
-
-							<ContactSeller
-								productLink={`bajorah.com/${single?.href}`}
-								phone={
-									single && single.author && single!.author!.phone
-										? single!.author!.phone
-										: undefined
-								}
-								whatsapp={
-									single && single.author && single!.author!.phone_whatsapp
-										? single!.author!.phone_whatsapp
-										: undefined
-								}
-								sms={
-									single && single.author && single!.author!.phone
-										? single!.author!.phone
-										: undefined
-								}
-							/>
+							</div>
 						</div>
 					</div>
 
 					<div className="col-span-1"></div>
 				</div>
+
 				{/* RELATED POSTS */}
-				{related && <SingleRelatedPosts related={related} />}
+				<div>
+					{/* ======== BG GLASS ======== */}
+					{/* <BgGlassmorphism /> */}
+
+					<div className="grid grid-cols-1 sm:grid-cols-5 md:grid-cols-7">
+						<div className="col-span-1"></div>
+
+						<div className="col-span-1 sm:col-span-5 md:col-span-5 ">
+							<div className="">
+								<div className="bg-white dark:bg-neutral-900">
+									{related && <SingleRelatedPosts related={related} />}
+								</div>
+							</div>
+						</div>
+
+						<div className="col-span-1"></div>
+					</div>
+				</div>
 			</div>
 		</>
 	);

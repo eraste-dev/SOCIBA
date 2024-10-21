@@ -52,7 +52,7 @@ const MainNav2Mobile: FC<MainNav2MobileProps> = ({ isDashboard, user, handleClic
 				{/* COL 1 */}
 				<div
 					className={`w-full flex justify-${
-						isDashboard() ? "end" : "between"
+						isDashboard() ? (isSidebarOpen ? "end" : "between") : "between"
 					} flex-grow items-center space-x-3`}
 				>
 					{isDashboard() ? (

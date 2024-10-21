@@ -13,6 +13,8 @@ const POSTS = DEMO_POSTS;
 
 export const LIST_GRID_CLASS: string =
 	"grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4";
+export const LIST_RELATED_GRID_CLASS: string =
+	"grid-cols-6";
 
 const Home: React.FC = () => {
 	useEffect(() => {
