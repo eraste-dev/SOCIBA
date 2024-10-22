@@ -24,7 +24,8 @@ const Card11: FC<Card11Props> = ({
 	post,
 	ratio = "aspect-w-1 aspect-h-1",
 }) => {
-	const { title, href, category, updated_at, location, location_description } = post;
+	const { title, href, category, updated_at, location, unlisted_city, location_description } =
+		post;
 	const [isHover, setIsHover] = useState(false);
 	const dispatch = useAppDispatch();
 	const history = useHistory();
@@ -67,16 +68,18 @@ const Card11: FC<Card11Props> = ({
 
 						<p className="relative text-xs text-primary-800 dark:text-neutral-100 ">
 							<span className="text-xs flex justify-items-center">
-								{location.name}
+								{location && location.name ? location.name : unlisted_city ?? ""}
 							</span>
-							<span className="text-xs text-clip ">{location_description}</span>
+							<span className="text-xs text-clip whitespace-normal break-words">
+								{location_description}
+							</span>
 						</p>
 					</div>
 
 					{/* grid lg:col-span-4 col-span-6 */}
 					{/* "grid-cols-2 md:grid-cols-3 lg:grid-cols-4" */}
 					{/* order-1 sm:order-1 */}
-					<div className="flex justify-start col-span-3 sm:col-span-1 sm:justify-end">
+					<div className="flex w-[80px] col-span-3 sm:col-span-1 justify-end">
 						{/*  grid grid-cols-subgrid lg:col-span-4 text-justify col-span-6 */}
 						<Card11Price item={post} />
 					</div>

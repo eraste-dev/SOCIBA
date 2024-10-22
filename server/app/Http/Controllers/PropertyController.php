@@ -63,7 +63,7 @@ class PropertyController extends Controller
             'content'              => 'nullable|string',
             'type'                 => 'nullable|string|in:LOCATION,BIEN EN VENTE,RESERVATION,AUTRE"',
             'status'               => 'nullable|string',
-            'location_id'          => 'nullable|string|exists:municipalities,id',
+            'location_id'          => 'nullable|string', // |exists:municipalities,id
             'unlisted_city'        => 'nullable|string',
             'location_description' => 'nullable|string',
             'price'                => 'nullable|numeric',
@@ -134,7 +134,7 @@ class PropertyController extends Controller
             $product->category_id          = $validatedData['category_id'];
             $product->content              = isset($validatedData['content']) && $validatedData['content'] !==  0 && $validatedData['content'] !== 1 ? $validatedData['content'] : null;
             $product->type                 = $validatedData['type'];
-            $product->location_id          = isset($validatedData['location_id']) ? $validatedData['location_id'] : null;
+            $product->location_id          = (isset($validatedData['location_id']) && $validatedData['location_id'] != 0 && $validatedData['location_id'] != "0") ? $validatedData['location_id'] : null;
             $product->unlisted_city        = isset($validatedData['unlisted_city']) ? $validatedData['unlisted_city'] : null;
             $product->location_description = $validatedData['location_description'];
             $product->price                = $validatedData['price'];

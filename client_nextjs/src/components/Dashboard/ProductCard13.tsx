@@ -33,6 +33,7 @@ export const ProductCard13 = ({ setIsHover, row, isHover }: ProductCard13Props) 
 		status,
 		images,
 		location,
+		unlisted_city,
 		location_description,
 		price,
 		periodicity,
@@ -91,7 +92,11 @@ export const ProductCard13 = ({ setIsHover, row, isHover }: ProductCard13Props) 
 									<FaMapMarkerAlt className="mr-1" />
 								</span>
 							)}
-							Commune: {location.name} <br />
+							{location && location.name ? `Commune : ${location.name}` : null}
+							{!location || (location && !location.name && unlisted_city)
+								? `Ville : ${unlisted_city}`
+								: null}
+							<br />
 							Quatier : {location_description}
 							{/* , {location.city?.name} */}
 						</div>

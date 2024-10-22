@@ -518,6 +518,8 @@ const DashboardSubmitPost = () => {
 				setreshrehPrice(value.price_second?.toString());
 			}
 			setDefaultValue(value);
+			console.log("product.price_second", product.price_second);
+			product && product.price_second && setreshrehPriceSecond(String(product.price_second) ?? "");
 			setImages(product.images.map((image) => image.image));
 			setImageFiles([]);
 			setVideos(product.videos.map((video) => video.src));
@@ -538,10 +540,10 @@ const DashboardSubmitPost = () => {
 	const showCaution = (): boolean => {
 		let condition: boolean =
 			getValues("type") === PRODUCT_TYPE[0] || product?.type === "LOCATION";
-			if(!getValues("type")) {
-				condition = true;
-			}
-			
+		if (!getValues("type")) {
+			condition = true;
+		}
+
 		return condition;
 	};
 
@@ -1229,21 +1231,20 @@ const DashboardSubmitPost = () => {
 														<div className="col-span-2">
 															<Label>
 																Prix par unité
-																<span className="text-red-500">
-																	*
-																</span>
+																{false && (
+																	<span className="text-red-500">
+																		*
+																	</span>
+																)}
 																<div className="flex items-center relative mt-2">
 																	<CurrencyInput
 																		id="input-currency"
 																		className="w-full rounded-md "
 																		placeholder="Entrer le montant"
 																		defaultValue={
-																			reshrehPriceSecond ??
 																			(product &&
 																				product.price_second) ??
-																			getValues(
-																				"price_second"
-																			)
+																			0
 																		}
 																		min={0}
 																		value={reshrehPriceSecond}
@@ -1254,28 +1255,16 @@ const DashboardSubmitPost = () => {
 																			name,
 																			values
 																		) => {
-																			console.log({
-																				value,
-																				name,
-																				values,
-																			});
-
 																			value &&
 																				setreshrehPriceSecond(
 																					value
 																				);
 																		}}
 																		{...register(
-																			"price_second",
-																			{
-																				required:
-																					currentType() ===
-																					PRODUCT_TYPE[
-																						TYPE_BIEN_EN_VENTE_KEY
-																					],
-																			}
+																			"price_second"
 																		)}
 																	/>
+																	{/* {required:currentType() ===PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY],} */}
 																	<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
 																		FCFA
 																	</span>
