@@ -23,6 +23,7 @@ const DashboardPosts = () => {
 	const dispatch = useDispatch();
 	const products = useSelector(PropertyAction.data)?.user;
 	const loading = useSelector(PropertyAction.data)?.user?.loading;
+	const rootLoading = useSelector(PropertyAction.loading);
 	const auth = useSelector(AuthAction.data);
 
 	const [useStateFilter, setUseStateFilter] = useState<IPropertyFilter>({});
@@ -54,7 +55,9 @@ const DashboardPosts = () => {
 	const CountByStatue = () => {
 		return (
 			<div className="flex justify-start">
-				<div className={`mb-1 mr-2 rounded-tl-lg rounded-lg p-3 text-center bg-gray-200 dark:bg-neutral-800`}>
+				<div
+					className={`mb-1 mr-2 rounded-tl-lg rounded-lg p-3 text-center bg-gray-200 dark:bg-neutral-800`}
+				>
 					<div> TOTAL </div>
 					<div className="text-2xl"> {products?.get?.length ?? 0} </div>
 				</div>
@@ -113,6 +116,8 @@ const DashboardPosts = () => {
 									linear={true}
 								/>
 							</div>
+
+							{loading || rootLoading ? <LoadingSpinner /> : null}
 
 							{products && products.get && products.get.length === 0 && (
 								<div className="mt-12 bg-white dark:bg-neutral-800 overflow-hidden sm:rounded-lg h-52">

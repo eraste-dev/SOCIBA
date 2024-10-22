@@ -148,10 +148,10 @@ const DashboardSubmitPost = () => {
 
 		// set location value
 		if (!hasUnlistedLocation()) {
+			data.location_id = getValues("location_id");
 			if (defaultValue) {
-				data.location_id = defaultValue.location_id;
 			} else if (locations && locations.length > 0) {
-				data.location_id = locations[0].id.toString();
+				// data.location_id = locations[0].id.toString();
 			}
 		} else {
 			data.location_id = undefined;
@@ -536,9 +536,12 @@ const DashboardSubmitPost = () => {
 	};
 
 	const showCaution = (): boolean => {
-		const condition: boolean =
+		let condition: boolean =
 			getValues("type") === PRODUCT_TYPE[0] || product?.type === "LOCATION";
-
+			if(!getValues("type")) {
+				condition = true;
+			}
+			
 		return condition;
 	};
 

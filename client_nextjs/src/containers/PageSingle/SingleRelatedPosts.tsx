@@ -31,7 +31,7 @@ const SingleRelatedPosts: FC<SingleRelatedPostsProps> = ({
 						<Heading className="mb-2 text-neutral-900 dark:text-neutral-50" desc="">
 							Annonces similaires
 						</Heading>
-						<div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-2">
+						<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4  gap-2 md:gap-2">
 							{related.map((post) => (
 								<div>
 									<Card11 key={post.id} post={post} />

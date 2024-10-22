@@ -67,7 +67,7 @@
 
 
 // CUSTOM
-@media (min-width: 576px) {
+@media (max-width: 576px) {
     .container {
         max-width: 100% !important;
     }

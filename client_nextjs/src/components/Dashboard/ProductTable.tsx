@@ -205,6 +205,12 @@ const ProductTable: FC<ProductTableProps> = ({ rows }) => {
 				}))}
 				renderActions={renderActions}
 			/>
+
+			<ConfirmDialog
+				handleClose={() => setOpenDelete(false)}
+				open={openDelete}
+				row={rowSelected}
+			/>
 		</div>
 	);
 };

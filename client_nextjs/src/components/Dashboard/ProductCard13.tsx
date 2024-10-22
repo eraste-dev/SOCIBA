@@ -40,6 +40,7 @@ export const ProductCard13 = ({ setIsHover, row, isHover }: ProductCard13Props) 
 	} = row;
 
 	const handleChangeStatus = (row: IProduct, status: STATUS_LABEL) => {
+		console.log("handleChangeStatus", row);
 		const formData: FormData = convertPayloadToFormData(
 			mapIProductToProductRequest({ ...row, status: status })
 		);
