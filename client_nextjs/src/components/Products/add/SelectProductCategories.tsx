@@ -12,7 +12,7 @@ const SelectProductCategories: FC<SelectProductCategoriesProps> = ({ options, on
 	const classNameSelected = "cursor-pointer bg-yellow-300 rounded-md p-2 m-2";
 
 	if (!options || options.length === 0) {
-		return <p className="p-2 italic text-neutral-400 mt-5">Selectionner une catégorie</p>;
+		return <p className="p-2 italic text-neutral-400 mt-5">Choisir une catégorie</p>;
 	}
 
 	return (

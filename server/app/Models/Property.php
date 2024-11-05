@@ -151,6 +151,7 @@ class Property extends Model
      */
     public function get_images()
     {
+        // dd(PropertyImages::where('property_id', $this->id)->get());
         return PropertyImagesResource::collection(PropertyImages::where('property_id', $this->id)->get());
     }
 

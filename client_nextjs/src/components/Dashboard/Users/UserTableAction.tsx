@@ -13,7 +13,7 @@ export interface UserTableActionProps {
 
 const UserTableAction: FC<UserTableActionProps> = ({ row, handleOpenDelete, handleOpenUpdate, handleChangeView }) => {
 	return (
-		<ul className="flex space-x-1">
+		<ul className="flex space-x-1 list-none">
 			<li className="mr-2 ">
 				<button onClick={() => handleChangeView("USER_PRODUCT")}>
 					<FaEye size={25} className="text-green-500 dark:text-green-300" />

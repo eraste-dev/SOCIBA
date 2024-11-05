@@ -36,7 +36,7 @@ const WidgetCategoryDetailWithSelect: FC<WidgetCategoryDetailWithSelectProps> = 
 
 		let data: IListBoxSelectFilterWidget[] = [
 			{
-				name: "Tous(*)",
+				name: "Choisir",
 				value: "*",
 				selected: false,
 			},

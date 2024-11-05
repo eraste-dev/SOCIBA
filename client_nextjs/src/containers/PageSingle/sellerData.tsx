@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 // Données statiques du vendeur
 const sellerData = {
-	name: "BAJORA",
+	name: "BAJORAH",
 	phone: "+1 (123) 456-7890",
 	whatsapp: "+1 (123) 456-7890",
 };
@@ -18,7 +18,7 @@ export interface ContactSellerProps {
 
 const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, sms }) => {
 	const classNameItem: string =
-		"text-white font-bold py-2 px-4 rounded-lg mr-2 flex items-center justify-center text-center";
+		"text-white font-bold py-2 pr-1 pl-0 sm:px-4 rounded-lg mr-2 flex items-center justify-center text-center";
 	const iconSize = 24;
 
 	const handleCall = () => {
@@ -27,7 +27,11 @@ const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, s
 	};
 
 	const handleWhatsApp = () => {
-		const _wh = whatsapp ? whatsapp : sellerData.whatsapp;
+		// https://wa.me/447838522154
+		let _wh = whatsapp ? whatsapp : sellerData.whatsapp;
+		if (!_wh.includes("225")) {
+			_wh = "225" + _wh;
+		}
 		return `https://wa.me/${_wh}?text=Votre%20annonce%20publi%C3%A9e%20m'int%C3%A9resse.%20Cliquez%20sur%20l'URL%20ci-dessous%3A%0A%0A${productLink}`;
 	};
 
@@ -43,8 +47,7 @@ const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, s
 			<div className="grid grid-cols-3 gap-1 sm:gap-6 ">
 				{/* bg-green-500 hover:bg-green-600  */}
 				<a
-					className={`hover:bg-green-600 ${classNameItem}`}
-					style={{ background: "#3f8d2f" }}
+					className={`bg-primary-700 hover:bg-primary ${classNameItem}`}
 					href={handleCall()}
 					target="_blank"
 				>

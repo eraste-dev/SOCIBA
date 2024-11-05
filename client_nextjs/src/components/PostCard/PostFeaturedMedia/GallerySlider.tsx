@@ -18,11 +18,28 @@ const GallerySlider: FC<GallerySliderProps> = ({ galleryImgs, uniqueClass, singl
 		direction: document.querySelector("html")?.getAttribute("dir") === "rtl" ? "rtl" : "ltr",
 		gap: 0,
 		perView: 1,
+		swipeThreshold: 80, // Adjust this value for swipe sensitivity
+		dragThreshold: 120, // Adjust this for drag sensitivity
+		touchAngle: 45, // Adjust if needed
+		keyboard: true, // Allow keyboard arrow navigation
 	});
 
 	useEffect(() => {
 		MY_GLIDE.mount();
 	}, [MY_GLIDE, galleryImgs]);
+
+	useEffect(() => {
+		const handleTouchStart = (event: any) => {
+			console.log("Touch start detected:", event);
+		};
+
+		const sliderElement = document.querySelector(`.${UNIQUE_CLASS}`);
+		sliderElement?.addEventListener("touchstart", handleTouchStart);
+
+		return () => {
+			sliderElement?.removeEventListener("touchstart", handleTouchStart);
+		};
+	}, []);
 
 	return (
 		<div className={`${UNIQUE_CLASS} group relative z-10 w-full h-full`}>
@@ -30,16 +47,11 @@ const GallerySlider: FC<GallerySliderProps> = ({ galleryImgs, uniqueClass, singl
 				<ul className="glide__slides h-full">
 					{galleryImgs.map((item, index) => (
 						<li className="glide__slide h-full" key={index}>
-							{!single ? (
-								<NcImage src={item} containerClassName="w-full h-full" />
-							) : (
-								<img
-									src={item}
-									className="mx-auto"
-									style={{ width: "auto", height: "100%" }}
-									alt=""
-								/>
-							)}
+							<img
+								src={item}
+								className="mx-auto object-cover w-full h-full"
+								alt=""
+							/>
 						</li>
 					))}
 				</ul>

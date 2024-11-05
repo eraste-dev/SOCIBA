@@ -9,31 +9,35 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .hiddenScrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 //
 .nc-will-change-transform {
   will-change: transform;
 }
+
 .nc-will-change-top {
   will-change: top;
 }
 
 //
 .nc-card-title {
-  @apply transition-colors  hover:text-primary-900 dark:hover:text-primary-300 duration-75;
+  @apply transition-colors hover:text-primary-900 dark:hover:text-primary-300 duration-75;
 }
 
 //
 .z-max {
   z-index: 99999999;
 }
+
 //
 .nc-PostCardCommentBtn,
 .nc-PostCardLikeAction,
-.nc-CommentCardLikeReply > button {
+.nc-CommentCardLikeReply>button {
   &:hover {
     span {
       color: inherit;
@@ -47,17 +51,18 @@
 }
 
 .nc-dark-box-bg-has-hover {
-  @apply dark:bg-neutral-800 dark:bg-opacity-30  dark:border dark:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:shadow-2xl;
+  @apply dark:bg-neutral-800 dark:bg-opacity-30 dark:border dark:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:shadow-2xl;
 }
 
 .nc-dark-box-bg {
-  @apply dark:bg-neutral-800 dark:bg-opacity-30  dark:border dark:border-neutral-700 dark:shadow-2xl;
+  @apply dark:bg-neutral-800 dark:bg-opacity-30 dark:border dark:border-neutral-700 dark:shadow-2xl;
 }
 
 //
 .nc-origin-100 {
   transform-origin: 100% 50% 0px;
 }
+
 .nc-origin-50 {
   transform-origin: 50% 50% 0px;
 }
@@ -84,6 +89,7 @@
   width: 80px;
   height: 80px;
 }
+
 .lds-ellipsis div {
   position: absolute;
   top: 33px;
@@ -93,42 +99,52 @@
   background: #fff;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
+
 .lds-ellipsis div:nth-child(1) {
   left: 8px;
   animation: lds-ellipsis1 0.6s infinite;
 }
+
 .lds-ellipsis div:nth-child(2) {
   left: 8px;
   animation: lds-ellipsis2 0.6s infinite;
 }
+
 .lds-ellipsis div:nth-child(3) {
   left: 32px;
   animation: lds-ellipsis2 0.6s infinite;
 }
+
 .lds-ellipsis div:nth-child(4) {
   left: 56px;
   animation: lds-ellipsis3 0.6s infinite;
 }
+
 @keyframes lds-ellipsis1 {
   0% {
     transform: scale(0);
   }
+
   100% {
     transform: scale(1);
   }
 }
+
 @keyframes lds-ellipsis3 {
   0% {
     transform: scale(1);
   }
+
   100% {
     transform: scale(0);
   }
 }
+
 @keyframes lds-ellipsis2 {
   0% {
     transform: translate(0, 0);
   }
+
   100% {
     transform: translate(24px, 0);
   }
@@ -148,6 +164,7 @@
     from {
       transform: rotate(0deg);
     }
+
     to {
       transform: rotate(360deg);
     }
@@ -160,6 +177,7 @@
 
 //
 .nc-section-rounded-none {
+
   *[class*="rounded"],
   *[class*="nc-box"] {
     border-radius: 0 !important;
@@ -167,8 +185,43 @@
 }
 
 .nc-section-rounded-md {
+
   *[class*="rounded"],
   *[class*="nc-box"] {
     @apply rounded-md #{!important};
   }
 }
+
+
+
+
+// @media screen and (max-width: 768px) {
+//   .nc-SectionHero .slick-slide {
+//     height: 40vh !important;
+//   }
+
+// }
+
+// .nc-SectionHero {
+//   .slick-list {
+//     height: 100%;
+
+//     .slick-track {
+//       div {
+//         height: 100%;
+
+//         div {
+//           height: 100%;
+
+//           div {
+//             height: 100%;
+
+//             div {
+//               height: 100%;
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// }

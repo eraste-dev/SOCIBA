@@ -11,6 +11,9 @@ import NotifyDropdown from "./NotifyDropdown";
 import AvatarDropdown from "./AvatarDropdown";
 import LoginDropdown from "./LoginDropdown";
 import SearchHeader from "./SearchHeader";
+import { useAppDispatch, useAppSelector } from "app/hooks";
+import { selectSidebarState, toggleSidebar } from "app/reducer/darkmode/darkmode";
+import { IoCloseOutline, IoMenuOutline } from "react-icons/io5";
 
 export const NavAuthAction: FC<{ user?: IUser }> = ({ user }) => {
 	if (user) {
@@ -24,7 +27,7 @@ export const NavAuthAction: FC<{ user?: IUser }> = ({ user }) => {
 			</ButtonSecondary>
 
 			<ButtonPrimary href={"/signup"} sizeClass="px-4 py-2 sm:px-5">
-				Déposer une annonce
+				Publier une annonce
 			</ButtonPrimary>
 		</>
 	);
@@ -37,6 +40,8 @@ export interface MainNav2MobileProps {
 }
 
 const MainNav2Mobile: FC<MainNav2MobileProps> = ({ isDashboard, user, handleClickAddPost }) => {
+	const isSidebarOpen = useAppSelector(selectSidebarState);
+	const dispatch = useAppDispatch();
 	const classNameContainer = isDashboard() ? "px-0" : "container";
 
 	return (
@@ -47,9 +52,19 @@ const MainNav2Mobile: FC<MainNav2MobileProps> = ({ isDashboard, user, handleClic
 				{/* COL 1 */}
 				<div
 					className={`w-full flex justify-${
-						isDashboard() ? "end" : "between"
+						isDashboard() ? (isSidebarOpen ? "end" : "between") : "between"
 					} flex-grow items-center space-x-3`}
 				>
+					{isDashboard() ? (
+						<button
+							className="md:hidden text-2xl p-2 text-primary"
+							onClick={() => dispatch(toggleSidebar())}
+							aria-label="Toggle Sidebar"
+						>
+							{isSidebarOpen ? <IoCloseOutline /> : <IoMenuOutline />}
+						</button>
+					) : null}
+
 					{!isDashboard() && (
 						<>
 							<Logo width="auto" height="40px" />

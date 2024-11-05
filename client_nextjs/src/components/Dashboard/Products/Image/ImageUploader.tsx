@@ -49,8 +49,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 	return (
 		<div className="p-4 bg-white rounded-lg shadow-md">
 			<label className="block text-sm font-medium text-gray-700">Images</label>
+
 			<div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-				{/* <p className="text-xs text-gray-500">{{ textOne }}</p> */}
+				<p className="text-xs text-gray-500">
+					Ajoutez plusieurs vidéos pour augmenter vos chances d'être contacté
+				</p>
 
 				<div className="flex justify-end">
 					{images.length < maxImages && (

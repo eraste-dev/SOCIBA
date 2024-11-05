@@ -23,7 +23,7 @@ export interface SelectProductTypeProps {
 const SelectProductType: FC<SelectProductTypeProps> = ({ options, onChangeOption, selected }) => {
 	const className = "cursor-pointer bg-gray-200 rounded-md p-2 m-2 dark:bg-neutral-800";
 	const classNameSelected =
-		"cursor-pointer bg-yellow-300 rounded-md p-2 m-2 dark:bg-yellow-800 dark:text-white";
+		"cursor-pointer bg-primary-800 text-white rounded-md p-2 m-2 dark:bg-primary-800 dark:text-white";
 
 	const noneSelection = () => {
 		if (options.filter((option) => option === selected).length === 0) {

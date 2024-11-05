@@ -13,6 +13,8 @@ const POSTS = DEMO_POSTS;
 
 export const LIST_GRID_CLASS: string =
 	"grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4";
+export const LIST_RELATED_GRID_CLASS: string =
+	"grid-cols-6";
 
 const Home: React.FC = () => {
 	useEffect(() => {
@@ -30,20 +32,20 @@ const Home: React.FC = () => {
 	return (
 		<div className="nc-PageHomeDemo3 overflow-hidden relative">
 			<Helmet>
-				<title>BAJORA || Annonces gratuites en Côte d'Ivoire</title>
+				<title>BAJORAH || Annonces gratuites en Côte d'Ivoire</title>
 			</Helmet>
 
 			{/* ======== BG GLASS ======== */}
 			<BgGlassmorphism />
 			{/* ======== ALL SECTIONS ======== */}
 
+			{/* === SECTION HERO === */}
+			{/* className="pt-10 pb-16 md:py-16 lg:py-28" */}
+			<SectionHeroSlider className="pb-0" />
+			{/* === SECTION HERO === */}
+
 			{/* ======= START CONTAINER ============= */}
 			<div className="container relative">
-				{/* === SECTION HERO === */}
-				{/* className="pt-10 pb-16 md:py-16 lg:py-28" */}
-				<SectionHeroSlider className="pb-0" />
-				{/* === SECTION HERO === */}
-
 				{/* === SECTION CITIES === */}
 				{/* <SectionGridCitiesBox
 					headingCenter={false}
@@ -53,7 +55,7 @@ const Home: React.FC = () => {
 
 				{true ? (
 					<SectionSliderCitiesTwo
-						className="mb-2"
+						className="mb-3"
 						categoryCardType="card1"
 						sliderStype="style1"
 						heading=" "
@@ -61,7 +63,7 @@ const Home: React.FC = () => {
 					/>
 				) : (
 					<SectionSliderCities
-						className="mb-2"
+						className="mb-3"
 						categoryCardType="card1"
 						sliderStype="style1"
 						heading=" "
@@ -81,9 +83,9 @@ const Home: React.FC = () => {
 
 				{/* === SECTION TOP POSTS === */}
 				<SectionSliderPosts
-					className="pt-1 pb-1 my-0"
+					className="pt-1 pb-3 my-0"
 					postCardName="card11"
-					heading="Publier recement"
+					heading="Les plus récentes"
 					subHeading=""
 					uniqueSliderClass="slider-top"
 				/>
