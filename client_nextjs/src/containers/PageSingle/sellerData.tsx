@@ -18,7 +18,7 @@ export interface ContactSellerProps {
 
 const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, sms }) => {
 	const classNameItem: string =
-		"text-white font-bold py-2 px-4 rounded-lg mr-2 flex items-center justify-center text-center";
+		"text-white font-bold py-2 pr-1 pl-0 sm:px-4 rounded-lg mr-2 flex items-center justify-center text-center";
 	const iconSize = 24;
 
 	const handleCall = () => {
@@ -47,8 +47,7 @@ const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, s
 			<div className="grid grid-cols-3 gap-1 sm:gap-6 ">
 				{/* bg-green-500 hover:bg-green-600  */}
 				<a
-					className={`hover:bg-green-600 ${classNameItem}`}
-					style={{ background: "#3f8d2f" }}
+					className={`bg-primary-700 hover:bg-primary ${classNameItem}`}
 					href={handleCall()}
 					target="_blank"
 				>

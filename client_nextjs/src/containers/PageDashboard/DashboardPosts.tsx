@@ -106,7 +106,7 @@ const DashboardPosts = () => {
 							</div>
 
 							<div className="bg-white dark:bg-neutral-800 my-5">
-								<FloatFilter
+								{false && <FloatFilter
 									useStateFilter={useStateFilter}
 									setUseStateFilter={setUseStateFilter}
 									showFilter={showFilter}
@@ -114,7 +114,7 @@ const DashboardPosts = () => {
 									fetchAll={fetchAll}
 									noFloating={true}
 									linear={true}
-								/>
+								/>}
 							</div>
 
 							{loading || rootLoading ? <LoadingSpinner /> : null}
