@@ -14,6 +14,7 @@ class ImageService
         }
 
         $imagePath = public_path('assets' . $imageName);
+        // dd(file_exists($imagePath));
         if (file_exists($imagePath)) {
             return asset('assets' . $imageName);
         }

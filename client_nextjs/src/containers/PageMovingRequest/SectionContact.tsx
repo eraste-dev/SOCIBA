@@ -74,7 +74,7 @@ const SectionContact: FC<SectionContactProps> = () => {
 			<div>
 				<NcImage src={Image} />
 			</div>
-			<div className=" flex justify-center">
+			<div className="block sm:flex justify-center">
 				{loading && <Loading />}
 
 				{isSubmitSuccessful && success && (
@@ -94,18 +94,14 @@ const SectionContact: FC<SectionContactProps> = () => {
 				)}
 
 				{!isSubmitSuccessful && !success && (
-					<div className="w-2/3">
+					<div className="w-3/3 sm:w-2/3">
 						<div className="fe">
 							<p className="mt-2 text-lg font-bold text-primary-800 text-center mb-2">
-								Formulaire de démenagement
-							</p>
-
-							<p className="text-base font-bold text-center mb-2">
 								Planifier votre démenagement selon votre disponibilité :
 							</p>
 						</div>
 
-						<form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit(onSubmit)}>
+						<form className="grid grid-cols-1 gap-2" onSubmit={handleSubmit(onSubmit)}>
 							<label className="block">
 								<Label>Nom & Prénoms</Label>
 								<Input

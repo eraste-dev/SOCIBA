@@ -1,8 +1,5 @@
 import { FC, useEffect } from "react";
 import Heading from "components/Heading/Heading";
-import Glide from "@glidejs/glide";
-import { PostDataType } from "data/types";
-import NextPrev from "components/NextPrev/NextPrev";
 import Card11 from "components/Cards/Card11/Card11";
 import ncNanoId from "utils/ncNanoId";
 import { useAppDispatch, useAppSelector } from "app/hooks";
@@ -10,6 +7,8 @@ import { PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
 import { fetchFeatureProperties } from "app/axios/actions/api.action";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
+import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
 
 export interface SectionSliderPostsProps {
 	className?: string;
@@ -27,7 +26,7 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 	className = "",
 	postCardName = "card4",
 	sliderStype = "style1",
-	perView = 6.2,
+	perView = 5.2,
 	uniqueSliderClass,
 }) => {
 	const UNIQUE_CLASS = "SectionSliderPosts_" + ncNanoId(uniqueSliderClass);
@@ -42,25 +41,6 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 			dispatch(fetchFeatureProperties({ top: true, limit: 8 }));
 		}
 	}, [dispatch, fetchFeatureProperties, data, loading]);
-
-	const MY_GLIDE = new Glide(`.${UNIQUE_CLASS}`, {
-		// @ts-ignore
-		direction: document.querySelector("html")?.getAttribute("dir") === "rtl" ? "rtl" : "ltr",
-		perView: perView,
-		gap: 20,
-		bound: true,
-		breakpoints: {
-			1600: { perView: perView },
-			1280: { perView: 4.2 },
-			1023: { perView: 3.2, gap: 8 },
-			767: { perView: 2.2, gap: 8 },
-		},
-	});
-
-	useEffect(() => {
-		if (!MY_GLIDE && data) return;
-		MY_GLIDE.mount();
-	}, [MY_GLIDE]);
 
 	const getPostComponent = () => {
 		switch (postCardName) {
@@ -101,6 +81,8 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 		}
 	};
 
+	const handleDragStart = (e: any) => e.preventDefault();
+
 	const CardName = getPostComponent();
 
 	return (
@@ -109,25 +91,33 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 				{renderHeading()}
 
 				{loading && loading && <CardSkeleton arrayLength={4} />}
+				<AliceCarousel
+					mouseTracking
+					items={
+						data &&
+						data.map((item, index) => (
+							<li
+								key={index}
+								className={`list-none h-auto px-1  ${
+									sliderStype === "style2" ? "pb-12 xl:pb-16" : ""
+								}`}
+							>
+								<CardName post={item} />
+							</li>
+						))
+					}
+					responsive={{
+						0: { items: 2 },
+						1024: { items: 5 },
+					}}
+					controlsStrategy="alternate"
+					autoPlay={false}
+					autoPlayInterval={3000}
+					disableButtonsControls={true}
+					disableDotsControls={true}
+					infinite
 
-				<div className="glide__track" data-glide-el="track">
-					<ul className="glide__slides">
-						{data &&
-							data.map((item, index) => (
-								<li
-									key={index}
-									className={`glide__slide h-auto  ${
-										sliderStype === "style2" ? "pb-12 xl:pb-16" : ""
-									}`}
-								>
-									<CardName post={item} />
-								</li>
-							))}
-					</ul>
-				</div>
-				{sliderStype === "style2" && (
-					<NextPrev btnClassName="w-12 h-12" containerClassName="justify-center" />
-				)}
+				/>
 			</div>
 		</div>
 	);

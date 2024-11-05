@@ -5,6 +5,7 @@ import MediaVideo from "./MediaVideo";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
 import { IProduct } from "app/reducer/products/product";
 import MediaVideoTwo from "./MediaVideoTwo";
+import GallerySliderThree from "./GallerySliderThree";
 
 export interface PostFeaturedMediaProps {
 	className?: string;
@@ -53,11 +54,25 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
 
 		const arrayImgs: string[] = images.map((item) => item.image);
 		return (
-			<GallerySlider
-				single={single}
-				galleryImgs={arrayImgs}
-				uniqueClass={`PostFeaturedGallery_${id}`}
-			/>
+			<>
+				{false && (
+					<div className="h-[100px] w-[100px] overflow-hidden">
+						<div className="flex justify-center bg-gray-100 dark:bg-neutral-800">
+							<GallerySliderThree
+								single={single}
+								galleryImgs={arrayImgs}
+								uniqueClass={`PostFeaturedGallery_${id}`}
+							/>
+						</div>
+					</div>
+				)}
+
+				<GallerySlider
+					single={single}
+					galleryImgs={arrayImgs}
+					uniqueClass={`PostFeaturedGallery_${id}`}
+				/>
+			</>
 		);
 	};
 

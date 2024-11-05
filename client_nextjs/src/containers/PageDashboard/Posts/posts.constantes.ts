@@ -11,7 +11,8 @@ export const mapIProductToProductRequest = (iProduct: IProduct): ProductRequest 
 		content: iProduct.content,
 		type: iProduct.type,
 		status: iProduct.status,
-		location_id: String(iProduct.location.id),
+		location_id:
+			iProduct.location && iProduct.location.id ? String(iProduct.location.id) : undefined,
 		location_description: iProduct.location_description,
 		price: iProduct.price,
 		price_second: iProduct.price_second,

@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 const Page404: React.FC = () => (
 	<div className="nc-Page404">
 		<Helmet>
-			<title>Sociba | Page introuvable</title>
+			<title>BAJORAH | Page introuvable</title>
 		</Helmet>
 		<div className="container relative py-16 lg:py-20">
 			{/* HEADER */}

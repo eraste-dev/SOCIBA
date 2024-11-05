@@ -4,7 +4,7 @@ import ButtonPrimary from "components/Button/ButtonPrimary";
 import Select from "components/Form/Select/Select";
 import Textarea from "components/Textarea/Textarea";
 import Label from "components/Form/Label/Label";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, set } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 import { useAppSelector } from "app/hooks";
@@ -50,6 +50,7 @@ import {
 	TYPE_RESERVATION_KEY,
 } from "./posts.constantes";
 import VideoUploader from "components/Dashboard/Products/Video/VideoUploader";
+import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 
 const DashboardSubmitPost = () => {
 	const CURRENCY: string = "FCFA";
@@ -69,6 +70,7 @@ const DashboardSubmitPost = () => {
 	const categories = useSelector(CategoryAction.data);
 	const [_hasOtherKey, set_hasOtherKey] = useState("");
 	const [resfreshLocaionSelected, setresfreshLocaionSelected] = useState("");
+	const [submitting, setSubmitting] = useState(false);
 	const [reshrehPrice, setreshrehPrice] = useState("");
 	const [reshrehPriceSecond, setreshrehPriceSecond] = useState("");
 	const sub_categories: IPropertySubCategory[] = CATEGORIES_SUB; //useSelector(CategorySubAction.data);
@@ -86,9 +88,17 @@ const DashboardSubmitPost = () => {
 	const [videoFiles, setVideoFiles] = useState<File[]>([]);
 	const [tmpcatId, settmpcatId] = useState(0);
 
-	const { register, handleSubmit, watch, setValue, getValues } = useForm<ProductRequest>();
+	const {
+		register,
+		handleSubmit,
+		watch,
+		setValue,
+		getValues,
+		formState: { errors, isSubmitting },
+	} = useForm<ProductRequest>();
 
 	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
+		setSubmitting(true);
 		console.log("SubmitHandler imageFiles", imageFiles);
 		let formData = new FormData(); // initialize form data
 		const defaultType: string =
@@ -138,10 +148,10 @@ const DashboardSubmitPost = () => {
 
 		// set location value
 		if (!hasUnlistedLocation()) {
+			data.location_id = getValues("location_id");
 			if (defaultValue) {
-				data.location_id = defaultValue.location_id;
 			} else if (locations && locations.length > 0) {
-				data.location_id = locations[0].id.toString();
+				// data.location_id = locations[0].id.toString();
 			}
 		} else {
 			data.location_id = undefined;
@@ -154,8 +164,8 @@ const DashboardSubmitPost = () => {
 		if (product && productId) {
 			formData.append("id", productId);
 		}
-
 		dispatch(postProduct(formData));
+		// setSubmitting(false);
 	};
 
 	const getAreaUnitValue = (data: ProductRequest): IPRODUCT_AREA_UNIT_KEY => {
@@ -508,6 +518,8 @@ const DashboardSubmitPost = () => {
 				setreshrehPrice(value.price_second?.toString());
 			}
 			setDefaultValue(value);
+			console.log("product.price_second", product.price_second);
+			product && product.price_second && setreshrehPriceSecond(String(product.price_second) ?? "");
 			setImages(product.images.map((image) => image.image));
 			setImageFiles([]);
 			setVideos(product.videos.map((video) => video.src));
@@ -526,8 +538,11 @@ const DashboardSubmitPost = () => {
 	};
 
 	const showCaution = (): boolean => {
-		const condition: boolean =
+		let condition: boolean =
 			getValues("type") === PRODUCT_TYPE[0] || product?.type === "LOCATION";
+		if (!getValues("type")) {
+			condition = true;
+		}
 
 		return condition;
 	};
@@ -648,6 +663,7 @@ const DashboardSubmitPost = () => {
 				variant: "success",
 				autoHideDuration: 1000,
 			});
+			setSubmitting(false);
 			history.push(route("dashboard"));
 		}
 	}, [snackbar, success, loading, history]);
@@ -672,185 +688,114 @@ const DashboardSubmitPost = () => {
 	return (
 		<div className="md:p-6">
 			<h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-200 mb-5">
-				Rédigez votre annonce
+				{isSubmitting ? "En cours..." : "Rédigez votre annonce"}
 			</h3>
-			<form className="" onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-				<div
-					className="relative overflow-auto p-2"
-					style={{ height: "calc(100vh - 230px)" }}
-				>
-					{/* GRID CONTAINER */}
-					<div className="grid md:grid-cols-5 gap-6">
-						{/* #1 */}
-						<div className="col-span-6 lg:col-span-3">
-							{/* SECTION 01 */}
-							<div className="bg-white dark:bg-neutral-900">
-								<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
-									<div className="grid md:grid-cols-2 gap-6 mb-5">
-										{/* TYPE */}
-										<label className="block col-span-4">
-											<Label>
-												Type d'offre <span className="text-red-500">*</span>
-											</Label>
 
-											<SelectProductType
-												options={PRODUCT_TYPE}
-												onChangeOption={(value) => {
-													setValue("type", value);
-													if (GET_CATEGORIES()[0].id) {
-														setValue(
-															"category_id",
-															GET_CATEGORIES()[0].id
-														);
-														settmpcatId(GET_CATEGORIES()[0].id);
-													}
-													console.log({
-														category_id: getValues("category_id"),
-														type: getValues("type"),
-														hasResidence: hasResidence(),
-													});
-												}}
-												selected={watch("type") ?? PRODUCT_TYPE[0]}
-											/>
-											<ErrorMessage
-												errors={errorArray}
-												error="type"
-												customMessage="Veuillez choisir un type d'offre"
-											/>
-										</label>
+			{submitting && (
+				<div className="absolute top-0 left-0 w-full h-full">
+					<div className="flex justify-center items-center h-[100vh] w-[80vw] bg-gray-100 dark:bg-neutral-500">
+						<LoadingSpinner />
+					</div>
+				</div>
+			)}
 
-										{/* CATEGORY */}
-										<label className="block col-span-4">
-											<div>
+			<div className={submitting ? `opacity-20 cursor-none` : ``}>
+				<form className="" onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+					<div
+						className="relative overflow-auto p-2"
+						style={{ height: "calc(100vh - 230px)" }}
+					>
+						{/* GRID CONTAINER */}
+						<div className="grid md:grid-cols-5 gap-6">
+							{/* #1 */}
+							<div className="col-span-6 lg:col-span-3">
+								{/* SECTION 01 */}
+								<div className="bg-white dark:bg-neutral-900">
+									<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
+										<div className="grid md:grid-cols-2 gap-6 mb-5">
+											{/* TYPE */}
+											<label className="block col-span-4">
 												<Label>
-													Type de bien{" "}
+													Type d'offre{" "}
 													<span className="text-red-500">*</span>
-													{/* {defaultValue?.category_id} */}
 												</Label>
 
-												<div className="block md:col-span-2 ">
-													<Select
-														name="category_id"
-														onChange={(event) => {
-															settmpcatId(
-																parseInt(event.target.value)
+												<SelectProductType
+													options={PRODUCT_TYPE}
+													onChangeOption={(value) => {
+														setValue("type", value);
+														if (GET_CATEGORIES()[0].id) {
+															setValue(
+																"category_id",
+																GET_CATEGORIES()[0].id
 															);
+															settmpcatId(GET_CATEGORIES()[0].id);
+														}
+														false &&
+															console.log({
+																category_id:
+																	getValues("category_id"),
+																type: getValues("type"),
+																hasResidence: hasResidence(),
+															});
+													}}
+													selected={watch("type") ?? PRODUCT_TYPE[0]}
+												/>
+												<ErrorMessage
+													errors={errorArray}
+													error="type"
+													customMessage="Veuillez choisir un type d'offre"
+												/>
+											</label>
 
-															event.target.value &&
-																setValue(
-																	"category_id",
+											{/* CATEGORY */}
+											<label className="block col-span-4">
+												<div>
+													<Label>
+														Type de bien{" "}
+														<span className="text-red-500">*</span>
+														{/* {defaultValue?.category_id} */}
+													</Label>
+
+													<div className="block md:col-span-2 ">
+														<Select
+															name="category_id"
+															onChange={(event) => {
+																settmpcatId(
 																	parseInt(event.target.value)
 																);
 
-															set_hasOtherKey(event.target.value);
+																event.target.value &&
+																	setValue(
+																		"category_id",
+																		parseInt(event.target.value)
+																	);
 
-															console.log(
-																"category_id",
-																event.target.value,
-																getValues("category_id"),
-																tmpcatId
-															);
-														}}
-													>
-														<option>Choix du type de bien</option>
+																set_hasOtherKey(event.target.value);
 
-														{GET_CATEGORIES() &&
-															GET_CATEGORIES().map((category) => (
-																<option
-																	key={category.id}
-																	value={category.id}
-																	selected={isCategorySelected(
-																		category
-																	)}
-																>
-																	{category.name}
-																</option>
-															))}
-													</Select>
-												</div>
-											</div>
-											<div>
-												<ErrorMessage
-													errors={errorArray}
-													error="category_id"
-													customMessage="Veuillez choisir un type de bien"
-												/>
-											</div>
-										</label>
+																console.log(
+																	"category_id",
+																	event.target.value,
+																	getValues("category_id"),
+																	tmpcatId
+																);
+															}}
+														>
+															<option>Choix du type de bien</option>
 
-										{/* DETAIL CATEGORY */}
-										{canShowDetailCategory() && (
-											<label className="block col-span-4">
-												<div className="grid grid-cols-1 gap-6">
-													<div>
-														<Label>
-															{getTypeDeteailLabel()}
-															{/* <span className="text-red-500">*</span> */}
-														</Label>
-
-														<div className="block md:col-span-2 ">
-															{/* SELECT_HOME_TYPE */}
-															{!canShowOtherInput() &&
-																SUB_CATEGORIES() &&
-																SUB_CATEGORIES().length > 0 && (
-																	<Select
-																		onChange={(event) => {
-																			event.target.value &&
-																				setValue(
-																					"home_type",
-																					event.target
-																						.value
-																				);
-
-																			set_hasOtherKey(
-																				event.target.value
-																			);
-																		}}
+															{GET_CATEGORIES() &&
+																GET_CATEGORIES().map((category) => (
+																	<option
+																		key={category.id}
+																		value={category.id}
+																		selected={isCategorySelected(
+																			category
+																		)}
 																	>
-																		<option>Choix</option>
-																		{SUB_CATEGORIES() &&
-																			SUB_CATEGORIES().map(
-																				(c) => (
-																					<option
-																						key={c.code}
-																						value={
-																							c.name
-																						}
-																						selected={
-																							c.name ===
-																							getValues(
-																								"home_type"
-																							)
-																						}
-																					>
-																						{c.name}
-																					</option>
-																				)
-																			)}
-																	</Select>
-																)}
-
-															{/* INPUT_HOME_TYPE */}
-															{}
-															{canShowOtherInput() && (
-																<>
-																	<Input
-																		autoComplete="on"
-																		name="home_type"
-																		maxLength={20}
-																		onChange={(e) => {
-																			setValue(
-																				"home_type",
-																				e.target.value
-																			);
-																			set_hasOtherKey(
-																				e.target.value
-																			);
-																		}}
-																	/>
-																</>
-															)}
-														</div>
+																		{category.name}
+																	</option>
+																))}
+														</Select>
 													</div>
 												</div>
 												<div>
@@ -861,166 +806,291 @@ const DashboardSubmitPost = () => {
 													/>
 												</div>
 											</label>
-										)}
 
-										{/* NOMBRE DE PIECE */}
-										{showNumberOfRooms() && (
-											<label className="block col-span-4">
-												<div className="grid grid-cols-1 gap-6">
-													<div>
-														<Label>Nombre de pièces</Label>
+											{/* DETAIL CATEGORY */}
+											{canShowDetailCategory() && (
+												<label className="block col-span-4">
+													<div className="grid grid-cols-1 gap-6">
+														<div>
+															<Label>
+																{getTypeDeteailLabel()}
+																{/* <span className="text-red-500">*</span> */}
+															</Label>
 
-														<div className="block md:col-span-2 ">
-															<Input
-																name="area_count"
-																autoComplete="on"
-																onChange={(event) => {
-																	event.target.value &&
-																		setValue(
-																			"area_count",
-																			parseInt(
-																				event.target.value
-																			)
-																		);
-																}}
-															></Input>
-														</div>
-													</div>
-												</div>
-												<div>
-													<ErrorMessage
-														errors={errorArray}
-														error="category_id"
-														customMessage="Veuillez choisir un type de bien"
-													/>
-												</div>
-											</label>
-										)}
-
-										{/* DETAIL CATEGORY */}
-										{currentType() === "BIEN EN VENTE" &&
-											!showNumberOfRooms() && (
-												<>
-													{!hasAutreImmo() ? (
-														<label className="block col-span-4">
-															<div className="grid grid-cols-1 gap-6">
-																<div>
-																	<Label>
-																		{getVenteCountLabel()}
-																		{/* <span className="text-red-500">
-																	*
-																</span> */}
-																	</Label>
-
-																	<div className="block md:col-span-2 ">
-																		<Input
-																			name="area_count"
-																			autoComplete="on"
-																			defaultValue={
-																				defaultValue?.area_count ??
-																				0
-																			}
+															<div className="block md:col-span-2 ">
+																{/* SELECT_HOME_TYPE */}
+																{!canShowOtherInput() &&
+																	SUB_CATEGORIES() &&
+																	SUB_CATEGORIES().length > 0 && (
+																		<Select
 																			onChange={(event) => {
 																				event.target
 																					.value &&
 																					setValue(
-																						"area_count",
-																						parseInt(
-																							event
-																								.target
-																								.value
-																						)
+																						"home_type",
+																						event.target
+																							.value
 																					);
+
+																				set_hasOtherKey(
+																					event.target
+																						.value
+																				);
 																			}}
-																		></Input>
-																	</div>
-																</div>
-															</div>
-															<div>
-																<ErrorMessage
-																	errors={errorArray}
-																	error="category_id"
-																	customMessage="Veuillez choisir un type de bien"
-																/>
-															</div>
-														</label>
-													) : null}
-												</>
-											)}
-
-										{hasAutreImmo() ? (
-											<div className="col-span-3">
-												<Label>Autre Aspect (Détails)</Label>
-												<Input
-													autoComplete="on"
-													defaultValue={defaultValue?.home_type_more}
-													name="home_type_more"
-													onChange={(e) =>
-														setValue("home_type_more", e.target.value)
-													}
-												/>
-											</div>
-										) : null}
-
-										{/* VILLE - COUNTRY - STATE */}
-										<label className="block col-span-4">
-											<div className="grid grid-cols-2 gap-6">
-												<div
-													className={
-														hasUnlistedLocation()
-															? "col-span-2"
-															: "col-span-1"
-													}
-												>
-													<Label>
-														Commune{" "}
-														<span className="text-red-500">*</span>
-													</Label>
-
-													<div className="block ">
-														<Select
-															name="location_id"
-															required
-															onChange={(event) => {
-																setValue(
-																	"location_id",
-																	event.target.value
-																);
-																setresfreshLocaionSelected(
-																	event.target.value
-																);
-															}}
-														>
-															{get_location().map((location) => (
-																<option
-																	key={location.id}
-																	value={location.id}
-																	selected={isLocationSelected(
-																		location
+																		>
+																			<option>Choix</option>
+																			{SUB_CATEGORIES() &&
+																				SUB_CATEGORIES().map(
+																					(c) => (
+																						<option
+																							key={
+																								c.code
+																							}
+																							value={
+																								c.name
+																							}
+																							selected={
+																								c.name ===
+																								getValues(
+																									"home_type"
+																								)
+																							}
+																						>
+																							{c.name}
+																						</option>
+																					)
+																				)}
+																		</Select>
 																	)}
-																>
-																	{location.name}
-																</option>
-															))}
-														</Select>
+
+																{/* INPUT_HOME_TYPE */}
+																{}
+																{canShowOtherInput() && (
+																	<>
+																		<Input
+																			autoComplete="on"
+																			name="home_type"
+																			maxLength={20}
+																			onChange={(e) => {
+																				setValue(
+																					"home_type",
+																					e.target.value
+																				);
+																				set_hasOtherKey(
+																					e.target.value
+																				);
+																			}}
+																		/>
+																	</>
+																)}
+															</div>
+														</div>
+													</div>
+													<div>
 														<ErrorMessage
 															errors={errorArray}
-															error="location_id"
-															customMessage="Veuillez choisir une ville"
+															error="category_id"
+															customMessage="Veuillez choisir un type de bien"
 														/>
 													</div>
-												</div>
+												</label>
+											)}
 
-												{hasUnlistedLocation() ? (
+											{/* NOMBRE DE PIECE */}
+											{showNumberOfRooms() && (
+												<label className="block col-span-4">
+													<div className="grid grid-cols-1 gap-6">
+														<div>
+															<Label>Nombre de pièces</Label>
+
+															<div className="block md:col-span-2 ">
+																<Input
+																	name="area_count"
+																	autoComplete="on"
+																	onChange={(event) => {
+																		event.target.value &&
+																			setValue(
+																				"area_count",
+																				parseInt(
+																					event.target
+																						.value
+																				)
+																			);
+																	}}
+																></Input>
+															</div>
+														</div>
+													</div>
+													<div>
+														<ErrorMessage
+															errors={errorArray}
+															error="category_id"
+															customMessage="Veuillez choisir un type de bien"
+														/>
+													</div>
+												</label>
+											)}
+
+											{/* DETAIL CATEGORY */}
+											{currentType() === "BIEN EN VENTE" &&
+												!showNumberOfRooms() && (
+													<>
+														{!hasAutreImmo() ? (
+															<label className="block col-span-4">
+																<div className="grid grid-cols-1 gap-6">
+																	<div>
+																		<Label>
+																			{getVenteCountLabel()}
+																			{/* <span className="text-red-500">
+																	*
+																</span> */}
+																		</Label>
+
+																		<div className="block md:col-span-2 ">
+																			<Input
+																				name="area_count"
+																				autoComplete="on"
+																				defaultValue={
+																					defaultValue?.area_count ??
+																					0
+																				}
+																				onChange={(
+																					event
+																				) => {
+																					event.target
+																						.value &&
+																						setValue(
+																							"area_count",
+																							parseInt(
+																								event
+																									.target
+																									.value
+																							)
+																						);
+																				}}
+																			></Input>
+																		</div>
+																	</div>
+																</div>
+																<div>
+																	<ErrorMessage
+																		errors={errorArray}
+																		error="category_id"
+																		customMessage="Veuillez choisir un type de bien"
+																	/>
+																</div>
+															</label>
+														) : null}
+													</>
+												)}
+
+											{hasAutreImmo() ? (
+												<div className="col-span-3">
+													<Label>Autre Aspect (Détails)</Label>
+													<Input
+														autoComplete="on"
+														defaultValue={defaultValue?.home_type_more}
+														name="home_type_more"
+														onChange={(e) =>
+															setValue(
+																"home_type_more",
+																e.target.value
+															)
+														}
+													/>
+												</div>
+											) : null}
+
+											{/* VILLE - COUNTRY - STATE */}
+											<label className="block col-span-4">
+												<div className="grid grid-cols-2 gap-6">
+													<div
+														className={
+															hasUnlistedLocation()
+																? "col-span-2"
+																: "col-span-1"
+														}
+													>
+														<Label>
+															Commune{" "}
+															<span className="text-red-500">*</span>
+														</Label>
+
+														<div className="block ">
+															<Select
+																name="location_id"
+																required
+																onChange={(event) => {
+																	setValue(
+																		"location_id",
+																		event.target.value
+																	);
+																	setresfreshLocaionSelected(
+																		event.target.value
+																	);
+																}}
+															>
+																{get_location().map((location) => (
+																	<option
+																		key={location.id}
+																		value={location.id}
+																		selected={isLocationSelected(
+																			location
+																		)}
+																	>
+																		{location.name}
+																	</option>
+																))}
+															</Select>
+															<ErrorMessage
+																errors={errorArray}
+																error="location_id"
+																customMessage="Veuillez choisir une ville"
+															/>
+														</div>
+													</div>
+
+													{hasUnlistedLocation() ? (
+														<div className="col-span-1">
+															<label className="block ">
+																<Label>Nom de la ville </Label>
+																{/* {product?.location.id} */}
+																<Input
+																	type="text"
+																	className="mt-1"
+																	defaultValue={``}
+																	{...register("unlisted_city")}
+																/>
+																<ErrorMessage
+																	errors={errorArray}
+																	error="location_description"
+																	customMessage="Veuillez saisir un quartier"
+																/>
+															</label>
+														</div>
+													) : null}
+
 													<div className="col-span-1">
 														<label className="block ">
-															<Label>Nom de la ville </Label>
-															{/* {product?.location.id} */}
+															<Label>
+																Quartier{" "}
+																<span className="text-red-500">
+																	*
+																</span>
+															</Label>
 															<Input
 																type="text"
 																className="mt-1"
-																defaultValue={``}
-																{...register("unlisted_city")}
+																defaultValue={
+																	product &&
+																	product.location_description
+																}
+																{...register(
+																	"location_description",
+																	{
+																		required: true,
+																	}
+																)}
 															/>
 															<ErrorMessage
 																errors={errorArray}
@@ -1029,38 +1099,25 @@ const DashboardSubmitPost = () => {
 															/>
 														</label>
 													</div>
-												) : null}
-
-												<div className="col-span-1">
-													<label className="block ">
-														<Label>
-															Quartier{" "}
-															<span className="text-red-500">*</span>
-														</Label>
-														<Input
-															type="text"
-															className="mt-1"
-															defaultValue={
-																product &&
-																product.location_description
-															}
-															{...register("location_description", {
-																required: true,
-															})}
-														/>
-														<ErrorMessage
-															errors={errorArray}
-															error="location_description"
-															customMessage="Veuillez saisir un quartier"
-														/>
-													</label>
 												</div>
-											</div>
-										</label>
-									</div>
+											</label>
+										</div>
 
-									{!hasAutreImmo() && (
-										<DetailBien
+										{!hasAutreImmo() && (
+											<DetailBien
+												errorArray={errorArray}
+												register={register}
+												product={product}
+												setValue={setValue}
+												getValues={getValues}
+												typeDeBien={
+													(getValues("type") as IProductType) ??
+													(PRODUCT_TYPE[0] as IProductType)
+												}
+											/>
+										)}
+
+										<DetailBienTwo
 											errorArray={errorArray}
 											register={register}
 											product={product}
@@ -1071,230 +1128,170 @@ const DashboardSubmitPost = () => {
 												(PRODUCT_TYPE[0] as IProductType)
 											}
 										/>
-									)}
-
-									<DetailBienTwo
-										errorArray={errorArray}
-										register={register}
-										product={product}
-										setValue={setValue}
-										getValues={getValues}
-										typeDeBien={
-											(getValues("type") as IProductType) ??
-											(PRODUCT_TYPE[0] as IProductType)
-										}
-									/>
+									</div>
 								</div>
 							</div>
-						</div>
 
-						{/* 2 */}
-						<div className="col-span-6 lg:col-span-2">
-							<div className="bg-white dark:bg-neutral-900">
-								{/* SECTION 02  */}
-								<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6  mb-5">
-									<div className="grid md:grid-cols-2 gap-6">
-										{/* TITLE */}
-										{false && (
-											<label className="block md:col-span-2">
-												<Label>Titre</Label>
-												<Input
-													type="text"
-													className="mt-1"
-													// { required: true }
-													{...register("title")}
-													// defaultValue={(defaultValue && defaultValue.title) ?? ""}
-												/>
-												<ErrorMessage
-													errors={errorArray}
-													error="title"
-													customMessage="Veuillez choisir un titre"
-												/>
-											</label>
-										)}
+							{/* 2 */}
+							<div className="col-span-6 lg:col-span-2">
+								<div className="bg-white dark:bg-neutral-900">
+									{/* SECTION 02  */}
+									<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6  mb-5">
+										<div className="grid md:grid-cols-2 gap-6">
+											{/* TITLE */}
+											{false && (
+												<label className="block md:col-span-2">
+													<Label>Titre</Label>
+													<Input
+														type="text"
+														className="mt-1"
+														// { required: true }
+														{...register("title")}
+														// defaultValue={(defaultValue && defaultValue.title) ?? ""}
+													/>
+													<ErrorMessage
+														errors={errorArray}
+														error="title"
+														customMessage="Veuillez choisir un titre"
+													/>
+												</label>
+											)}
 
-										{/* PRICE - PRICE_SECOND  */}
-										<div className="block md:col-span-2">
-											<div className="grid grid-cols-3 gap-6">
-												{/* PRICE */}
-												{true ? (
-													<div
-														className={
-															currentType() === "BIEN EN VENTE" &&
-															currentCategory() &&
-															currentCategory()?.uuid !==
-																ProductcategoryUUID.MAISON.key
-																? "col-span-3"
-																: "col-span-2"
-														}
-													>
-														<Label>
-															{getPriceLabel()}
-															<span className="text-red-500">*</span>
-															<div className="flex items-center relative mt-2">
-																<CurrencyInput
-																	id="input-currency"
-																	className="w-full rounded-md "
-																	placeholder="Entrer le montant"
-																	defaultValue={
-																		product && product.price
-																	}
-																	min={0}
-																	decimalsLimit={2}
-																	groupSeparator=" "
-																	value={reshrehPrice}
-																	onValueChange={(
-																		value,
-																		name,
-																		values
-																	) => {
-																		// setValue("price", value)
-																		// console.log({
-																		// 	value,
-																		// 	name,
-																		// 	values,
-																		// });
-																		value &&
-																			setreshrehPrice(value);
-																	}}
-																	{...register("price", {
-																		required: true,
-																	})}
-																/>
-																<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
-																	FCFA
+											{/* PRICE - PRICE_SECOND  */}
+											<div className="block md:col-span-2">
+												<div className="grid grid-cols-3 gap-6">
+													{/* PRICE */}
+													{true ? (
+														<div
+															className={
+																currentType() === "BIEN EN VENTE" &&
+																currentCategory() &&
+																currentCategory()?.uuid !==
+																	ProductcategoryUUID.MAISON.key
+																	? "col-span-3"
+																	: "col-span-2"
+															}
+														>
+															<Label>
+																{getPriceLabel()}
+																<span className="text-red-500">
+																	*
 																</span>
-															</div>
-														</Label>
-														<ErrorMessage
-															errors={errorArray}
-															error="price"
-															customMessage="Veuillez saisir un prix"
-														/>
-													</div>
-												) : null}
-
-												{/* PRICE BY UNIT */}
-												{currentType() === "BIEN EN VENTE" &&
-												currentCategory() &&
-												currentCategory()?.uuid !==
-													ProductcategoryUUID.MAISON.key &&
-												!hasAutreImmo() ? (
-													<div className="col-span-2">
-														<Label>
-															Prix par unité
-															<span className="text-red-500">*</span>
-															<div className="flex items-center relative mt-2">
-																<CurrencyInput
-																	id="input-currency"
-																	className="w-full rounded-md "
-																	placeholder="Entrer le montant"
-																	defaultValue={
-																		reshrehPriceSecond ??
-																		(product &&
-																			product.price_second) ??
-																		getValues("price_second")
-																	}
-																	min={0}
-																	value={reshrehPriceSecond}
-																	decimalsLimit={0}
-																	groupSeparator=" "
-																	onValueChange={(
-																		value,
-																		name,
-																		values
-																	) => {
-																		console.log({
+																<div className="flex items-center relative mt-2">
+																	<CurrencyInput
+																		id="input-currency"
+																		className="w-full rounded-md "
+																		placeholder="Entrer le montant"
+																		defaultValue={
+																			product && product.price
+																		}
+																		min={0}
+																		decimalsLimit={2}
+																		groupSeparator=" "
+																		value={reshrehPrice}
+																		onValueChange={(
 																			value,
 																			name,
-																			values,
-																		});
+																			values
+																		) => {
+																			// setValue("price", value)
+																			// console.log({
+																			// 	value,
+																			// 	name,
+																			// 	values,
+																			// });
+																			value &&
+																				setreshrehPrice(
+																					value
+																				);
+																		}}
+																		{...register("price", {
+																			required: true,
+																		})}
+																	/>
+																	<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
+																		FCFA
+																	</span>
+																</div>
+															</Label>
+															<ErrorMessage
+																errors={errorArray}
+																error="price"
+																customMessage="Veuillez saisir un prix"
+															/>
+														</div>
+													) : null}
 
-																		value &&
-																			setreshrehPriceSecond(
-																				value
-																			);
-																	}}
-																	{...register("price_second", {
-																		required:
-																			currentType() ===
-																			PRODUCT_TYPE[
-																				TYPE_BIEN_EN_VENTE_KEY
-																			],
-																	})}
-																/>
-																<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
-																	FCFA
-																</span>
-															</div>
-														</Label>
-														<ErrorMessage
-															errors={errorArray}
-															error="price"
-															customMessage="Veuillez saisir un prix"
-														/>
-													</div>
-												) : null}
+													{/* PRICE BY UNIT */}
+													{currentType() === "BIEN EN VENTE" &&
+													currentCategory() &&
+													currentCategory()?.uuid !==
+														ProductcategoryUUID.MAISON.key &&
+													!hasAutreImmo() ? (
+														<div className="col-span-2">
+															<Label>
+																Prix par unité
+																{false && (
+																	<span className="text-red-500">
+																		*
+																	</span>
+																)}
+																<div className="flex items-center relative mt-2">
+																	<CurrencyInput
+																		id="input-currency"
+																		className="w-full rounded-md "
+																		placeholder="Entrer le montant"
+																		defaultValue={
+																			(product &&
+																				product.price_second) ??
+																			0
+																		}
+																		min={0}
+																		value={reshrehPriceSecond}
+																		decimalsLimit={0}
+																		groupSeparator=" "
+																		onValueChange={(
+																			value,
+																			name,
+																			values
+																		) => {
+																			value &&
+																				setreshrehPriceSecond(
+																					value
+																				);
+																		}}
+																		{...register(
+																			"price_second"
+																		)}
+																	/>
+																	{/* {required:currentType() ===PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY],} */}
+																	<span className="absolute right-0 mx-2 cursor-not-allowed text-lg ml-2 text-gray-600 dark:text-neutral-800">
+																		FCFA
+																	</span>
+																</div>
+															</Label>
+															<ErrorMessage
+																errors={errorArray}
+																error="price"
+																customMessage="Veuillez saisir un prix"
+															/>
+														</div>
+													) : null}
 
-												{/* PERIODICITY OR  UNIT */}
-												{true ? (
-													<div className="col-span-1">
-														{getValues("type") !==
-															PRODUCT_TYPE[
-																TYPE_BIEN_EN_VENTE_KEY
-															] && (
-															<div className="block ">
-																<Label className="my-0">
-																	Périodicité
-																</Label>
-																<Select
-																	name="periodicity"
-																	className="w-full"
-																	onChange={(event) =>
-																		setValue(
-																			"periodicity",
-																			event.target
-																				.value as PeriodicityType
-																		)
-																	}
-																>
-																	{false && (
-																		<option value="">
-																			Choisir une périodicité
-																		</option>
-																	)}
-																	{GET_PERIODICITY().map((p) => (
-																		<option
-																			key={p.id}
-																			value={p.id}
-																			selected={
-																				defaultValue?.periodicity ===
-																				p.id
-																			}
-																		>
-																			{p.name}
-																		</option>
-																	))}
-																</Select>
-															</div>
-														)}
-
-														{getValues("type") ===
-															PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] &&
-															currentCategory() &&
-															currentCategory()?.uuid ===
-																ProductcategoryUUID.BIEN_EN_VENTE
-																	.children.TERRAIN && (
-																<div className="block md:col-span-2 ">
-																	<Label className="">
-																		Unité
-																		<span>
-																			{" (m² / LOT)".toUpperCase()}{" "}
-																		</span>
+													{/* PERIODICITY OR  UNIT */}
+													{true ? (
+														<div className="col-span-1">
+															{getValues("type") !==
+																PRODUCT_TYPE[
+																	TYPE_BIEN_EN_VENTE_KEY
+																] && (
+																<div className="block ">
+																	<Label className="my-0">
+																		Périodicité
 																	</Label>
 																	<Select
 																		name="periodicity"
-																		className="mt-2"
+																		className="w-full"
 																		onChange={(event) =>
 																			setValue(
 																				"periodicity",
@@ -1303,75 +1300,102 @@ const DashboardSubmitPost = () => {
 																			)
 																		}
 																	>
-																		{PRODUCT_AREA_UNIT.map(
-																			(u) => (
+																		{false && (
+																			<option value="">
+																				Choisir une
+																				périodicité
+																			</option>
+																		)}
+																		{GET_PERIODICITY().map(
+																			(p) => (
 																				<option
-																					key={u.id}
-																					value={u.id}
+																					key={p.id}
+																					value={p.id}
 																					selected={
-																						product &&
-																						product.area_unit ===
-																							u.id
-																					}
-																					defaultValue={
-																						!getValues(
-																							"area_unit"
-																						)
-																							? u.id
-																							: ""
+																						defaultValue?.periodicity ===
+																						p.id
 																					}
 																				>
-																					{u.name}
+																					{p.name}
 																				</option>
 																			)
 																		)}
 																	</Select>
 																</div>
 															)}
-													</div>
-												) : null}
-											</div>
 
-											{showCaution() && (
-												<div className="grid grid-cols-4 gap-6 mt-3">
-													<div className="col-span-4 mt-3">
-														<Label>
-															Caution (Nombre de mois)
-															<div className="flex items-center">
-																<Input
-																	type="number"
-																	className="mt-1"
-																	min={0}
-																	defaultValue={
-																		product &&
-																		product.count_monthly
-																	}
-																	{...register("count_monthly")}
-																/>
-															</div>
-														</Label>
-														<ErrorMessage
-															errors={errorArray}
-															error="price"
-															customMessage="Veuillez saisir un prix"
-														/>
-													</div>
+															{getValues("type") ===
+																PRODUCT_TYPE[
+																	TYPE_BIEN_EN_VENTE_KEY
+																] &&
+																currentCategory() &&
+																currentCategory()?.uuid ===
+																	ProductcategoryUUID
+																		.BIEN_EN_VENTE.children
+																		.TERRAIN && (
+																	<div className="block md:col-span-2 ">
+																		<Label className="">
+																			Unité
+																			<span>
+																				{" (m²/LOT)".toUpperCase()}{" "}
+																			</span>
+																		</Label>
+																		<Select
+																			name="periodicity"
+																			className="mt-2"
+																			onChange={(event) =>
+																				setValue(
+																					"periodicity",
+																					event.target
+																						.value as PeriodicityType
+																				)
+																			}
+																		>
+																			{PRODUCT_AREA_UNIT.map(
+																				(u) => (
+																					<option
+																						key={u.id}
+																						value={u.id}
+																						selected={
+																							product &&
+																							product.area_unit ===
+																								u.id
+																						}
+																						defaultValue={
+																							!getValues(
+																								"area_unit"
+																							)
+																								? u.id
+																								: ""
+																						}
+																					>
+																						{u.name}
+																					</option>
+																				)
+																			)}
+																		</Select>
+																	</div>
+																)}
+														</div>
+													) : null}
+												</div>
 
-													{false && (
-														<div className="col-span-6">
+												{showCaution() && (
+													<div className="grid grid-cols-4 gap-6 mt-3">
+														<div className="col-span-4 mt-3">
 															<Label>
-																Mois d'avance
+																Caution (Nombre de mois)
 																<div className="flex items-center">
 																	<Input
 																		type="number"
 																		className="mt-1"
 																		min={0}
 																		defaultValue={
-																			product!
-																				.count_advance ?? 0
+																			product &&
+																			product.count_monthly
 																		}
 																		{...register(
-																			"count_advance"
+																			"count_monthly"
 																		)}
 																	/>
 																</div>
@@ -1382,9 +1406,147 @@ const DashboardSubmitPost = () => {
 																customMessage="Veuillez saisir un prix"
 															/>
 														</div>
-													)}
+
+														{false && (
+															<div className="col-span-6">
+																<Label>
+																	Mois d'avance
+																	<div className="flex items-center">
+																		<Input
+																			type="number"
+																			className="mt-1"
+																			min={0}
+																			defaultValue={
+																				product!
+																					.count_advance ??
+																				0
+																			}
+																			{...register(
+																				"count_advance"
+																			)}
+																		/>
+																	</div>
+																</Label>
+																<ErrorMessage
+																	errors={errorArray}
+																	error="price"
+																	customMessage="Veuillez saisir un prix"
+																/>
+															</div>
+														)}
+													</div>
+												)}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						{/* 3 */}
+						<div className="grid md:grid-cols-5 gap-6">
+							<div className="col-span-6 lg:col-span-3">
+								<div className="bg-white dark:bg-neutral-900">
+									{/* SECTION 03 */}
+									{/* getValues("type") !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY]  */}
+									{allowImage() && (
+										<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 mb-5">
+											<div className="grid md:grid-cols-2 gap-6 ">
+												{/* IMAGE */}
+												<div className="block md:col-span-2">
+													<ImageUploader
+														initialImages={images}
+														maxImages={5}
+														images={images}
+														setImages={setImages}
+														imageFiles={imageFiles}
+														setImageFiles={setImageFiles}
+														textOne="Ajoutez plusieurs photos pour augmenter vos chances d'être contacté"
+													/>
 												</div>
+											</div>
+										</div>
+									)}
+
+									{allowImage() && (
+										<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 mb-5">
+											<div className="grid md:grid-cols-2 gap-6 ">
+												{/* VIDEO */}
+												<div className="block md:col-span-2">
+													<VideoUploader
+														maxVideo={1}
+														videoDefault={videos}
+														videos={videos}
+														setVideos={setVideos}
+														videoFiles={videoFiles}
+														setVideoFiles={setVideoFiles}
+													/>
+												</div>
+											</div>
+										</div>
+									)}
+
+									{/* SECTION 04 */}
+									<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
+										<div className="grid md:grid-cols-2 gap-6 ">
+											{/* ! NOT USED */}
+											{false && (
+												<>
+													{/* EXCERPT */}
+													<label className="block md:col-span-2">
+														<Label>Description</Label>
+														<Textarea
+															className="mt-1"
+															rows={4}
+															maxLength={250}
+															// defaultValue={product && product.excerpt}
+															{...register("excerpt")}
+														/>
+														<p className="mt-1 text-sm text-neutral-500">
+															Donnez une description détaillée de
+															votre article. N’indiquez pas vos
+															coordonnées (e-mail, téléphones, …) dans
+															la description.
+														</p>
+														{watch("excerpt") && (
+															<span
+																className={
+																	((watch("excerpt") &&
+																		watch("excerpt")!.length) ??
+																		0) == 250
+																		? "text-red-500"
+																		: "text-neutral-500"
+																}
+															>
+																{watch("excerpt") &&
+																	watch("excerpt")!.length}{" "}
+																/ 250
+															</span>
+														)}
+														<ErrorMessage
+															errors={errorArray}
+															error="excerpt"
+															customMessage="Veuillez ajouter une description"
+														/>
+													</label>
+												</>
 											)}
+
+											{/* CONTENT */}
+											<label className="block md:col-span-2">
+												<Label> Detail de l'annonce</Label>
+												<EditorText
+													onEditorChange={(content: string) =>
+														setValue("content", content)
+													}
+													initialValue={defaultValue?.content}
+												/>
+												<ErrorMessage
+													errors={errorArray}
+													error="content"
+													customMessage="Veuillez ajouter du contenu"
+												/>
+											</label>
 										</div>
 									</div>
 								</div>
@@ -1392,129 +1554,20 @@ const DashboardSubmitPost = () => {
 						</div>
 					</div>
 
-					{/* 3 */}
-					<div className="grid md:grid-cols-5 gap-6">
-						<div className="col-span-6 lg:col-span-3">
-							<div className="bg-white dark:bg-neutral-900">
-								{/* SECTION 03 */}
-								{/* getValues("type") !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY]  */}
-								{allowImage() && (
-									<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 mb-5">
-										<div className="grid md:grid-cols-2 gap-6 ">
-											{/* IMAGE */}
-											<div className="block md:col-span-2">
-												<ImageUploader
-													initialImages={images}
-													maxImages={5}
-													images={images}
-													setImages={setImages}
-													imageFiles={imageFiles}
-													setImageFiles={setImageFiles}
-													textOne="Ajoutez plusieurs photos pour augmenter vos chances d'être contacté"
-												/>
-											</div>
-										</div>
-									</div>
-								)}
-
-								{allowImage() && (
-									<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 mb-5">
-										<div className="grid md:grid-cols-2 gap-6 ">
-											{/* VIDEO */}
-											<div className="block md:col-span-2">
-												<VideoUploader
-													maxVideo={1}
-													videoDefault={videos}
-													videos={videos}
-													setVideos={setVideos}
-													videoFiles={videoFiles}
-													setVideoFiles={setVideoFiles}
-												/>
-											</div>
-										</div>
-									</div>
-								)}
-
-								{/* SECTION 04 */}
-								<div className="rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 md:p-6 mb-5">
-									<div className="grid md:grid-cols-2 gap-6 ">
-										{/* ! NOT USED */}
-										{false && (
-											<>
-												{/* EXCERPT */}
-												<label className="block md:col-span-2">
-													<Label>Description</Label>
-													<Textarea
-														className="mt-1"
-														rows={4}
-														maxLength={250}
-														// defaultValue={product && product.excerpt}
-														{...register("excerpt")}
-													/>
-													<p className="mt-1 text-sm text-neutral-500">
-														Donnez une description détaillée de votre
-														article. N’indiquez pas vos coordonnées
-														(e-mail, téléphones, …) dans la description.
-													</p>
-													{watch("excerpt") && (
-														<span
-															className={
-																((watch("excerpt") &&
-																	watch("excerpt")!.length) ??
-																	0) == 250
-																	? "text-red-500"
-																	: "text-neutral-500"
-															}
-														>
-															{watch("excerpt") &&
-																watch("excerpt")!.length}{" "}
-															/ 250
-														</span>
-													)}
-													<ErrorMessage
-														errors={errorArray}
-														error="excerpt"
-														customMessage="Veuillez ajouter une description"
-													/>
-												</label>
-											</>
-										)}
-
-										{/* CONTENT */}
-										<label className="block md:col-span-2">
-											<Label> Detail de l'annonce</Label>
-											<EditorText
-												onEditorChange={(content: string) =>
-													setValue("content", content)
-												}
-												initialValue={defaultValue?.content}
-											/>
-											<ErrorMessage
-												errors={errorArray}
-												error="content"
-												customMessage="Veuillez ajouter du contenu"
-											/>
-										</label>
-									</div>
-								</div>
-							</div>
+					{/* SUBMIT */}
+					{/* disabled={!isValid} */}
+					<div className="flex justify-center">
+						<div className="w-2/3 mb-5">
+							<ButtonPrimary
+								className="w-full bg-blue-500 text-white py-2 px-4 fixed bottom-0 left-0 z-10"
+								type="submit"
+							>
+								{productId ? "Mettre à jour" : "Publier Maintenant"}
+							</ButtonPrimary>
 						</div>
 					</div>
-				</div>
-
-				{/* SUBMIT */}
-				{/* disabled={!isValid} */}
-				<div className="flex justify-center">
-					<div className="w-2/3 mb-5">
-						<ButtonPrimary
-							className="w-full bg-blue-500 text-white py-2 px-4 fixed bottom-0 left-0 z-10"
-							type="submit"
-						>
-							{productId ? "Mettre à jour" : "Publier Maintenant"}
-						</ButtonPrimary>
-					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		</div>
 	);
 };

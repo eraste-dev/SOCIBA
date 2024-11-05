@@ -33,7 +33,7 @@ const PostPropertyCardMetaV2: FC<PostPropertyCardMetaV2Props> = ({
 			>
 				{/* sm:grid-cols-1 */}
 				{/* *grid md:grid-cols-8 grid-cols-3 */}
-				<div className=" flex ">
+				<div className=" flex mb-3 ml-2">
 					<div className="md:col-span-2 sm:col-span-1 ">
 						<div className="sm:flex sm:justify-start flex justify-center">
 							{!hiddenAvatar && (
@@ -47,7 +47,7 @@ const PostPropertyCardMetaV2: FC<PostPropertyCardMetaV2Props> = ({
 						</div>
 					</div>
 
-					<div className="md:col-span-6 col-span-2 ">
+					<div className="md:col-span-6 col-span-2 ml-2">
 						<div className="flex items-center align-middle text-xs md:text-md">
 							<span className="hidden sm:flex sm:justify-center mr-1">
 								{"Annonceur : "}
@@ -68,8 +68,8 @@ const PostPropertyCardMetaV2: FC<PostPropertyCardMetaV2Props> = ({
 						{/* ! DEAD CODE **************************************************** */}
 
 						<div className="lg:flex flex-col text-xs md:text-md">
-							<div className="flex items-center align-middle text-xs md:text-md">
-								{"Annonceur : "}
+							<div className="flex items-center align-middle text-xs md:text-md my-2">
+								{/* {"Annonceur : "} */}
 								<strong className="ml-1">
 									<span className="line-clamp-1 text-xs md:text-md">{` ${author.name} ${author.last_name}`}</span>{" "}
 								</strong>

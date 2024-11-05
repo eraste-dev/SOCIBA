@@ -16,7 +16,7 @@ import {
 	NAV_COLUMN_TWO,
 } from "./navigations-data";
 import { IProductType } from "containers/PageDashboard/Posts/posts.constantes";
-import logoImgTwo from "images/logo/logo-alt-2.png";
+import logoImgTwo from "images/logo/logo.png";
 
 export const linkByType = (type: IProductType) => {
 	return route("annonces") + "/?type=" + type;

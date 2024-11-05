@@ -146,7 +146,7 @@ const DetailBien: FC<DetailBienProps> = ({
 				<div className="grid grid-cols-4 gap-6 mt-3">
 					{/* JACUZZI */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div className="flex justify-center align-middle">
+						<div className="flex justify-center items-center">
 							{/* <PoolSharp className="mr-2" /> */}
 							<Input
 								id="jacuzzi"
@@ -162,7 +162,7 @@ const DetailBien: FC<DetailBienProps> = ({
 
 					{/* BATH */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div className="flex justify-center align-middle">
+						<div className="flex justify-center items-center">
 							{/* <PoolSharp className="mr-2" /> */}
 							<Input
 								id="bath"
@@ -179,7 +179,7 @@ const DetailBien: FC<DetailBienProps> = ({
 
 					{/* WIFI */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div className="flex justify-center align-middle">
+						<div className="flex justify-center items-center">
 							{/* <PoolSharp className="mr-2" /> */}
 							<Input
 								id="wifi"
@@ -195,7 +195,7 @@ const DetailBien: FC<DetailBienProps> = ({
 
 					{/* PICINE */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div className="flex justify-center align-middle">
+						<div className="flex justify-center items-center">
 							{/* <PoolSharp className="mr-2" /> */}
 							<Input
 								id="pool"
@@ -211,7 +211,7 @@ const DetailBien: FC<DetailBienProps> = ({
 
 					{/* CLIMATISATION */}
 					<div className="flex" style={{ alignItems: "center" }}>
-						<div className="flex justify-center align-middle">
+						<div className="flex justify-center items-center">
 							{/* <PoolSharp className="mr-2" /> */}
 							<Input
 								id="air_conditioning"
@@ -262,7 +262,7 @@ const DetailBien: FC<DetailBienProps> = ({
 									className="mt-5 flex items-center"
 									style={{ alignItems: "center" }}
 								>
-									<div className="flex justify-center align-middle">
+									<div className="flex justify-center items-center">
 										<Input
 											id="acd"
 											type="checkbox"
@@ -280,7 +280,7 @@ const DetailBien: FC<DetailBienProps> = ({
 									className="mt-5 flex items-center"
 									style={{ alignItems: "center" }}
 								>
-									<div className="flex justify-center align-middle">
+									<div className="flex justify-center items-center">
 										<Input
 											id="site_approved"
 											type="checkbox"

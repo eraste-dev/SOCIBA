@@ -46,7 +46,7 @@ export const getStatusColor = (name: STATUS_LABEL) => {
 			return "bg-green-500 text-white  dark:text-white";
 
 		case "DRAFT":
-			return "bg-yellow-100 ";
+			return "bg-yellow-100 dark:bg-orange-800 dark:text-white";
 
 		case "DELETED":
 			return "bg-red-500 text-white  dark:text-white";

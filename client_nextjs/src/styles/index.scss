@@ -13,23 +13,61 @@
 }
 
 .text-base {
-    font-size: 0.65rem !important;
+    font-size: 0.85rem !important;
     line-height: 1.2rem !important;
 }
 
-.text-lg {
-    font-size: 0.75rem !important;
-    line-height: 1.25rem !important;
+// .text-lg {
+//     font-size: 0.75rem !important;
+//     line-height: 1.25rem !important;
+// }
+
+// .text-xl {
+//     font-size: 0.75rem !important;
+//     line-height: 1.25rem !important;
+// }
+
+.sidebar {
+    z-index: 50;
+    /* Ensure it sits above content */
+    position: fixed;
+    /* Make sure it's placed on top */
+    width: 100%;
+    /* Full width on mobile */
 }
 
-.text-xl {
-    font-size: 0.75rem !important;
-    line-height: 1.25rem !important;
+
+
+@media screen and (max-width: 768px) {
+
+    .text-sm,
+    .text-base,
+    .text-xs {
+        font-size: 0.65rem !important;
+        line-height: .85rem !important;
+    }
 }
+
+// DESKTOP
+@media screen and (min-width: 1024px) {
+
+    .text-sm,
+    .text-base,
+    .text-xs {
+        font-size: 0.75rem !important;
+        line-height: .75rem !important;
+    }
+
+    .text-lg {
+        font-size: 1rem !important;
+        line-height: 1.5rem !important;
+    }
+}
+
 
 
 // CUSTOM
-@media (min-width: 576px) {
+@media (max-width: 576px) {
     .container {
         max-width: 100% !important;
     }
