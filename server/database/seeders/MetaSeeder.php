@@ -16,28 +16,29 @@ class MetaSeeder extends Seeder
         // create function user meta
         $key_fonction = '@USER_FUNCTION';
 
+
         Meta::create([
             'key' => $key_fonction,
-            'value' => 'Agent immobilier',
-            'description' => 'Agent immobilier',
+            'value' => 'Promoteur immobilier',
+            'description' => 'Promoteur immobilier',
         ]);
 
         Meta::create([
             'key' => $key_fonction,
-            'value' => 'Démarcheur immobilier',
-            'description' => 'Démarcheur immobilier',
+            'value' => 'Propriétaire du bien',
+            'description' => 'Propriétaire du bien',
+        ]);
+
+        Meta::create([
+            'key' => $key_fonction,
+            'value' => 'Entreprise immobilière',
+            'description' => 'Entreprise immobilière',
         ]);
 
         Meta::create([
             'key' => $key_fonction,
             'value' => 'Particulier',
-            'description' => '',
-        ]);
-
-        Meta::create([
-            'key' => $key_fonction,
-            'value' => 'Entreprise',
-            'description' => 'Professionnel',
+            'description' => 'Particulier',
         ]);
     }
 }

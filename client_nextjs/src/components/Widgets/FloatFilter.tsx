@@ -6,6 +6,7 @@ import LoadingLinear from "components/UI/Loading/LoadingLinear";
 import { Sort } from "@mui/icons-material";
 import MobileFilterDialog from "./MobileFilterDialog";
 import { getParamsCount } from "containers/PageHome/ListProducts";
+import { useHistory } from "react-router-dom";
 
 export interface FloatFilterProps {
 	className?: string;
@@ -29,6 +30,12 @@ const FloatFilter: FC<FloatFilterProps> = ({
 	linear = false,
 }) => {
 	const [openMobile, setOpenMobile] = useState(false);
+	const history = useHistory();
+
+	const isDashboard = () => {
+		return history.location.pathname.includes("dashboard");
+	};
+
 	if (!useStateFilter)
 		return (
 			<div className="flex justify-end">
@@ -41,42 +48,44 @@ const FloatFilter: FC<FloatFilterProps> = ({
 	if (noFloating) {
 		return (
 			<>
-				<div className="block sm:hidden">
-					<span
-						className="cursor-pointer z-50 block sm:hidden bg-primary-800 dark:bg-primary-800 text-white rounded-full p-1.5 hover:bg-primary-600 dark:hover:bg-primary-700"
-						onClick={() => setOpenMobile(!openMobile)}
-						style={{
-							position: "fixed",
-							color: "white",
-							top: `calc(100% + 50px - ${boxWidth})`,
-							width: boxWidth,
-							display: "flex",
-							justifyContent: "center",
-							alignItems: "center",
-						}}
-					>
-						<Sort />
-						Rechercher
-						{getParamsCount() > 0 ? (
-							<span className="relative">
-								<span>({getParamsCount()})</span>
-								<span className="absolute top-0 left-5 h-2 w-2 bg-red-500 rounded-full animate-ping"></span>
-								<span className="absolute top-0 left-5 h-2 w-2 bg-green-500 rounded-full"></span>
-							</span>
-						) : null}
-					</span>
+				{!isDashboard() ? (
+					<div className="block sm:hidden">
+						<span
+							className="cursor-pointer z-50 block sm:hidden bg-primary-800 dark:bg-primary-800 text-white rounded-full p-1.5 hover:bg-primary-600 dark:hover:bg-primary-700"
+							onClick={() => setOpenMobile(!openMobile)}
+							style={{
+								position: "fixed",
+								color: "white",
+								top: `calc(100% + 50px - ${boxWidth})`,
+								width: boxWidth,
+								display: "flex",
+								justifyContent: "center",
+								alignItems: "center",
+							}}
+						>
+							<Sort />
+							Rechercher
+							{getParamsCount() > 0 ? (
+								<span className="relative">
+									<span>({getParamsCount()})</span>
+									<span className="absolute top-0 left-5 h-2 w-2 bg-red-500 rounded-full animate-ping"></span>
+									<span className="absolute top-0 left-5 h-2 w-2 bg-green-500 rounded-full"></span>
+								</span>
+							) : null}
+						</span>
 
-					<MobileFilterDialog
-						open={openMobile}
-						onClose={() => setOpenMobile(false)}
-						fetchAll={fetchAll}
-						useStateFilter={useStateFilter as IPropertyFilter}
-						setUseStateFilter={setUseStateFilter}
-						linear={linear}
-					/>
-				</div>
+						<MobileFilterDialog
+							open={openMobile}
+							onClose={() => setOpenMobile(false)}
+							fetchAll={fetchAll}
+							useStateFilter={useStateFilter as IPropertyFilter}
+							setUseStateFilter={setUseStateFilter}
+							linear={linear}
+						/>
+					</div>
+				) : null}
 
-				<div className="hidden sm:block">
+				<div className={`${!isDashboard() ? "hidden" : "block"} sm:block`}>
 					<ProductFilterSidebar
 						groupFilter={true}
 						fetchAll={fetchAll}

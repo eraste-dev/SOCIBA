@@ -14,7 +14,7 @@ import React from "react";
 import { _f } from "utils/money-format";
 
 export const smText = "text-xs md:text-sm";
-export const smTextOnIsSingle = "text-base";
+export const smTextOnIsSingle = "text-lg";
 
 interface Card11PriceProps {
 	item: IProduct;
@@ -47,17 +47,17 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className, isSingle = f
 							: "nc-card-title block font-bold text-black dark:text-neutral-100 text-sm text-clip overflow-hidden text-end"
 					}
 				>
-					<span className={`${isSingle ? smTextOnIsSingle : smText}`}>
+					<span className={`${isSingle ? smText : smText}`}>
 						{_f(item.price)}
 					</span>
 
 					{/* // PERIODICITY */}
 					{item.type !== PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY] ? (
-						<span className={isSingle ? smTextOnIsSingle : smText}>
+						<span className={isSingle ? smText : smText}>
 							{item.periodicity &&
 							GET_PERIODICITY().find((p) => p.id === item.periodicity) ? (
 								<span>
-									{` / ` +
+									{`/` +
 										GET_PERIODICITY().find((p) => p.id === item.periodicity)
 											?.name}
 								</span>
@@ -73,7 +73,7 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className, isSingle = f
 				<div className="w-full flex lg:justify-end justify-start ">
 					<span
 						className={`nc-card-titles block font-bold text-black dark:text-neutral-100 text-clip overflow-hidden text-end ${
-							isSingle ? smTextOnIsSingle : smText
+							isSingle ? smText : smText
 						}`}
 					>
 						{_f(item.price_second)}
@@ -83,7 +83,7 @@ const Card11Price: React.FC<Card11PriceProps> = ({ item, className, isSingle = f
 							item.area_unit &&
 							GET_AREA_UNIT().find((u) => u.id === item.area_unit) && (
 								<>
-									{` / ` +
+									{`/` +
 										GET_AREA_UNIT().find((u) => u.id === item.area_unit)?.name}
 								</>
 							)}

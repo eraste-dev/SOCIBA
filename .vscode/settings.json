@@ -25,7 +25,7 @@
             "previewLimit": 50,
             "driver": "SQLite",
             "database": "${workspaceFolder:others}/server/database/database.sqlite",
-            "name": "BAJORA"
+            "name": "BAJORAH"
         }
     ]
 }

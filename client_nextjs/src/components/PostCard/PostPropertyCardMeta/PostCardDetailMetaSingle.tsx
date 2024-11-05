@@ -41,7 +41,8 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 	const gridThreeAlt = isSingle
 		? "flex item-center justify-start item-center"
 		: "grid grid-cols-2 sm:grid-cols-3 gap-1";
-	const locationItemClassName = "col-span-1";
+	const locationItemClassName = "col-span-1 text-center";
+	const locationItemClassNameItem = "flex items-center justify-center h-full";
 	const ItemCheckedClassName = "justify-self-start item-center";
 
 	const getFontSize = (): "large" | "medium" | "small" | "inherit" => {
@@ -66,6 +67,10 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 	};
 
 	const LocationMeta = () => {
+		const get_purchase_power_label = (label: string) => {
+			return purchase_powers.find((item) => item.value === meta.purchase_power)?.label ?? "";
+		};
+
 		if (type === PRODUCT_TYPE[TYPE_LOCATION_KEY]) {
 			return (
 				<div>
@@ -74,16 +79,14 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 						{/* Superficie */}
 						{area && area != 0 ? (
 							<div className={`${locationItemClassName}`} title="Superficie">
-								<div className="flex">
+								<div className="">
 									<PhotoSizeSelectSmallTwoTone
 										fontSize={getFontSize()}
 										style={{ width: iconSizeSingle }}
 										className="mt-0 mr-2"
 									/>
 									{/* {isSingle && <span className="mr-1">Superficie: </span>} */}
-									<span className={smTextOnIsSingle}>
-										{`${area}/${getAreaUnit()}`}
-									</span>
+									<span className={smText}>{`${area}/${getAreaUnit()}`}</span>
 								</div>
 							</div>
 						) : (
@@ -92,36 +95,29 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 
 						{bathrooms ? (
 							<div className={locationItemClassName}>
-								<div className="flex">
+								<div className={locationItemClassNameItem} title="Salle de bain">
 									<FaBath
 										size={iconSizeSingle}
 										fontSize={getFontSize()}
 										style={{ width: iconSizeSingle }}
 										className="mb-1 mr-1"
 									/>
-									{isSingle && false ? (
-										<span className={"text-sm"}>
-											Salle de bain : {bathrooms}{" "}
-										</span>
-									) : null}
-									{bathrooms}
+									{/* Salle de bain :  */}
+									{`${bathrooms}`}
 								</div>
 							</div>
 						) : null}
 
 						{kitchens ? (
-							<Tooltip title="Cuisine">
-								<div className={locationItemClassName}>
-									{/* <Kitchen className="mb-1 mr-1" /> */}
-									<Fastfood
-										fontSize={getFontSize()}
-										style={{ width: iconSizeSingle }}
-										className="mb-1 mr-1"
-									/>
-									{/* {isSingle && <span className="mr-1">Cuisine : </span>} */}
-									{kitchens}
-								</div>
-							</Tooltip>
+							<div className={locationItemClassName}>
+								<Fastfood
+									fontSize={getFontSize()}
+									style={{ width: iconSizeSingle }}
+									className="mb-1 mr-1"
+								/>
+								{/* Cuisine :  */}
+								{`${kitchens}`}
+							</div>
 						) : null}
 					</div>
 
@@ -129,7 +125,7 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 					<div className={`${gridThree} mt-0`}>
 						{/* SECURITY */}
 						{isSingle && meta.security ? (
-							<div className="flex items-center">
+							<div className={locationItemClassNameItem}>
 								<ItemCheckTwo
 									name={getSecurityLabel(meta.security)}
 									condition={true}
@@ -140,7 +136,7 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 								/>
 							</div>
 						) : meta.security && meta.security == "WITH_GUARD" ? (
-							<div className="flex items-center">
+							<div className={locationItemClassNameItem}>
 								<ItemCheckTwo
 									name="Avec virgile"
 									condition={meta.security == "WITH_GUARD"}
@@ -151,7 +147,7 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 
 						{/* ACCESSIBILITY */}
 						{isSingle && meta.accessibility ? (
-							<div className="flex items-center">
+							<div className={locationItemClassNameItem}>
 								<ItemCheckTwo
 									name={
 										accessibilities.find(
@@ -164,7 +160,7 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 								/>
 							</div>
 						) : meta.accessibility && meta.accessibility == "NOT_FAR_FROM_THE_TAR" ? (
-							<div className="flex items-center">
+							<div className={locationItemClassNameItem}>
 								<ItemCheckTwo
 									name="Accès facile"
 									condition={meta.accessibility == "NOT_FAR_FROM_THE_TAR"}
@@ -180,9 +176,7 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 									<ItemCheckTwo
 										name={
 											"Pouvoir d'achat : " +
-												purchase_powers.find(
-													(item) => item.value === meta.purchase_power
-												)?.label ?? ""
+											get_purchase_power_label(meta.purchase_power)
 										}
 										condition={true}
 										className={ItemCheckedClassName}
@@ -280,13 +274,13 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 					{/* *SUPERFICIE */}
 					{area && area > 0 ? (
 						<div className="col-span-1">
-							<div className="flex items-center justify-center" title="Superficie">
+							<div className={locationItemClassNameItem} title="Superficie">
 								<PhotoSizeSelectSmallTwoTone
 									fontSize={getFontSize()}
 									style={{ width: iconSizeSingle }}
 									className="mb-1 mr-2"
 								/>
-								{`${area} / ${getAreaUnit()}`}
+								{`${area}/${getAreaUnit()}`}
 							</div>
 						</div>
 					) : null}
@@ -294,7 +288,7 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 					{/* nombre de pièce ou terrain */}
 					{area_count ? (
 						<div className="col-span-1">
-							<div className="flex items-center justify-center" title="Superficie">
+							<div className={locationItemClassNameItem} title="Superficie">
 								{type === "BIEN EN VENTE" &&
 								category.uuid ===
 									ProductcategoryUUID.BIEN_EN_VENTE.children.TERRAIN &&
@@ -329,7 +323,7 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 
 					{/* ACD */}
 					{meta.acd ? (
-						<div className="flex items-center">
+						<div className={locationItemClassNameItem}>
 							<ItemCheckTwo
 								name="ACD"
 								condition={true}
@@ -345,7 +339,7 @@ const PostCardDetailMetaSingle: FC<PostCardDetailMetaSingleProps> = ({
 							/>
 						</div>
 					) : (
-						<div className="flex items-center">
+						<div className={locationItemClassNameItem}>
 							{/* SITE_APPROVED */}
 							{meta.site_approved ? (
 								<ItemCheckTwo

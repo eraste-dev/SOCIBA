@@ -1,4 +1,4 @@
-import { IUser } from "app/reducer/auth/auth";
+import { IUser, IuserStatus } from "app/reducer/auth/auth";
 import { ILocation } from "app/reducer/locations/locations";
 import { IProduct } from "app/reducer/products/product";
 import { IPropertyCategory } from "app/reducer/products/propertiy-category";
@@ -92,6 +92,7 @@ export type UpdateUserRequest = {
 	phone?: string;
 	phone_whatsapp?: string;
 	avatar?: File | null;
+	status?: IuserStatus;
 };
 
 export type PeriodicityType = "DAY" | "WEEK" | "MONTH" | "YEAR" | "VISIT";

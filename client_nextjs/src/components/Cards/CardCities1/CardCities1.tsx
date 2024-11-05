@@ -10,6 +10,7 @@ import { fetchAllProperties, initProductState } from "app/axios/actions/api.acti
 import { getParams } from "containers/PageHome/ListProducts";
 import { updateParamsUrl } from "utils/utils";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
+import IMG from "images/côte_d_ivoire_carte.png";
 
 export interface CardCities1Props {
 	className?: string;
@@ -20,8 +21,7 @@ export interface CardCities1Props {
 
 const CardCities1: FC<CardCities1Props> = ({ className = "", taxonomy, city, index }) => {
 	const { id, name, href = "/", description, thumbnail } = city;
-	const defaultSrc =
-		"https://images.pexels.com/photos/739407/pexels-photo-739407.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
+	const defaultSrc = IMG;
 	// const defaultSrc = "./src/images/icons/real-estate.png";
 
 	const history = useHistory();
@@ -44,7 +44,7 @@ const CardCities1: FC<CardCities1Props> = ({ className = "", taxonomy, city, ind
 	};
 
 	return (
-		<div className="px-2" >
+		<div className="px-0.5">
 			<button
 				onClick={handleClick}
 				className={`nc-CardCities1 w-full relative flex flex-col items-center justify-center text-center px-2 py-1 sm:p-1  [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ]  ${className}`}
@@ -54,7 +54,7 @@ const CardCities1: FC<CardCities1Props> = ({ className = "", taxonomy, city, ind
 					<Badge color={"blue"} name={""} className="absolute -top-2 sm:top-3 left-3" />
 				)}
 				<NcImage
-					containerClassName={`flex-shrink-0 w-auto h-16 rounded-full overflow-hidden`}
+					containerClassName={`flex-shrink-0 w-auto h-12 rounded-full overflow-hidden`}
 					src={thumbnail ?? defaultSrc}
 				/>
 				<div className="mt-2">

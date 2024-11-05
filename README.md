@@ -1,4 +1,4 @@
-# BAJORA
+# BAJORAH
 
 ## author
 

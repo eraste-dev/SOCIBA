@@ -12,7 +12,6 @@ class PropertyCategory extends Model
 
     protected $fillable = [
         'name',
-        'parent_id',
         'slug',
         'icon',
         'description',
@@ -24,19 +23,20 @@ class PropertyCategory extends Model
 
     public function parent()
     {
-        return $this->belongsTo(PropertyCategory::class, 'parent_id');
+        return null;
+        // return $this->belongsTo(PropertyCategory::class, 'parent_id');
     }
 
     public function children()
     {
-        return $this->hasMany(PropertyCategory::class, 'parent_id');
+        return null;
+        // return $this->hasMany(PropertyCategory::class, 'parent_id');
     }
 
     public function getChildren()
     {
-        $children = PropertyCategory::where('parent_id', $this->id)->get();
-        // $cat = PropertyCategory::find($this->id);
-        // $children = Property::whereIn('category_id', [$this->id, $cat->parent_id])->get();
+        // $children = PropertyCategory::where('parent_id', $this->id)->get();
+        $children = [];
         return PropertyCategoryResource::collection($children);
     }
 
@@ -49,10 +49,10 @@ class PropertyCategory extends Model
 
     public function getParent()
     {
-        if ($this->parent_id == null) {
-            return null;
-        }
-
-        return PropertyCategory::find($this->parent_id);
+        return [];
+        // if ($this->parent_id == null) {
+        //     return null;
+        // }
+        // return PropertyCategory::find($this->parent_id);
     }
 }

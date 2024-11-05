@@ -19,7 +19,7 @@ const PageMovingRequest: FC<PageMovingRequestProps> = ({ className = "" }) => {
 			data-nc-id="PageMovingRequest"
 		>
 			<Helmet>
-				<title>Demenagement || BAJORA</title>
+				<title>Demenagement || BAJORAH</title>
 			</Helmet>
 
 			{/* ======== BG GLASS ======== */}
