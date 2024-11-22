@@ -14,10 +14,21 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class PropertyService
 {
     /**
-     * Perform property search.
-     *
-     * @param array $payload
-     * @return \Illuminate\Pagination\LengthAwarePaginator
+     * Recherche de propriété par filtre
+     * @param array $payload Filtrer par : 
+     *  - search_text
+     *  - category
+     *  - categories
+     *  - location
+     *  - locations
+     *  - status
+     *  - created_by
+     *  - price_sort
+     *  - top_seed
+     *  - limit
+     *  - page
+     * @param bool $adminSearch Si la requête est faite par un administrateur, on ignore le statut de la propriété
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public static function search(array $payload, bool $adminSearch = false)
     {
@@ -27,7 +38,6 @@ class PropertyService
 
         $all_locations = Municipality::all();
         $categories = PropertyCategory::all();
-        $categoriesSearch = [];
 
         // ? searchText
         if ($payload['searchText'] && $payload['searchText'] !== '*') {
@@ -217,10 +227,6 @@ class PropertyService
             $query->whereIn('status', [Utils::STATE_PUBLISH()]);
         }
 
-        // if (isset($payload['deposit_price_sort']) && $payload['deposit_price_sort'] !== '*') {
-        //     $query->orderBy('deposit_price', $payload['deposit_price_sort']);
-        // }
-
         // ? BY CREATED_BY
         if ($payload['created_by'] && $payload['created_by'] !== '*') {
             $user = null;
@@ -256,6 +262,19 @@ class PropertyService
         return PropertyResource::collection($properties);
     }
 
+    /**
+     * Uploads and associates videos with the given product.
+     *
+     * This function processes video uploads from the request, 
+     * clears any existing videos associated with the product, 
+     * and then saves the new video files to the specified directory. 
+     * Each video is stored with a generated filename that includes 
+     * the product ID and a timestamp. A database record is created 
+     * for each video, linking it to the product.
+     *
+     * @param mixed $product The product with which the videos are to be associated.
+     * @return void
+     */
     public static function upload_video($product)
     {
         try {
@@ -275,7 +294,7 @@ class PropertyService
                 }
             }
         } catch (\Throwable $th) {
-           var_dump($th);
+            var_dump($th);
         }
     }
 }

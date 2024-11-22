@@ -16,18 +16,20 @@ const SliderTabs: FC<SliderTabsProps> = ({ data }) => {
 			),
 		},
 		{
-			title: "Liste produits",
-			content: (
-				<SliderManagementTable rows={data.filter((slider) => slider.place === "PRODUCT")} />
-			),
-		},
-		{
 			title: "Page déménagement",
 			content: (
 				<SliderManagementTable rows={data.filter((slider) => slider.place === "MOVING")} />
 			),
 		},
 	];
+
+
+	// {
+	// 	title: "Liste produits",
+	// 	content: (
+	// 		<SliderManagementTable rows={data.filter((slider) => slider.place === "PRODUCT")} />
+	// 	),
+	// },
 
 	return (
 		<div className="">

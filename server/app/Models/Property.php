@@ -67,6 +67,13 @@ class Property extends Model
         'purchase_power',
         'accessibility',
 
+        // social media
+        'facebook',
+        'twitter',
+        'instagram',
+        'youtube',
+        'tiktok',
+
         'created_by',
         'updated_by',
     ];

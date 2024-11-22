@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom";
 import ButtonSecondary from "components/Button/ButtonSecondary";
 import WidgetSearchWithInput from "./WidgetCategories/WidgetSearchWithInput";
 import { route } from "routers/route";
+import { getParams } from "containers/PageHome/ListProducts";
 
 export interface ProductFilterSidebarProps {
 	fetchAll?: () => void;
@@ -38,6 +39,19 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 	const categorySlugSelected = urlSearchParams.get("category_slug_selected");
 	const history = useHistory();
 	const colSpanItem = "col-span-6 sm:col-span-1 md:col-span-2 2xl:col-span-1";
+
+	/**
+	 * Determines whether the widget for category booking should be displayed.
+	 *
+	 * @returns {boolean} True if the category type is specified and not the default value "*", otherwise false.
+	 */
+	const canShowWidgetCategoryBooking = (): boolean => {
+		if (getParams().type && getParams().type != "*") {
+			return true;
+		}
+
+		return false;
+	}
 	// const colSpanItemAlt = "col-span-6";
 
 	const handleShowFilter = () => {
@@ -101,23 +115,25 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 						/>
 					</div>
 
-					<div className={colSpanItem}>
-						<WidgetCategoryBooking handleFetch={fetchAll} groupFilter={groupFilter} />
-					</div>
+
+					{canShowWidgetCategoryBooking() &&
+						<div className={colSpanItem}>
+							<WidgetCategoryBooking handleFetch={fetchAll} groupFilter={groupFilter} />
+						</div>}
 
 					{categorySlugSelected
 						? ["residence", "hotel", "maison", "appartement"].includes(
-								categorySlugSelected
-						  ) && (
-								<div className={colSpanItem}>
-									<WidgetCategoryDetailWithSelect
-										handleFetch={fetchAll}
-										useStateFilter={useStateFilter}
-										setUseStateFilter={setUseStateFilter}
-										groupFilter={groupFilter}
-									/>
-								</div>
-						  )
+							categorySlugSelected
+						) && (
+							<div className={colSpanItem}>
+								<WidgetCategoryDetailWithSelect
+									handleFetch={fetchAll}
+									useStateFilter={useStateFilter}
+									setUseStateFilter={setUseStateFilter}
+									groupFilter={groupFilter}
+								/>
+							</div>
+						)
 						: null}
 
 					<div className={colSpanItem}>

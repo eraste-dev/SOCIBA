@@ -92,7 +92,7 @@ class PropertyController extends Controller
             'purchase_power'       => 'nullable|in:LESS_EXPENSIVE,EQUAL_EXPENSIVE,MORE_EXPENSIVE',
             'accessibility'        => 'nullable|in:NOT_FAR_FROM_THE_TAR,A_LITTLE_FAR_FROM_THE_TAR,FAR_FROM_THE_TAR',
             'images.*'             => 'required|file|max:10048',
-            'videos.*'             => 'required|file|max:90048',
+            'videos.*'             => 'required|file|max:10024',
             // 'excerpt'           => 'nullable|string',
         ]);
 

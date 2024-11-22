@@ -45,7 +45,7 @@ const UserRequestDetail: FC<UserRequestDetailProps> = ({ open, handleClose, row 
 				onClose={handleClose}
 				aria-labelledby="responsive-dialog-title"
 			>
-				<DialogTitle id="responsive-dialog-title">{"DEtail de la demande"}</DialogTitle>
+				<DialogTitle id="responsive-dialog-title">{"Détail de la demande"}</DialogTitle>
 
 				<DialogContent>
 					<DialogContentText>

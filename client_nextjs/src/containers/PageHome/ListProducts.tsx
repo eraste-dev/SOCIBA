@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
 import { fetchAllProperties } from "app/axios/actions/api.action";
-import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
+import { IGetSearchPropertiesParams, TypeSearch } from "utils/query-builder.utils";
 import Loading from "components/UI/Loading";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 import FloatFilter from "components/Widgets/FloatFilter";
@@ -68,7 +68,7 @@ export const getParams = (): IGetSearchPropertiesParams => {
 	}
 
 	if (type) {
-		params.type = type;
+		params.type = type as TypeSearch;
 	}
 
 	if (category_uuid) {

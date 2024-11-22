@@ -61,7 +61,7 @@ const AdminLayout: FC<AdminLayoutProps> = ({ className = "", children }) => {
 								<div className="relative">
 									{/* <BgGlassmorphism /> */}
 								</div>
-								<div className="md:xxx-container sm:px-5">{children}</div>
+								<div className="md:xxx-container sm:px-5 sm:mt-10">{children}</div>
 							</div>
 						</div>
 					</div>
