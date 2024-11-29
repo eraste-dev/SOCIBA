@@ -24,7 +24,7 @@ const Card11: FC<Card11Props> = ({
 	post,
 	ratio = "aspect-w-1 aspect-h-1",
 }) => {
-	const { title, href, category, updated_at, location, unlisted_city, location_description } =
+	const { title, href, category, updated_at, location, unlisted_city, location_description, images, videos } =
 		post;
 	const [isHover, setIsHover] = useState(false);
 	const dispatch = useAppDispatch();
@@ -35,19 +35,26 @@ const Card11: FC<Card11Props> = ({
 		history.push(post.href);
 	};
 
+	const canShowOnlyVideo = () => {
+		if (images.length <= 0 && videos.length > 0) {
+			return true;
+		}
+		return false;
+	};
+
 	return (
 		<div
 			className={`nc-Card11 overflow-hidden relative flex flex-col group [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] ${className}`}
 			data-nc-id="Card11"
 			onMouseEnter={() => setIsHover(true)}
 			onMouseLeave={() => setIsHover(false)}
-			//
+		//
 		>
 			<div
 				className={`block flex-shrink-0 relative w-full rounded-t-xl overflow-hidden ${ratio}`}
 			>
 				<div>
-					<PostFeaturedMedia post={post} isHover={isHover} />
+					<PostFeaturedMedia post={post} isHover={isHover} showOnlyVideo={canShowOnlyVideo()} />
 				</div>
 			</div>
 

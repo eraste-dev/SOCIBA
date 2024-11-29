@@ -86,6 +86,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/user-posts', [PropertyController::class, 'getUserPost']);
 
             Route::put('update-profile',   [AuthController::class, 'updateUser'])->name('user.update-profile');
+            Route::put('change-password',   [AuthController::class, 'changePassword'])->name('user.change-password');
             Route::get('list',             [UserController::class, 'listUsers'])->name('user.list');
             Route::delete('delete',        [UserController::class, 'delete'])->name('user.delete');
 

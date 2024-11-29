@@ -16,6 +16,8 @@ export const LIST_GRID_CLASS: string =
 export const LIST_RELATED_GRID_CLASS: string =
 	"grid-cols-6";
 
+export const BG_BACKGROUND = "bg-[#eee] dark:bg-neutral-900"
+
 const Home: React.FC = () => {
 	useEffect(() => {
 		const $body = document.querySelector("body");
@@ -30,7 +32,7 @@ const Home: React.FC = () => {
 	}, []);
 
 	return (
-		<div className="nc-PageHomeDemo3 overflow-hidden relative">
+		<div className={`nc-PageHomeDemo3 overflow-hidden relative ` + BG_BACKGROUND}>
 			<Helmet>
 				<title>BAJORAH || Annonces gratuites en Côte d'Ivoire</title>
 			</Helmet>

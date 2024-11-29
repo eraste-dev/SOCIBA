@@ -2,8 +2,9 @@ import { IGetSearchPropertiesParams, QueryBuilder } from "utils/query-builder.ut
 import { ProductRequest, UpdateUserRequest } from "./api.type";
 import { InputsEditCategory } from "components/Dashboard/Products/Categories/EditCategory";
 import { InputsEditSlider } from "containers/PageDashboard/Sliders/EditSlider";
-import { MovingRequestInputs } from "containers/PageMovingRequest/SectionContact";
+import { MovingRequestInputs } from "containers/PageMovingRequest/MovingFormContact";
 import { ISettings } from "app/reducer/settings/settings.";
+import { UpdatePasswordRequest } from "containers/PageDashboard/Users/form/UpdatePassword";
 
 export const apiBase: string = "http://localhost:8000";
 
@@ -55,8 +56,8 @@ export interface IServerEndpoint {
 			resetPassword: IAxiosRequestConfig;
 			refreshToken: IAxiosRequestConfig;
 			profile: IAxiosRequestConfig;
-			updateProfile: (data: FormData | UpdateUserRequest) => IAxiosRequestConfig; // UpdateUserRequest
-			// updatePassword: (data: UpdateUserRequest) => IAxiosRequestConfig;
+			updateProfile: (data: FormData | UpdateUserRequest) => IAxiosRequestConfig;
+			updateUserPassword: (data: UpdatePasswordRequest) => IAxiosRequestConfig;
 			verifyEmail: IAxiosRequestConfig;
 			resendEmail: IAxiosRequestConfig;
 			confirmEmail: IAxiosRequestConfig;
@@ -160,7 +161,11 @@ export const serverEndpoints: IServerEndpoint = {
 				url: `${v100}/user/update-profile`,
 				data,
 			}),
-			// updatePassword: (data: UpdateUserRequest) => ({ method: "PUT", url: `${v100}/user/update-password` }),
+			updateUserPassword: (data: UpdatePasswordRequest) => ({
+				method: "PUT",
+				url: `${v100}/user/change-password`,
+				data,
+			}),
 		},
 		users: {
 			getAll: { method: "GET", url: `${v100}/user/list` },

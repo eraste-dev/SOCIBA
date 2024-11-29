@@ -4,7 +4,7 @@ import { RootState } from "app/reducer/store";
 import { ILocation } from "../locations/locations";
 
 
-export type IuserStatus = "ACTIVE" | "INACTIVE" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED"; 
+export type IuserStatus = "ACTIVE" | "INACTIVE" | "DELETED" | "REJECTED" | "PENDING" | "BLOCKED";
 export interface IUser {
 	id: number;
 	name: string;
@@ -20,7 +20,7 @@ export interface IUser {
 	status: IuserStatus;
 	type: "ADMIN" | "USER" | "GUEST" | "AGENT";
 	count_products: number;
-	
+
 }
 
 export interface IAuth {
@@ -178,6 +178,24 @@ export const AuthSlice = createSlice({
 			state.loading = false;
 			state.error = action.payload;
 		},
+
+		// UPDATE USER PASSWORD
+		updateUserPasswordStart: (state) => {
+			state.loading = true;
+			state.error = null;
+			state.success = false;
+		},
+		updateUserPasswordSuccess: (state, action: PayloadAction<IUser>) => {
+			state.loading = false;
+			state.error = null;
+			state.success = true;
+			state.data = { ...state.data, user: action.payload };
+		},
+		updateUserPasswordFailure: (state, action: PayloadAction<string>) => {
+			state.loading = false;
+			state.error = action.payload;
+		},
+
 	},
 });
 
@@ -200,6 +218,9 @@ export const {
 	updateUserStart,
 	updateUserSuccess,
 	updateUserFailure,
+	updateUserPasswordStart,
+	updateUserPasswordSuccess,
+	updateUserPasswordFailure,
 } = AuthSlice.actions;
 
 export const AuthAction: IStoreAction<IAuth> = {
