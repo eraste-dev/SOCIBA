@@ -74,8 +74,9 @@ Route::group(['prefix' => 'v1'], function () {
             Route::delete('sliders', [SliderController::class, 'destroy']);
 
             Route::group(['prefix' => 'products'], function () {
-                Route::post('/',   [PropertyController::class, 'store'])->name('admin.products.store');
-                Route::delete('/', [PropertyController::class, 'delete'])->name('admin.products.delete');
+                Route::post('/',                [PropertyController::class, 'store'])->name('admin.products.store');
+                Route::delete('/',              [PropertyController::class, 'delete'])->name('admin.products.delete');
+                Route::post('/upload-video',    [PropertyController::class, 'upload_video'])->name('admin.products.upload_video');
             });
         });
 

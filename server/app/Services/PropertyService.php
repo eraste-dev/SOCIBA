@@ -297,4 +297,40 @@ class PropertyService
             var_dump($th);
         }
     }
+
+
+    /**
+     * Uploads and saves videos in the specified directory, 
+     * without associating them with any product.
+     * 
+     * This function processes video uploads from the request, 
+     * saves the new video files to the specified directory, 
+     * and creates a database record for each video.
+     * 
+     * @return array The created records
+     */
+    public static function upload_unassigned_video()
+    {
+        $insert = [];
+        if (isset(request()->videos) && is_array(request()->videos) && count(request()->videos) > 0) {
+            $videos = request()->videos;
+            foreach ($videos as $key => $image) {
+                if ($image === null) {
+                    continue;
+                }
+                $filetomove = "unassigned" . "__" . time() . "__video" . "__" . $key . "__"  . "." . $image->getClientOriginalExtension();
+
+                $destinationPath = public_path('assets/videos/products');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0777, true);
+                }
+                $image->move($destinationPath, $filetomove);
+
+                $insert[] = PropertyVideo::create([
+                    'src'       => "/videos/products/" . $filetomove
+                ]);
+            }
+        }
+        return $insert;
+    }
 }

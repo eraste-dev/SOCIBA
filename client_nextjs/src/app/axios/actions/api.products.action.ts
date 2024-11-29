@@ -3,11 +3,14 @@ import {
 	fetchUserProductFailure,
 	fetchUserProductStart,
 	fetchUserProductSuccess,
+	uploadVideoFailure,
+	uploadVideoStart,
+	uploadVideoSuccess,
 } from "app/reducer/products/product";
 import { AppDispatch } from "app/reducer/store";
 import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
 import { axiosRequest } from "../api";
-import { IServerResponse } from "../api.type";
+import { IServerResponse, ProductRequest, UploadVideoProductRequest } from "../api.type";
 import { InputsEditCategory } from "components/Dashboard/Products/Categories/EditCategory";
 import {
 	updateProductCategoryFailure,
@@ -51,3 +54,24 @@ export const updateUser = (params: InputsEditCategory) => async (dispatch: AppDi
 		dispatch(updateProductCategoryFailure(error.message));
 	}
 };
+
+export const uploadVideo =
+	(payload: UploadVideoProductRequest | FormData) => async (dispatch: AppDispatch) => {
+		console.log(">>> payload >> postProduct ", payload);
+
+		dispatch(uploadVideoStart());
+
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.properties.uploadVideo(payload),
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+				data: payload,
+			});
+			dispatch(uploadVideoSuccess(response.data));
+		} catch (error: any) {
+			console.log(error);
+			dispatch(uploadVideoFailure({ error: error.message, errors: error.errors }));
+		}
+	};

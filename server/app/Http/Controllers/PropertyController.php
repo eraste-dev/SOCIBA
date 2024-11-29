@@ -207,6 +207,31 @@ class PropertyController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     */
+    public function upload_video(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id'        => 'nullable|integer|exists:properties,id',
+            'videos.*'  => 'required|file|max:10024',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error($validator->errors()->first(), 422, $validator->errors());
+        }
+
+        $videos = [];
+        try {
+            $videos = PropertyService::upload_unassigned_video();
+            return ResponseService::success($videos, "Upload video successfully");
+        } catch (\Throwable $th) {
+            return ResponseService::error("Cannot upload video", 500,);
+        }
+
+        return ResponseService::error("Bad request", 400, $validator->errors());
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function delete(Request $request)

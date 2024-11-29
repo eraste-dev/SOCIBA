@@ -37,6 +37,7 @@ export interface IServerEndpoint {
 			editCategory: (params: InputsEditCategory) => IAxiosRequestConfig;
 			search: (query: IGetSearchPropertiesParams) => IAxiosRequestConfig;
 			post: (product: FormData | ProductRequest) => IAxiosRequestConfig;
+			uploadVideo: (product: FormData | ProductRequest) => IAxiosRequestConfig;
 			delete: (id: number) => IAxiosRequestConfig;
 			updateUserScore: ({
 				user_id,
@@ -117,6 +118,11 @@ export const serverEndpoints: IServerEndpoint = {
 			post: (data: FormData | ProductRequest) => ({
 				method: "POST",
 				url: `${v100}/admin/products`,
+				data,
+			}),
+			uploadVideo: (data: FormData | ProductRequest) => ({
+				method: "POST",
+				url: `${v100}/admin/products/upload-video`,
 				data,
 			}),
 			delete: (id: number) => ({
