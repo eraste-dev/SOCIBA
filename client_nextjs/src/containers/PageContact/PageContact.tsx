@@ -15,11 +15,11 @@ export interface PageContactProps {
 export const INFO_CONTACT = [
 	{
 		title: "EMAIL",
-		desc: "sociba@gmail.com",
+		desc: "bajorahimmobilier@gmail.com",
 	},
 	{
 		title: "TÉLÉPHONE",
-		desc: "+225 07 xx xx xx xx",
+		desc: "+225 05 74 93 29 33",
 	},
 ];
 

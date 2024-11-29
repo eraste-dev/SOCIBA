@@ -24,9 +24,9 @@ const widgetMenus: WidgetFooterMenu[] = [
 		id: "2",
 		title: "Informations légales",
 		menus: [
-			{ href: "#", label: "Condition générale d'utilisation" },
+			{ href: route('cgu'), label: "Condition générale d'utilisation" },
 			{ href: "#", label: "Politique generale de vente" },
-			{ href: "#", label: "Politique de confidentialité" },
+			{ href: route('pc'), label: "Politique de confidentialité" },
 			{ href: "#", label: "Règle de diffusion" },
 		],
 	},

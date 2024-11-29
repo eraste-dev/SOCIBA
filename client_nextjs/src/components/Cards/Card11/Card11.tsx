@@ -114,6 +114,9 @@ const Card11: FC<Card11Props> = ({
 
 				<div style={{ height: 60 }}>{post && <PostCardDetailMeta meta={post} />}</div>
 
+			</div>
+
+			<div className="bg-[#d6cbca] dark:bg-[#2d2d2d] " >
 				{post && post.author && post.author.href && <PostPropertyCardMetaV2 meta={post} />}
 			</div>
 		</div>

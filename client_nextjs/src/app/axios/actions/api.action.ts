@@ -387,7 +387,6 @@ export const updateUserPassword = (params: UpdatePasswordRequest) => async (disp
 	try {
 		const response = await axiosRequest<IServerResponse>({
 			...serverEndpoints.public.auth.updateUserPassword(params),
-			headers: { "Content-Type": "multipart/form-data" },
 		});
 		dispatch(updateUserPasswordSuccess(response.data));
 	} catch (error: any) {

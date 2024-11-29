@@ -165,6 +165,7 @@ export const serverEndpoints: IServerEndpoint = {
 				method: "PUT",
 				url: `${v100}/user/change-password`,
 				data,
+				body : data
 			}),
 		},
 		users: {

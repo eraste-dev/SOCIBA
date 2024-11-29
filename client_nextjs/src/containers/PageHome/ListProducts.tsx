@@ -162,7 +162,7 @@ const ListProducts: FC<ListProductsProps> = ({
 
 				{/*  xl:pl-14 lg:pl-7 */}
 				{/* w-full sm:w-6/8 md:w-4/5 lg:w-3/4 xl:w-4/5 lg:pl-7 */}
-				<div className="col-span-1 sm:col-span-10 ">
+				<div className="col-span-1 sm:col-span-10 px-4 ">
 					{loading && loading ? (
 						<CardSkeleton arrayLength={8} />
 					) : (

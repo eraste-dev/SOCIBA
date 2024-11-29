@@ -8,7 +8,7 @@ import Input from 'components/Form/Input/Input';
 import Label from 'components/Form/Label/Label';
 import { LoadingSpinner } from 'components/UI/Loading/LoadingSpinner';
 import { useSnackbar } from 'notistack';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -53,9 +53,20 @@ function UpdatePassword() {
             payload.user_id = user.id;
         }
 
-        console.log(">>> payload", payload);
         dispatch(updateUserPassword(payload));
     };
+
+    useEffect(() => {
+        if (success && !loading && isSubmitted) {
+            snackbar.enqueueSnackbar("Mot de passe mis à jour", { variant: "success" });
+        }
+    }, [success, loading, isSubmitted, snackbar]);
+
+    useEffect(() => {
+        if (!loading && error) {
+            snackbar.enqueueSnackbar(error, { variant: "error" });
+        }
+    }, [error, loading, snackbar]);
 
 
     const machtPassword = () => {

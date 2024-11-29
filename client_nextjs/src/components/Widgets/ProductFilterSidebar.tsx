@@ -102,7 +102,7 @@ const ProductFilterSidebar: FC<ProductFilterSidebarProps> = ({
 
 			<div
 				className={
-					showFilter ? (!linear ? "block sm:p-2 max-w-md" : "block sm:p-2") : "hidden"
+					showFilter ? (!linear ? "block sm:p-2 max-w-md bg-white dark:bg-neutral-800 rounded-lg" : "block sm:p-2") : "hidden"
 				}
 			>
 				<div className={!linear ? "grid grid-cols-1 gap-0" : "grid grid-cols-4 gap-2"}>

@@ -179,6 +179,7 @@ class AuthController extends Controller
 
     public function changePassword(Request $request)
     {
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'user_id'               => 'required|integer|exists:users,id',
             'password'              => 'required|string',
