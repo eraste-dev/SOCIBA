@@ -112,10 +112,10 @@ const Home: React.FC = () => {
 					className="pb-4 lg:pb-6"
 				/>
 
-				<TestimonialSlider />
 				{/* === SECTION LATEST POSTS === */}
 			</div>
 
+			<TestimonialSlider />
 		</div>
 	);
 };

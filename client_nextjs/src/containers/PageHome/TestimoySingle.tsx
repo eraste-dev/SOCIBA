@@ -12,21 +12,27 @@ const TestimoySingle: FC<TestimoySingleProps> = ({ item }) => {
 
     return (
         <div className=" bg-white dark:bg-neutral-900 p-2 rounded-lg flex ">
-            <Avatar
-                containerClassName="ring-4 ring-white dark:ring-0 shadow-2xl"
-                imgUrl={item.user?.avatar}
-                sizeClass="w-20 h-20 text-xl"
-                radius="rounded-full"
-            />
-            <div className="mt-5 sm:mt-0 sm:ml-8 space-y-4 max-w-lg">
-                <h2 className="inline-block text-xl font-semibold">
-                    {`${item.user?.name} ${item.user?.last_name}`}
-                </h2>
-                <p>
-                    {item.user?.fonction}
-                </p>
+            <div className="p-3 space-y-4 max-w-lg">
+                <div className='flex items-center' >
+                    <Avatar
+                        containerClassName="ring-4 ring-white dark:ring-0 shadow-2xl"
+                        imgUrl={item.user?.avatar}
+                        sizeClass="w-10 h-10 sm:w-12 sm:h-12 text-xl mr-3"
+                        radius="rounded-full"
+                    />
+
+                    <div>
+                        <h2 className="inline-block text-lg font-semibold">
+                            {`${item.user?.name} ${item.user?.last_name}`}
+                        </h2>
+                        <p>
+                            {item.user?.fonction}
+                        </p>
+                    </div>
+                </div>
+
                 <div
-                    className="block text-sm text-neutral-6000 dark:text-neutral-300 md:text-base" dangerouslySetInnerHTML={{ __html: item.message }}
+                    className="block text-sm text-neutral-6000 dark:text-neutral-300 md:text-base prose" dangerouslySetInnerHTML={{ __html: item.message }}
                 />
             </div>
         </div>
