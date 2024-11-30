@@ -5,6 +5,7 @@ import { InputsEditSlider } from "containers/PageDashboard/Sliders/EditSlider";
 import { MovingRequestInputs } from "containers/PageMovingRequest/MovingFormContact";
 import { ISettings } from "app/reducer/settings/settings.";
 import { UpdatePasswordRequest } from "containers/PageDashboard/Users/form/UpdatePassword";
+import { ITestimonial } from "app/reducer/testimonials/testimonial";
 
 export const apiBase: string = "http://localhost:8000";
 
@@ -21,6 +22,11 @@ export interface IAxiosRequestConfig {
 
 export interface IServerEndpoint {
 	public: {
+		testimonials: {
+			get: () => IAxiosRequestConfig;
+			getAll: () => IAxiosRequestConfig;
+			post: (data: ITestimonial) => IAxiosRequestConfig;
+		};
 		settings: {
 			get: (key: string) => IAxiosRequestConfig;
 			post: (data: ISettings) => IAxiosRequestConfig;
@@ -87,6 +93,21 @@ export const serverEndpoints: IServerEndpoint = {
 			post: (data: ISettings) => ({
 				method: "POST",
 				url: `${v100}/settings/update`,
+				data,
+			}),
+		},
+		testimonials: {
+			get: () => ({
+				method: "GET",
+				url: `${v100}/testimonials`,
+			}),
+			getAll: () => ({
+				method: "GET",
+				url: `${v100}/testimonials/all`,
+			}),
+			post: (data: ITestimonial) => ({
+				method: "POST",
+				url: `${v100}/testimonials`,
 				data,
 			}),
 		},
@@ -165,7 +186,7 @@ export const serverEndpoints: IServerEndpoint = {
 				method: "PUT",
 				url: `${v100}/user/change-password`,
 				data,
-				body : data
+				body: data
 			}),
 		},
 		users: {

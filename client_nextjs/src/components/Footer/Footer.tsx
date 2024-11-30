@@ -1,5 +1,6 @@
 import Logo from "components/Logo/Logo";
 import SocialsList1 from "components/SocialsList1/SocialsList1";
+import TestimonialSlider from "containers/PageHome/TestimonialSlider";
 import { CustomLink } from "data/types";
 import React from "react";
 import { route } from "routers/route";

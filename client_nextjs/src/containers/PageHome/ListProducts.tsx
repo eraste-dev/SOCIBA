@@ -173,10 +173,12 @@ const ListProducts: FC<ListProductsProps> = ({
 
 					{products?.length === 0 && <NoDataMessage />}
 
-					<div className="flex flex-col mt-12 md:mt-20 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-center sm:items-center">
-						{/* <Pagination /> */}
-						{/* <ButtonPrimary>Show me more</ButtonPrimary> */}
-					</div>
+					{false && (
+						<div className="flex flex-col mt-12 md:mt-20 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-center sm:items-center">
+							{/* <Pagination /> */}
+							{/* <ButtonPrimary>Show me more</ButtonPrimary> */}
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

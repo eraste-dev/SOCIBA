@@ -15,6 +15,7 @@ import metaReducer from "./meta/meta";
 import authReducer from "./auth/auth";
 import settingsReducer from "./settings/settings.";
 import locationReducer from "./locations/locations";
+import testimonalReducer from "./testimonials/testimonial";
 
 const rootReducers = {
 	settings: settingsReducer,
@@ -35,6 +36,7 @@ const rootReducers = {
 	usersManagement: usersReducer,
 	userRequests: userRequestsReducer,
 	notifications: notificationsReducer,
+	testimonials: testimonalReducer,
 };
 
 export default rootReducers;

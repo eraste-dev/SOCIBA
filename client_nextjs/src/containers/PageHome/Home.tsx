@@ -7,6 +7,7 @@ import SectionHeroSlider from "components/SectionHero/SectionHeroSlider";
 import SectionSliderCities from "./SectionSliderCities";
 import ListProducts from "./ListProducts";
 import SectionSliderCitiesTwo from "./SectionSliderCitiesTwo";
+import TestimonialSlider from "./TestimonialSlider";
 
 // DEMO DATA
 const POSTS = DEMO_POSTS;
@@ -108,10 +109,13 @@ const Home: React.FC = () => {
 					postCardName="card11"
 					// gridClass="grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
 					gridClass={LIST_GRID_CLASS}
-					className="pb-16 lg:pb-28"
+					className="pb-4 lg:pb-6"
 				/>
+
+				<TestimonialSlider />
 				{/* === SECTION LATEST POSTS === */}
 			</div>
+
 		</div>
 	);
 };
