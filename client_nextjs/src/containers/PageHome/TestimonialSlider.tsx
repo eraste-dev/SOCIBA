@@ -30,7 +30,7 @@ export default function TestimonialSlider() {
                     <LoadingSpinner />
                 </div>
             ) : (
-                <div className='p-4 bg-[#eee]' style={{ backgroundImage: `url(${bgBackground})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
+                <div className='p-1 sm:p-4 bg-[#eee]' style={{ backgroundImage: `url(${bgBackground})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
                     <div className="container">
                         <div className="grid sm:grid-cols-5 grid-cols-1 gap-6 pb-12" >
                             <div className="col-span-1">
@@ -62,7 +62,7 @@ export default function TestimonialSlider() {
                                     }}
                                     controlsStrategy="alternate"
                                     autoPlay
-                                    autoPlayInterval={3000}
+                                    autoPlayInterval={6000}
                                     disableButtonsControls={true}
                                     disableDotsControls={false}
                                     infinite

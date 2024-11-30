@@ -16,12 +16,17 @@ const SectionSubscribe: FC<SectionSubscribeProps> = ({ className = "" }) => {
         <div className="flex flex-col items-center justify-center w-screen mx-auto max-w-full text-center lg:max-w-screen-md">
           <div>
             <h2 className="text-3xl lg:text-4xl font-semibold leading-[112.5%] text-neutral-900 dark:text-neutral-100">
-              📬 Subcribe to our newsletter
+              📬 Abonnez-vous notre newsletter
             </h2>
-            <span className="block mt-4 text-base md:text-lg text-neutral-6000 dark:text-neutral-400">
-              Sign up for our newsletter and we'll email you every time we
-              release a new of article.
-            </span>
+            <div className="flex justify-center">
+              <div className="w-1/2">
+                <span className="block mt-4 text-base md:text-lg text-neutral-6000 dark:text-neutral-400">
+                  Inscrivez-vous notre newsletter et nous vous enverrons un
+                  e-mail chaque fois que nous publierons une annonce ou une
+                  actualité.
+                </span>
+              </div>
+            </div>
           </div>
           <div className="mt-10 w-full">
             <form
@@ -31,24 +36,14 @@ const SectionSubscribe: FC<SectionSubscribeProps> = ({ className = "" }) => {
             >
               <Input
                 className="sm:max-w-sm flex-grow"
-                placeholder="Enter email address"
+                placeholder="Votre adresse email"
+                type="email"
                 sizeClass="h-auto px-4 py-3"
               />
               <ButtonPrimary className="flex-shrink-0" type="submit">
-                Subscribe
+                S'inscrire
               </ButtonPrimary>
             </form>
-            <span className="block text-sm text-neutral-500 dark:text-neutral-400 mt-2.5">
-              We care about the protection of your data. Read our{" "}
-              <a
-                className="text-primary-700 dark:text-primary-6000 font-medium"
-                href="/#"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Privacy Policy.
-              </a>
-            </span>
           </div>
         </div>
       </div>

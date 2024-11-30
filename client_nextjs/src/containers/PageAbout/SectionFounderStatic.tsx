@@ -143,7 +143,7 @@ const SectionFounderStatic = () => {
 						vente de vos biens immobiliers sur notre plateforme. Nous
 						offrons une plus large diffusion des biens qui nous sont
 						confiés. N’hésitez pas à nous contactez au 07 59 85 55 44
-						ou par e-mail : <a href="mailto:immobilier@bajorah.com">immobilier@bajorah.com</a> pour plus d’information
+						ou par e-mail : <a href="mailto:bajorahimmobilier@gmail.com">bajorahimmobilier@gmail.com</a> pour plus d’information
 					</p>
 				</div>
 				<div className="col-span-5 md:col-span-2">

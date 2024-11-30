@@ -73,7 +73,7 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "", target 
 						}}
 						controlsStrategy="alternate"
 						autoPlay
-						autoPlayInterval={3000}
+						autoPlayInterval={13000}
 						disableButtonsControls={true}
 						disableDotsControls={true}
 						infinite

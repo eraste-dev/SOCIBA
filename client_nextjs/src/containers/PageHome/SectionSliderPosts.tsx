@@ -112,7 +112,7 @@ const SectionSliderPosts: FC<SectionSliderPostsProps> = ({
 					}}
 					controlsStrategy="alternate"
 					autoPlay={false}
-					autoPlayInterval={3000}
+					autoPlayInterval={4000}
 					disableButtonsControls={true}
 					disableDotsControls={true}
 					infinite

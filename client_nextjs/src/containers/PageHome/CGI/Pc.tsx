@@ -6,14 +6,14 @@ const PcPage: FC = () => {
 			<h1 className="text-3xl font-bold mb-6 text-center">Politique de Confidentialité</h1>
 			<div className="space-y-6 text-justify leading-relaxed">
 				<section>
-					<h2 className="text-2xl font-semibold mb-2">1. Introduction</h2>
+					<h2 className="text-lg font-semibold mb-2">1. Introduction</h2>
 					<p>
 						La protection de vos données personnelles est une priorité pour BAJORAH. La présente Politique de Confidentialité vise à vous informer sur la manière dont nous collectons, utilisons, stockons et protégeons vos données lorsque vous utilisez notre site de promotion immobilière www.bajorah.com. En accédant à notre site, vous acceptez les pratiques décrites dans cette politique.
 					</p>
 				</section>
 
 				<section>
-					<h2 className="text-2xl font-semibold mb-2">2. Données collectées</h2>
+					<h2 className="text-lg font-semibold mb-2">2. Données collectées</h2>
 					<p>
 						Nous collectons différentes catégories de données personnelles lorsque vous utilisez notre site :
 					</p>
@@ -26,7 +26,7 @@ const PcPage: FC = () => {
 				</section>
 
 				<section>
-					<h2 className="text-2xl font-semibold mb-2">3. Utilisation des données</h2>
+					<h2 className="text-lg font-semibold mb-2">3. Utilisation des données</h2>
 					<p>
 						Les données collectées sont utilisées pour les finalités suivantes :
 					</p>
@@ -39,7 +39,7 @@ const PcPage: FC = () => {
 				</section>
 
 				<section>
-					<h2 className="text-2xl font-semibold mb-2">4. Base légale du traitement</h2>
+					<h2 className="text-lg font-semibold mb-2">4. Base légale du traitement</h2>
 					<p>
 						Nous collectons et traitons vos données personnelles sur les bases légales suivantes :
 					</p>
@@ -52,7 +52,7 @@ const PcPage: FC = () => {
 				</section>
 
 				<section>
-					<h2 className="text-2xl font-semibold mb-2">5. Partage des données</h2>
+					<h2 className="text-lg font-semibold mb-2">5. Partage des données</h2>
 					<p>
 						Nous nous engageons à ne pas vendre, louer ou divulguer vos données personnelles à des tiers, sauf dans les cas suivants :
 					</p>
@@ -63,7 +63,7 @@ const PcPage: FC = () => {
 				</section>
 
 				<section>
-					<h2 className="text-2xl font-semibold mb-2">6. Durée de conservation des données</h2>
+					<h2 className="text-lg font-semibold mb-2">6. Durée de conservation des données</h2>
 					<p>
 						Vos données personnelles sont conservées uniquement pendant la durée nécessaire aux finalités pour lesquelles elles ont été collectées. Par exemple :
 					</p>
@@ -74,7 +74,7 @@ const PcPage: FC = () => {
 				</section>
 
 				<section>
-					<h2 className="text-2xl font-semibold mb-2">7. Vos droits</h2>
+					<h2 className="text-lg font-semibold mb-2">7. Vos droits</h2>
 					<p>
 						Conformément aux lois applicables en matière de protection des données, vous disposez des droits suivants :
 					</p>
@@ -87,35 +87,35 @@ const PcPage: FC = () => {
 						<li>Droit d’opposition : Vous pouvez vous opposer au traitement de vos données à des fins de marketing direct.</li>
 					</ul>
 					<p>
-						Pour exercer ces droits, veuillez nous contacter à l'adresse suivante : <a href="mailto:immobilier@bajorah.com" className="text-blue-500 underline">immobilier@bajorah.com</a>
+						Pour exercer ces droits, veuillez nous contacter à l'adresse suivante : <a href="mailto:bajorahimmobilier@gmail.com" className="text-blue-500 underline">bajorahimmobilier@gmail.com</a>
 					</p>
 				</section>
 
 				<section>
-					<h2 className="text-2xl font-semibold mb-2">8. Sécurité des données</h2>
+					<h2 className="text-lg font-semibold mb-2">8. Sécurité des données</h2>
 					<p>
 						Nous mettons en place des mesures de sécurité techniques et organisationnelles appropriées pour protéger vos données personnelles contre tout accès non autorisé, toute modification, divulgation ou destruction.
 					</p>
 				</section>
 
 				<section>
-					<h2 className="text-2xl font-semibold mb-2">9. Cookies</h2>
+					<h2 className="text-lg font-semibold mb-2">9. Cookies</h2>
 					<p>
 						Nous utilisons des cookies pour améliorer votre expérience sur notre site. Un cookie est un petit fichier texte déposé sur votre appareil lorsque vous visitez notre site. Vous pouvez gérer vos préférences en matière de cookies en configurant votre navigateur.
 					</p>
 				</section>
 
 				<section>
-					<h2 className="text-2xl font-semibold mb-2">10. Modifications de la Politique de Confidentialité</h2>
+					<h2 className="text-lg font-semibold mb-2">10. Modifications de la Politique de Confidentialité</h2>
 					<p>
 						Nous nous réservons le droit de modifier la présente Politique de Confidentialité à tout moment. Toute modification sera publiée sur cette page et prendra effet immédiatement. Nous vous encourageons à consulter régulièrement cette page pour rester informé de tout changement.
 					</p>
 				</section>
 
 				<section>
-					<h2 className="text-2xl font-semibold mb-2">11. Contact</h2>
+					<h2 className="text-lg font-semibold mb-2">11. Contact</h2>
 					<p>
-						Si vous avez des questions ou des préoccupations concernant cette Politique de Confidentialité ou le traitement de vos données personnelles, vous pouvez nous contacter à l'adresse suivante : <a href="mailto:immobilier@bajorah.com" className="text-blue-500 underline">immobilier@bajorah.com</a>
+						Si vous avez des questions ou des préoccupations concernant cette Politique de Confidentialité ou le traitement de vos données personnelles, vous pouvez nous contacter à l'adresse suivante : <a href="mailto:bajorahimmobilier@gmail.com" className="text-blue-500 underline">bajorahimmobilier@gmail.com</a>
 					</p>
 				</section>
 			</div>
