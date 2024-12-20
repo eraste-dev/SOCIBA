@@ -1,6 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { FaPhone, FaPhoneAlt, FaSms, FaWhatsapp, FaWhatsappSquare } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import AlerteSecurityMessage from "./AlerteSecurityMessage";
 
 // Données statiques du vendeur
 const sellerData = {
@@ -17,12 +18,15 @@ export interface ContactSellerProps {
 }
 
 const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, sms }) => {
+	const [showAlert, setshowAlert] = useState(true);
+
 	const classNameItem: string =
 		"text-white font-bold py-2 pr-1 pl-0 sm:px-4 rounded-lg mr-2 flex items-center justify-center text-center";
 	const iconSize = 24;
 
 	const handleCall = () => {
 		const phone_call = phone ? phone : sellerData.phone;
+		alert();
 		return `tel:${phone_call}`;
 	};
 
@@ -32,13 +36,19 @@ const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, s
 		if (!_wh.includes("225")) {
 			_wh = "225" + _wh;
 		}
+		alert();
 		return `https://wa.me/${_wh}?text=Votre%20annonce%20publi%C3%A9e%20m'int%C3%A9resse.%20Cliquez%20sur%20l'URL%20ci-dessous%3A%0A%0A${productLink}`;
 	};
 
 	const handleSMS = () => {
 		const _sms = sms ? sms : sellerData.phone;
+		alert();
 		return `sms:${_sms}`;
 	};
+
+	const alert = () => {
+		() => setshowAlert(true);
+	}
 
 	return (
 		<div className="mt-8">
@@ -73,6 +83,9 @@ const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, s
 					<span className="ml-2">WhatsApp</span>
 				</a>
 			</div>
+
+			{showAlert ? <AlerteSecurityMessage /> : null}
+
 		</div>
 	);
 };

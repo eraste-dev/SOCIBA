@@ -11,7 +11,7 @@ import {
 	deleteUserFailure,
 } from "app/reducer/users/users";
 
-import { MovingRequestInputs } from "containers/PageMovingRequest/SectionContact";
+import { MovingRequestInputs } from "containers/PageMovingRequest/MovingFormContact";
 import {
 	fetchALlUserRequestsFailure,
 	fetchALlUserRequestsStart,

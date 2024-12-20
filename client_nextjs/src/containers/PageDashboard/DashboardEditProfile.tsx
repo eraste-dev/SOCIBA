@@ -16,6 +16,8 @@ import { MetaAction } from "app/reducer/meta/meta";
 import { fetchMetaFunction } from "app/axios/actions/api.meta.action";
 import Select from "components/Form/Select/Select";
 import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
+import UpdatePassword from "./Users/form/UpdatePassword";
+import EditUserTab from "./Users/form/EditUserTab";
 
 const DashboardEditProfile = () => {
 	const dispatch = useDispatch();
@@ -92,117 +94,7 @@ const DashboardEditProfile = () => {
 
 	return (
 		<div className="flex justify-center">
-			{/* ======== BG GLASS ======== */}
-
-			<div className="w-full md:w-2/3 rounded-xl md:border md:border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-800 p-2">
-				<form className="grid md:grid-cols-2 gap-6 " onSubmit={handleSubmit(onSubmit)}>
-					<AvatarUpload
-						defaultUrl={user?.avatar ?? ""}
-						avatar={avatar ?? ""}
-						setAvatar={setAvatar}
-						setAvatarFile={setAvatarFile}
-					/>
-
-					<label className="block">
-						<Label>Prénoms</Label>
-						<Input
-							placeholder="Votre prénoms"
-							type="text"
-							className="mt-1"
-							{...register("name")}
-							defaultValue={user?.name}
-						/>
-						<ErrorMessage errors={errorArray} error="name" />
-					</label>
-
-					<label className="block">
-						<Label>Nom</Label>
-						<Input
-							placeholder="Votre nom"
-							type="text"
-							className="mt-1"
-							{...register("last_name")}
-							defaultValue={user?.last_name ?? ""}
-						/>
-						<ErrorMessage errors={errorArray} error="name" />
-					</label>
-
-					<label className="block md:col-span-2">
-						<Label> Email</Label>
-						<Input
-							type="email"
-							className="mt-1 cursor-not-allowed"
-							defaultValue={user?.email}
-							disabled
-						/>
-						<ErrorMessage errors={errorArray} error="email" />
-					</label>
-
-					<label className="block md:col-span-2">
-						<span className="text-neutral-800 dark:text-neutral-200">
-							Vous êtres ? <span className="text-red-500">*</span>{" "}
-						</span>
-						<Select
-							className="mt-1"
-							{...register("fonction", { required: true })}
-							disabled={!functions?.data || functions?.data?.length === 0}
-							onChange={(e) => setValue("fonction", e.target.value)}
-						>
-							<option value="" selected>
-								Aucun
-							</option>
-							{functions &&
-								functions.data &&
-								functions.data?.length > 0 &&
-								functions.data.map((func) => (
-									<option
-										key={func.id}
-										value={func.value}
-										selected={func.value === user?.fonction}
-										onClick={() => {
-											setValue("fonction", func.value ?? "");
-										}}
-									>
-										{func.value}
-									</option>
-								))}
-						</Select>
-						<ErrorMessage errors={errorArray} error="fonction" />
-					</label>
-
-					<label className="block">
-						<Label> Téléphone</Label>
-						<Input
-							type="text"
-							className="mt-1 "
-							{...register("phone")}
-							defaultValue={user?.phone}
-						/>
-						<ErrorMessage errors={errorArray} error="phone" />
-					</label>
-
-					<label className="block">
-						<Label> Numéro WhatsApp</Label>
-						<Input
-							type="text"
-							className="mt-1 "
-							{...register("phone_whatsapp")}
-							defaultValue={user?.phone_whatsapp}
-						/>
-						<ErrorMessage errors={errorArray} error="phone_whatsapp" />
-					</label>
-
-					{loading ? (
-						<div className="flex justify-center">
-							<LoadingSpinner />
-						</div>
-					) : (
-						<ButtonPrimary className="md:col-span-2" type="submit">
-							Mise à jour du profil
-						</ButtonPrimary>
-					)}
-				</form>
-			</div>
+			<EditUserTab />
 		</div>
 	);
 };

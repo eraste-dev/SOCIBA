@@ -9,12 +9,33 @@
 	}
 }
 
-/* .container-post-custom-btn {
-	height: "calc(80vh - 60px)" !important;
-}
-
-@media only screen and (max-width: 768px) {
-	.container-post-custom-btn {
-		height: "calc(70vh - 60px)" !important;
+.circle-animation {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	animation: moveCircles 6s ease-in-out infinite;
+  }
+  
+  @keyframes moveCircles {
+	0% {
+	  transform: translateX(0);
 	}
-} */
+	25% {
+		transform: translateX(0vw) translateY(20px);
+	}
+	50% {
+		transform: translateX(20vw) translateY(40px) scale(1.2);
+		background-color: orange;
+	}
+	75% {
+		transform: translateX(60vw) translateY(30px);
+		background-color: brown;
+	}
+	85% {
+		transform: translateX(100vw) translateY(100px);
+		background-color: bisque;
+	}
+	100% {
+		transform: translateX(0vw);
+	}
+  }

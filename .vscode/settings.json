@@ -27,5 +27,9 @@
             "database": "${workspaceFolder:others}/server/database/database.sqlite",
             "name": "BAJORAH"
         }
+    ],
+    "cSpell.language": "en,fr",
+    "cSpell.words": [
+        "BAJORAH"
     ]
 }

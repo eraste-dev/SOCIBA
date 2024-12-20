@@ -65,8 +65,8 @@ const PostCategoriesManagementTable: FC<PostCategoriesTableProps> = ({
 	const columns: ColumnCategoryTable[] = [
 		{ id: "id", label: "id", minWidth: 100 },
 		{ id: "name", label: "Libellé", minWidth: 100 },
-		{ id: "count", label: "Nombre d'annonce", minWidth: 100 },
-		{ id: "actions", label: "Actions" },
+		// { id: "count", label: "Nombre d'annonce", minWidth: 100 },
+		// { id: "actions", label: "Actions" },
 	];
 
 	if (!columns && !rows) {
@@ -102,7 +102,7 @@ const PostCategoriesManagementTable: FC<PostCategoriesTableProps> = ({
 											<TableCell>
 												<strong>{name} </strong>
 											</TableCell>{" "}
-											<TableCell>{count} annonce(s)</TableCell>
+											{/* <TableCell>{count} annonce(s)</TableCell> */}
 											<TableCell>
 												<PostCategoryTableAction
 													row={row}

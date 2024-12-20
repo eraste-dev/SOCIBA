@@ -2,8 +2,10 @@ import { IGetSearchPropertiesParams, QueryBuilder } from "utils/query-builder.ut
 import { ProductRequest, UpdateUserRequest } from "./api.type";
 import { InputsEditCategory } from "components/Dashboard/Products/Categories/EditCategory";
 import { InputsEditSlider } from "containers/PageDashboard/Sliders/EditSlider";
-import { MovingRequestInputs } from "containers/PageMovingRequest/SectionContact";
+import { MovingRequestInputs } from "containers/PageMovingRequest/MovingFormContact";
 import { ISettings } from "app/reducer/settings/settings.";
+import { UpdatePasswordRequest } from "containers/PageDashboard/Users/form/UpdatePassword";
+import { ITestimonial } from "app/reducer/testimonials/testimonial";
 
 export const apiBase: string = "http://localhost:8000";
 
@@ -20,6 +22,11 @@ export interface IAxiosRequestConfig {
 
 export interface IServerEndpoint {
 	public: {
+		testimonials: {
+			get: () => IAxiosRequestConfig;
+			getAll: () => IAxiosRequestConfig;
+			post: (data: ITestimonial) => IAxiosRequestConfig;
+		};
 		settings: {
 			get: (key: string) => IAxiosRequestConfig;
 			post: (data: ISettings) => IAxiosRequestConfig;
@@ -37,6 +44,7 @@ export interface IServerEndpoint {
 			editCategory: (params: InputsEditCategory) => IAxiosRequestConfig;
 			search: (query: IGetSearchPropertiesParams) => IAxiosRequestConfig;
 			post: (product: FormData | ProductRequest) => IAxiosRequestConfig;
+			uploadVideo: (product: FormData | ProductRequest) => IAxiosRequestConfig;
 			delete: (id: number) => IAxiosRequestConfig;
 			updateUserScore: ({
 				user_id,
@@ -54,8 +62,8 @@ export interface IServerEndpoint {
 			resetPassword: IAxiosRequestConfig;
 			refreshToken: IAxiosRequestConfig;
 			profile: IAxiosRequestConfig;
-			updateProfile: (data: FormData | UpdateUserRequest) => IAxiosRequestConfig; // UpdateUserRequest
-			// updatePassword: (data: UpdateUserRequest) => IAxiosRequestConfig;
+			updateProfile: (data: FormData | UpdateUserRequest) => IAxiosRequestConfig;
+			updateUserPassword: (data: UpdatePasswordRequest) => IAxiosRequestConfig;
 			verifyEmail: IAxiosRequestConfig;
 			resendEmail: IAxiosRequestConfig;
 			confirmEmail: IAxiosRequestConfig;
@@ -88,6 +96,21 @@ export const serverEndpoints: IServerEndpoint = {
 				data,
 			}),
 		},
+		testimonials: {
+			get: () => ({
+				method: "GET",
+				url: `${v100}/testimonials`,
+			}),
+			getAll: () => ({
+				method: "GET",
+				url: `${v100}/testimonials/all`,
+			}),
+			post: (data: ITestimonial) => ({
+				method: "POST",
+				url: `${v100}/testimonials`,
+				data,
+			}),
+		},
 		sliders: {
 			get: { method: "GET", url: `${v100}/sliders` },
 			post: (data: FormData | InputsEditSlider) => ({
@@ -117,6 +140,11 @@ export const serverEndpoints: IServerEndpoint = {
 			post: (data: FormData | ProductRequest) => ({
 				method: "POST",
 				url: `${v100}/admin/products`,
+				data,
+			}),
+			uploadVideo: (data: FormData | ProductRequest) => ({
+				method: "POST",
+				url: `${v100}/admin/products/upload-video`,
 				data,
 			}),
 			delete: (id: number) => ({
@@ -154,7 +182,12 @@ export const serverEndpoints: IServerEndpoint = {
 				url: `${v100}/user/update-profile`,
 				data,
 			}),
-			// updatePassword: (data: UpdateUserRequest) => ({ method: "PUT", url: `${v100}/user/update-password` }),
+			updateUserPassword: (data: UpdatePasswordRequest) => ({
+				method: "PUT",
+				url: `${v100}/user/change-password`,
+				data,
+				body: data
+			}),
 		},
 		users: {
 			getAll: { method: "GET", url: `${v100}/user/list` },

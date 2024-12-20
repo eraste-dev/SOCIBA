@@ -7,6 +7,7 @@ import SectionHeroSlider from "components/SectionHero/SectionHeroSlider";
 import SectionSliderCities from "./SectionSliderCities";
 import ListProducts from "./ListProducts";
 import SectionSliderCitiesTwo from "./SectionSliderCitiesTwo";
+import TestimonialSlider from "./TestimonialSlider";
 
 // DEMO DATA
 const POSTS = DEMO_POSTS;
@@ -15,6 +16,8 @@ export const LIST_GRID_CLASS: string =
 	"grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4";
 export const LIST_RELATED_GRID_CLASS: string =
 	"grid-cols-6";
+
+export const BG_BACKGROUND = "bg-[#eee] dark:bg-neutral-900"
 
 const Home: React.FC = () => {
 	useEffect(() => {
@@ -30,7 +33,7 @@ const Home: React.FC = () => {
 	}, []);
 
 	return (
-		<div className="nc-PageHomeDemo3 overflow-hidden relative">
+		<div className={`nc-PageHomeDemo3 overflow-hidden relative ` + BG_BACKGROUND}>
 			<Helmet>
 				<title>BAJORAH || Annonces gratuites en Côte d'Ivoire</title>
 			</Helmet>
@@ -106,10 +109,13 @@ const Home: React.FC = () => {
 					postCardName="card11"
 					// gridClass="grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
 					gridClass={LIST_GRID_CLASS}
-					className="pb-16 lg:pb-28"
+					className="pb-4 lg:pb-6"
 				/>
+
 				{/* === SECTION LATEST POSTS === */}
 			</div>
+
+			<TestimonialSlider />
 		</div>
 	);
 };

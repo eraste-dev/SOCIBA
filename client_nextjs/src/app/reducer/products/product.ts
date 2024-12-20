@@ -98,14 +98,14 @@ export interface IPropertyFilter {
 	limit?: number;
 	order_by?: SORT_TYPE;
 	sort?:
-		| "price_asc"
-		| "price_desc"
-		| "price_desc"
-		| "rating_desc"
-		| "rating_asc"
-		| "featured"
-		| "trending"
-		| "latest";
+	| "price_asc"
+	| "price_desc"
+	| "price_desc"
+	| "rating_desc"
+	| "rating_asc"
+	| "featured"
+	| "trending"
+	| "latest";
 	price_sort?: SORT_TYPE;
 	deposit_price_sort?: SORT_TYPE;
 	posted_by?: number[] | "admin";
@@ -171,6 +171,10 @@ export interface IStorePropertyData {
 		delete?: IStorePropertyDataAction;
 		store?: IStorePropertyDataAction;
 	};
+	upload?: {
+		video?: IStorePropertyDataAction,
+		image?: IStorePropertyDataAction
+	}
 }
 
 export const defaultFilters: IPropertyFilter = {
@@ -507,6 +511,47 @@ export const PropertiesSlice = createSlice({
 			state.loading = false;
 			state.error = action.payload;
 		},
+
+		// POST
+		uploadVideoStart: (state) => {
+			state.data = {
+				...state.data, upload: {
+					video: {
+						error: null,
+						loading: true,
+						message: "",
+						success: false,
+						selected: null
+					}
+				}
+			}
+		},
+		uploadVideoSuccess: (state, action: PayloadAction<string>) => {
+			state.data = {
+				...state.data, upload: {
+					video: {
+						error: null,
+						loading: false,
+						message: "Video uploaded successfully",
+						success: true,
+						selected: null
+					}
+				}
+			}
+		},
+		uploadVideoFailure: (state, action: PayloadAction<{ error: string; errors: any }>) => {
+			state.data = {
+				...state.data, upload: {
+					video: {
+						error: action.payload.error,
+						loading: false,
+						message: "",
+						success: false,
+						selected: null
+					}
+				}
+			}
+		},
 	},
 });
 
@@ -549,6 +594,10 @@ export const {
 	updateUserScoreStart,
 	updateUserScoreSuccess,
 	updateUserScoreFailure,
+
+	uploadVideoStart,
+	uploadVideoSuccess,
+	uploadVideoFailure,
 } = PropertiesSlice.actions;
 
 export const PropertyAction: IStoreAction<IStorePropertyData> = {
