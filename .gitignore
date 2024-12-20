@@ -8335,3 +8335,4 @@ server/vendor/webmozart/assert/README.md
 server/vendor/webmozart/assert/src/Assert.php
 server/vendor/webmozart/assert/src/InvalidArgumentException.php
 server/vendor/webmozart/assert/src/Mixin.php
+server/public/assets/*
