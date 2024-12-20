@@ -29,6 +29,7 @@ const SliderTabs: FC<SliderTabsProps> = ({ data }) => {
 		},
 	];
 
+
 	return (
 		<div className="">
 			<Tabs tabs={tabs} />

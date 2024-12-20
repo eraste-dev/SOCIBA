@@ -19,12 +19,12 @@ const PostCategoryTableAction: FC<PostCategoryTableActionProps> = ({
 	// handleChangeView,
 }) => {
 	return (
-		<ul className="flex space-x-1">
-			<li className="mr-2 ">
+		<ul className="flex space-x-1 list-none">
+			{false && <li className="mr-2 ">
 				<button onClick={handleOpenUpdate}>
 					<FaEdit size={25} className="text-blue-500 dark:text-blue-300" />
 				</button>
-			</li>
+			</li>}
 
 			{false && row && row.count <= 0 && row.children.length <= 0 && (
 				<li className="mr-2">

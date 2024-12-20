@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { IProduct, IPropertyFilter, PropertyAction } from "app/reducer/products/product";
 import { useSelector } from "react-redux";
 import { fetchAllProperties } from "app/axios/actions/api.action";
-import { IGetSearchPropertiesParams } from "utils/query-builder.utils";
+import { IGetSearchPropertiesParams, TypeSearch } from "utils/query-builder.utils";
 import Loading from "components/UI/Loading";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
 import FloatFilter from "components/Widgets/FloatFilter";
@@ -68,7 +68,7 @@ export const getParams = (): IGetSearchPropertiesParams => {
 	}
 
 	if (type) {
-		params.type = type;
+		params.type = type as TypeSearch;
 	}
 
 	if (category_uuid) {
@@ -162,7 +162,7 @@ const ListProducts: FC<ListProductsProps> = ({
 
 				{/*  xl:pl-14 lg:pl-7 */}
 				{/* w-full sm:w-6/8 md:w-4/5 lg:w-3/4 xl:w-4/5 lg:pl-7 */}
-				<div className="col-span-1 sm:col-span-10 ">
+				<div className="col-span-1 sm:col-span-10 px-4 ">
 					{loading && loading ? (
 						<CardSkeleton arrayLength={8} />
 					) : (
@@ -173,10 +173,12 @@ const ListProducts: FC<ListProductsProps> = ({
 
 					{products?.length === 0 && <NoDataMessage />}
 
-					<div className="flex flex-col mt-12 md:mt-20 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-center sm:items-center">
-						{/* <Pagination /> */}
-						{/* <ButtonPrimary>Show me more</ButtonPrimary> */}
-					</div>
+					{false && (
+						<div className="flex flex-col mt-12 md:mt-20 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-center sm:items-center">
+							{/* <Pagination /> */}
+							{/* <ButtonPrimary>Show me more</ButtonPrimary> */}
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

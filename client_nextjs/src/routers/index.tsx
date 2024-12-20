@@ -19,6 +19,8 @@ import Single from "containers/Product/Single/Single";
 import ListProduct from "containers/Product/List";
 import FooterLoggedIn from "components/Footer/FooterLoggedIn";
 import PageMovingRequest from "containers/PageMovingRequest/PageMovingRequest";
+import CguPage from "containers/PageHome/CGI/Cgu";
+import PcPage from "containers/PageHome/CGI/Pc";
 
 export const pages: Page[] = [
 	// ADMIN OR USERS PAGES
@@ -27,6 +29,9 @@ export const pages: Page[] = [
 	// ANNONCE PAGES
 	{ path: "/annonce/:slug", component: Single },
 	{ path: "/annonces", component: ListProduct },
+
+	{ path: "/condition-generale-d-utilisation", component: CguPage },
+	{ path: "/politique-de-confidentialite", component: PcPage },
 
 	// HOME PAGE
 	{ path: "/", exact: true, component: Home },

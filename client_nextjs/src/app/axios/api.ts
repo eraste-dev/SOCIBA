@@ -1,6 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import { serverUrl } from "./api.route";
-import { AuthAction, IUser } from "app/reducer/auth/auth";
 import { useSelector } from "react-redux";
 
 const useMySelector = () => {
@@ -9,8 +7,8 @@ const useMySelector = () => {
 };
 
 const axiosInstance: AxiosInstance = axios.create({
-	// baseURL: "http://localhost:8000", // DEV
-	baseURL: "https://api.bajorah.com", // PROD
+	baseURL: "http://localhost:8000", // DEV
+	// baseURL: "https://api.bajorah.com", // PROD
 	
 });
 

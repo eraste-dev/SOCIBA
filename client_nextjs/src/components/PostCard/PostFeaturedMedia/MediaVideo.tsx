@@ -30,6 +30,7 @@ const MediaVideo: FC<MediaVideoProps> = ({ videoUrl, isHover }) => {
 				url={videoUrl}
 				muted={isMuted}
 				playing={isHover}
+				loop={true}
 				style={{
 					opacity: isPlaying ? 1 : 0,
 				}}

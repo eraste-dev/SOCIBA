@@ -1,6 +1,8 @@
 import { FC } from "react";
 import { Helmet } from "react-helmet";
-import SectionContact from "./SectionContact";
+import MovingFormContact from "./MovingFormContact";
+import Image from "images/pages/moving.png";
+import SectionHeroSlider from "components/SectionHero/SectionHeroSlider";
 
 export interface PageMovingRequestProps {
 	className?: string;
@@ -25,11 +27,13 @@ const PageMovingRequest: FC<PageMovingRequestProps> = ({ className = "" }) => {
 			{/* ======== BG GLASS ======== */}
 			{/* <BgGlassmorphism /> */}
 
+			<SectionHeroSlider target="MOVING" defaultImage={Image} />
+
 			<div className="container space-y-5">
 				{/* <SectionSubscribe2 /> */}
 				{/* <SectionFounder /> */}
 
-				<SectionContact />
+				<MovingFormContact />
 			</div>
 		</div>
 	);
