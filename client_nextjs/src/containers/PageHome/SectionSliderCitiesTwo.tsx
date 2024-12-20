@@ -181,7 +181,7 @@ const SectionSliderCitiesTwo: FC<SectionSliderCitiesTwoProps> = ({
 						}}
 						controlsStrategy="alternate"
 						autoPlay
-						autoPlayInterval={3000}
+						autoPlayInterval={5000}
 						disableButtonsControls={true}
 						disableDotsControls={true}
 						infinite

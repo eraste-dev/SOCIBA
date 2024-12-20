@@ -92,7 +92,7 @@ class PropertyController extends Controller
             'purchase_power'       => 'nullable|in:LESS_EXPENSIVE,EQUAL_EXPENSIVE,MORE_EXPENSIVE',
             'accessibility'        => 'nullable|in:NOT_FAR_FROM_THE_TAR,A_LITTLE_FAR_FROM_THE_TAR,FAR_FROM_THE_TAR',
             'images.*'             => 'required|file|max:10048',
-            'videos.*'             => 'required|file|max:90048',
+            'videos.*'             => 'required|file|max:10024',
             // 'excerpt'           => 'nullable|string',
         ]);
 
@@ -204,6 +204,31 @@ class PropertyController extends Controller
 
 
         return ResponseService::success($product->refresh(), "Product created successfully");
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function upload_video(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id'        => 'nullable|integer|exists:properties,id',
+            'videos.*'  => 'required|file|max:10024',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error($validator->errors()->first(), 422, $validator->errors());
+        }
+
+        $videos = [];
+        try {
+            $videos = PropertyService::upload_unassigned_video();
+            return ResponseService::success($videos, "Upload video successfully");
+        } catch (\Throwable $th) {
+            return ResponseService::error("Cannot upload video", 500,);
+        }
+
+        return ResponseService::error("Bad request", 400, $validator->errors());
     }
 
     /**

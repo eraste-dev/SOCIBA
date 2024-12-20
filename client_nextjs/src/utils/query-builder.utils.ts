@@ -14,6 +14,8 @@ export type IGetParamSTATUS =
 	| "BLOCKED"
 	| "*";
 
+export type TypeSearch = undefined | 'RESERVATION' | 'BIEN EN VENTE' | 'LOCATION' | '*'
+
 export interface IGetSearchPropertiesParams {
 	searchText?: string;
 	location_description?: string;
@@ -21,7 +23,7 @@ export interface IGetSearchPropertiesParams {
 	slug?: string;
 	category?: number | "*";
 	category_slug?: string;
-	type?: string;
+	type?: TypeSearch;
 	other_location?: string;
 	category_uuid?: string;
 	home_type?: string;

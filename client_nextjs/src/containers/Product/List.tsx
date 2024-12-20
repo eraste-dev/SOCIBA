@@ -5,7 +5,7 @@ import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import ListProducts from "containers/PageHome/ListProducts";
 import img2 from "images/hero/CoinAfrique_banner_1000x185.png";
 import NcImage from "components/NcImage/NcImage";
-import { LIST_GRID_CLASS } from "containers/PageHome/Home";
+import { BG_BACKGROUND, LIST_GRID_CLASS } from "containers/PageHome/Home";
 import SectionHeroSlider from "components/SectionHero/SectionHeroSlider";
 
 // DEMO DATA
@@ -26,7 +26,7 @@ const ListProduct: React.FC = () => {
 	}, []);
 
 	return (
-		<div className="nc-PageHomeDemo3 overflow-hidden relative">
+		<div className={`nc-PageHomeDemo3 overflow-hidden relative ` + BG_BACKGROUND}>
 			<Helmet>
 				<title>BAJORAH || Annonces</title>
 			</Helmet>
@@ -35,15 +35,12 @@ const ListProduct: React.FC = () => {
 			<BgGlassmorphism />
 			{/* ======== ALL SECTIONS ======== */}
 
+			<div className="my-4">
+				<SectionHeroSlider target="PRODUCT" defaultImage={img2} />
+			</div>
+
 			{/* ======= START CONTAINER ============= */}
 			<div className="container relative " style={{ minHeight: "70vh" }}>
-				{/* style={{ height: 200, overflow: "hidden" }} */}
-				<div className="my-4">
-					<SectionHeroSlider className="pb-0" />
-					{/* TODO : use dynamic image */}
-					{/* <NcImage src={img2} /> */}
-				</div>
-
 				<div className="mt-3">
 					<ListProducts
 						postCardName="card11"
@@ -53,7 +50,7 @@ const ListProduct: React.FC = () => {
 					/>
 				</div>
 			</div>
-		</div>
+		</div >
 	);
 };
 

@@ -177,6 +177,37 @@ class AuthController extends Controller
         }
     }
 
+    public function changePassword(Request $request)
+    {
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'user_id'               => 'required|integer|exists:users,id',
+            'password'              => 'required|string',
+            'password_confirmation' => 'required|string|same:password',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error(
+                "Erreur de mise à jour : " . $validator->errors()->first(),
+                422,
+                $validator->errors()
+            );
+        }
+
+        try {
+            $user = User::findOrFail($request->user_id);
+
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->password);
+            }
+
+            $user->save();
+            return ResponseService::success(new UserResource($user), "Successfully updated");
+        } catch (\Throwable $th) {
+            return ResponseService::error("Failed to update");
+        }
+    }
+
 
     /**
      * Envoie un lien de réinitialisation de mot de passe à l'utilisateur.
@@ -218,29 +249,5 @@ class AuthController extends Controller
         }
 
         return ResponseService::error(__($status), 500);
-    }
-
-    /**
-     * Change le mot de passe de l'utilisateur authentifié.
-     */
-    public function changePassword(Request $request)
-    {
-        $request->validate([
-            'current_password' => 'required|string',
-            'new_password' => 'required|string|min:6|confirmed',
-        ]);
-
-        $user = Auth::user();
-
-        if (!Hash::check($request->current_password, $user->password)) {
-            throw ValidationException::withMessages([
-                'current_password' => ['Current password is incorrect'],
-            ]);
-        }
-
-        $user->password = Hash::make($request->new_password);
-        // $user->save(); // TODO : fix
-
-        return ResponseService::success([], 'Password changed successfully');
     }
 }

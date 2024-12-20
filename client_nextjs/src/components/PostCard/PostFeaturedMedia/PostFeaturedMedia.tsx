@@ -12,6 +12,7 @@ export interface PostFeaturedMediaProps {
 	post?: IProduct;
 	isHover?: boolean;
 	single?: boolean;
+	showOnlyVideo?: boolean;
 }
 
 // CHECK FOR VIDEO CARD ON VIEW
@@ -22,8 +23,9 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
 	post,
 	isHover = false,
 	single = false,
+	showOnlyVideo = false,
 }) => {
-	const { featured_image, video_link, images, id } = post || {};
+	const { featured_image, video_link, images, videos, id } = post || {};
 
 	const videoRef = useRef(null);
 
@@ -83,8 +85,8 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
 		}
 
 		// VIDEO
-		if (video_link && (!IS_MOBILE ? isHover : !!IN_VIEW)) {
-			return <MediaVideo isHover videoUrl={video_link} />;
+		if (showOnlyVideo && videos && videos.length > 0) {
+			return <MediaVideo isHover videoUrl={videos[0].src} />;
 		}
 
 		// AUDIO
@@ -94,6 +96,7 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
 
 		// ICON
 		return renderGallerySlider();
+		
 		// <div className="absolute inset-0">
 		// 	{isPostMedia() && (
 		// 		<span className="absolute inset-0 flex items-center justify-center ">

@@ -19,7 +19,8 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 
 	const [useStateFilter, setUseStateFilter] = useState<IPropertyFilter>({});
 	const [searchText, setSearchText] = useState<string>("");
-	const [open, setopen] = useState(false);
+	const [open, setOpen] = useState(false);
+	const [lastPage, setLastPage] = useState("");
 	const { register, handleSubmit, watch, setValue, getValues, reset } = useForm<{
 		searchText: string;
 	}>();
@@ -42,7 +43,8 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 		const params: IGetSearchPropertiesParams = searchParamsFromRedux(useStateFilter);
 		setUseStateFilter((prev) => ({ ...prev, textSearch: value }));
 		setSearchText(value);
-		search(params);
+		// search(params);
+		setLastPage(history.location.pathname);
 	};
 
 	const onSubmit = () => {
@@ -52,7 +54,7 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 			url,
 		});
 		history.replace(url);
-		setopen(false);
+		setOpen(false);
 		// const params: IGetSearchPropertiesParams = { searchText };
 		fetchAll();
 		reset();
@@ -60,7 +62,7 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 
 	const handleClickItem = (item: IProduct) => {
 		setSearchText("");
-		setopen(false);
+		setOpen(false);
 		console.log({
 			searchText,
 			item,
@@ -70,27 +72,29 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
 	};
 
 	// useEffect(() => {
-	// 	return () => {
-	// 		reset({ searchText: "" });
-	// 	};
-	// }, [history.location.pathname]);
+	// 	const _params: IGetSearchPropertiesParams = { searchText };
+	// 	if(!_params || !_params.searchText) {
+	// 		setSearchText("");
+	// 		setOpen(false);
+	// 	}
+	// }, [lastPage, history.location.pathname]);
 
 	return (
 		<>
-			<form className="relative w-full mt-3" onSubmit={handleSubmit(onSubmit)}>
+			<form className="relative w-full mt-3 bg-[#d6cbca] dark:bg-neutral-900 sm:bg-white p-1 " onSubmit={handleSubmit(onSubmit)}>
 				<Input
 					type="search"
 					placeholder="Chercher sur BAJORAH"
-					className="pr-10 w-full"
+					className="pr-10 w-full bg-transparent focus:bg-transparent border-gray-700 sm:border-gray-200 dark:border-gray-700"
 					sizeClass="h-[42px] pl-4 py-3"
 					{...(register("searchText"), { required: true })}
 					onChange={(e) => {
 						handleChange(e.target.value);
-						// setopen(true);
+						// setOpen(true);
 					}}
 					onBlur={() => {
 						// setSearchText("");
-						open && setopen(false);
+						open && setOpen(false);
 					}}
 				/>
 				<button

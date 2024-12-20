@@ -13,7 +13,6 @@ import { initUserRequest, sendUserRequest } from "app/axios/actions/api.users.ac
 import { userRequestAction } from "app/reducer/userRequest/userRequest";
 import Loading from "components/UI/Loading";
 import NcImage from "components/NcImage/NcImage";
-import Image from "images/pages/moving.png";
 
 export interface Statistic {
 	id: string;
@@ -21,7 +20,7 @@ export interface Statistic {
 	subHeading: string;
 }
 
-export interface SectionContactProps {
+export interface MovingFormContactProps {
 	className?: string;
 }
 
@@ -37,7 +36,7 @@ export type MovingRequestInputs = {
 	type: "MOVING" | "CONTACT_US";
 };
 
-const SectionContact: FC<SectionContactProps> = () => {
+const MovingFormContact: FC<MovingFormContactProps> = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const snackbar = useSnackbar();
@@ -71,9 +70,6 @@ const SectionContact: FC<SectionContactProps> = () => {
 
 	return (
 		<div className="mb-12">
-			<div>
-				<NcImage src={Image} />
-			</div>
 			<div className="block sm:flex justify-center">
 				{loading && <Loading />}
 
@@ -163,4 +159,4 @@ const SectionContact: FC<SectionContactProps> = () => {
 	);
 };
 
-export default SectionContact;
+export default MovingFormContact;

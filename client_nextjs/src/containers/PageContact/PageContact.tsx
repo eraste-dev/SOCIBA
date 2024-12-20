@@ -15,11 +15,11 @@ export interface PageContactProps {
 export const INFO_CONTACT = [
 	{
 		title: "EMAIL",
-		desc: "sociba@gmail.com",
+		desc: "bajorahimmobilier@gmail.com",
 	},
 	{
 		title: "TÉLÉPHONE",
-		desc: "+225 07 xx xx xx xx",
+		desc: "+225 05 74 93 29 33",
 	},
 ];
 
@@ -68,7 +68,7 @@ const PageContact: FC<PageContactProps> = ({ className = "" }) => {
 			</LayoutPage>
 
 			{/* OTHER SECTIONS */}
-			<div className="container pb-16 lg:pb-28">
+			<div className="container pb-4 lg:pb-6">
 				<SectionSubscribe2 />
 			</div>
 		</div>

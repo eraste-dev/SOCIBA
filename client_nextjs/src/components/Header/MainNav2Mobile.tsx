@@ -47,7 +47,7 @@ const MainNav2Mobile: FC<MainNav2MobileProps> = ({ isDashboard, user, handleClic
 	return (
 		<div className={`nc-MainNav nc-MainNav2 relative z-10 ${"notOnTop backdrop-filter "}`}>
 			<div
-				className={`pt-2 pb-1 relative flex flex-col justify-between items-center space-x-0 ${classNameContainer}`}
+				className={`sm:pt-2 sm:pb-1 p-0 relative flex flex-col justify-between items-center space-x-0 ${classNameContainer}`}
 			>
 				{/* COL 1 */}
 				<div
