@@ -45,7 +45,7 @@ class ImageService
         return $images;
     }
 
-    private static function isImage(string $filename): bool
+    public static function isImage(string $filename): bool
     {
         // Obtenez l'extension du fichier
         $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));

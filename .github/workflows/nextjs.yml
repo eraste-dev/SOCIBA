@@ -20,12 +20,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd client_nextjs
+          cd client
           npm install
 
       - name: Build app
         run: |
-          cd client_nextjs
+          cd client
           npm run build
 
     #   - name: Deploy to hosting service
