@@ -3,3 +3,9 @@ server/vendor/*
 server/public/assets/*
 server/public/assets/*
 start.sh
+client_nextjs/node_modules/*
+client_nextjs/.idea/*
+client_nextjs/dist/*
+client_nextjs/.vscode/*
+.vscode/*
+client_nextjs/yarn-error.log

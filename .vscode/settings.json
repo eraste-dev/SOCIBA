@@ -31,5 +31,6 @@
     "cSpell.language": "en,fr",
     "cSpell.words": [
         "BAJORAH"
-    ]
+    ],
+    "git.ignoreLimitWarning": true
 }
