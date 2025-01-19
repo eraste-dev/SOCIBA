@@ -23,12 +23,12 @@ const PostPropertyCardMetaV2: FC<PostPropertyCardMetaV2Props> = ({
 
 	return (
 		<>
-			<hr className="border-b border-neutral-200 dark:border-neutral-700 my-4" />
+			{/* order-b border-neutral-200 dark:border-neutral-700  */}
+			<hr className="mb-2 dark:border-neutral-700" />
 
 			<div
-				className={`nc-PostCardMetaV2 w-full text-neutral-800 dark:text-neutral-200 ${
-					size === "normal" ? "text-xs" : "text-sm"
-				} ${className}`}
+				className={`nc-PostCardMetaV2 w-full text-neutral-800 dark:text-neutral-200 ${size === "normal" ? "text-xs" : "text-sm"
+					} ${className}`}
 				data-nc-id="PostCardMetaV2"
 			>
 				{/* sm:grid-cols-1 */}

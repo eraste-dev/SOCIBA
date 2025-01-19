@@ -44,16 +44,18 @@ const EditSlider: FC<EditSliderProps> = ({ className = "", item }) => {
 		register,
 		handleSubmit,
 		watch,
+		setValue,
+		getValues,
 		formState: { errors },
 	} = useForm<InputsEditSlider>();
 
 	const onSubmit: SubmitHandler<InputsEditSlider> = (data) => {
 		if (imageFiles && imageFiles.length > 0 && !loading) {
 			const fd: FormData = new FormData();
-			item?.id && fd.append("id", item?.id.toString());
-			item?.description && fd.append("description", item?.description);
-			item?.title && fd.append("title", item?.title);
-			item?.place && fd.append("place", item?.place);
+			data?.id && fd.append("id", data?.id.toString());
+			// data?.description && fd.append("description", data?.description);
+			// data?.title && fd.append("title", data?.title);
+			fd.append("place", getValues("place") ?? sliderTypeOption[0].id);
 			fd.append("image", imageFiles[0]);
 			dispatch(editSliders(fd));
 		} else {
@@ -72,7 +74,7 @@ const EditSlider: FC<EditSliderProps> = ({ className = "", item }) => {
 
 	useEffect(() => {
 		if (success && !loading) {
-			snackbar.enqueueSnackbar("Connexion reussie", {
+			snackbar.enqueueSnackbar("Modification effectuée", {
 				variant: "success",
 				autoHideDuration: 1000,
 			});
@@ -83,15 +85,20 @@ const EditSlider: FC<EditSliderProps> = ({ className = "", item }) => {
 	}, [success, snackbar, loading, setImages, setImageFiles]);
 
 	return (
-		<div className={`nc-EditSlider shadow-md ${className}`} data-nc-id="EditSlider">
+		<div className={`nc-EditSlider-xxx`} data-nc-id="EditSlider">
 			<div className="max-w-md mx-auto space-y-6">
 				{/* FORM */}
 				<form className="grid grid-cols-1 gap-" onSubmit={handleSubmit(onSubmit)}>
-					<label className="block">
+					<label className="block mb-5">
 						{/* <span className="text-neutral-800 dark:text-neutral-200">Email</span> */}
-						<Select {...register("place")}>
+						<Select {...register("place", { required: true })}  onChange={(e) => {
+									setValue("place", e.target.value)
+									// console.log(e.target.value);
+									
+								}} >
+									<option>Choisir l'emplacement</option>
 							{sliderTypeOption.map((option) => (
-								<option key={option.id} value={option.id}>
+								<option key={option.id} value={option.id}  >
 									{option.label}
 								</option>
 							))}
@@ -111,13 +118,16 @@ const EditSlider: FC<EditSliderProps> = ({ className = "", item }) => {
 						/>
 					</label>
 
-					{!loading ? (
-						<div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-							<ButtonPrimary type="submit">Ajouter</ButtonPrimary>
-						</div>
-					) : (
-						<LoadingSpinner />
-					)}
+					<div className="flex justify-end" >
+
+						{!loading ? (
+							<div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 mt-5 ">
+								<ButtonPrimary type="submit">Ajouter</ButtonPrimary>
+							</div>
+						) : (
+							<LoadingSpinner />
+						)}
+					</div>
 				</form>
 
 				<div>

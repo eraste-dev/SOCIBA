@@ -15,9 +15,11 @@ import { LoadingSpinner } from "components/UI/Loading/LoadingSpinner";
 
 export interface SectionHeroSliderProps {
 	className?: string;
+	target?: "HOME" | "PRODUCT" | "MOVING",
+	defaultImage?: string
 }
 
-const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "" }) => {
+const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "", target = "HOME", defaultImage }) => {
 	// const dispatch = useDispatch();
 	const dispatch = useAppDispatch();
 	const data = useAppSelector(sliderAction.data);
@@ -31,18 +33,6 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "" }) => {
 			dispatch(fetchSliders());
 		}
 	}, [dispatch, fetchSliders, data, loading]);
-
-	const settings = {
-		dots: false,
-		infinite: true,
-		speed: 500,
-		slidesToShow: 1,
-		slidesToScroll: 1,
-		arrows: false,
-		autoplay: true,
-		autoplaySpeed: 5000,
-		rtl: true,
-	};
 
 	if (data && data.length === 1) {
 		return (
@@ -65,16 +55,16 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "" }) => {
 						items={
 							data
 								? data
-										.filter((s) => s.place === "HOME")
-										.map((item, index) => (
-											<img
-												key={index}
-												src={item.image}
-												alt={item.title}
-												className="w-auto sm:w-full h-28 sm:h-auto " // Ajustement de la hauteur
-												onDragStart={handleDragStart}
-											/>
-										))
+									.filter((s) => s.place === target)
+									.map((item, index) => (
+										<img
+											key={index}
+											src={item.image}
+											alt={item.title}
+											className="w-auto sm:w-full h-28 sm:h-auto "
+											onDragStart={handleDragStart}
+										/>
+									))
 								: []
 						}
 						responsive={{
@@ -83,7 +73,7 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "" }) => {
 						}}
 						controlsStrategy="alternate"
 						autoPlay
-						autoPlayInterval={3000}
+						autoPlayInterval={13000}
 						disableButtonsControls={true}
 						disableDotsControls={true}
 						infinite

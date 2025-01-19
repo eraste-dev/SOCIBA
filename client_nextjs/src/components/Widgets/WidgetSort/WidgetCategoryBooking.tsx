@@ -8,6 +8,9 @@ import { updateParamsUrl } from "utils/utils";
 import ListBoxSelectFilter, { IListBoxSelectFilterWidget } from "./ListBoxSelectFilter";
 import { useSelector } from "react-redux";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
+import { getParams } from "containers/PageHome/ListProducts";
+import { TypeSearch } from "utils/query-builder.utils";
+import { IProductType } from "containers/PageDashboard/Posts/posts.constantes";
 
 export const SIMPLIFY_LIST_CAT: IListBoxSelectFilterWidget[] = [
 	{ name: "Choisir", value: "*" },
@@ -90,25 +93,25 @@ const WidgetCategoryBooking: FC<WidgetCategoryBookingProps> = ({
 	 * @return {IListBoxSelectFilterWidget[]} The list of IListBoxSelectFilterWidget items
 	 */
 	function CATEGORIES(): IListBoxSelectFilterWidget[] {
+		const type: TypeSearch = getParams().type;
 		let data: IListBoxSelectFilterWidget[] = [];
 
-		console.log("categories", category_uuid, data);
-
-		// data = data.map((item) => {
-		// 	item.selected = item.value === category_slug;
-		// 	return item;
-		// });
-
-		data =
-			(categories &&
-				categories.map((item) => ({
-					name: item.name,
-					value: item.slug,
-					selected: item.slug === category_slug_selected,
-				}))) ??
-			SIMPLIFY_LIST_CAT;
-
+		if (categories && categories.length > 0 && type != undefined) {
+			categories.forEach((c) => {
+				if (c.type.includes(type as IProductType)) {
+					data.push(
+						{
+							name: c.name,
+							value: c.slug,
+							selected: c.slug === category_slug_selected,
+						}
+					);
+				}
+			});
+		}
 		data.unshift({ name: "Choisir", value: "*" });
+		console.log(type, data);
+
 		return data;
 	}
 

@@ -61,6 +61,13 @@ return new class extends Migration
             $table->enum('purchase_power', [null, 'LESS_EXPENSIVE', 'EQUAL_EXPENSIVE', 'MORE_EXPENSIVE'])->default(null)->nullable();
             $table->enum('accessibility', [null, 'NOT_FAR_FROM_THE_TAR', 'A_LITTLE_FAR_FROM_THE_TAR', 'FAR_FROM_THE_TAR'])->default(null)->nullable();
 
+            // social media
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('youtube')->nullable();
+            $table->string('tiktok')->nullable();
+
             $table->enum('status', ['PUBLISH', 'DRAFT', 'DELETED', 'REJECTED', 'PENDING', 'BLOCKED'])->default('PENDING');
             $table->bigInteger('total_click')->default(0)->nullable();
             $table->timestamps();

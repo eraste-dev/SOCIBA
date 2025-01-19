@@ -1,6 +1,9 @@
 import {
 	IUser,
 	updateUserFailure,
+	updateUserPasswordFailure,
+	updateUserPasswordStart,
+	updateUserPasswordSuccess,
 	updateUserStart,
 	updateUserSuccess,
 } from "../../reducer/auth/auth";
@@ -67,6 +70,7 @@ import {
 } from "app/reducer/auth/auth";
 import { InputsEditSlider } from "containers/PageDashboard/Sliders/EditSlider";
 import { initLocations } from "app/reducer/locations/locations";
+import { UpdatePasswordRequest } from "containers/PageDashboard/Users/form/UpdatePassword";
 
 export const fetchSliders = () => async (dispatch: AppDispatch) => {
 	dispatch(fetchSlidersStart());
@@ -363,20 +367,32 @@ export const initAuth = () => async (dispatch: AppDispatch) => {
  * @param params { email: string; password: string }
  * @returns
  */
-export const updateUser =
-	(params: FormData | UpdateUserRequest) => async (dispatch: AppDispatch) => {
-		dispatch(updateUserStart());
+export const updateUser = (params: FormData | UpdateUserRequest) => async (dispatch: AppDispatch) => {
+	dispatch(updateUserStart());
 
-		try {
-			const response = await axiosRequest<IServerResponse>({
-				...serverEndpoints.public.auth.updateProfile(params),
-				headers: { "Content-Type": "multipart/form-data" },
-			});
-			dispatch(updateUserSuccess(response.data));
-		} catch (error: any) {
-			dispatch(updateUserFailure(error.message));
-		}
-	};
+	try {
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.auth.updateProfile(params),
+			headers: { "Content-Type": "multipart/form-data" },
+		});
+		dispatch(updateUserSuccess(response.data));
+	} catch (error: any) {
+		dispatch(updateUserFailure(error.message));
+	}
+};
+
+export const updateUserPassword = (params: UpdatePasswordRequest) => async (dispatch: AppDispatch) => {
+	dispatch(updateUserPasswordStart());
+
+	try {
+		const response = await axiosRequest<IServerResponse>({
+			...serverEndpoints.public.auth.updateUserPassword(params),
+		});
+		dispatch(updateUserPasswordSuccess(response.data));
+	} catch (error: any) {
+		dispatch(updateUserPasswordFailure(error.message));
+	}
+};
 // ----------------------------------------
 
 export const getErrors = (errorArray: any, key: string) => {

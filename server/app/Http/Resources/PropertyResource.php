@@ -80,9 +80,16 @@ class PropertyResource extends JsonResource
             "acd"              => boolval($this->acd),
             "site_approved"    => boolval($this->site_approved),
             "air_conditioning" => boolval($this->air_conditioning),
-            "security"         => $this->security,
-            "purchase_power"   => $this->purchase_power,
-            "accessibility"    => $this->accessibility,
+            "security"       => $this->security,
+            "purchase_power" => $this->purchase_power,
+            "accessibility"  => $this->accessibility,
+
+            // * SOCIALS
+            'facebook'       => $this->facebook,
+            'twitter'        => $this->twitter,
+            'instagram'      => $this->instagram,
+            'youtube'        => $this->youtube,
+            'tiktok'         => $this->tiktok,
 
             // * TIMESTAMPS
             'created_at'           => Carbon::parse($this->created_at)->diffForHumans(),

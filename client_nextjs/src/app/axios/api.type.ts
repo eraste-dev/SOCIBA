@@ -139,6 +139,11 @@ export interface ProductRequest {
 	area_count?: number;
 }
 
+export interface UploadVideoProductRequest {
+	id?: number;
+	videos?: FileList | string[] | null;
+}
+
 export const PRODUCT_REQUEST_EMPTY: ProductRequest = {
 	price: 0,
 	price_second: null,

@@ -8,6 +8,8 @@ import DashboardSliders from "containers/PageDashboard/Sliders/DashboardSliders"
 import DashboardUserRequest from "containers/PageDashboard/Users/userRequest/DashboardUserRequest";
 import { ComponentType } from "react";
 import DashboardSettings from "containers/PageDashboard/Settings/DashboardSettings";
+import DashboardTestimonial from "containers/PageDashboard/testimonals/DashboardTestimonial";
+import DashboardTestimonialPost from "containers/PageDashboard/testimonals/DashboardTestimonialPost";
 
 export interface DashboardLocationState {
 	"/posts"?: {};
@@ -19,6 +21,8 @@ export interface DashboardLocationState {
 	"/sliders"?: {};
 	"/user-request"?: {};
 	"/settings"?: {};
+	"/testimonials"?: {};
+	"/testimonials/post"?: {};
 }
 
 export interface DashboardPage {
@@ -45,6 +49,12 @@ export const USER_SUB_PAGES: DashboardPage[] = [
 		emoij: "🛠",
 		pageName: "Modifier Profile",
 	},
+	{
+		sPath: "/testimonials/post",
+		component: DashboardTestimonialPost,
+		emoij: "  ",
+		pageName: "Témoignages",
+	},
 	{ pageName: "Autres" },
 ];
 
@@ -68,6 +78,12 @@ export const ADMIN_SUB_PAGES: DashboardPage[] = [
 		component: DashboardUserRequest,
 		emoij: "  ",
 		pageName: "Demandes", //de démenagement
+	},
+	{
+		sPath: "/testimonials",
+		component: DashboardTestimonial,
+		emoij: "  ",
+		pageName: "Témoignages",
 	},
 	{
 		sPath: "/settings",

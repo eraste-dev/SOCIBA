@@ -16,6 +16,7 @@ use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRequestController;
 use App\Http\Middleware\JwtMiddleware;
@@ -48,6 +49,10 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('send-request', [UserRequestController::class, 'store']);
             Route::post('update-score', [UserController::class, 'update_score'])->name('user.update_score');
         });
+
+        Route::group(['prefix' => 'testimonials'], function () {
+            Route::get('/', [TestimonialController::class, 'get']);
+        });
     });
 
     // * AUTH ROUTE
@@ -74,9 +79,16 @@ Route::group(['prefix' => 'v1'], function () {
             Route::delete('sliders', [SliderController::class, 'destroy']);
 
             Route::group(['prefix' => 'products'], function () {
-                Route::post('/',   [PropertyController::class, 'store'])->name('admin.products.store');
-                Route::delete('/', [PropertyController::class, 'delete'])->name('admin.products.delete');
+                Route::post('/',                [PropertyController::class, 'store'])->name('admin.products.store');
+                Route::delete('/',              [PropertyController::class, 'delete'])->name('admin.products.delete');
+                Route::post('/upload-video',    [PropertyController::class, 'upload_video'])->name('admin.products.upload_video');
             });
+        });
+
+        // Testimonial
+        Route::group(['prefix' => 'testimonials'], function () {
+            Route::post('/', [TestimonialController::class, 'save']);
+            Route::get('/all', [TestimonialController::class, 'getAll']);
         });
 
         // ? PROTECTED USER ROUTES
@@ -85,6 +97,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('/user-posts', [PropertyController::class, 'getUserPost']);
 
             Route::put('update-profile',   [AuthController::class, 'updateUser'])->name('user.update-profile');
+            Route::put('change-password',   [AuthController::class, 'changePassword'])->name('user.change-password');
             Route::get('list',             [UserController::class, 'listUsers'])->name('user.list');
             Route::delete('delete',        [UserController::class, 'delete'])->name('user.delete');
 

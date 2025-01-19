@@ -3,7 +3,6 @@ import SectionVideos from "./SectionVideos";
 import SectionSliderPosts from "./SectionSliderPosts";
 import { DEMO_CATEGORIES } from "data/taxonomies";
 import { DEMO_POSTS, DEMO_POSTS_AUDIO } from "data/posts";
-import SectionHero from "components/SectionHero/SectionHero";
 import rightImg from "images/hero-right.png";
 import Vector1 from "images/Vector1.png";
 import BecomeAnAuthorImg from "images/BecomeAnAuthorImg.png";
@@ -54,7 +53,7 @@ const PageHomeDemo3: React.FC = () => {
 			{/* ======= START CONTAINER ============= */}
 			<div className="container relative">
 				{/* === SECTION HERO === */}
-				<SectionHero
+				{/* <SectionHero
 					rightImg={rightImg}
 					className="pt-10 pb-16 md:py-16 lg:py-28"
 					heading={
@@ -68,7 +67,7 @@ const PageHomeDemo3: React.FC = () => {
 					}
 					btnText="Getting started"
 					subHeading="Let stay at home and share with everyone the most beautiful stories in your hometown 🎈"
-				/>
+				/> */}
 
 				<SectionGridCategoryBox
 					headingCenter={false}

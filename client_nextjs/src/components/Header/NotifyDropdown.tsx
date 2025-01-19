@@ -1,6 +1,9 @@
 import { Popover, Transition } from "@headlessui/react";
 import { BellIcon } from "@heroicons/react/outline";
+import { logout } from "app/axios/actions/api.action";
+import { initializeUserProduct } from "app/axios/actions/api.products.action";
 import { fetchNotification, markNotificationAsRead } from "app/axios/actions/api.users.action";
+import { AuthAction } from "app/reducer/auth/auth";
 import {
 	initFetchNotificationStart,
 	NotificationAction,
@@ -36,6 +39,8 @@ export default function NotifyDropdown() {
 	const notifications = useSelector(NotificationAction.data);
 	const loading = useSelector(NotificationAction.loading);
 	const error = useSelector(NotificationAction.error);
+	const token = useSelector(AuthAction.data)?.token;
+	const expire = useSelector(AuthAction.data)?.expire;
 
 	const interval = setInterval(() => {
 		console.log("list of notifications has been fetched", loading);
@@ -55,7 +60,23 @@ export default function NotifyDropdown() {
 		if (!notifications && !loading && !error) {
 			dispatch(fetchNotification());
 		}
-	}, [dispatch, notifications, loading, interval]);
+	}, [dispatch, notifications, loading, interval, error]);
+
+	useEffect(() => {
+		const checkExpireDate = () => {
+			if (token && expire) {
+				return new Date(expire*1000) > new Date();
+			}
+			return false;
+		};
+
+		if(token && !checkExpireDate() && !loading && error === "INVALID_TOKEN") {
+			console.log("token expired, logout ...", token);
+			dispatch(logout(token));
+			// dispatch(initializeUserProduct());
+		}
+		
+	}, [dispatch, notifications, loading, interval, error, token]);
 
 	return (
 		<div className="">

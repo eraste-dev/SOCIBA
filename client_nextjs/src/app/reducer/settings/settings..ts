@@ -95,7 +95,6 @@ export const SettingsSlice = createSlice({
 		fetchDefaultSettingsSuccess: (state, action: PayloadAction<{ data: ISettings }>) => {
 			state.loading = false;
 			state.error = null;
-			// paginate: action.payload?.pagination
 			state.data = {
 				...state.data,
 				default: createStoreDataStateItem(action.payload?.data, false, true),
