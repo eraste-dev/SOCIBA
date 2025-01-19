@@ -1,2 +1,5 @@
 server/vendor/*
+# server/vendor/autoload.php
 server/public/assets/*
+server/public/assets/*
+start.sh
