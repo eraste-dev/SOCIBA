@@ -49,12 +49,12 @@ export const USER_SUB_PAGES: DashboardPage[] = [
 		emoij: "🛠",
 		pageName: "Modifier Profile",
 	},
-	{
-		sPath: "/testimonials/post",
-		component: DashboardTestimonialPost,
-		emoij: "  ",
-		pageName: "Témoignages",
-	},
+	// {
+	// 	sPath: "/testimonials/post",
+	// 	component: DashboardTestimonialPost,
+	// 	emoij: "  ",
+	// 	pageName: "Témoignages",
+	// },
 	{ pageName: "Autres" },
 ];
 

@@ -21,6 +21,7 @@ const widgetMenus: WidgetFooterMenu[] = [
       { href: route("about"), label: "Qui nous sommes ?" },
       { href: "#", label: "Nous rejoindre" },
       { href: "#", label: "Alerte e-mail" },
+      // { href: route("sugestion"), label: "Donnez votre avis ou une suggestion" },
     ],
   },
   {

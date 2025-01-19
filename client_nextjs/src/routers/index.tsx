@@ -21,6 +21,7 @@ import FooterLoggedIn from "components/Footer/FooterLoggedIn";
 import PageMovingRequest from "containers/PageMovingRequest/PageMovingRequest";
 import CguPage from "containers/PageHome/CGI/Cgu";
 import PcPage from "containers/PageHome/CGI/Pc";
+import PageSubmitSugestion from "containers/PageAbout/PageSubmitSugestion";
 
 export const pages: Page[] = [
 	// ADMIN OR USERS PAGES
@@ -37,6 +38,7 @@ export const pages: Page[] = [
 	{ path: "/", exact: true, component: Home },
 
 	{ path: "/about", component: PageAbout },
+	{ path: "/sugestion", component: PageSubmitSugestion },
 	{ path: "/moving", component: PageMovingRequest },
 	{ path: "/contact", component: PageContact },
 	{ path: "/page404", component: Page404 },

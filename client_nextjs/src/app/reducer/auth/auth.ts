@@ -167,12 +167,13 @@ export const AuthSlice = createSlice({
 			state.loading = true;
 			state.error = null;
 			state.success = false;
+			state.data = { ...state.data, updateAccount: { loading: true } };
 		},
 		updateUserSuccess: (state, action: PayloadAction<IUser>) => {
 			state.loading = false;
 			state.error = null;
 			state.success = true;
-			state.data = { ...state.data, user: action.payload };
+			state.data = { ...state.data, user: action.payload, updateAccount: { success: true } };
 		},
 		updateUserFailure: (state, action: PayloadAction<string>) => {
 			state.loading = false;
