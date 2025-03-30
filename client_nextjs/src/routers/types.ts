@@ -27,6 +27,7 @@ export interface LocationStates {
 	"/search"?: {};
 	"/search-v2"?: {};
 	"/about"?: {};
+	"/sugestion"?: {};
 	"/contact"?: {};
 	"/login"?: {};
 	"/signup"?: {};

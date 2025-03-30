@@ -106,7 +106,7 @@ const ChangeProductType: FC<ChangeProductTypeProps> = ({
 									className={({ active }) =>
 										`${
 											active
-												? "text-primary-700 dark:text-neutral-200 bg-primary-50 dark:bg-neutral-700"
+												? "dark:text-neutral-200 dark:bg-neutral-700 bg-primary-50 text-white"
 												: ""
 										} cursor-default select-none relative py-2 pl-10 pr-4`
 									}
