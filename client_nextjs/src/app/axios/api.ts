@@ -7,8 +7,8 @@ const useMySelector = () => {
 };
 
 const axiosInstance: AxiosInstance = axios.create({
-	baseURL: "http://localhost:8000", // DEV
-	// baseURL: "https://api.bajorah.com", // PROD
+	// baseURL: "http://localhost:8000", // DEV
+	baseURL: "https://api.bajorah.com", // PROD
 	
 });
 
@@ -18,6 +18,7 @@ export const axiosRequest = async <T>(config: AxiosRequestConfig): Promise<T> =>
 		if (token) {
 			config.headers = {
 				...config.headers,
+				'Access-Control-Allow-Origin' : '*',
 				Authorization: "Bearer " + token,
 			};
 		}

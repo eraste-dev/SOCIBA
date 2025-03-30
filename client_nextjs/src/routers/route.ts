@@ -22,6 +22,7 @@ export const APP_ROUTE: IAppRoute[] = [
 	{ key: "signup", value: "/signup" },
 
 	{ key: "about", value: "/about" },
+	{ key: "sugestion", value: "/sugestion" },
 	{ key: "cgu", value: "/condition-generale-d-utilisation" },
 	{ key: "pgv", value: "/politique-generale-de-vente" },
 	{ key: "pc", value: "/politique-de-confidentialite" },
@@ -41,6 +42,7 @@ export type IAppRouteKey =
 	| "edit_profile"
 	| "posts"
 	| "user_post"
+	| "sugestion"
 	| "about"
 	| "cgu"
 	| "pgv"
