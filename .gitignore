@@ -9,3 +9,4 @@ client_nextjs/dist/*
 client_nextjs/.vscode/*
 .vscode/*
 client_nextjs/yarn-error.log
+.idea/workspace.xml
