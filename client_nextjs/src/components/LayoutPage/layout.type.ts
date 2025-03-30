@@ -79,12 +79,12 @@ export const ADMIN_SUB_PAGES: DashboardPage[] = [
 		emoij: "  ",
 		pageName: "Demandes", //de démenagement
 	},
-	{
-		sPath: "/testimonials",
-		component: DashboardTestimonial,
-		emoij: "  ",
-		pageName: "Témoignages",
-	},
+	// {
+	// 	sPath: "/testimonials",
+	// 	component: DashboardTestimonial,
+	// 	emoij: "  ",
+	// 	pageName: "Témoignages",
+	// },
 	{
 		sPath: "/settings",
 		component: DashboardSettings,

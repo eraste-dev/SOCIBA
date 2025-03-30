@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b54708c-dbb4-4eb1-bdce-8ee1cdd22f69" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/client_nextjs/src/app/axios/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client_nextjs/src/app/axios/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_nextjs/src/components/Dashboard/Products/ChangeProductType.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client_nextjs/src/components/Dashboard/Products/ChangeProductType.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_nextjs/src/components/LayoutPage/layout.type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client_nextjs/src/components/LayoutPage/layout.type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client_nextjs/src/containers/PageDashboard/Users/form/UpdateProfileForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client_nextjs/src/containers/PageDashboard/Users/form/UpdateProfileForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/.env" beforeDir="false" afterPath="$PROJECT_DIR$/server/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/AuthController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -12,6 +17,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "eraste-dev"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/eraste-dev/SOCIBA.git",
+    "accountId": "b9c74cfc-31d9-4bf1-b902-7b2df3d8e342"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -20,20 +37,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/opt/lampp/htdocs/www/sociba/others&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "bugfix/fix-bug-2025",
+    "last_opened_file_path": "/opt/lampp/htdocs/www/sociba/public_html",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.17890.13" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-WS-243.26053.12" />
       </set>
     </attachedChunks>
   </component>
@@ -47,6 +66,7 @@
       <updated>1718045463969</updated>
       <workItem from="1718045464994" duration="98000" />
       <workItem from="1718104117355" duration="39000" />
+      <workItem from="1743352827095" duration="50000" />
     </task>
     <servers />
   </component>

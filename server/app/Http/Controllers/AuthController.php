@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\NotificationService;
 use App\Services\ResponseService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -113,6 +114,7 @@ class AuthController extends Controller
 
     public function updateUser(Request $request)
     {
+        // var_dump('Request Payload:', $request->all(), $_POST, $_FILES); 
         $validator = Validator::make($request->all(), [
             'id'                => 'required|integer|exists:users,id',
             'name'              => 'nullable|string|max:255',
@@ -124,7 +126,7 @@ class AuthController extends Controller
             'influence_zone_id' => 'nullable|string',
             'type'              => 'nullable|string|in:ADMIN,USER,GUEST',
             'status'            => 'nullable|string|in:ACTIVE,INACTIVE,DELETED,REJECTED,PENDING,BLOCKED',
-            'avatar'            => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'avatar'            => 'nullable|file|max:5048',
         ]);
 
         if ($validator->fails()) {

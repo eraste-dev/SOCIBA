@@ -57,7 +57,7 @@ const UpdateProfileForm = () => {
         if (avatarFile) formData.append('avatar', avatarFile);
         if (avatarFile) payload.avatar = avatarFile;
         console.log('>>> payload', payload);
-        dispatch(updateUser(payload));
+        dispatch(updateUser(formData));
     };
 
     useEffect(() => {
