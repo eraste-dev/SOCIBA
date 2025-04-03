@@ -30,14 +30,43 @@ const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, s
 		return `tel:${phone_call}`;
 	};
 
+	const isValidUrl = (url: string): boolean => {
+		try {
+			new URL(url);
+			return true;
+		} catch (_) {
+			return false;
+		}
+	};
+
 	const handleWhatsApp = () => {
-		// https://wa.me/447838522154
 		let _wh = whatsapp ? whatsapp : sellerData.whatsapp;
 		if (!_wh.includes("225")) {
 			_wh = "225" + _wh;
 		}
-		alert();
-		return `https://wa.me/${_wh}?text=Votre%20annonce%20publi%C3%A9e%20m'int%C3%A9resse.%20Cliquez%20sur%20l'URL%20ci-dessous%3A%0A%0A${productLink}`;
+
+		// Vérification de la validité de productLink
+		if (!isValidUrl(productLink || "")) {
+			console.error("Lien du produit invalide :", productLink);
+			productLink = "https://www." + productLink;
+		}
+
+		// https://bajorah.com/annonce/reservation-3&?id=3
+		// https://bajorah.com/annonce/reservation-3&?id=3
+
+		// _wh = "2250789670552";
+
+		// Encodage du lien du produit
+		const encodedProductLink = encodeURIComponent(productLink || "");
+		console.log("whatsapp", { _wh, encodedProductLink });
+
+		const message = `Votre annonce publiée m'intéresse. Cliquez sur l'URL ci-dessous: ${encodedProductLink}`;
+		const url = `https://wa.me/${_wh}?text=${message}`;
+
+		// Ouvrir un nouvel onglet
+		return window.open(url, "_blank");
+
+		// return `https://wa.me/${_wh}?text=Votre%20annonce%20publi%C3%A9e%20m'int%C3%A9resse.%20Cliquez%20sur%20l'URL%20ci-dessous%3A%0A%0A${encodedProductLink}`;
 	};
 
 	const handleSMS = () => {
@@ -74,14 +103,13 @@ const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, s
 					<span className="ml-2">SMS</span>
 				</a>
 
-				<a
-					href={handleWhatsApp()}
+				<button
+					onClick={() => handleWhatsApp()}
 					className={`bg-green-500 hover:bg-green-6000 ${classNameItem}`}
-					target="_blank"
 				>
 					<FaWhatsapp size={iconSize} />
 					<span className="ml-2">WhatsApp</span>
-				</a>
+				</button>
 			</div>
 
 			{showAlert ? <AlerteSecurityMessage /> : null}

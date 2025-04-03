@@ -13,7 +13,8 @@ class PropertyResource extends JsonResource
         return [
             'id'                   => $this->id,
             'slug'                 => $this->slug,
-            'href'                 => "/annonce/{$this->slug}&?id=" . $this->id,
+            'href'                 => "/annonce/{$this->slug}?id=" . $this->id,
+            // 'href'                 => "/annonce/{$this->slug}&?id=" . $this->id,
 
             'category'             => $this->category(),
 
