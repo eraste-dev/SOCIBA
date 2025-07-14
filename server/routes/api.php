@@ -20,6 +20,7 @@ use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRequestController;
 use App\Http\Middleware\JwtMiddleware;
+use App\Http\Controllers\CityController;
 
 // Route::get('/', [HomeController::class, 'index']);
 
@@ -38,6 +39,10 @@ Route::group(['prefix' => 'v1'], function () {
         });
         Route::group(['prefix' => 'locations'], function () {
             Route::get('/', [MunicipalityController::class, 'index']);
+        });
+
+        Route::group(['prefix' => 'cities'], function () {
+            Route::get('/', [CityController::class, 'index']);
         });
 
         // ? META

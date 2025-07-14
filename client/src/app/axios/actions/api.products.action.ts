@@ -75,3 +75,25 @@ export const uploadVideo =
 			dispatch(uploadVideoFailure({ error: error.message, errors: error.errors }));
 		}
 	};
+
+export const uploadVideoWithProgress =
+	(payload: UploadVideoProductRequest | FormData, onUploadProgress?: (progressEvent: any) => void) => async (dispatch: AppDispatch) => {
+		console.log(">>> payload >> uploadVideoWithProgress ", payload);
+
+		dispatch(uploadVideoStart());
+
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.properties.uploadVideo(payload),
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+				data: payload,
+				onUploadProgress: onUploadProgress,
+			});
+			dispatch(uploadVideoSuccess(response.data));
+		} catch (error: any) {
+			console.log(error);
+			dispatch(uploadVideoFailure({ error: error.message, errors: error.errors }));
+		}
+	};

@@ -23,7 +23,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
             <form action="" method="POST" className="relative">
               <Input
                 type="search"
-                placeholder="Search items"
+                placeholder="Bien, Commune, Quartier"
                 className="pr-10 w-full"
                 sizeClass="h-[42px] pl-4 py-3"
               />

@@ -40,7 +40,7 @@ const SearchDropdown = () => {
                     <Input
                       ref={inputRef}
                       type="search"
-                      placeholder="Type and press enter"
+                      placeholder="Bien, Commune, Quartier"
                       className="pl-10"
                     />
                     <input type="submit" hidden value="" />

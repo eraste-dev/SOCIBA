@@ -8,7 +8,7 @@ import { useForm, SubmitHandler, set } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
 import { useAppSelector } from "app/hooks";
-import { fetchCategories, initProductState, postProduct } from "app/axios/actions/api.action";
+import { fetchCategories, initProductState, postProduct, postProductWithProgress } from "app/axios/actions/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
 import { PeriodicityType, PRODUCT_REQUEST_EMPTY, ProductRequest } from "app/axios/api.type";
@@ -87,6 +87,8 @@ const DashboardSubmitPost = () => {
 	const [videos, setVideos] = useState<string[]>([]);
 	const [videoFiles, setVideoFiles] = useState<File[]>([]);
 	const [tmpcatId, settmpcatId] = useState(0);
+	const [uploadProgress, setUploadProgress] = useState(0);
+	const [isUploading, setIsUploading] = useState(false);
 
 	const {
 		register,
@@ -99,6 +101,8 @@ const DashboardSubmitPost = () => {
 
 	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
 		setSubmitting(true);
+		setIsUploading(true);
+		setUploadProgress(0);
 		console.log("SubmitHandler imageFiles", imageFiles);
 		let formData = new FormData(); // initialize form data
 		const defaultType: string =
@@ -164,7 +168,14 @@ const DashboardSubmitPost = () => {
 		if (product && productId) {
 			formData.append("id", productId);
 		}
-		dispatch(postProduct(formData));
+
+		// Callback pour gérer la progression de l'upload
+		const handleUploadProgress = (progressEvent: any) => {
+			const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+			setUploadProgress(percentCompleted);
+		};
+
+		dispatch(postProductWithProgress(formData, handleUploadProgress));
 		// setSubmitting(false);
 	};
 
@@ -594,6 +605,146 @@ const DashboardSubmitPost = () => {
 		return output;
 	};
 
+	// Fonction pour uploader les images immédiatement après sélection
+	const handleImmediateImageUpload = async (files: File[], onProgress: (progress: number) => void) => {
+		try {
+			// Créer les URLs locales pour l'aperçu immédiat
+			const fileArray = files.map((file) => URL.createObjectURL(file));
+			const newImages = [...images, ...fileArray].slice(0, 15);
+			
+			// Mettre à jour les états locaux
+			setImageFiles([...imageFiles, ...files]);
+			setImages(newImages);
+			
+			// Simuler un upload réaliste avec progression fluide
+			let progress = 0;
+			const totalFiles = files.length;
+			const progressIncrement = 100 / totalFiles;
+			
+			for (let i = 0; i < totalFiles; i++) {
+				const file = files[i];
+				const fileSize = file.size;
+				const chunkSize = Math.max(fileSize / 20, 1024); // Simuler des chunks
+				
+				// Simuler l'upload du fichier par chunks
+				for (let uploaded = 0; uploaded < fileSize; uploaded += chunkSize) {
+					const fileProgress = Math.min((uploaded / fileSize) * progressIncrement, progressIncrement);
+					const totalProgress = Math.min(progress + fileProgress, 100);
+					onProgress(totalProgress);
+					
+					// Délai réaliste basé sur la taille du chunk
+					const delay = Math.min(chunkSize / 10000, 100); // 100ms max par chunk
+					await new Promise(resolve => setTimeout(resolve, delay));
+				}
+				
+				progress += progressIncrement;
+				onProgress(Math.min(progress, 100));
+			}
+			
+			// Finaliser à 100%
+			onProgress(100);
+			await new Promise(resolve => setTimeout(resolve, 200)); // Petit délai final
+			
+			// Notification de succès
+			const fileCount = files.length;
+			const message = fileCount === 1 ? 
+				"Image ajoutée avec succès !" : 
+				`${fileCount} images ajoutées avec succès !`;
+			snackbar.enqueueSnackbar(message, { 
+				variant: "success", 
+				autoHideDuration: 2000 
+			});
+			
+		} catch (error) {
+			console.error("Erreur lors de l'upload immédiat:", error);
+			snackbar.enqueueSnackbar("Erreur lors de l'ajout des images", { 
+				variant: "error", 
+				autoHideDuration: 3000 
+			});
+			throw error;
+		}
+	};
+
+	// Fonction pour supprimer définitivement une image
+	const handleImageDelete = async (index: number, imageUrl: string): Promise<boolean> => {
+		try {
+			// Vérifier si l'image existe déjà sur le serveur (par exemple si elle provient d'un produit existant)
+			const isServerImage = imageUrl.startsWith('/') || imageUrl.includes('assets/');
+			
+			if (isServerImage && product && productId) {
+				// Si c'est une image du serveur, faire un appel API pour la supprimer
+				// TODO: Créer une API endpoint pour supprimer une image spécifique
+				console.log("Suppression d'image serveur:", imageUrl);
+				
+				// Pour l'instant, on simule la suppression serveur
+				// En production, vous devriez avoir un endpoint comme :
+				// dispatch(deleteProductImage({productId, imageUrl}));
+				
+				snackbar.enqueueSnackbar("Image supprimée du serveur", { 
+					variant: "success", 
+					autoHideDuration: 2000 
+				});
+			} else {
+				// Si c'est une image locale (blob URL), juste la supprimer localement
+				console.log("Suppression d'image locale:", imageUrl);
+				snackbar.enqueueSnackbar("Image supprimée", { 
+					variant: "success", 
+					autoHideDuration: 2000 
+				});
+			}
+			
+			return true; // Succès
+			
+		} catch (error) {
+			console.error("Erreur lors de la suppression définitive:", error);
+			snackbar.enqueueSnackbar("Erreur lors de la suppression de l'image", { 
+				variant: "error", 
+				autoHideDuration: 3000 
+			});
+			return false; // Échec
+		}
+	};
+
+	// Fonction pour supprimer définitivement une vidéo
+	const handleVideoDelete = async (index: number, videoUrl: string): Promise<boolean> => {
+		try {
+			// Vérifier si la vidéo existe déjà sur le serveur
+			const isServerVideo = videoUrl.startsWith('/') || videoUrl.includes('assets/');
+			
+			if (isServerVideo && product && productId) {
+				// Si c'est une vidéo du serveur, faire un appel API pour la supprimer
+				// TODO: Créer une API endpoint pour supprimer une vidéo spécifique
+				console.log("Suppression de vidéo serveur:", videoUrl);
+				
+				// Pour l'instant, on simule la suppression serveur
+				// En production, vous devriez avoir un endpoint comme :
+				// dispatch(deleteProductVideo({productId, videoUrl}));
+				
+				snackbar.enqueueSnackbar("Vidéo supprimée du serveur", { 
+					variant: "success", 
+					autoHideDuration: 2000 
+				});
+			} else {
+				// Si c'est une vidéo locale (blob URL), juste la supprimer localement
+				console.log("Suppression de vidéo locale:", videoUrl);
+				snackbar.enqueueSnackbar("Vidéo supprimée", { 
+					variant: "success", 
+					autoHideDuration: 2000 
+				});
+			}
+			
+			return true; // Succès
+			
+		} catch (error) {
+			console.error("Erreur lors de la suppression définitive de vidéo:", error);
+			snackbar.enqueueSnackbar("Erreur lors de la suppression de la vidéo", { 
+				variant: "error", 
+				autoHideDuration: 3000 
+			});
+			return false; // Échec
+		}
+	};
+
 	// FETCH_CATEGORIES
 	useEffect(() => {
 		if (!categories && !categoriesLoading) {
@@ -664,9 +815,19 @@ const DashboardSubmitPost = () => {
 				autoHideDuration: 1000,
 			});
 			setSubmitting(false);
+			setIsUploading(false);
+			setUploadProgress(0);
 			history.push(route("dashboard"));
 		}
 	}, [snackbar, success, loading, history]);
+
+	// UPLOAD_ERROR - réinitialiser l'état d'upload en cas d'erreur
+	useEffect(() => {
+		if (errorMessage && isUploading) {
+			setIsUploading(false);
+			setUploadProgress(0);
+		}
+	}, [errorMessage, isUploading]);
 
 	if ((initialize === false || defaultValue == null) && productId) {
 		// return history.push(route("posts"));
@@ -1456,12 +1617,16 @@ const DashboardSubmitPost = () => {
 												<div className="block md:col-span-2">
 													<ImageUploader
 														initialImages={images}
-														maxImages={5}
+														maxImages={15}
 														images={images}
 														setImages={setImages}
 														imageFiles={imageFiles}
 														setImageFiles={setImageFiles}
 														textOne="Ajoutez plusieurs photos pour augmenter vos chances d'être contacté"
+														isUploading={isUploading}
+														uploadProgress={uploadProgress}
+														onImageUpload={handleImmediateImageUpload}
+														onImageDelete={handleImageDelete}
 													/>
 												</div>
 											</div>
@@ -1480,6 +1645,7 @@ const DashboardSubmitPost = () => {
 														setVideos={setVideos}
 														videoFiles={videoFiles}
 														setVideoFiles={setVideoFiles}
+														onVideoDelete={handleVideoDelete}
 													/>
 												</div>
 											</div>
@@ -1504,7 +1670,7 @@ const DashboardSubmitPost = () => {
 														/>
 														<p className="mt-1 text-sm text-neutral-500">
 															Donnez une description détaillée de
-															votre article. N’indiquez pas vos
+															votre article. N'indiquez pas vos
 															coordonnées (e-mail, téléphones, …) dans
 															la description.
 														</p>

@@ -42,21 +42,39 @@ const UpdateProfileForm = () => {
     const onSubmit: SubmitHandler<UpdateUserRequest> = (data) => {
         console.log('>>> payload', user);
 
-        if (!user) return;
+        if (!user || !user.id) {
+            snackbar.enqueueSnackbar('Erreur : utilisateur non connecté', { 
+                variant: 'error', 
+                autoHideDuration: 2000 
+            });
+            return;
+        }
+
         const payload: UpdateUserRequest = { ...data, id: user.id };
         const formData = new FormData();
 
-        user && user.id && formData.append('id', String(user?.id));
-        data.name && formData.append('name', data.name);
-        data.last_name && formData.append('last_name', data.last_name);
-        data.phone && formData.append('phone', data.phone);
-        data.phone_whatsapp && formData.append('phone_whatsapp', data.phone_whatsapp);
-        data.fonction && formData.append('fonction', data.fonction);
-        // data.influence_zone_id && formData.append("influence_zone_id", data.influence_zone_id);
+        // ID obligatoire
+        formData.append('id', String(user.id));
+        
+        // Autres champs optionnels
+        if (data.name) formData.append('name', data.name);
+        if (data.last_name) formData.append('last_name', data.last_name);
+        if (data.phone) formData.append('phone', data.phone);
+        if (data.phone_whatsapp) formData.append('phone_whatsapp', data.phone_whatsapp);
+        if (data.fonction) formData.append('fonction', data.fonction);
 
         if (avatarFile) formData.append('avatar', avatarFile);
-        if (avatarFile) payload.avatar = avatarFile;
-        console.log('>>> payload', payload);
+        
+        console.log('>>> FormData entries:');
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+
+        // Vérifier que l'ID est bien présent
+        console.log('Sending FormData with user ID:', user.id);
+        console.log('FormData has ID:', formData.has('id'));
+        console.log('FormData ID value:', formData.get('id'));
+        
         dispatch(updateUser(formData));
     };
 
@@ -73,6 +91,17 @@ const UpdateProfileForm = () => {
         }
     }, [dispatch, functions, fetchMetaFunction]);
 
+    // Initialiser les valeurs du formulaire avec les données utilisateur
+    useEffect(() => {
+        if (user) {
+            setValue('name', user.name || '');
+            setValue('last_name', user.last_name || '');
+            setValue('phone', user.phone || '');
+            setValue('phone_whatsapp', user.phone_whatsapp || '');
+            setValue('fonction', user.fonction || '');
+        }
+    }, [user, setValue]);
+
     useEffect(() => {
         if (!loading && success && isSubmitted) {
             console.log('>>> success', errors);
@@ -80,8 +109,22 @@ const UpdateProfileForm = () => {
                 variant: 'success',
                 autoHideDuration: 2000,
             });
+            
+            // Mettre à jour les valeurs du formulaire avec les nouvelles données
+            if (user) {
+                setValue('name', user.name);
+                setValue('last_name', user.last_name);
+                setValue('phone', user.phone);
+                setValue('phone_whatsapp', user.phone_whatsapp);
+                setValue('fonction', user.fonction);
+                
+                // Mettre à jour l'avatar si il a changé
+                if (user.avatar) {
+                    setAvatar(user.avatar);
+                }
+            }
         }
-    }, [loading, success, snackbar, isSubmitted]);
+    }, [loading, success, snackbar, isSubmitted, user, setValue]);
 
     useEffect(() => {
         if (!loading && error && isSubmitted) {
@@ -95,13 +138,13 @@ const UpdateProfileForm = () => {
 
             <label className="block">
                 <Label>Prénoms</Label>
-                <Input placeholder="Votre prénoms" type="text" className="mt-1" {...register('name')} defaultValue={user?.name} />
+                <Input placeholder="Votre prénoms" type="text" className="mt-1" {...register('name')} />
                 <ErrorMessage errors={errorArray} error="name" />
             </label>
 
             <label className="block">
                 <Label>Nom</Label>
-                <Input placeholder="Votre nom" type="text" className="mt-1" {...register('last_name')} defaultValue={user?.last_name ?? ''} />
+                <Input placeholder="Votre nom" type="text" className="mt-1" {...register('last_name')} />
                 <ErrorMessage errors={errorArray} error="name" />
             </label>
 
@@ -112,12 +155,12 @@ const UpdateProfileForm = () => {
             </label>
 
             <label className="block md:col-span-2">
-                <span className="text-neutral-800 dark:text-neutral-200">
-                    Vous êtres ? <span className="text-red-500">*</span>{' '}
-                </span>
-                <Select className="mt-1" {...register('fonction', { required: true })} disabled={!functions?.data || functions?.data?.length === 0} onChange={(e) => setValue('fonction', e.target.value)}>
-                    <option value="" selected>
-                        Aucun
+                <Label>
+                    Vous êtes ?
+                </Label>
+                <Select className="mt-1" {...register('fonction')} disabled={!functions?.data || functions?.data?.length === 0} onChange={(e) => setValue('fonction', e.target.value)}>
+                    <option value="">
+                        Choisissez votre fonction
                     </option>
                     {functions &&
                         functions.data &&
@@ -126,10 +169,6 @@ const UpdateProfileForm = () => {
                             <option
                                 key={func.id}
                                 value={func.value}
-                                selected={func.value === user?.fonction}
-                                onClick={() => {
-                                    setValue('fonction', func.value ?? '');
-                                }}
                             >
                                 {func.value}
                             </option>
@@ -140,13 +179,13 @@ const UpdateProfileForm = () => {
 
             <label className="block">
                 <Label> Téléphone</Label>
-                <Input type="text" className="mt-1 " {...register('phone')} defaultValue={user?.phone} />
+                <Input type="text" className="mt-1 " {...register('phone')} />
                 <ErrorMessage errors={errorArray} error="phone" />
             </label>
 
             <label className="block">
                 <Label> Numéro WhatsApp</Label>
-                <Input type="text" className="mt-1 " {...register('phone_whatsapp')} defaultValue={user?.phone_whatsapp} />
+                <Input type="text" className="mt-1 " {...register('phone_whatsapp')} />
                 <ErrorMessage errors={errorArray} error="phone_whatsapp" />
             </label>
 

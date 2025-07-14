@@ -293,6 +293,28 @@ export const postProduct =
 		}
 	};
 
+export const postProductWithProgress =
+	(payload: ProductRequest | FormData, onUploadProgress?: (progressEvent: any) => void) => async (dispatch: AppDispatch) => {
+		console.log(">>> payload >> postProductWithProgress ", payload);
+
+		dispatch(postProductStart());
+
+		try {
+			const response = await axiosRequest<IServerResponse>({
+				...serverEndpoints.public.properties.post(payload),
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+				data: payload,
+				onUploadProgress: onUploadProgress,
+			});
+			dispatch(postProductSuccess(response.data));
+		} catch (error: any) {
+			console.log(error);
+			dispatch(postProductFailure({ error: error.message, errors: error.errors }));
+		}
+	};
+
 export const deleteProduct = (payload: number) => async (dispatch: AppDispatch) => {
 	dispatch(deleteProductStart());
 

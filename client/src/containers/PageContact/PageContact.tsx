@@ -19,7 +19,7 @@ export const INFO_CONTACT = [
 	},
 	{
 		title: "TÉLÉPHONE",
-		desc: "+225 05 74 93 29 33",
+		desc: "+225 05 54 92 56 17",
 	},
 ];
 

@@ -123,16 +123,16 @@ const SectionFounderStatic = () => {
 						engageons à respecter les standards éthiques les plus élevés
 						dans toutes nos transactions et relations professionnelles.
 						Innovation : Nous utilisons des outils modernes et innovants
-						pour faciliter l’expérience client et optimiser la gestion de
+						pour faciliter l'expérience client et optimiser la gestion de
 						note plateforme.
 					</p>
 
 					<h2 className="text-lg font-bold mb-4">Notre Équipe</h2>
 					<p className="text-base text-justify">
 						Notre équipe est composée de personnes dynamiques, jeunes et
-						passionnées de l’innovation immobilière. Nous travaillons en
+						passionnées de l'innovation immobilière. Nous travaillons en
 						étroite collaborations avec nos partenaires du secteur de
-						l’immobilier afin de garantir des contenus de qualité dont
+						l'immobilier afin de garantir des contenus de qualité dont
 						pourra disposer notre clientèle dans leur recherche et
 						acquisition de biens immobiliers.
 					</p>
@@ -142,8 +142,8 @@ const SectionFounderStatic = () => {
 						nous contacter pour la mise en location, en réservations ou en
 						vente de vos biens immobiliers sur notre plateforme. Nous
 						offrons une plus large diffusion des biens qui nous sont
-						confiés. N’hésitez pas à nous contactez au 07 59 85 55 44
-						ou par e-mail : <a href="mailto:bajorahimmobilier@gmail.com">bajorahimmobilier@gmail.com</a> pour plus d’information
+						confiés. N'hésitez pas à nous contactez au +225 05 54 92 56 17
+						ou par e-mail : <a href="mailto:bajorahimmobilier@gmail.com">bajorahimmobilier@gmail.com</a> pour plus d'information
 					</p>
 				</div>
 				<div className="col-span-5 md:col-span-2">
@@ -169,8 +169,8 @@ const SectionFounderStatic = () => {
 						<p className="text-base text-justify">
 							Nous mettrons tous les moyens en œuvre afin de satisfaire nos clients
 							dans leurs recherches de bien immobilier. Nous offrons une plus large
-							diffusion des biens qui nous sont confiés. N’hésitez pas à nous
-							contacter au 07 59 85 55 44 de 08h à 21h pour plus d’informations.
+							diffusion des biens qui nous sont confiés. N'hésitez pas à nous
+							contacter au +225 05 54 92 56 17 de 08h à 21h pour plus d'informations.
 						</p>
 					</div>
 				</div>

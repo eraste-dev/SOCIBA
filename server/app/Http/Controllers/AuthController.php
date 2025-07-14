@@ -114,9 +114,16 @@ class AuthController extends Controller
 
     public function updateUser(Request $request)
     {
-        // var_dump('Request Payload:', $request->all(), $_POST, $_FILES); 
+        // Debug des données reçues
+        \Log::info('=== UPDATE USER DEBUG ===');
+        \Log::info('Request all: ', $request->all());
+        \Log::info('Request has id: ' . ($request->has('id') ? 'true' : 'false'));
+        \Log::info('Request id value: ' . $request->input('id', 'NULL'));
+        \Log::info('Headers: ', $request->headers->all());
+        \Log::info('========================');
+        
         $validator = Validator::make($request->all(), [
-            'id'                => 'required|integer|exists:users,id',
+            'id'                => 'nullable|integer|exists:users,id',
             'name'              => 'nullable|string|max:255',
             'last_name'         => 'nullable|string|max:255',
             'phone'             => 'nullable|string|max:255',

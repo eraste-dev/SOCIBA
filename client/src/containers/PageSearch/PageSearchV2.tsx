@@ -68,7 +68,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
               <Input
                 id="search-input"
                 type="search"
-                placeholder="Type and press enter"
+                placeholder="Bien, Commune, Quartier"
                 className="shadow-lg rounded-xl border-opacity-0"
                 sizeClass="pl-14 py-5 pr-5 md:pl-16"
                 defaultValue={s}

@@ -214,6 +214,7 @@ class Property extends Model
             'location_id'            => request()->location_id ?? null,
             'locations'              => request()->locations ?? null,
             'location'               => request()->location ?? null,
+            'city_id'                => request()->city_id ?? null,
             'unlisted_location'      => request()->unlisted_location ?? null,
             'other_location'         => request()->other_location ?? null,
             'other_city'             => request()->other_city ?? null,

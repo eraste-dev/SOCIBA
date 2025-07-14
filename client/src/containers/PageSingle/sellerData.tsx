@@ -6,8 +6,8 @@ import AlerteSecurityMessage from "./AlerteSecurityMessage";
 // Données statiques du vendeur
 const sellerData = {
 	name: "BAJORAH",
-	phone: "+1 (123) 456-7890",
-	whatsapp: "+1 (123) 456-7890",
+	phone: "0554925617",
+	whatsapp: "0554925617",
 };
 
 export interface ContactSellerProps {
@@ -15,9 +15,13 @@ export interface ContactSellerProps {
 	phone?: string;
 	whatsapp?: string;
 	sms?: string;
+	category?: {
+		slug: string;
+		name: string;
+	};
 }
 
-const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, sms }) => {
+const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, sms, category }) => {
 	const [showAlert, setshowAlert] = useState(true);
 
 	const classNameItem: string =
@@ -54,7 +58,7 @@ const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, s
 		// https://bajorah.com/annonce/reservation-3&?id=3
 		// https://bajorah.com/annonce/reservation-3&?id=3
 
-		// _wh = "2250789670552";
+		// _wh = "2250554925617";
 
 		// Encodage du lien du produit
 		const encodedProductLink = encodeURIComponent(productLink || "");
@@ -112,7 +116,7 @@ const ContactSeller: FC<ContactSellerProps> = ({ productLink, phone, whatsapp, s
 				</button>
 			</div>
 
-			{showAlert ? <AlerteSecurityMessage /> : null}
+			{showAlert ? <AlerteSecurityMessage category={category} /> : null}
 
 		</div>
 	);

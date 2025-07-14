@@ -34,12 +34,15 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "", target 
 		}
 	}, [dispatch, fetchSliders, data, loading]);
 
-	if (data && data.length === 1) {
-		return (
-			<div className="w-full h-full bg-black/50 mb-3">
-				<NcImage src={data[0].image} />
-			</div>
-		);
+	// Filtrer les sliders par place et qui ont une image
+	const filteredSliders = data
+		? data
+			.filter((s) => s.place === target && s.image) // Filtre par place ET par image non-null
+		: [];
+
+	// Si aucune image, ne rien afficher
+	if (filteredSliders.length === 0) {
+		return null;
 	}
 
 	return (
@@ -50,34 +53,35 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "", target 
 				</div>
 			) : (
 				<>
-					<AliceCarousel
-						mouseTracking
-						items={
-							data
-								? data
-									.filter((s) => s.place === target)
-									.map((item, index) => (
+					{/* Utiliser la même structure de conteneur que les autres composants */}
+					<div className="container relative">
+						<AliceCarousel
+							mouseTracking
+							items={
+								filteredSliders.map((item, index) => (
+									<div key={index} className="flex justify-center">
 										<img
-											key={index}
 											src={item.image}
-											alt={item.title}
-											className="w-auto sm:w-full h-28 sm:h-auto "
+											alt={item.title || `Slider ${index + 1}`}
+											className="w-full h-auto object-contain rounded-lg shadow-lg"
 											onDragStart={handleDragStart}
 										/>
-									))
-								: []
-						}
-						responsive={{
-							0: { items: 1 },
-							1024: { items: 1 },
-						}}
-						controlsStrategy="alternate"
-						autoPlay
-						autoPlayInterval={13000}
-						disableButtonsControls={true}
-						disableDotsControls={true}
-						infinite
-					/>
+									</div>
+								))
+							}
+							responsive={{
+								0: { items: 1 },
+								1024: { items: 1 },
+							}}
+							controlsStrategy="alternate"
+							autoPlay
+							autoPlayInterval={5000}
+							animationDuration={800}
+							disableButtonsControls={true}
+							disableDotsControls={true}
+							infinite
+						/>
+					</div>
 				</>
 			)}
 		</div>

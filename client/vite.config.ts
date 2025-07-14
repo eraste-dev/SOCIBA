@@ -7,3 +7,4 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   base: "https://bajorah.com/",
 });
+

@@ -252,6 +252,7 @@ const Single: FC<SingleProps> = ({ className = "" }) => {
 											? single!.author!.phone
 											: undefined
 									}
+									category={single?.category}
 								/>
 							</div>
 						</div>

@@ -15,6 +15,7 @@ export interface ButtonProps {
   href?: keyof LocationStates | "#" | LinkProps["to"];
   targetBlank?: boolean;
   onClick?: () => void;
+  children?: React.ReactNode;
 }
 
 const Button: FC<ButtonProps> = ({

@@ -37,6 +37,7 @@ export interface IGetSearchPropertiesParams {
 	range?: { min: number; max: number };
 	limit?: number;
 	location?: number | string;
+	city_id?: number | string;
 	unlisted_location?: boolean;
 	locations?: string;
 	created_by?: number;
@@ -159,6 +160,10 @@ export const searchParamsFromURL = () => {
 
 	if (urlParams.has("location")) {
 		params.location = urlParams.get("location") ?? "*";
+	}
+
+	if (urlParams.has("city_id")) {
+		params.city_id = urlParams.get("city_id") ?? "*";
 	}
 
 	if (urlParams.has("created_by")) {

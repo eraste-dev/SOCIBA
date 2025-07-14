@@ -14,7 +14,7 @@ class SliderResource extends JsonResource
             'title'       => $this->title,
             'place'       => $this->place,
             'description' => $this->description,
-            'image'      => ImageService::getImage($this->image),
+            'image'      => $this->image ? ImageService::getImage($this->image) : null,
         ];
     }
 }

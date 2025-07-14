@@ -24,5 +24,29 @@ class CitySeeder extends Seeder
             'long' => -3.93,
             'thumbnail' => '',
         ]);
+
+        City::create([
+            'name' => 'Yamoussoukro',
+            'slug' => 'yamoussoukro',
+            'iso3' => 'civ',
+            'iso2' => 'ci',
+            'description' => 'Capitale politique de la Côte d\'Ivoire',
+            'country_id' => 1,
+            'lat' => 6.82,
+            'long' => -5.28,
+            'thumbnail' => '',
+        ]);
+
+        City::create([
+            'name' => 'San-Pedro',
+            'slug' => 'san-pedro',
+            'iso3' => 'civ',
+            'iso2' => 'ci',
+            'description' => 'Port autonome de San-Pedro',
+            'country_id' => 1,
+            'lat' => 4.75,
+            'long' => -6.63,
+            'thumbnail' => '',
+        ]);
     }
 }

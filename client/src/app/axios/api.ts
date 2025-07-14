@@ -7,8 +7,8 @@ const useMySelector = () => {
 };
 
 const axiosInstance: AxiosInstance = axios.create({
-	// baseURL: "http://localhost:8000", // DEV
-	baseURL: "https://api.bajorah.com", // PROD
+	baseURL: "http://127.0.0.1:8000", // DEV
+	// baseURL: "https://api.bajorah.com", // PROD
 	
 });
 
@@ -31,7 +31,11 @@ export const axiosRequest = async <T>(config: AxiosRequestConfig): Promise<T> =>
 			};
 		}
 
-		const response: { data: T } = await axiosInstance.request<T>(config);
+		// Transmettre tous les paramètres de configuration, y compris onUploadProgress
+		const response: { data: T } = await axiosInstance.request<T>({
+			...config,
+			headers: config.headers
+		});
 		return response.data;
 	} catch (error: any) {
 		throw error.response?.data || error;

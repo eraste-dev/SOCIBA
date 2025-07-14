@@ -92,7 +92,7 @@ class PropertyController extends Controller
             'purchase_power'       => 'nullable|in:LESS_EXPENSIVE,EQUAL_EXPENSIVE,MORE_EXPENSIVE',
             'accessibility'        => 'nullable|in:NOT_FAR_FROM_THE_TAR,A_LITTLE_FAR_FROM_THE_TAR,FAR_FROM_THE_TAR',
             'images.*'             => 'required|file|max:10048',
-            'videos.*'             => 'required|file|max:10024',
+            'videos.*'             => 'required|file|max:307200',
             // 'excerpt'           => 'nullable|string',
         ]);
 
@@ -213,7 +213,7 @@ class PropertyController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id'        => 'nullable|integer|exists:properties,id',
-            'videos.*'  => 'required|file|max:10024',
+            'videos.*'  => 'required|file|max:307200',
         ]);
 
         if ($validator->fails()) {
