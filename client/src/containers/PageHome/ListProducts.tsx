@@ -8,8 +8,10 @@ import { fetchAllProperties } from "app/axios/actions/api.action";
 import { IGetSearchPropertiesParams, TypeSearch } from "utils/query-builder.utils";
 import Loading from "components/UI/Loading";
 import CardSkeleton from "components/Cards/CardSkeleton/CardSkeleton";
-import FloatFilter from "components/Widgets/FloatFilter";
+import AdvancedSearch from 'components/Header/AdvancedSearch';
 import NoDataMessage from "components/NoDataMessage";
+import { useLocation } from 'react-router-dom';
+import { Dialog } from '@headlessui/react';
 
 export const getParams = (): IGetSearchPropertiesParams => {
 	const params: IGetSearchPropertiesParams = {};
@@ -110,6 +112,7 @@ const ListProducts: FC<ListProductsProps> = ({
 	className = "",
 }) => {
 	const dispatch = useAppDispatch();
+	const location = useLocation();
 
 	const products = useAppSelector(PropertyAction.data)?.all?.get;
 	const loading = useSelector(PropertyAction.data)?.all?.loading;
@@ -118,6 +121,7 @@ const ListProducts: FC<ListProductsProps> = ({
 	const [useStateFilter, setUseStateFilter] = useState<IPropertyFilter>({});
 	const [showFilter, setShowFilter] = useState(false);
 	const toggleFilter = () => setShowFilter(!showFilter);
+	const [showAdvancedMobile, setShowAdvancedMobile] = useState(false);
 
 	const fetchAll = () => {
 		if (!loading && !error) {
@@ -130,10 +134,8 @@ const ListProducts: FC<ListProductsProps> = ({
 	};
 
 	useEffect(() => {
-		if (!products && !loading && !error) {
-			dispatch(fetchAllProperties(getParams()));
-		}
-	}, [dispatch, fetchAllProperties, getParams, products, loading, !error]);
+		dispatch(fetchAllProperties(getParams()));
+	}, [dispatch, location.search]);
 
 	if (loading) {
 		<Loading />;
@@ -149,15 +151,9 @@ const ListProducts: FC<ListProductsProps> = ({
 			<div className="grid sm:grid-cols-12 grid-cols-1">
 				{/* hidden md:block w-1/5 sm:w-1/8 lg:w-1/4 xl:w-1/5 */}
 				<div className="col-span-1 sm:col-span-2">
-					<FloatFilter
-						useStateFilter={useStateFilter}
-						setUseStateFilter={setUseStateFilter}
-						showFilter={showFilter}
-						toggleFilter={toggleFilter}
-						fetchAll={fetchAll}
-						noFloating={true}
-						linear={false}
-					/>
+					<div className="hidden sm:block">
+						<AdvancedSearch />
+					</div>
 				</div>
 
 				{/*  xl:pl-14 lg:pl-7 */}
@@ -180,6 +176,35 @@ const ListProducts: FC<ListProductsProps> = ({
 						</div>
 					)}
 				</div>
+			</div>
+			{/* Bouton flottant mobile */}
+			<div className="block sm:hidden">
+				<button
+					className="fixed left-4 bottom-4 z-50 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-full flex items-center shadow-lg"
+					onClick={() => setShowAdvancedMobile(true)}
+				>
+					<svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+					</svg>
+					Rechercher
+				</button>
+				<Dialog open={showAdvancedMobile} onClose={() => setShowAdvancedMobile(false)} className="fixed z-50 inset-0 overflow-y-auto">
+					<div className="flex items-center justify-center min-h-screen p-4">
+						<Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+						<div className="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-auto p-4 z-10">
+							<button
+								onClick={() => setShowAdvancedMobile(false)}
+								className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+								aria-label="Fermer"
+							>
+								<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+								</svg>
+							</button>
+							<AdvancedSearch onClose={() => setShowAdvancedMobile(false)} />
+						</div>
+					</div>
+				</Dialog>
 			</div>
 		</div>
 	);

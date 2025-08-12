@@ -83,14 +83,6 @@ class PropertyService
                 '%' . $payload['searchText'] . '%'
             );
 
-            // Recherche dans les villes (cities)
-            $queryCities = \App\Models\City::query();
-            $queryCities->where(
-                'name',
-                'like',
-                '%' . $payload['searchText'] . '%'
-            );
-
             $categories = $queryCategory->get();
             foreach ($categories as $category) {
                 $query->orWhere(
@@ -107,19 +99,7 @@ class PropertyService
                 );
             }
 
-            // Recherche par villes - on cherche les municipalités de cette ville
-            $all_cities = $queryCities->get();
-            foreach ($all_cities as $city) {
-                $city_municipalities = Municipality::where('city_id', $city->id)->get();
-                foreach ($city_municipalities as $municipality) {
-                    $query->orWhere(
-                        'location_id',
-                        $municipality->id
-                    );
-                }
-            }
-
-            // * SEARCH BY LOCATION DESCRIPTION (quartiers)
+            // * SEARCH BY LOCATION DESCRIPTION
             $query->orWhere(
                 'location_description',
                 'like',
@@ -148,12 +128,12 @@ class PropertyService
             $query->where('category_id', $payload['category']);
         }
 
-        // location_description
+        // location_description (quartier) - recherche partielle insensible à la casse
         if ($payload['location_description'] && $payload['location_description'] !== '*') {
             $query->where(
                 'location_description',
                 'like',
-                '%' . $payload['location_description'] . '%'
+                '%' . strtolower($payload['location_description']) . '%'
             );
         }
 
@@ -212,14 +192,6 @@ class PropertyService
             $query->where('location_id', $payload['location']);
         } else if ($payload['location'] == "0") {
             $query->where('location_id', null);
-        }
-
-        // ? city_id - filtrer par ville spécifique
-        if (isset($payload['city_id']) && $payload['city_id'] !== '*' && $payload['city_id'] !== '') {
-            $city_municipalities = Municipality::where('city_id', $payload['city_id'])->pluck('id');
-            if ($city_municipalities->count() > 0) {
-                $query->whereIn('location_id', $city_municipalities);
-            }
         }
 
         if (isset($payload['unlisted_location']) && !isset($payload['location'])) {

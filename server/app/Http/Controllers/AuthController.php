@@ -119,11 +119,15 @@ class AuthController extends Controller
         \Log::info('Request all: ', $request->all());
         \Log::info('Request has id: ' . ($request->has('id') ? 'true' : 'false'));
         \Log::info('Request id value: ' . $request->input('id', 'NULL'));
+        \Log::info('Request method: ' . $request->method());
+        \Log::info('Request content type: ' . $request->header('Content-Type'));
+        \Log::info('Request body: ' . $request->getContent());
+        \Log::info('Request post data: ', $request->post());
+        \Log::info('Request input data: ', $request->input());
         \Log::info('Headers: ', $request->headers->all());
         \Log::info('========================');
         
         $validator = Validator::make($request->all(), [
-            'id'                => 'nullable|integer|exists:users,id',
             'name'              => 'nullable|string|max:255',
             'last_name'         => 'nullable|string|max:255',
             'phone'             => 'nullable|string|max:255',
@@ -145,9 +149,23 @@ class AuthController extends Controller
         }
 
         try {
-            $user = User::findOrFail($request->id);
+            // Récupérer l'utilisateur à partir du token JWT plutôt que de faire confiance à l'id envoyé
+            $user = Auth::user();
+            
+            \Log::info('=== USER FROM AUTH ===');
+            \Log::info('User found: ' . ($user ? 'true' : 'false'));
+            \Log::info('User ID: ' . ($user ? $user->id : 'NULL'));
+            \Log::info('User email: ' . ($user ? $user->email : 'NULL'));
+            \Log::info('=====================');
+            
+            if (!$user) {
+                return ResponseService::error("Utilisateur non authentifié", 401);
+            }
 
-            $user->fill($request->only([
+            // Log des données reçues pour debug
+            \Log::info('=== DATA TO UPDATE ===');
+            \Log::info('Request all data: ', $request->all());
+            \Log::info('Request only specific fields: ', $request->only([
                 'name',
                 'last_name',
                 'phone',
@@ -157,6 +175,33 @@ class AuthController extends Controller
                 'type',
                 'status'
             ]));
+            \Log::info('========================');
+            
+            // Mettre à jour les champs individuellement pour s'assurer qu'ils sont bien appliqués
+            if ($request->filled('name')) {
+                $user->name = $request->name;
+            }
+            if ($request->filled('last_name')) {
+                $user->last_name = $request->last_name;
+            }
+            if ($request->filled('phone')) {
+                $user->phone = $request->phone;
+            }
+            if ($request->filled('phone_whatsapp')) {
+                $user->phone_whatsapp = $request->phone_whatsapp;
+            }
+            if ($request->filled('fonction')) {
+                $user->fonction = $request->fonction;
+            }
+            if ($request->filled('influence_zone_id')) {
+                $user->influence_zone_id = $request->influence_zone_id;
+            }
+            if ($request->filled('type')) {
+                $user->type = $request->type;
+            }
+            if ($request->filled('status')) {
+                $user->status = $request->status;
+            }
 
             if ($request->filled('password')) {
                 $user->password = Hash::make($request->password);
@@ -171,7 +216,7 @@ class AuthController extends Controller
                         $destinationPath = public_path('assets/images/users/avatars');
                         $image->move($destinationPath, $filetomove);
 
-                        $upload = "/images/users/avatars" . $filetomove;
+                        $upload = "/images/users/avatars/" . $filetomove;
                         $user->avatar = $upload;
                     }
                 }
@@ -179,7 +224,26 @@ class AuthController extends Controller
                 return ResponseService::error("Product created successfully", 500,);
             }
 
+            // Log des valeurs avant sauvegarde
+            \Log::info('=== USER VALUES BEFORE SAVE ===');
+            \Log::info('User name: ' . $user->name);
+            \Log::info('User last_name: ' . $user->last_name);
+            \Log::info('User phone: ' . $user->phone);
+            \Log::info('User phone_whatsapp: ' . $user->phone_whatsapp);
+            \Log::info('User fonction: ' . $user->fonction);
+            \Log::info('=============================');
+            
             $user->save();
+            
+            // Log des valeurs après sauvegarde
+            \Log::info('=== USER VALUES AFTER SAVE ===');
+            \Log::info('User name: ' . $user->name);
+            \Log::info('User last_name: ' . $user->last_name);
+            \Log::info('User phone: ' . $user->phone);
+            \Log::info('User phone_whatsapp: ' . $user->phone_whatsapp);
+            \Log::info('User fonction: ' . $user->fonction);
+            \Log::info('============================');
+            
             return ResponseService::success(new UserResource($user), "Successfully updated");
         } catch (\Throwable $th) {
             return ResponseService::error("Failed to update");

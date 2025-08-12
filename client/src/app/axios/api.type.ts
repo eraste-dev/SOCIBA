@@ -120,6 +120,7 @@ export interface ProductRequest {
 	garages?: number | null;
 	kitchens?: number | null;
 	rooms?: number | null;
+	room_count?: number | null;
 	area?: number | null;
 	area_unit?: IPRODUCT_AREA_UNIT_KEY;
 	count_advance?: number | null;
@@ -137,6 +138,23 @@ export interface ProductRequest {
 	purchase_power?: string;
 	accessibility?: string;
 	area_count?: number;
+	floor_count?: number | null;
+	// Caractéristiques du bureau privé
+	bureau_prive_intimite?: boolean;
+	bureau_prive_personnalisation?: boolean;
+	bureau_prive_confidentialite?: boolean;
+	// Caractéristiques de l'Open Space
+	open_space_collaboration?: boolean;
+	open_space_flexibilite?: boolean;
+	open_space_economie?: boolean;
+	// Caractéristiques de l'Espace co-working
+	coworking_flexibilite?: boolean;
+	coworking_reseaux?: boolean;
+	coworking_cout_partage?: boolean;
+	// Caractéristiques du Bureau mixte
+	bureau_mixte_equilibre?: boolean;
+	bureau_mixte_adaptabilite?: boolean;
+	bureau_mixte_bien_etre?: boolean;
 }
 
 export interface UploadVideoProductRequest {
@@ -167,6 +185,7 @@ export const PRODUCT_REQUEST_EMPTY: ProductRequest = {
 	purchase_power: "",
 	accessibility: "",
 	area_count: 0,
+	floor_count: null,
 };
 
 const EMPTY_AUTHOR: IUser = {

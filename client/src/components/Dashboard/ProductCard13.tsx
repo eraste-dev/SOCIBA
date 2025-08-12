@@ -70,7 +70,7 @@ export const ProductCard13 = ({ setIsHover, row, isHover }: ProductCard13Props) 
             </div>
           </div>
 
-          <span className="text-xs text-neutral-500">{updated_at}</span>
+          <span className="text-xs text-neutral-500">{updated_at instanceof Date ? updated_at.toLocaleDateString() : updated_at}</span>
           {false && <h4 className="text-xl">{title}</h4>}
 
           <div className="flex justify-between items-center">

@@ -7,8 +7,8 @@ const useMySelector = () => {
 };
 
 const axiosInstance: AxiosInstance = axios.create({
-	baseURL: "http://127.0.0.1:8000", // DEV
-	// baseURL: "https://api.bajorah.com", // PROD
+	// baseURL: "http://127.0.0.1:8000", // DEV
+	baseURL: "https://api.bajorah.com/", // PROD
 	
 });
 

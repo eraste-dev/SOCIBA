@@ -4,6 +4,7 @@ import ButtonClose from "components/ButtonClose/ButtonClose";
 export interface AlertProps {
   containerClassName?: string;
   type?: "default" | "warning" | "info" | "success" | "error";
+  children?: React.ReactNode;
 }
 
 export const Alert: React.FC<AlertProps> = ({

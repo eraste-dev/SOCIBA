@@ -7,8 +7,9 @@ import Label from "components/Form/Label/Label";
 import { useForm, SubmitHandler, set } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { CategoryAction, IPropertyCategory } from "app/reducer/products/propertiy-category";
+import CategorySelector from "components/Form/CategorySelector";
 import { useAppSelector } from "app/hooks";
-import { fetchCategories, initProductState, postProduct, postProductWithProgress } from "app/axios/actions/api.action";
+import { fetchCategories, initProductState, postProduct, postProductWithProgress, deleteProductImage } from "app/axios/actions/api.action";
 import SelectProductType from "components/Products/add/SelectProductTypes";
 import EditorText from "components/Form/EditorText";
 import { PeriodicityType, PRODUCT_REQUEST_EMPTY, ProductRequest } from "app/axios/api.type";
@@ -45,6 +46,11 @@ import {
 	PERIODICITY_RESERVATION_LIST,
 	PRODUCT_AREA_UNIT,
 	PRODUCT_TYPE,
+	SUB_BUREAU_DETAIL,
+	SUB_ESPACE_DETAIL,
+	SUB_HOTEL_DETAIL,
+	SUB_MAGASIN_DETAIL,
+	SUB_RESIDENCE_DETAIL,
 	TYPE_BIEN_EN_VENTE_KEY,
 	TYPE_LOCATION_KEY,
 	TYPE_RESERVATION_KEY,
@@ -86,9 +92,19 @@ const DashboardSubmitPost = () => {
 	const [imageFiles, setImageFiles] = useState<File[]>([]);
 	const [videos, setVideos] = useState<string[]>([]);
 	const [videoFiles, setVideoFiles] = useState<File[]>([]);
-	const [tmpcatId, settmpcatId] = useState(0);
+	const [tmpcatId, settmpcatId] = useState<number>(0);
 	const [uploadProgress, setUploadProgress] = useState(0);
 	const [isUploading, setIsUploading] = useState(false);
+
+	// États pour gérer le type d'annonce, les sous-types et le nombre de pièces
+	const [typeAnnonce, setTypeAnnonce] = useState<'location' | 'vente' | ''>('');
+	const [roomCount, setRoomCount] = useState<number>(1);
+	const [selectedCategory, setSelectedCategory] = useState<{id: string, name: string} | null>(null);
+	const [selectedChildProperty, setSelectedChildProperty] = useState('');
+	const [isBureauPriveSelected, setIsBureauPriveSelected] = useState(false);
+	const [isOpenSpaceSelected, setIsOpenSpaceSelected] = useState(false);
+	const [isCoworkingSelected, setIsCoworkingSelected] = useState(false);
+	const [isBureauMixteSelected, setIsBureauMixteSelected] = useState(false);
 
 	const {
 		register,
@@ -99,7 +115,30 @@ const DashboardSubmitPost = () => {
 		formState: { errors, isSubmitting },
 	} = useForm<ProductRequest>();
 
+	// Synchroniser les valeurs du formulaire avec les états typeAnnonce et selectedChildProperty
+	useEffect(() => {
+		const subscription = watch((value, { name }) => {
+			if (name === 'category_id') {
+				// Réinitialiser les sélections lorsque la catégorie change
+				setTypeAnnonce('');
+				setSelectedChildProperty('');
+				setValue('home_type', '');
+				setValue('home_type_more', '');
+			} else if (name === 'home_type') {
+				setTypeAnnonce(value.home_type as 'location' | 'vente' | '');
+			} else if (name === 'home_type_more') {
+				setSelectedChildProperty(value.home_type_more || '');
+			}
+		});
+		return () => subscription.unsubscribe();
+	}, [watch, setValue]);
+
 	const onSubmit: SubmitHandler<ProductRequest> = (data) => {
+		console.log("=== DÉBUT ONSUBMIT ===");
+		console.log("Product ID:", productId);
+		console.log("Images state:", images);
+		console.log("ImageFiles state:", imageFiles);
+		
 		setSubmitting(true);
 		setIsUploading(true);
 		setUploadProgress(0);
@@ -115,7 +154,35 @@ const DashboardSubmitPost = () => {
 			: null;
 
 		// ! FIX DEFAULT VALUE
-		data.images = images;
+		// Inclure les images existantes dans data.images pour la mise à jour
+		if (productId && images.length > 0) {
+			// Filtrer les images existantes (exclure les blob URLs)
+			const existingImages = images.filter(img => 
+				typeof img === 'string' && 
+				!img.startsWith('blob:') && // Exclure les blob URLs
+				(
+					img.startsWith('/') || 
+					img.includes('assets/') || 
+					img.includes('http') ||
+					img.includes('public/assets/') ||
+					img.includes('core/public/assets/')
+				)
+			).map(img => {
+				// Corriger le chemin si nécessaire
+				if (typeof img === 'string' && img.includes('api.bajorah.com/assets/') && !img.includes('/public/')) {
+					// Remplacer /assets/ par /core/public/assets/ dans l'URL
+					return img.replace('/assets/', '/core/public/assets/');
+				}
+				return img;
+			});
+			
+			data.images = existingImages;
+			console.log("Images existantes à conserver:", existingImages);
+			console.log("Nombre d'images existantes:", existingImages.length);
+		} else {
+			data.images = images;
+			console.log("Pas d'images existantes ou pas de productId");
+		}
 		data.videos = videos;
 		data.price = parseInt(priceString);
 		data.price_second = priceSecondString ? parseInt(priceSecondString) : null;
@@ -136,6 +203,12 @@ const DashboardSubmitPost = () => {
 		data.count_monthly = data.count_monthly ?? 0;
 		// data.security = data.security;
 		data.periodicity = getPeriodicityFinalValue(data);
+
+		// Si c'est une annonce de type Maison, on ajoute les champs spécifiques
+		if (getValues("category_id") === 1) {
+			data.home_type = typeAnnonce;
+			data.home_type_more = selectedChildProperty;
+		}
 
 		// set category_id
 		if (!data.category_id) {
@@ -162,11 +235,20 @@ const DashboardSubmitPost = () => {
 			data.unlisted_city = data.unlisted_city;
 		}
 
+		console.log("Data avant convertPayloadToFormData:", data);
+		console.log("ImageFiles avant convertPayloadToFormData:", imageFiles);
+
 		// Convert data to FormData
 		formData = convertPayloadToFormData(data, imageFiles, videoFiles);
 
+		console.log("FormData après convertPayloadToFormData:");
+		for (let [key, value] of formData.entries()) {
+			console.log(key, value);
+		}
+
 		if (product && productId) {
 			formData.append("id", productId);
+			console.log("ID ajouté au FormData:", productId);
 		}
 
 		// Callback pour gérer la progression de l'upload
@@ -175,6 +257,7 @@ const DashboardSubmitPost = () => {
 			setUploadProgress(percentCompleted);
 		};
 
+		console.log("=== FIN ONSUBMIT - DISPATCH ===");
 		dispatch(postProductWithProgress(formData, handleUploadProgress));
 		// setSubmitting(false);
 	};
@@ -192,7 +275,7 @@ const DashboardSubmitPost = () => {
 	const getPeriodicityFinalValue = (data: ProductRequest): PeriodicityType | undefined => {
 		let p: PeriodicityType | undefined = "MONTH";
 
-		if (data.type === PRODUCT_TYPE[TYPE_RESERVATION_KEY]) {
+		if (data.type === PRODUCT_TYPE[TYPE_LOCATION_KEY]) {
 			p = getValues("periodicity") ?? (GET_PERIODICITY()[0].id as PeriodicityType);
 		} else if (data.type === PRODUCT_TYPE[TYPE_BIEN_EN_VENTE_KEY]) {
 			p = undefined;
@@ -206,7 +289,35 @@ const DashboardSubmitPost = () => {
 		return checked;
 	};
 
-	const getTypeDeteailLabel = (): string => {
+	  // Fonction pour vérifier si le type sélectionné nécessite un nombre de pièces
+  const needsRoomCount = (type: string): boolean => {
+    return ['appartement', 'villa', 'duplex', 'triplex'].includes(type);
+  };
+
+  // Fonction pour obtenir le nom de la catégorie à partir de son ID
+  const getCategoryName = (categoryId: number | undefined): string => {
+    if (!categoryId) return 'bien';
+    
+    // Parcourir toutes les catégories et sous-catégories
+    for (const category of categories || []) {
+      // Vérifier la catégorie principale
+      if (category.id === categoryId) {
+        return category.name.toLowerCase();
+      }
+      
+      // Vérifier les sous-catégories
+      if (category.children) {
+        const subCategory = category.children.find(sub => sub.id === categoryId);
+        if (subCategory) {
+          return subCategory.name.toLowerCase();
+        }
+      }
+    }
+    
+    return 'bien'; // Valeur par défaut
+  };
+
+  const getTypeDeteailLabel = (): string => {
 		let label: string = "";
 		const currentId = getValues("category_id");
 		const cat: IPropertyCategory = GET_CATEGORIES()?.find(
@@ -290,13 +401,26 @@ const DashboardSubmitPost = () => {
 		const _cat_id: number | undefined =
 			getValues("category_id") ?? (categories && categories[0] && categories[0].id);
 
-		// const _type = (getValues("type") as IProductType) ?? (PRODUCT_TYPE[0] as IProductType);
 		const cat: IPropertyCategory | undefined =
 			_findCat(_cat_id) && _findCat(_cat_id).length > 0 ? _findCat(_cat_id)[0] : undefined;
 
 		try {
-			// ? for locations
-			// ? for reservation
+			// Gestion spéciale pour la catégorie Résidence
+			if (cat?.uuid === ProductcategoryUUID.RESERVATION.children.RESIDENCE) {
+				return SUB_RESIDENCE_DETAIL;
+			}
+
+			// Gestion spéciale pour la catégorie Hôtel
+			if (cat?.uuid === ProductcategoryUUID.RESERVATION.children.HOTEL) {
+				return SUB_HOTEL_DETAIL;
+			}
+
+			// Gestion spéciale pour la catégorie Magasin
+			if (cat?.uuid === ProductcategoryUUID.MAGASIN.key) {
+				return SUB_MAGASIN_DETAIL;
+			}
+
+			// Logique existante pour les autres catégories
 			if (
 				(cat && cat.name && currentType() === "LOCATION") ||
 				currentType() === "RESERVATION"
@@ -667,23 +791,49 @@ const DashboardSubmitPost = () => {
 
 	// Fonction pour supprimer définitivement une image
 	const handleImageDelete = async (index: number, imageUrl: string): Promise<boolean> => {
+		console.log("=== HANDLE IMAGE DELETE DÉBUT ===");
+		console.log("Index:", index);
+		console.log("Image URL:", imageUrl);
+		console.log("Product:", product);
+		console.log("Product ID:", productId);
+		
 		try {
 			// Vérifier si l'image existe déjà sur le serveur (par exemple si elle provient d'un produit existant)
 			const isServerImage = imageUrl.startsWith('/') || imageUrl.includes('assets/');
+			console.log("Is server image:", isServerImage);
 			
-			if (isServerImage && product && productId) {
+			if (isServerImage && productId) {
 				// Si c'est une image du serveur, faire un appel API pour la supprimer
-				// TODO: Créer une API endpoint pour supprimer une image spécifique
 				console.log("Suppression d'image serveur:", imageUrl);
+				console.log("Property ID:", productId);
+				console.log("Image URL:", imageUrl);
 				
-				// Pour l'instant, on simule la suppression serveur
-				// En production, vous devriez avoir un endpoint comme :
-				// dispatch(deleteProductImage({productId, imageUrl}));
-				
-				snackbar.enqueueSnackbar("Image supprimée du serveur", { 
-					variant: "success", 
-					autoHideDuration: 2000 
-				});
+				try {
+					console.log("Avant dispatch deleteProductImage");
+					console.log("Paramètres:", { property_id: parseInt(productId), image_url: imageUrl });
+					
+					const result = await dispatch(deleteProductImage({
+						property_id: parseInt(productId),
+						image_url: imageUrl
+					}));
+					
+					console.log("Après dispatch deleteProductImage");
+					console.log("Résultat de la suppression:", result);
+					
+					snackbar.enqueueSnackbar("Image supprimée du serveur", { 
+						variant: "success", 
+						autoHideDuration: 2000 
+					});
+				} catch (apiError: any) {
+					console.error("Erreur API lors de la suppression:", apiError);
+					console.error("Type d'erreur:", typeof apiError);
+					console.error("Message d'erreur:", apiError?.message || "Erreur inconnue");
+					snackbar.enqueueSnackbar("Erreur lors de la suppression de l'image du serveur", { 
+						variant: "error", 
+						autoHideDuration: 3000 
+					});
+					return false;
+				}
 			} else {
 				// Si c'est une image locale (blob URL), juste la supprimer localement
 				console.log("Suppression d'image locale:", imageUrl);
@@ -695,14 +845,18 @@ const DashboardSubmitPost = () => {
 			
 			return true; // Succès
 			
-		} catch (error) {
+		} catch (error: any) {
 			console.error("Erreur lors de la suppression définitive:", error);
+			console.error("Type d'erreur:", typeof error);
+			console.error("Message d'erreur:", error?.message || "Erreur inconnue");
 			snackbar.enqueueSnackbar("Erreur lors de la suppression de l'image", { 
 				variant: "error", 
 				autoHideDuration: 3000 
 			});
 			return false; // Échec
 		}
+		
+		console.log("=== HANDLE IMAGE DELETE FIN ===");
 	};
 
 	// Fonction pour supprimer définitivement une vidéo
@@ -915,51 +1069,20 @@ const DashboardSubmitPost = () => {
 													<Label>
 														Type de bien{" "}
 														<span className="text-red-500">*</span>
-														{/* {defaultValue?.category_id} */}
 													</Label>
-
-													<div className="block md:col-span-2 ">
-														<Select
-															name="category_id"
-															onChange={(event) => {
-																settmpcatId(
-																	parseInt(event.target.value)
-																);
-
-																event.target.value &&
-																	setValue(
-																		"category_id",
-																		parseInt(event.target.value)
-																	);
-
-																set_hasOtherKey(event.target.value);
-
-																console.log(
-																	"category_id",
-																	event.target.value,
-																	getValues("category_id"),
-																	tmpcatId
-																);
-															}}
-														>
-															<option>Choix du type de bien</option>
-
-															{GET_CATEGORIES() &&
-																GET_CATEGORIES().map((category) => (
-																	<option
-																		key={category.id}
-																		value={category.id}
-																		selected={isCategorySelected(
-																			category
-																		)}
-																	>
-																		{category.name}
-																	</option>
-																))}
-														</Select>
-													</div>
-												</div>
-												<div>
+													<CategorySelector 
+														onCategoryChange={(category: { id: string; name: string; slug?: string }) => {
+															settmpcatId(parseInt(category.id));
+															setValue("category_id", parseInt(category.id));
+															set_hasOtherKey(category.id);
+															setSelectedCategory({ id: category.id, name: category.name });
+															setTypeAnnonce(''); // Réinitialiser le type d'annonce
+															setSelectedChildProperty(''); // Réinitialiser la sélection de type
+															console.log("Catégorie sélectionnée:", category);
+														}}
+														selectedCategoryId={getValues("category_id")?.toString()}
+														className="mt-2"
+													/>
 													<ErrorMessage
 														errors={errorArray}
 														error="category_id"
@@ -968,199 +1091,488 @@ const DashboardSubmitPost = () => {
 												</div>
 											</label>
 
-											{/* DETAIL CATEGORY */}
-											{canShowDetailCategory() && (
-												<label className="block col-span-4">
-													<div className="grid grid-cols-1 gap-6">
-														<div>
-															<Label>
-																{getTypeDeteailLabel()}
-																{/* <span className="text-red-500">*</span> */}
-															</Label>
-
-															<div className="block md:col-span-2 ">
-																{/* SELECT_HOME_TYPE */}
-																{!canShowOtherInput() &&
-																	SUB_CATEGORIES() &&
-																	SUB_CATEGORIES().length > 0 && (
-																		<Select
-																			onChange={(event) => {
-																				event.target
-																					.value &&
-																					setValue(
-																						"home_type",
-																						event.target
-																							.value
-																					);
-
-																				set_hasOtherKey(
-																					event.target
-																						.value
-																				);
-																			}}
-																		>
-																			<option>Choix</option>
-																			{SUB_CATEGORIES() &&
-																				SUB_CATEGORIES().map(
-																					(c) => (
-																						<option
-																							key={
-																								c.code
-																							}
-																							value={
-																								c.name
-																							}
-																							selected={
-																								c.name ===
-																								getValues(
-																									"home_type"
-																								)
-																							}
-																						>
-																							{c.name}
-																						</option>
-																					)
-																				)}
-																		</Select>
-																	)}
-
-																{/* INPUT_HOME_TYPE */}
-																{}
-																{canShowOtherInput() && (
-																	<>
-																		<Input
-																			autoComplete="on"
-																			name="home_type"
-																			maxLength={20}
-																			onChange={(e) => {
-																				setValue(
-																					"home_type",
-																					e.target.value
-																				);
-																				set_hasOtherKey(
-																					e.target.value
-																				);
-																			}}
-																		/>
-																	</>
-																)}
-															</div>
-														</div>
+											{/* Type d'annonce uniquement pour Maison */}
+											{selectedCategory?.name.toLowerCase() === 'maison' && (
+												<div className="block col-span-4">
+													<Label>Type d'annonce</Label>
+													<div className="mt-2 grid grid-cols-2 gap-4">
+														<label className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer">
+															<input
+																type="radio"
+																className="form-radio text-primary-600"
+																name="annonceType"
+																value="location"
+																checked={typeAnnonce === 'location'}
+																onChange={() => {
+																	setTypeAnnonce('location');
+																	setValue('home_type', 'location');
+																	setSelectedChildProperty(''); // Réinitialiser la sélection de type
+																}}
+															/>
+															<span className="ml-2 font-medium">À louer</span>
+														</label>
+														<label className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer">
+															<input
+																type="radio"
+																className="form-radio text-primary-600"
+																name="annonceType"
+																value="vente"
+																checked={typeAnnonce === 'vente'}
+																onChange={() => {
+																	setTypeAnnonce('vente');
+																	setValue('home_type', 'vente');
+																	setSelectedChildProperty(''); // Réinitialiser la sélection de type
+																}}
+															/>
+															<span className="ml-2 font-medium">À vendre</span>
+														</label>
 													</div>
-													<div>
-														<ErrorMessage
-															errors={errorArray}
-															error="category_id"
-															customMessage="Veuillez choisir un type de bien"
-														/>
-													</div>
-												</label>
-											)}
-
-											{/* NOMBRE DE PIECE */}
-											{showNumberOfRooms() && (
-												<label className="block col-span-4">
-													<div className="grid grid-cols-1 gap-6">
-														<div>
-															<Label>Nombre de pièces</Label>
-
-															<div className="block md:col-span-2 ">
-																<Input
-																	name="area_count"
-																	autoComplete="on"
-																	onChange={(event) => {
-																		event.target.value &&
-																			setValue(
-																				"area_count",
-																				parseInt(
-																					event.target
-																						.value
-																				)
-																			);
-																	}}
-																></Input>
-															</div>
-														</div>
-													</div>
-													<div>
-														<ErrorMessage
-															errors={errorArray}
-															error="category_id"
-															customMessage="Veuillez choisir un type de bien"
-														/>
-													</div>
-												</label>
-											)}
-
-											{/* DETAIL CATEGORY */}
-											{currentType() === "BIEN EN VENTE" &&
-												!showNumberOfRooms() && (
-													<>
-														{!hasAutreImmo() ? (
-															<label className="block col-span-4">
-																<div className="grid grid-cols-1 gap-6">
-																	<div>
-																		<Label>
-																			{getVenteCountLabel()}
-																			{/* <span className="text-red-500">
-																	*
-																</span> */}
-																		</Label>
-
-																		<div className="block md:col-span-2 ">
-																			<Input
-																				name="area_count"
-																				autoComplete="on"
-																				defaultValue={
-																					defaultValue?.area_count ??
-																					0
-																				}
-																				onChange={(
-																					event
-																				) => {
-																					event.target
-																						.value &&
-																						setValue(
-																							"area_count",
-																							parseInt(
-																								event
-																									.target
-																									.value
-																							)
-																						);
-																				}}
-																			></Input>
-																		</div>
-																	</div>
-																</div>
-																<div>
-																	<ErrorMessage
-																		errors={errorArray}
-																		error="category_id"
-																		customMessage="Veuillez choisir un type de bien"
-																	/>
-																</div>
-															</label>
-														) : null}
-													</>
-												)}
-
-											{hasAutreImmo() ? (
-												<div className="col-span-3">
-													<Label>Autre Aspect (Détails)</Label>
-													<Input
-														autoComplete="on"
-														defaultValue={defaultValue?.home_type_more}
-														name="home_type_more"
-														onChange={(e) =>
-															setValue(
-																"home_type_more",
-																e.target.value
-															)
-														}
-													/>
 												</div>
-											) : null}
+											)}
+
+                                            {/* Section pour le type de bien - Résidence (sans sélection préalable de location/vente) */}
+                                            {selectedCategory?.name.toLowerCase() === 'résidence' && (
+                                                <div className="mt-4 block col-span-4">
+                                                    <Label>Quel type de résidence ?</Label>
+                                                    <div className="mt-2 grid grid-cols-2 gap-4">
+                                                        {SUB_RESIDENCE_DETAIL.map((item) => {
+                                                            const typeName = item.name;
+                                                            const typeValue = item.code.toLowerCase();
+                                                            return (
+                                                                <label 
+                                                                    key={`residence-${typeValue}`} 
+                                                                    className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer"
+                                                                >
+                                                                    <input
+                                                                        type="radio"
+                                                                        className="form-radio text-primary-600"
+                                                                        name="propertyType"
+                                                                        value={typeValue}
+                                                                        checked={selectedChildProperty === typeValue}
+                                                                        onChange={() => {
+                                                                            setSelectedChildProperty(typeValue);
+                                                                            setValue('home_type_more', typeValue);
+                                                                            // Réinitialiser le nombre de pièces si on change de type
+                                                                            if (typeValue !== 'villa') {
+                                                                                setRoomCount(1);
+                                                                                setValue('rooms', 1);
+                                                                            }
+                                                                        }}
+                                                                    />
+                                                                    <span className="ml-2 font-medium">{typeName}</span>
+                                                                </label>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                    {/* Boutons Nombre de pièces pour Villa */}
+                                                    {selectedChildProperty === 'villa' && (
+                                                        <div className="mt-4">
+                                                            <Label>Nombre de pièces</Label>
+                                                            <div className="mt-2 grid grid-cols-4 gap-2">
+                                                                {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
+                                                                    <button
+                                                                        key={`room-${num}`}
+                                                                        type="button"
+                                                                        className={`px-3 py-2 border rounded-lg text-center transition-colors ${
+                                                                            num === roomCount
+                                                                                ? 'bg-primary-500 text-white border-primary-500'
+                                                                                : 'bg-white hover:bg-gray-50 dark:bg-neutral-900 dark:hover:bg-neutral-800 border-gray-300 dark:border-neutral-700'
+                                                                        }`}
+                                                                        onClick={() => {
+                                                                            setRoomCount(num);
+                                                                            setValue('rooms', num);
+                                                                        }}
+                                                                    >
+                                                                        {num}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+
+                                            {/* Section pour le type de bien - Hôtel (sans sélection préalable de location/vente) */}
+                                            {selectedCategory?.name.toLowerCase() === 'hôtel' && (
+                                                <div className="mt-4 block col-span-4">
+                                                    <Label>Quel type d'hôtel ?</Label>
+                                                    <div className="mt-2 grid grid-cols-2 gap-4">
+                                                        {SUB_HOTEL_DETAIL.map((item) => {
+                                                            const typeName = item.name;
+                                                            const typeValue = item.code.toLowerCase();
+                                                            return (
+                                                                <label 
+                                                                    key={`hotel-${typeValue}`} 
+                                                                    className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer"
+                                                                >
+                                                                    <input
+                                                                        type="radio"
+                                                                        className="form-radio text-primary-600"
+                                                                        name="propertyType"
+                                                                        value={typeValue}
+                                                                        checked={selectedChildProperty === typeValue}
+                                                                        onChange={() => {
+                                                                            setSelectedChildProperty(typeValue);
+                                                                            setValue('home_type_more', typeValue);
+                                                                            // Réinitialiser le nombre de pièces si on change de type
+                                                                            if (typeValue !== 'villa') {
+                                                                                setRoomCount(1);
+                                                                                setValue('rooms', 1);
+                                                                            }
+                                                                        }}
+                                                                    />
+                                                                    <span className="ml-2 font-medium">{typeName}</span>
+                                                                </label>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Section pour le type de bien - Magasin (sans sélection préalable de location/vente) */}
+                                            {selectedCategory?.name.toLowerCase() === 'magasin' && (
+                                                <div className="mt-4 block col-span-4">
+                                                    <Label>Quel type de magasin ?</Label>
+                                                    <div className="mt-2 grid grid-cols-2 gap-4">
+                                                        {SUB_MAGASIN_DETAIL.map((item) => {
+                                                            const typeName = item.name;
+                                                            const typeValue = item.code.toLowerCase();
+                                                            return (
+                                                                <label 
+                                                                    key={`magasin-${typeValue}`} 
+                                                                    className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer"
+                                                                >
+                                                                    <input
+                                                                        type="radio"
+                                                                        className="form-radio text-primary-600"
+                                                                        name="propertyType"
+                                                                        value={typeValue}
+                                                                        checked={selectedChildProperty === typeValue}
+                                                                        onChange={() => {
+                                                                            setSelectedChildProperty(typeValue);
+                                                                            setValue('home_type_more', typeValue);
+                                                                            // Réinitialiser le nombre de pièces si on change de type
+                                                                            if (typeValue !== 'villa') {
+                                                                                setRoomCount(1);
+                                                                                setValue('rooms', 1);
+                                                                            }
+                                                                        }}
+                                                                    />
+                                                                    <span className="ml-2 font-medium">{typeName}</span>
+                                                                </label>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Section pour le type de bien - Espace (sans sélection préalable de location/vente) */}
+                                            {selectedCategory?.name.toLowerCase() === 'espace' && (
+                                                <div className="mt-4 block col-span-4">
+                                                    <Label>Quel type d'espace ?</Label>
+                                                    <div className="mt-2 grid grid-cols-2 gap-4">
+                                                        {SUB_ESPACE_DETAIL.map((item) => {
+                                                            const typeName = item.name;
+                                                            const typeValue = item.code.toLowerCase();
+                                                            return (
+                                                                <label 
+                                                                    key={`espace-${typeValue}`} 
+                                                                    className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer"
+                                                                >
+                                                                    <input
+                                                                        type="radio"
+                                                                        className="form-radio text-primary-600"
+                                                                        name="propertyType"
+                                                                        value={typeValue}
+                                                                        checked={selectedChildProperty === typeValue}
+                                                                        onChange={() => {
+                                                                            setSelectedChildProperty(typeValue);
+                                                                            setValue('home_type_more', typeValue);
+                                                                            // Réinitialiser le nombre de pièces si on change de type
+                                                                            if (typeValue !== 'villa') {
+                                                                                setRoomCount(1);
+                                                                                setValue('rooms', 1);
+                                                                            }
+                                                                        }}
+                                                                    />
+                                                                    <span className="ml-2 font-medium">{typeName}</span>
+                                                                </label>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Section pour le type de bien - Bureau (sans sélection préalable de location/vente) */}
+                                            {selectedCategory?.name.toLowerCase() === 'bureau' && (
+                                                <div className="mt-4 block col-span-4">
+                                                    <Label>Quel type de bureau ?</Label>
+                                                    <div className="mt-2 grid grid-cols-2 gap-4">
+                                                        {SUB_BUREAU_DETAIL.map((item) => {
+                                                            const typeName = item.name;
+                                                            const typeValue = item.code.toLowerCase();
+                                                            return (
+                                                                <label 
+                                                                    key={`bureau-${typeValue}`} 
+                                                                    className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer"
+                                                                >
+                                                                    <input
+                                                                        type="radio"
+                                                                        className="form-radio text-primary-600"
+                                                                        name="propertyType"
+                                                                        value={typeValue}
+                                                                        checked={selectedChildProperty === typeValue}
+                                                                        onChange={() => {
+                                                                            setSelectedChildProperty(typeValue);
+                                                                            setValue('home_type_more', typeValue);
+                                                                            // Réinitialiser le nombre de pièces si on change de type
+                                                                            if (typeValue !== 'villa') {
+                                                                                setRoomCount(1);
+                                                                                setValue('rooms', 1);
+                                                                            }
+                                                                            setIsBureauPriveSelected(typeValue === 'bureau_prive');
+                                                                            setIsOpenSpaceSelected(typeValue === 'open_space');
+                                                                            setIsCoworkingSelected(typeValue === 'coworking');
+                                                                            setIsBureauMixteSelected(typeValue === 'bureau_mixte');
+                                                                        }}
+                                                                    />
+                                                                    <span className="ml-2 font-medium">{typeName}</span>
+                                                                </label>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                    
+                                                    {/* Section pour les caractéristiques du bureau privé */}
+                                                    {isBureauPriveSelected && (
+                                                        <div className="mt-6 p-4 bg-gray-50 dark:bg-neutral-800 rounded-lg">
+                                                            <div className="space-y-3">
+                                                                <label className="flex items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        className="form-checkbox text-primary-600 rounded"
+                                                                        {...register('bureau_prive_intimite')}
+                                                                    />
+                                                                    <span className="ml-2 text-gray-700 dark:text-gray-300">Intimité</span>
+                                                                </label>
+                                                                <label className="flex items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        className="form-checkbox text-primary-600 rounded"
+                                                                        {...register('bureau_prive_personnalisation')}
+                                                                    />
+                                                                    <span className="ml-2 text-gray-700 dark:text-gray-300">Personnalisation</span>
+                                                                </label>
+                                                                <label className="flex items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        className="form-checkbox text-primary-600 rounded"
+                                                                        {...register('bureau_prive_confidentialite')}
+                                                                    />
+                                                                    <span className="ml-2 text-gray-700 dark:text-gray-300">Confidentialité</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* Section pour les caractéristiques de l'Open Space */}
+                                                    {isOpenSpaceSelected && (
+                                                        <div className="mt-6 p-4 bg-gray-50 dark:bg-neutral-800 rounded-lg">
+                                                            <div className="space-y-3">
+                                                                <label className="flex items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        className="form-checkbox text-primary-600 rounded"
+                                                                        {...register('open_space_collaboration')}
+                                                                    />
+                                                                    <span className="ml-2 text-gray-700 dark:text-gray-300">Collaboration</span>
+                                                                </label>
+                                                                <label className="flex items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        className="form-checkbox text-primary-600 rounded"
+                                                                        {...register('open_space_flexibilite')}
+                                                                    />
+                                                                    <span className="ml-2 text-gray-700 dark:text-gray-300">Flexibilité</span>
+                                                                </label>
+                                                                <label className="flex items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        className="form-checkbox text-primary-600 rounded"
+                                                                        {...register('open_space_economie')}
+                                                                    />
+                                                                    <span className="ml-2 text-gray-700 dark:text-gray-300">Économie</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* Section pour les caractéristiques de l'Espace co-working */}
+                                                    {isCoworkingSelected && (
+                                                        <div className="mt-6 p-4 bg-gray-50 dark:bg-neutral-800 rounded-lg">
+                                                            <div className="space-y-3">
+                                                                <label className="flex items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        className="form-checkbox text-primary-600 rounded"
+                                                                        {...register('coworking_flexibilite')}
+                                                                    />
+                                                                    <span className="ml-2 text-gray-700 dark:text-gray-300">Flexibilité</span>
+                                                                </label>
+                                                                <label className="flex items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        className="form-checkbox text-primary-600 rounded"
+                                                                        {...register('coworking_reseaux')}
+                                                                    />
+                                                                    <span className="ml-2 text-gray-700 dark:text-gray-300">Réseaux</span>
+                                                                </label>
+                                                                <label className="flex items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        className="form-checkbox text-primary-600 rounded"
+                                                                        {...register('coworking_cout_partage')}
+                                                                    />
+                                                                    <span className="ml-2 text-gray-700 dark:text-gray-300">Coût partagé</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* Section pour les caractéristiques du Bureau mixte */}
+                                                    {isBureauMixteSelected && (
+                                                        <div className="mt-6 p-4 bg-gray-50 dark:bg-neutral-800 rounded-lg">
+                                                            <div className="space-y-3">
+                                                                <label className="flex items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        className="form-checkbox text-primary-600 rounded"
+                                                                        {...register('bureau_mixte_equilibre')}
+                                                                    />
+                                                                    <span className="ml-2 text-gray-700 dark:text-gray-300">Équilibre</span>
+                                                                </label>
+                                                                <label className="flex items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        className="form-checkbox text-primary-600 rounded"
+                                                                        {...register('bureau_mixte_adaptabilite')}
+                                                                    />
+                                                                    <span className="ml-2 text-gray-700 dark:text-gray-300">Adaptabilité</span>
+                                                                </label>
+                                                                <label className="flex items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        className="form-checkbox text-primary-600 rounded"
+                                                                        {...register('bureau_mixte_bien_etre')}
+                                                                    />
+                                                                    <span className="ml-2 text-gray-700 dark:text-gray-300">Bien-être</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+
+                                            {/* Section dynamique pour le type de bien - Location (uniquement pour Maison) */}
+                                            {typeAnnonce === 'location' && selectedCategory?.name.toLowerCase() === 'maison' && (
+                                                <div className="mt-4 block col-span-4">
+                                                    <Label>Quel type de {selectedCategory.name.toLowerCase()} ?</Label>
+                                                    <div className="mt-2 grid grid-cols-2 gap-4">
+                                                        {['Studio', '2 pièces', '3 pièces', 'Appartement', 'Villa', 'Duplex', 'Triplex'].map((type) => (
+                                                            <label key={`location-${type}`} className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer">
+                                                                <input
+                                                                    type="radio"
+                                                                    className="form-radio text-primary-600"
+                                                                    name="propertyType"
+                                                                    value={type.toLowerCase()}
+                                                                    checked={selectedChildProperty === type.toLowerCase()}
+                                                                    onChange={() => {
+                                                                        setSelectedChildProperty(type.toLowerCase());
+                                                                        setValue('home_type_more', type.toLowerCase());
+                                                                    }}
+                                                                />
+                                                                <span className="ml-2 font-medium">{type}</span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Section dynamique pour le type de bien - Vente (uniquement pour Maison) */}
+                                            {typeAnnonce === 'vente' && selectedCategory?.name.toLowerCase() === 'maison' && (
+                                                <div className="mt-4 block col-span-4">
+                                                    <Label>Quel type de {selectedCategory.name.toLowerCase()} ?</Label>
+                                                    <div className="mt-2 grid grid-cols-2 gap-4">
+                                                        {['Appartement', 'Villa', 'Duplex', 'Triplex', 'Immeuble'].map((type) => (
+                                                            <label key={`vente-${type}`} className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer">
+                                                                <input
+                                                                    type="radio"
+                                                                    className="form-radio text-primary-600"
+                                                                    name="propertyType"
+                                                                    value={type.toLowerCase()}
+                                                                    checked={selectedChildProperty === type.toLowerCase()}
+                                                                    onChange={() => {
+                                                                        setSelectedChildProperty(type.toLowerCase());
+                                                                        setValue('home_type_more', type.toLowerCase());
+                                                                    }}
+                                                                />
+                                                                <span className="ml-2 font-medium">{type}</span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Section Nombre de pièces - Afficher uniquement pour la vente et certains types de biens */}
+                                            {typeAnnonce === 'vente' && selectedChildProperty && ['appartement', 'villa', 'duplex', 'triplex'].includes(selectedChildProperty) && (
+                                                <div className="mt-4 block col-span-4">
+                                                    <Label>Nombre de pièces</Label>
+                                                    <div className="mt-2 grid grid-cols-4 gap-4">
+                                                        {['2', '3', '4', '5', '6', '7', '8+'].map((pieces) => (
+                                                            <label key={`pieces-${pieces}`} className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer">
+                                                                <input
+                                                                    type="radio"
+                                                                    className="form-radio text-primary-600"
+                                                                    name="piecesCount"
+                                                                    value={pieces}
+                                                                    onChange={() => {
+                                                                        setValue('room_count', parseInt(pieces, 10));
+                                                                    }}
+                                                                />
+                                                                <span className="ml-2 font-medium">{pieces} {pieces === '8+' ? '' : 'pièces'}</span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {/* Section Nombre d'étages - Afficher uniquement pour 'Immeuble' */}
+                                            {typeAnnonce === 'vente' && selectedChildProperty === 'immeuble' && (
+                                                <div className="mt-4 block col-span-4">
+                                                    <Label>Nombre d'étages</Label>
+                                                    <div className="mt-2">
+                                                        <Input
+                                                            type="number"
+                                                            min="1"
+                                                            className="w-full"
+                                                            placeholder="Entrez le nombre d'étages"
+                                                            {...register('floor_count', {
+                                                                valueAsNumber: true,
+                                                                min: {
+                                                                    value: 1,
+                                                                    message: 'Le nombre d\'étages doit être d\'au moins 1',
+                                                                },
+                                                            })}
+                                                        />
+                                                        {errors?.floor_count && (
+                                                            <p className="mt-1 text-sm text-red-600">
+                                                                {errors.floor_count.message as string}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Section Superficie - Supprimée pour la catégorie Terrain */}
 
 											{/* VILLE - COUNTRY - STATE */}
 											<label className="block col-span-4">

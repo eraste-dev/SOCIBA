@@ -28,8 +28,27 @@ class PropertyController extends Controller
     public function get(Request $request)
     {
         $paginationService = new ProudctPaginationService;
-        $products = PropertyService::search(Property::requestSearch());
-        // dd($products);
+        $searchParams = Property::requestSearch();
+        
+        // Logique intelligente pour la recherche commune + quartier
+        if ($searchParams['location'] && $searchParams['location_description']) {
+            // Première recherche : commune + quartier
+            $products = PropertyService::search($searchParams);
+            
+            // Si aucun résultat, faire une recherche par commune uniquement
+            if ($products->count() === 0) {
+                \Log::info("Aucun résultat trouvé pour commune '{$searchParams['location']}' + quartier '{$searchParams['location_description']}'. Recherche par commune uniquement.");
+                
+                // Retirer le quartier de la recherche
+                $searchParamsWithoutDistrict = $searchParams;
+                $searchParamsWithoutDistrict['location_description'] = null;
+                
+                $products = PropertyService::search($searchParamsWithoutDistrict);
+            }
+        } else {
+            // Recherche normale
+            $products = PropertyService::search($searchParams);
+        }
 
         return ResponseService::success(
             $products,
@@ -91,8 +110,9 @@ class PropertyController extends Controller
             'security'             => 'nullable|in:WITH_GUARD,WITHOUT_GUARD',
             'purchase_power'       => 'nullable|in:LESS_EXPENSIVE,EQUAL_EXPENSIVE,MORE_EXPENSIVE',
             'accessibility'        => 'nullable|in:NOT_FAR_FROM_THE_TAR,A_LITTLE_FAR_FROM_THE_TAR,FAR_FROM_THE_TAR',
-            'images.*'             => 'required|file|max:10048',
-            'videos.*'             => 'required|file|max:307200',
+            'images.*'             => 'nullable|file|max:10048',
+            'existing_images.*'    => 'nullable|string',
+            'videos.*'             => 'nullable|file|max:307200',
             // 'excerpt'           => 'nullable|string',
         ]);
 
@@ -175,24 +195,62 @@ class PropertyController extends Controller
 
         // upload images
         try {
-            if (isset($request->images)) {
-                PropertyImages::clearImage($product->id);
-                $images = $request->images;
-                foreach ($images as $key => $image) {
-                    // $filetomove = $image->getClientOriginalName() . "-" . time() . "." . $image->getClientOriginalExtension();
-                    $filetomove = $product->id . "__" . time() . "__image" . "__" . $key . "__"  . "." . $image->getClientOriginalExtension();
+            \Log::info('=== IMAGE UPDATE DEBUG ===');
+            \Log::info('Request has images: ' . (isset($request->images) ? 'true' : 'false'));
+            \Log::info('Request has existing_images: ' . (isset($request->existing_images) ? 'true' : 'false'));
+            \Log::info('Product ID: ' . ($product->id ?? 'NULL'));
+            \Log::info('Is update: ' . (isset($validatedData['id']) ? 'true' : 'false'));
+            
+            if (isset($request->images) || isset($request->existing_images)) {
+                // Si c'est une mise à jour (id existe), gérer les images existantes
+                if (isset($validatedData['id'])) {
+                    // Conserver les images existantes qui ne sont pas supprimées
+                    $existingImages = [];
+                    if (isset($request->existing_images)) {
+                        $existingImages = $request->existing_images;
+                        \Log::info('Existing images count: ' . count($existingImages));
+                        \Log::info('Existing images: ' . json_encode($existingImages));
+                    }
+                    
+                    // Supprimer toutes les images actuelles
+                    PropertyImages::clearImage($product->id);
+                    \Log::info('Cleared existing images from database');
+                    
+                    // Recréer les enregistrements pour les images existantes
+                    foreach ($existingImages as $imageUrl) {
+                        PropertyImages::create([
+                            'property_id' => $product->id,
+                            'image'       => $imageUrl
+                        ]);
+                        \Log::info('Recreated image record: ' . $imageUrl);
+                    }
+                } else {
+                    // Pour une nouvelle création, supprimer toutes les images
+                    PropertyImages::clearImage($product->id);
+                }
+                
+                // Ajouter les nouvelles images
+                if (isset($request->images)) {
+                    $images = $request->images;
+                    \Log::info('New images count: ' . count($images));
+                    foreach ($images as $key => $image) {
+                        $filetomove = $product->id . "__" . time() . "__image" . "__" . $key . "__"  . "." . $image->getClientOriginalExtension();
 
-                    $destinationPath = public_path('assets/images/products');
-                    $image->move($destinationPath, $filetomove);
+                        $destinationPath = public_path('assets/images/products');
+                        $image->move($destinationPath, $filetomove);
 
-                    PropertyImages::create([
-                        'property_id' => $product->id,
-                        'image'       => "/images/products/" . $filetomove
-                    ]);
+                        PropertyImages::create([
+                            'property_id' => $product->id,
+                            'image'       => "/images/products/" . $filetomove
+                        ]);
+                        \Log::info('Created new image: /images/products/' . $filetomove);
+                    }
                 }
             }
+            \Log::info('=== END IMAGE UPDATE DEBUG ===');
         } catch (\Throwable $th) {
-            return ResponseService::error("Product created successfully", 500,);
+            \Log::error('Image update error: ' . $th->getMessage());
+            return ResponseService::error("Erreur lors de la gestion des images: " . $th->getMessage(), 500);
         }
 
         // upload videos
@@ -259,5 +317,86 @@ class PropertyController extends Controller
             PropertyService::search(Property::requestSearch()),
             "Suppression effectuée avec succès"
         );
+    }
+
+    /**
+     * Supprimer une image spécifique d'une propriété
+     */
+    public function deleteImage(Request $request)
+    {
+        \Log::info('=== DELETE IMAGE DEBUG ===');
+        \Log::info('Request all: ' . json_encode($request->all()));
+        \Log::info('Property ID: ' . $request->property_id);
+        \Log::info('Image URL: ' . $request->image_url);
+        
+        $validator = Validator::make($request->all(), [
+            'property_id' => 'required|integer|exists:properties,id',
+            'image_url' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            \Log::error('Validation failed: ' . json_encode($validator->errors()));
+            return ResponseService::error("Données invalides", 422, $validator->errors());
+        }
+
+        try {
+            $propertyId = $request->property_id;
+            $imageUrl = $request->image_url;
+
+            \Log::info('Looking for image in database...');
+            
+            // Extraire le chemin relatif de l'URL complète
+            $relativePath = $imageUrl;
+            if (strpos($imageUrl, '/core/public/assets') !== false) {
+                $relativePath = str_replace('https://api.bajorah.com/core/public/assets', '', $imageUrl);
+                // $relativePath =  $imageUrl;
+            } elseif (strpos($imageUrl, '/assets') !== false) {
+                $relativePath = str_replace('https://api.bajorah.com/assets', '', $imageUrl);
+                // $relativePath =  $imageUrl;
+            } elseif (strpos($imageUrl, 'http') === 0) {
+                // Si c'est une URL complète, extraire le chemin après le domaine
+                $parsedUrl = parse_url($imageUrl);
+                if (isset($parsedUrl['path'])) {
+                    $relativePath = $parsedUrl['path'];
+                }
+            }
+            
+            \Log::info('Extracted relative path: ' . $relativePath);
+            
+            // Trouver l'image dans la base de données avec le chemin relatif
+            $propertyImage = PropertyImages::where('property_id', $propertyId)
+                ->where('image', $relativePath)
+                ->first();
+
+            if (!$propertyImage) {
+                \Log::error('Image not found in database for property_id: ' . $propertyId . ' and relative_path: ' . $relativePath);
+                return ResponseService::error("Image introuvable", 404);
+            }
+
+            \Log::info('Image found in database, ID: ' . $propertyImage->id);
+
+            // Supprimer le fichier physique
+            $imagePath = public_path('assets' . $relativePath);
+            \Log::info('Image path: ' . $imagePath);
+            \Log::info('File exists: ' . (file_exists($imagePath) ? 'Yes' : 'No'));
+            
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+                \Log::info('Physical file deleted successfully');
+            } else {
+                \Log::warning('Physical file not found, but continuing with database deletion');
+            }
+
+            // Supprimer l'enregistrement de la base de données
+            $propertyImage->delete();
+            \Log::info('Database record deleted successfully');
+
+            return ResponseService::success(null, "Image supprimée avec succès");
+
+        } catch (\Throwable $th) {
+            \Log::error('Erreur lors de la suppression d\'image: ' . $th->getMessage());
+            \Log::error('Stack trace: ' . $th->getTraceAsString());
+            return ResponseService::error("Erreur lors de la suppression de l'image", 500);
+        }
     }
 }

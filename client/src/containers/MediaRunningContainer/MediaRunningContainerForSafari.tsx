@@ -85,7 +85,7 @@ const MediaRunningContainerForSafari: FC<MediaRunningContainerForSafariProps> =
     };
 
     const renderPlayerListQueue = () => {
-      return currentMediaRunning.listPostAudio?.map((post, index) => {
+      return currentMediaRunning.listPostAudio?.map((post: PostDataType, index: number) => {
         const isCurrentRunning = currentMediaRunning.postData?.id === post.id;
         return (
           <ReactPlayer

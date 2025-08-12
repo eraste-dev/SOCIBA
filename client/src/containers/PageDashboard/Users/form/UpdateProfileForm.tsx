@@ -55,6 +55,8 @@ const UpdateProfileForm = () => {
 
         // ID obligatoire
         formData.append('id', String(user.id));
+        console.log('>>> ID envoyé au serveur :', user.id); // <-- Ajout du log explicite
+        formData.append('_method', 'PUT'); // Pour compatibilité Laravel POST + _method=PUT
         
         // Autres champs optionnels
         if (data.name) formData.append('name', data.name);
@@ -70,11 +72,11 @@ const UpdateProfileForm = () => {
             console.log(key, value);
         }
 
-        // Vérifier que l'ID est bien présent
-        console.log('Sending FormData with user ID:', user.id);
-        console.log('FormData has ID:', formData.has('id'));
-        console.log('FormData ID value:', formData.get('id'));
-        
+        // Log des valeurs envoyées à l'API
+        console.log('Valeurs envoyées à l’API (profil) :');
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
         dispatch(updateUser(formData));
     };
 

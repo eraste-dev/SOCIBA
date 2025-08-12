@@ -1,0 +1,26 @@
+﻿
+
+StatusCode        : 200
+StatusDescription : OK
+Content           : {"success":true,"data":[{"id":1,"name":"Maison","slug":"maison","href":"\/annonces\/
+                    maison","type":["LOCATION","BIEN EN 
+                    VENTE"],"uuid":"LOCATION__MAISON","can_delete":true,"can_upload_image":true,"ico...
+RawContent        : HTTP/1.1 200 OK
+                    keep-alive: timeout=5, max=100
+                    access-control-allow-origin: *
+                    x-turbo-charged-by: LiteSpeed
+                    Content-Length: 2852
+                    Cache-Control: no-cache, private
+                    Content-Type: application/json
+                    ...
+Forms             : {}
+Headers           : {[keep-alive, timeout=5, max=100], [access-control-allow-origin, *], 
+                    [x-turbo-charged-by, LiteSpeed], [Content-Length, 2852]...}
+Images            : {}
+InputFields       : {}
+Links             : {}
+ParsedHtml        : mshtml.HTMLDocumentClass
+RawContentLength  : 2852
+
+
+

@@ -1,4 +1,4 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { configureStore, combineReducers, Middleware, AnyAction } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
@@ -17,7 +17,7 @@ const rootReducer = combineReducers(rootReducers);
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Ajouter le middleware de logger si en mode développement
-const middlewareLogger = isDev ? [logger] : [];
+const middlewareLogger = isDev ? [logger as Middleware<any, any, any>] : [];
 
 export const store = configureStore({
 	reducer: persistedReducer,
@@ -29,5 +29,10 @@ export const store = configureStore({
 
 export let persistor = persistStore(store);
 
-export type RootState = ReturnType<typeof store.getState>;
+export interface RootState {
+    [key: string]: any;
+}
+
 export type AppDispatch = typeof store.dispatch;
+
+export default store;

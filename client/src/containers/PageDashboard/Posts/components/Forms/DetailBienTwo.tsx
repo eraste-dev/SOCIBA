@@ -70,8 +70,11 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 											key={security.value}
 											value={security.value}
 											selected={
-												security.value === getValues("security") ??
-												security.value === product?.security
+												(security.value === getValues("security")) ?
+												true :
+												(security.value === product?.security) ?
+												true :
+												false
 											}
 										>
 											{security.label}
@@ -106,8 +109,11 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 											key={i.value}
 											value={i.value}
 											selected={
-												i.value === getValues("purchase_power") ??
-												i.value === product?.purchase_power
+												(i.value === getValues("purchase_power")) ?
+												true :
+												(i.value === product?.purchase_power) ?
+												true :
+												false
 											}
 										>
 											{i.label}
@@ -142,8 +148,11 @@ const DetailBienTwo: FC<DetailBienTwoProps> = ({
 											key={i.value}
 											value={i.value}
 											selected={
-												i.value === getValues("accessibility") ??
-												i.value === product?.accessibility
+												(i.value === getValues("accessibility")) ?
+												true :
+												(i.value === product?.accessibility) ?
+												true :
+												false
 											}
 										>
 											{i.label}{" "}

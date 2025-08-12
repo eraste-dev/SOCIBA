@@ -8,19 +8,28 @@ class ImageService
 {
     public static function getImage(string $imageName): ?string
     {
+        // Si l'imageName contient déjà une URL complète, la retourner directement
+        if (str_starts_with($imageName, 'http')) {
+            return $imageName;
+        }
+
         // Vérifie si le fichier image existe
+       /* if (Env('APP_ENV') == 'production') {
+            // En production, retourner l'URL complète
+            return 'https://api.bajorah.com/core/public/assets' . $imageName;
+            // return $imageName;
+        }
+
+        // En développement, utiliser asset() pour construire l'URL
+        return $imageName;*/
+
         if (Env('APP_ENV') == 'production') {
-            // return 'https://api.bajorah.com/assets' . $imageName;
+            // En production, retourner l'URL complète
             return 'https://api.bajorah.com/core/public/assets' . $imageName;
         }
 
-        $imagePath = public_path('assets' . $imageName);
-        // dd(file_exists($imagePath));
-        if (file_exists($imagePath)) {
-            return asset('assets' . $imageName);
-        }
-
-        return null;
+        // En développement, utiliser asset() pour construire l'URL
+        return asset('core/public/assets' . $imageName);
     }
 
     public static function getImages(string $directory): array
@@ -45,7 +54,7 @@ class ImageService
         return $images;
     }
 
-    public static function isImage(string $filename): bool
+    private static function isImage(string $filename): bool
     {
         // Obtenez l'extension du fichier
         $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));

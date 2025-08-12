@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+use App\Services\ImageService;
+
+class SliderResource extends JsonResource
+{
+    public function toArray($request)
+    {
+        return [
+            'id'          => $this->id,
+            'title'       => $this->title,
+            'place'       => $this->place,
+            'description' => $this->description,
+            'image'      => $this->image ? ImageService::getImage($this->image) : null,
+        ];
+    }
+}

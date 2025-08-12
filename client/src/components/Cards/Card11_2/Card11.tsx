@@ -67,7 +67,7 @@ const Card11_2: FC<Card11_2Props> = ({
 			</span>
 
 			<div className="p-4 flex flex-col flex-grow space-y-3">
-				<span className="text-xs text-neutral-500">{updated_at}</span>
+				<span className="text-xs text-neutral-500">{updated_at instanceof Date ? updated_at.toLocaleDateString() : updated_at}</span>
 
 				<div className="grid grid-cols-6">
 					<div className="grid grid-cols-subgrid col-span-2">

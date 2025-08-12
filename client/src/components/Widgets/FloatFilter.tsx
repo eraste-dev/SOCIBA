@@ -51,7 +51,7 @@ const FloatFilter: FC<FloatFilterProps> = ({
 				{!isDashboard() ? (
 					<div className="block sm:hidden">
 						<span
-							className="cursor-pointer z-50 block sm:hidden bg-primary-800 dark:bg-primary-800 text-white rounded-full p-1.5 hover:bg-primary-600 dark:hover:bg-primary-700"
+							className="cursor-pointer z-50 block sm:hidden bg-[#EA580C] dark:bg-[#C2410C] text-white rounded-lg p-2.5 hover:bg-[#C2410C] dark:hover:bg-[#9A3412]"
 							onClick={() => setOpenMobile(!openMobile)}
 							style={{
 								position: "fixed",

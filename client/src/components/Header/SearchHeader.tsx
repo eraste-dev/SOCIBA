@@ -12,11 +12,29 @@ import { useForm } from 'react-hook-form';
 import AdvancedSearch from './AdvancedSearch';
 import { Transition } from '@headlessui/react';
 import { Fragment } from 'react';
+import { CATEGORIES_SUB } from 'data/categories_sub';
+import axios from "axios";
+import { useAppDispatch } from "../../hooks";
+import { getCities } from "../../data/cities";
+
+interface City {
+  id: number;
+  name: string;
+  slug: string;
+  iso3: string;
+  iso2: string;
+  description: string;
+  country: any;
+  lat: string;
+  long: string;
+  thumbnail: string;
+  updated_at: string;
+}
 
 export interface SearchHeaderProps {}
 
 const SearchHeader: FC<SearchHeaderProps> = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const productSearched = useSelector(PropertyAction.data)?.search;
   const history = useHistory();
 
@@ -52,15 +70,65 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
   };
 
   const onSubmit = () => {
-    const url = route('annonces') + '/?searchText=' + searchText;
-    console.log('onSubmit search', {
-      searchText,
-      url,
-    });
+    // Parsing intelligent avec priorité pour la recherche de résidences
+    let typeBien = "";
+    let commune = "";
+    let quartier = "";
+    let reste = searchText.toLowerCase(); // Convertir en minuscules pour la recherche insensible à la casse
+
+    // 1. On cherche d'abord le type de bien (x)
+    for (const bien of biensList) {
+      const regex = new RegExp(`\\b${bien.toLowerCase()}\\b`, 'i');
+      if (regex.test(reste)) {
+        typeBien = bien;
+        // On retire le type de bien de la recherche
+        reste = reste.replace(new RegExp(`\\b${bien.toLowerCase()}\\b`, 'i'), '').trim();
+        break;
+      }
+    }
+
+    // 2. On cherche ensuite la commune (y)
+    for (const c of communesList) {
+      const regex = new RegExp(`\\b${c}\\b`, 'i');
+      if (regex.test(reste)) {
+        commune = c;
+        // On retire la commune de la recherche
+        reste = reste.replace(new RegExp(c, 'i'), '').trim();
+        break;
+      }
+    }
+
+    // 3. Le reste est considéré comme quartier (z)
+    if (commune && reste.trim()) {
+      quartier = reste.trim();
+    }
+
+    // Construit les params
+    const params: IGetSearchPropertiesParams = {};
+    if (typeBien) {
+      params.category_slug = typeBien.toLowerCase();
+      params.category_slug_selected = typeBien.toLowerCase();
+    }
+    if (commune) params.location = citiesById[commune];
+    if (quartier) params.location_description = quartier;
+    
+    // Si on a trouvé un type de bien mais pas de commune,
+    // on fait une recherche générale sur ce type de bien
+    if (typeBien && !commune) {
+      params.category_slug = typeBien.toLowerCase();
+      params.category_slug_selected = typeBien.toLowerCase();
+    }
+
+    // Redirige et déclenche la recherche
+    const urlParams = new URLSearchParams();
+    if (params.category_slug) urlParams.append('category_slug', String(params.category_slug));
+    if (params.category_slug_selected) urlParams.append('category_slug_selected', String(params.category_slug_selected));
+    if (params.location) urlParams.append('location', String(params.location));
+    if (params.location_description) urlParams.append('location_description', String(params.location_description));
+    const url = route('annonces') + (urlParams.toString() ? '?' + urlParams.toString() : '');
     history.replace(url);
     setOpen(false);
-    // const params: IGetSearchPropertiesParams = { searchText };
-    fetchAll();
+    dispatch(fetchAllProperties(params));
     reset();
   };
 
@@ -87,6 +155,24 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
   // 		setOpen(false);
   // 	}
   // }, [lastPage, history.location.pathname]);
+
+  const biensList = [
+    "Résidence", "Hôtel", "Maison", "Magasin", "Bureau", "Espace", "Terrain", "Appartement", "Studio", "Villa", "Duplex", "Triplex"
+  ];
+  const [citiesData, setCitiesData] = useState<City[]>([]);
+  const [citiesById, setCitiesById] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    const staticCities = getCities();
+    setCitiesData(staticCities);
+    const staticMapping = staticCities.reduce((acc: { [key: string]: string }, city: any) => {
+      acc[city.name.toLowerCase()] = city.id.toString();
+      return acc;
+    }, {});
+    setCitiesById(staticMapping);
+  }, []);
+
+  const communesList = citiesData.map(city => city.name.toLowerCase());
 
   return (
     <>
@@ -116,19 +202,7 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
                 <path d="M22 22L20 20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
-            
-            {/* Bouton recherche avancée */}
-            <button
-              type="button"
-              onClick={toggleAdvancedSearch}
-              className="absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500 hover:text-primary-600 cursor-pointer"
-              title="Recherche avancée"
-            >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
-              </svg>
-            </button>
-            
+            {/* Bouton recherche avancée supprimé ici */}
             <input type="submit" hidden value="" />
           </form>
 
@@ -203,7 +277,7 @@ const SearchHeader: FC<SearchHeaderProps> = () => {
               </svg>
             </button>
           </div>
-          <AdvancedSearch />
+          <AdvancedSearch onClose={() => setShowAdvanced(false)} />
         </div>
       </Transition>
     </>

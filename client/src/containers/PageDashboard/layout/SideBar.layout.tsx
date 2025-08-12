@@ -11,6 +11,7 @@ import { route } from "routers/route";
 
 export interface SideBarDashbordProps {
 	className?: string;
+	children?: React.ReactNode;
 }
 
 const SideBarDashbord: FC<SideBarDashbordProps> = ({ className = "", children }) => {

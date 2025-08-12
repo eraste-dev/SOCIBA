@@ -29,6 +29,9 @@ class JwtMiddleware
             if ($user->status != 'ACTIVE') {
                 return ResponseService::error('Unauthorized, user not active', 403);
             }
+            
+            // Définir l'utilisateur dans le contexte d'authentification
+            \Auth::setUser($user);
         } catch (\Exception $e) {
             return ResponseService::error('INVALID_TOKEN', 403);
         }

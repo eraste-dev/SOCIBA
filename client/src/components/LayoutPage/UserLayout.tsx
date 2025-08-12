@@ -6,6 +6,7 @@ export interface UserLayoutProps {
 	heading: string;
 	headingEmoji?: string;
 	subHeading?: string;
+	children?: React.ReactNode;
 }
 
 const UserLayout: FC<UserLayoutProps> = ({

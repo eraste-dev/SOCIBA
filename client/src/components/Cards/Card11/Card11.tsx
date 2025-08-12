@@ -66,7 +66,7 @@ const Card11: FC<Card11Props> = ({
 			</span>
 
 			<div className="px-1 flex flex-col flex-grow space-y-1">
-				<span className="text-xs text-neutral-500">{updated_at}</span>
+				<span className="text-xs text-neutral-500">{updated_at instanceof Date ? updated_at.toLocaleDateString() : updated_at}</span>
 
 				{/* grid grid-cols-3 */}
 				<div className="flex justify-between">
@@ -75,7 +75,7 @@ const Card11: FC<Card11Props> = ({
 
 						<p className="relative text-xs text-primary-800 dark:text-neutral-100 ">
 							<span className="text-xs flex justify-items-center">
-								{location && location.name ? location.name : unlisted_city ?? ""}
+								{location && typeof location === 'object' && 'name' in location ? String(location.name) : String(unlisted_city ?? "")}
 							</span>
 							<span className="text-xs text-clip whitespace-normal break-words">
 								{location_description}

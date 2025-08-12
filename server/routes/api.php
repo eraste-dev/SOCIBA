@@ -22,45 +22,57 @@ use App\Http\Controllers\UserRequestController;
 use App\Http\Middleware\JwtMiddleware;
 use App\Http\Controllers\CityController;
 
-// Route::get('/', [HomeController::class, 'index']);
-
 Route::group(['prefix' => 'v1'], function () {
     Route::get('/', [HomeController::class, 'index']);
+    
+    // SETTINGS ROUTES (PUBLIC)
     Route::group(['prefix' => '/settings'], function () {
         Route::get('/', [SettingsController::class, 'index']);
     });
 
-    // ? PUBLIC ROUTE
+    // ========================================
+    // PUBLIC ROUTES (pas de middleware)
+    // ========================================
     Route::group(['prefix' => ''], function () {
-        Route::resource('sliders', SliderController::class);
-        Route::resource('categories', PropertyCategoryController::class);
+        // SLIDERS - Route publique pour récupérer les sliders
+        Route::get('sliders', [SliderController::class, 'index']);
+
+        // CATEGORIES - Route publique pour récupérer les catégories
+        Route::get('categories', [PropertyCategoryController::class, 'index']);
+
+        // PROPERTIES - Route publique pour récupérer les propriétés
         Route::group(['prefix' => 'properties'], function () {
             Route::get('/', [PropertyController::class, 'get']);
         });
+
+        // LOCATIONS - Route publique pour récupérer les localisations
         Route::group(['prefix' => 'locations'], function () {
             Route::get('/', [MunicipalityController::class, 'index']);
         });
 
+        // CITIES - Route publique pour récupérer les villes
         Route::group(['prefix' => 'cities'], function () {
             Route::get('/', [CityController::class, 'index']);
         });
 
-        // ? META
+        // META - Route publique pour récupérer les métadonnées
         Route::get('meta/{key}', [MetaController::class, 'getByKey']);
-        // Route::resource('meta', MetaController::class);
 
-        // ? USER REQUEST
+        // USER REQUEST - Route publique pour les demandes utilisateur
         Route::group(['prefix' => 'user'], function () {
             Route::post('send-request', [UserRequestController::class, 'store']);
-            Route::post('update-score', [UserController::class, 'update_score'])->name('user.update_score');
+            // Route::post('update-score', [UserController::class, 'update_score'])->name('user.update_score'); // COMMENTÉ - doublon de nom
         });
 
+        // TESTIMONIALS - Route publique pour récupérer les témoignages
         Route::group(['prefix' => 'testimonials'], function () {
             Route::get('/', [TestimonialController::class, 'get']);
         });
     });
 
-    // * AUTH ROUTE
+    // ========================================
+    // AUTH ROUTES (authentification)
+    // ========================================
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login',    [AuthController::class, 'login']);
         Route::post('register', [AuthController::class, 'register']);
@@ -70,50 +82,61 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/password/change', [AuthController::class, 'changePassword'])->middleware([JwtMiddleware::class]);
     });
 
-    // ! PROTECTED ROUTE
+    // ========================================
+    // PROTECTED ROUTES (avec middleware JWT)
+    // ========================================
     Route::group(['middleware' => [JwtMiddleware::class]], function () {
-        // ? SETTINGS ROUTES
+        
+        // SETTINGS ROUTES (PROTECTED)
         Route::group(['prefix' => '/settings'], function () {
             Route::post('update', [SettingsController::class, 'store']);
             Route::post('update-logo', [SettingsController::class, 'change_logo']);
         });
 
-        // ? PROTECTED PRODUCTS ROUTES
+        // ADMIN ROUTES (PROTECTED)
         Route::group(['prefix' => '/admin'], function () {
+            // SLIDERS ADMIN
             Route::post('sliders', [SliderController::class, 'store']);
             Route::delete('sliders', [SliderController::class, 'destroy']);
 
+            // PRODUCTS ADMIN
             Route::group(['prefix' => 'products'], function () {
-                Route::post('/',                [PropertyController::class, 'store'])->name('admin.products.store');
-                Route::delete('/',              [PropertyController::class, 'delete'])->name('admin.products.delete');
-                Route::post('/upload-video',    [PropertyController::class, 'upload_video'])->name('admin.products.upload_video');
+                Route::post('/',                [PropertyController::class, 'store']); // ->name('admin.products.store'); // COMMENTÉ - doublon de nom
+                Route::delete('/',              [PropertyController::class, 'delete']); // ->name('admin.products.delete'); // COMMENTÉ - doublon de nom
+                Route::post('/upload-video',    [PropertyController::class, 'upload_video']); // ->name('admin.products.upload_video'); // COMMENTÉ - doublon de nom
+                Route::delete('/image',         [PropertyController::class, 'deleteImage']); // Supprimer une image spécifique
             });
         });
 
-        // Testimonial
+        // TESTIMONIALS (PROTECTED)
         Route::group(['prefix' => 'testimonials'], function () {
             Route::post('/', [TestimonialController::class, 'save']);
             Route::get('/all', [TestimonialController::class, 'getAll']);
         });
 
-        // ? PROTECTED USER ROUTES
+        // USER ROUTES (PROTECTED)
         Route::group(['prefix' => '/user'], function () {
-            // posts
+            // USER POSTS
             Route::get('/user-posts', [PropertyController::class, 'getUserPost']);
 
-            Route::put('update-profile',   [AuthController::class, 'updateUser'])->name('user.update-profile');
-            Route::put('change-password',   [AuthController::class, 'changePassword'])->name('user.change-password');
-            Route::get('list',             [UserController::class, 'listUsers'])->name('user.list');
-            Route::delete('delete',        [UserController::class, 'delete'])->name('user.delete');
+            // USER PROFILE
+            Route::put('update-profile',   [AuthController::class, 'updateUser']); // ->name('user.update-profile'); // COMMENTÉ - doublon de nom
+            Route::post('update-profile',   [AuthController::class, 'updateUser']); // Permet l'astuce _method=PUT avec FormData
+            Route::put('change-password',   [AuthController::class, 'changePassword']); // ->name('user.change-password'); // COMMENTÉ - doublon de nom
+            Route::get('list',             [UserController::class, 'listUsers']); // ->name('user.list'); // COMMENTÉ - doublon de nom
+            Route::delete('delete',        [UserController::class, 'delete']); // ->name('user.delete'); // COMMENTÉ - doublon de nom
 
-            // NOTIFICATION USER
-            Route::get('notifications',                     [NotificationController::class, 'index'])->name('user.notifications');
+            // USER SCORE (déplacé ici pour éviter le doublon)
+            Route::post('update-score', [UserController::class, 'update_score']); // ->name('user.update_score'); // COMMENTÉ - doublon de nom
+
+            // NOTIFICATIONS
+            Route::get('notifications',                     [NotificationController::class, 'index']); // ->name('user.notifications'); // COMMENTÉ - doublon de nom
             Route::get('/notifications/unread',             [NotificationController::class, 'unread']);
             Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead']);
             Route::delete('/notifications/{id}',            [NotificationController::class, 'destroy']);
             Route::post('/notifications/mark-all-as-read',  [NotificationController::class, 'markAllAsRead']);
 
-            // ? USER REQUEST
+            // USER REQUEST
             Route::get('user-request', [UserRequestController::class, 'index']);
         });
     });

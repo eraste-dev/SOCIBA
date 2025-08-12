@@ -63,7 +63,7 @@ const SectionHeroSlider: FC<SectionHeroSliderProps> = ({ className = "", target 
 										<img
 											src={item.image}
 											alt={item.title || `Slider ${index + 1}`}
-											className="w-full h-auto object-contain rounded-lg shadow-lg"
+											className="w-full h-[128px] md:h-[200px] object-cover object-center md:object-contain bg-white rounded-lg shadow-lg"
 											onDragStart={handleDragStart}
 										/>
 									</div>

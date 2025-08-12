@@ -40,7 +40,7 @@ export const CATEGORIES_SUB: IPropertySubCategory[] = [
 	},
 	{
 		id: 4,
-		name: "4 pièces",
+		name: "Appartement",
 		allow: [MAISON_KEY, APPARTEMENT_KEY],
 		allow_type: "LOCATION",
 		uuid: "FOUR_PIECE",

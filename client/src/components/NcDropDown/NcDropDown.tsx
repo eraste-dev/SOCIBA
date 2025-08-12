@@ -63,23 +63,19 @@ const NcDropDown: FC<NcDropDownProps> = ({
                 onClick={() => onClick(item)}
                 data-menu-item-id={item.id}
               >
-                {() =>
-                  renderItem && typeof renderItem(item) !== "undefined" ? (
-                    renderItem(item)
-                  ) : (
-                    <button
-                      className={
-                        "flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate " +
-                        twFocusClass()
-                      }
-                    >
-                      {!!item.icon && (
-                        <i className={`${item.icon} mr-1 w-7 text-base`}></i>
-                      )}
-                      <span className="truncate">{item.name}</span>
-                    </button>
-                  )
-                }
+                {renderItem && typeof renderItem(item) !== "undefined" ? (
+                  <button
+                    className={
+                      "flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate " +
+                      twFocusClass()
+                    }
+                  >
+                    {!!item.icon && (
+                      <i className={`${item.icon} mr-1 w-7 text-base`}></i>
+                    )}
+                    <span className="truncate">{item.name}</span>
+                  </button>
+                ) : null}
               </Menu.Item>
             ))}
           </div>

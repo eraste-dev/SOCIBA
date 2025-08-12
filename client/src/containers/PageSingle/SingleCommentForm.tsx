@@ -11,6 +11,7 @@ export interface SingleCommentFormProps {
   textareaRef?: React.MutableRefObject<null>;
   defaultValue?: string;
   rows?: number;
+  children?: React.ReactNode;
 }
 
 const SingleCommentForm: FC<SingleCommentFormProps> = ({

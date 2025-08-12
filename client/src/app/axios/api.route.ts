@@ -7,7 +7,8 @@ import { ISettings } from "app/reducer/settings/settings.";
 import { UpdatePasswordRequest } from "containers/PageDashboard/Users/form/UpdatePassword";
 import { ITestimonial } from "app/reducer/testimonials/testimonial";
 
-export const apiBase: string = "http://localhost:8000";
+// export const apiBase: string = "http://localhost:8000";
+export const apiBase: string = "https://api.bajorah.com";
 
 export const v100: string = "/api/v1";
 
@@ -46,6 +47,7 @@ export interface IServerEndpoint {
 			post: (product: FormData | ProductRequest) => IAxiosRequestConfig;
 			uploadVideo: (product: FormData | ProductRequest) => IAxiosRequestConfig;
 			delete: (id: number) => IAxiosRequestConfig;
+			deleteImage: (data: { property_id: number; image_url: string }) => IAxiosRequestConfig;
 			updateUserScore: ({
 				user_id,
 				score,
@@ -152,6 +154,11 @@ export const serverEndpoints: IServerEndpoint = {
 				url: `${v100}/admin/products`,
 				data: { id },
 			}),
+			deleteImage: (data: { property_id: number; image_url: string }) => ({
+				method: "DELETE",
+				url: `${v100}/admin/products/image`,
+				data,
+			}),
 			updateUserScore: ({ user_id, score }: { user_id: number; score: number }) => ({
 				method: "POST",
 				url: `${v100}/user/update-score`,
@@ -178,7 +185,7 @@ export const serverEndpoints: IServerEndpoint = {
 			resendEmail: { method: "POST", url: `${v100}/auth/resend-email` },
 			confirmEmail: { method: "POST", url: `${v100}/auth/confirm-email` },
 			updateProfile: (data: FormData | UpdateUserRequest) => ({
-				method: "PUT",
+				method: "POST",
 				url: `${v100}/user/update-profile`,
 				data,
 			}),

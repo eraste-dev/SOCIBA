@@ -329,6 +329,18 @@ export const deleteProduct = (payload: number) => async (dispatch: AppDispatch) 
 	}
 };
 
+export const deleteProductImage = (payload: { property_id: number; image_url: string }) => async (dispatch: AppDispatch) => {
+    console.log("Début de l'action deleteProductImage");
+    try {
+        const response = await axiosRequest<IServerResponse>({
+            ...serverEndpoints.public.properties.deleteImage(payload),
+        });
+        return response.data;
+    } catch (error: any) {
+        throw error;
+    }
+};
+
 export const initProductState = () => async (dispatch: AppDispatch) => {
 	dispatch(postProductInit());
 };

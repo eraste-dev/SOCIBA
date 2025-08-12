@@ -8,6 +8,7 @@ import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 
 export interface AdminLayoutProps {
 	className?: string;
+	children?: React.ReactNode;
 }
 
 export const layoutSetting = {
