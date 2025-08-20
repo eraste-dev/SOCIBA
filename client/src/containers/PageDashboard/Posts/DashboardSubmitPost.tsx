@@ -1118,36 +1118,52 @@ const DashboardSubmitPost = () => {
 												<div className="block col-span-4">
 													<Label>Type d'annonce</Label>
 													<div className="mt-2 grid grid-cols-2 gap-4">
-														<label className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer">
-															<input
-																type="radio"
-																className="form-radio text-primary-600"
-																name="annonceType"
-																value="location"
-																checked={typeAnnonce === 'location'}
-																onChange={() => {
-																	setTypeAnnonce('location');
-																	setValue('home_type', 'location');
-																	setSelectedChildProperty(''); // Réinitialiser la sélection de type
-																}}
-															/>
-															<span className="ml-2 font-medium">À louer</span>
-														</label>
-														<label className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer">
-															<input
-																type="radio"
-																className="form-radio text-primary-600"
-																name="annonceType"
-																value="vente"
-																checked={typeAnnonce === 'vente'}
-																onChange={() => {
-																	setTypeAnnonce('vente');
-																	setValue('home_type', 'vente');
-																	setSelectedChildProperty(''); // Réinitialiser la sélection de type
-																}}
-															/>
-															<span className="ml-2 font-medium">À vendre</span>
-														</label>
+														{currentType() === 'LOCATION' ? (
+															<div className="flex items-center p-3 border rounded-lg bg-gray-50 dark:bg-neutral-800">
+																<input
+																	type="radio"
+																	className="form-radio text-primary-600"
+																	name="annonceType"
+																	value="location"
+																	checked={true}
+																	disabled
+																/>
+																<span className="ml-2 font-medium">À louer</span>
+															</div>
+														) : (
+															<>
+																<label className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer">
+																	<input
+																		type="radio"
+																		className="form-radio text-primary-600"
+																		name="annonceType"
+																		value="location"
+																		checked={typeAnnonce === 'location'}
+																		onChange={() => {
+																			setTypeAnnonce('location');
+																			setValue('home_type', 'location');
+																			setSelectedChildProperty('');
+																		}}
+																	/>
+																	<span className="ml-2 font-medium">À louer</span>
+																</label>
+																<label className="flex items-center p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-800 cursor-pointer">
+																	<input
+																		type="radio"
+																		className="form-radio text-primary-600"
+																		name="annonceType"
+																		value="vente"
+																		checked={typeAnnonce === 'vente'}
+																		onChange={() => {
+																			setTypeAnnonce('vente');
+																			setValue('home_type', 'vente');
+																			setSelectedChildProperty('');
+																		}}
+																	/>
+																	<span className="ml-2 font-medium">À vendre</span>
+																</label>
+															</>
+														)}
 													</div>
 												</div>
 											)}
