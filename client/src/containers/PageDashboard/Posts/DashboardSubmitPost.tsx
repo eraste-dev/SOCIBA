@@ -420,11 +420,32 @@ const DashboardSubmitPost = () => {
 				return SUB_MAGASIN_DETAIL;
 			}
 
+			// Si c'est une location, on filtre les types de biens
+			if (currentType() === "LOCATION") {
+				const locationTypes = ["MAISON", "MAGASIN", "BUREAU", "ESPACE"];
+				sub_categories.forEach((c) => {
+					if (c.allow.includes(cat?.name ?? "") && locationTypes.includes(c.name.toUpperCase())) {
+						data.push({
+							code: c.uuid,
+							name: c.name,
+						});
+					}
+				});
+				// Si aucune catégorie n'est encore sélectionnée, on affiche tous les types de location
+				if (!cat?.name) {
+					data = [];
+					sub_categories.forEach((c) => {
+						if (locationTypes.includes(c.name.toUpperCase())) {
+							data.push({
+								code: c.uuid,
+								name: c.name,
+							});
+						}
+					});
+				}
+			} 
 			// Logique existante pour les autres catégories
-			if (
-				(cat && cat.name && currentType() === "LOCATION") ||
-				currentType() === "RESERVATION"
-			) {
+			else if (currentType() === "RESERVATION") {
 				sub_categories.forEach((c) => {
 					if (c.allow.includes(cat?.name ?? "")) {
 						data.push({
@@ -1071,6 +1092,7 @@ const DashboardSubmitPost = () => {
 														<span className="text-red-500">*</span>
 													</Label>
 													<CategorySelector 
+														offerType={currentType()}
 														onCategoryChange={(category: { id: string; name: string; slug?: string }) => {
 															settmpcatId(parseInt(category.id));
 															setValue("category_id", parseInt(category.id));
